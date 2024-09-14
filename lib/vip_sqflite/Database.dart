@@ -1,16 +1,18 @@
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 typedef Columns = Map<String, dynamic>;
 typedef Column = Map<String, dynamic>;
 
+/*  Class Table   */
 abstract class TableSchema<T> {
   static const String primaryKey = 'ID';
 
   Columns columns(T obj);
   String get tableName;
-  String get key;
   T generate(Column column);
+  Key get key;
 
   Column column({
     required String name,
@@ -18,19 +20,40 @@ abstract class TableSchema<T> {
   }) => {name: value};
 
   Columns ColumnBuild({required List<Column> addColumn}) {
+
+    //---   Chuyển đổi column   ---
     Columns columnsB = {};
     for(Columns columns1 in addColumn) {
       columnsB.addAll(columns1);
     }
+
     return columnsB;
   }
+
 }
 
+/*  Class Key   */
+class Key {
+  final String _nameColumn;
+  final bool _autoIncrement;
+
+  Key({
+    required String nameColumn,
+    bool autoIncrement = false,
+  })  : _nameColumn = nameColumn,
+        _autoIncrement = autoIncrement;
+
+  String get nameColumn => _nameColumn;
+  bool get autoIncrement => _autoIncrement;
+}
+
+/*  Class Database  */
 class DatabaseApp {
   late final String _name;
   late final int _version;
   late final List<TableSchema<dynamic>> _tableSchemas;
 
+  /*  Constructor */
   DatabaseApp({
     required String name,
     required int version,
@@ -40,6 +63,8 @@ class DatabaseApp {
         _version = version,
         _tableSchemas = tableSchemas;
 
+
+  /*  Hàm khởi tạo basedatabase */
   TableSchema<T>? getTableSchema<T>(T obj) {
     for (var schema in _tableSchemas) {
       if (schema is TableSchema<T>) {
@@ -49,33 +74,51 @@ class DatabaseApp {
     return null;
   }
 
+  //===   Hàm khởi tạo database   ===
   Future<Database?> initializeDatabase() async {
-    if(!_validityCheck()) return null;
+    if (!_validityCheck()) return null;
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, '$_name.db');
 
-    final createTableStatements = generateCreateTableStatements(_tableSchemas);
+    final createTableStatements = _generateCreateTableStatements(_tableSchemas);
 
     return openDatabase(
       path,
+      version: _version,
+
+      //---   Tạo database nêú chưa khởi tạo    ---
       onCreate: (db, version) async {
         await db.transaction((txn) async {
-          for(String query in createTableStatements) {
+          for (String query in createTableStatements) {
             await txn.execute(query);
           }
         });
       },
-      version: _version,
+
+      //---   Xử lý khi thay đổi phiên bản    ---
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (newVersion > oldVersion) {
+          final newCreateTableStatements = _generateCreateTableStatements(_tableSchemas);
+
+          await db.transaction((txn) async {
+            for (String query in newCreateTableStatements) {
+              await txn.execute(query);
+            }
+          });
+        }
+      },
     );
   }
 
-  List<String> generateCreateTableStatements(List<TableSchema> schemas) {
+
+  //===   Hàm tạo bảng  ===
+  List<String> _generateCreateTableStatements(List<TableSchema> schemas) {
     StringBuffer buffer;
     List<String> querys = [];
 
     for (var schema in schemas) {
       buffer = StringBuffer();
-      buffer.writeln('CREATE TABLE ${schema.tableName} (');
+      buffer.writeln('CREATE TABLE IF NOT EXISTS ${schema.tableName} (');
 
       final columns = schema.columns(schema.generate({}));
       columns.forEach((name, type) {
@@ -102,6 +145,7 @@ class DatabaseApp {
     return querys;
   }
 
+  //===   Kiểm tra các giá trị rỗng hoặc lỗi  ===
   bool _validityCheck() {
     for (var schema in _tableSchemas) {
       final columns = schema.columns(schema.generate({}));
@@ -111,8 +155,8 @@ class DatabaseApp {
       if(schema.tableName == '') {
         throw ArgumentError('Table name cannot be empty by ${schema.runtimeType}.');
       }
-      if(!columns.containsKey(schema.key) && schema.key != TableSchema.primaryKey ) {
-        throw ArgumentError('No matching column found for key "${schema.key}" by ${schema.runtimeType}.');
+      if(!columns.containsKey(schema.key.nameColumn) && schema.key != TableSchema.primaryKey ) {
+        throw ArgumentError('No matching column found for key "${schema.key.nameColumn}" by ${schema.runtimeType}.');
       }
     }
     return true;

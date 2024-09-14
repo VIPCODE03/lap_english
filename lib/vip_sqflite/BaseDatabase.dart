@@ -1,33 +1,39 @@
+
 import 'dart:core';
 
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'Database.dart';
 
 abstract class BaseDatabase<T> {
   late Future<Database?> _database;
-  late TableSchema<T> _table;
-  final T _obj;
+  late final TableSchema<T> _table;
 
-  BaseDatabase(DatabaseApp db, this._obj) {
+  BaseDatabase(DatabaseApp db, this._table) {
     _database = db.initializeDatabase();
-    _table = db.getTableSchema(_obj)!;
   }
+
+  /*  Các hàm truy vấn  */
 
   //===   insert    ===
   Future<bool> insert(T obj) async {
     try {
-      if(await _checkExist(obj)) return false;
+      if(!_table.key.autoIncrement) if(await _checkExist(obj)) return false;
+      Columns columns = await _autoIncrement(_table.columns(obj));
+
       final db = await _database;
       await db?.insert(
         _table.tableName,
-        _table.columns(obj),
+        columns,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
       return true;
     }
     catch(e) {
-      print("Error insert: $e");
+      if (kDebugMode) {
+        print("Error insert: $e");
+      }
       return false;
     }
   }
@@ -35,17 +41,23 @@ abstract class BaseDatabase<T> {
   //===   update  ===
   Future<bool> update(T oldObj, T newObj) async {
     try {
+      if(_table.key.autoIncrement && (_table.columns(oldObj)[_table.key.nameColumn] != _table.columns(newObj)[_table.key.nameColumn])) {
+        return false;
+      }
+
       final db = await _database;
       await db?.update(
         _table.tableName,
         _table.columns(newObj),
-        where: '${_table.key} = ?',
-        whereArgs: [_table.columns(oldObj)[_table.key]],
+        where: '${_table.key.nameColumn} = ?',
+        whereArgs: [_table.columns(oldObj)[_table.key.nameColumn]],
       );
       return true;
     }
     catch(e) {
-      print("Error update: $e");
+      if (kDebugMode) {
+        print("Error update: $e");
+      }
       return false;
     }
   }
@@ -56,13 +68,15 @@ abstract class BaseDatabase<T> {
       final db = await _database;
       await db?.delete(
         _table.tableName,
-        where: '${_table.key} = ?',
-        whereArgs: [_table.columns(obj)[_table.key]],
+        where: '${_table.key.nameColumn} = ?',
+        whereArgs: [_table.columns(obj)[_table.key.nameColumn]],
       );
       return true;
     }
     catch(e) {
-      print("Error delete: $e");
+      if (kDebugMode) {
+        print("Error delete: $e");
+      }
       return false;
     }
   }
@@ -104,7 +118,7 @@ abstract class BaseDatabase<T> {
   //===   Truy vấn theo query   ===
   Future<List<T>> query(String query, [List<dynamic>? args]) async {
     final db = await _database;
-    List<Map<String, Object?>>? datas = await db?.rawQuery(query, args);
+    List<Map<String, Object?>>? datas; await db?.rawQuery(query, args);
 
     if(datas!.isEmpty && query.toUpperCase().contains('INSERT') || query.toUpperCase().contains('UPDATE')) {
       final check = await _CheckNewlyAddedRecords();
@@ -115,12 +129,14 @@ abstract class BaseDatabase<T> {
     return _generate(datas);
   }
 
+  /*  Hàm kiểm tra và khởi tạo dữ liệu  */
+
   //===   Kiểm tra tồn tại 2 bản ghi và xóa ===
   Future<bool> _CheckNewlyAddedRecords() async {
     final newly = await getPageData(index: 1, limit: 1, firstToLast: false);
     T obj = newly[0];
     Column column = _table.columns(obj);
-    final keyValue = column[_table.key];
+    final keyValue = column[_table.key.nameColumn];
     final ids = await _getIdsByKey(keyValue);
     if(ids.length >= 2) {
       print('Record already exists by key ${_table.key} = $keyValue');
@@ -139,11 +155,13 @@ abstract class BaseDatabase<T> {
   Future<bool> _checkExist(T obj) async {
     final db = await _database;
     Column column = _table.columns(obj);
-    dynamic value = column[_table.key];
-    List<Map<String, Object?>>? result = await db?.rawQuery('SELECT COUNT(*) FROM ${_table.tableName} WHERE ${_table.key} = ?;',[value]);
+    dynamic value = column[_table.key.nameColumn];
+    List<Map<String, Object?>>? result = await db?.rawQuery('SELECT COUNT(*) FROM ${_table.tableName} WHERE ${_table.key.nameColumn} = ?;',[value]);
     final count = Sqflite.firstIntValue(result!) ?? 0;
     if(count >= 1) {
-      print('Record already exists by key ${_table.key} = $value');
+      if (kDebugMode) {
+        print('Record already exists by key ${_table.key} = $value');
+      }
       return true;
     }
     return false;
@@ -168,7 +186,7 @@ abstract class BaseDatabase<T> {
       final Map<String, dynamic> mutableData = Map.from(data);
 
       mutableData.forEach((key, value) {
-        mutableData[key] = _parseValue(_table.columns(_obj)[key].runtimeType, value);
+        mutableData[key] = _parseValue(_table.columns(_table.generate({}))[key].runtimeType, value);
       });
 
       processedData.add(mutableData);
@@ -192,6 +210,33 @@ abstract class BaseDatabase<T> {
     } else if (type == String) {
       return value is String ? value : value.toString();
     }
+  }
+
+  //===   Tăng dữ liệu id thêm 1  ===
+  Future<Columns> _autoIncrement(Columns columns) async {
+    final db = await _database;
+    if(_table.key.autoIncrement) {
+      if(columns[_table.key.nameColumn] is int) {
+        int iD = 0;
+        List<Map<String, Object?>>? result = await db?.query(
+          _table.tableName,
+          columns: ['ID'],
+          orderBy: "ID DESC",
+          limit: 1,
+        );
+
+        if (result!.isNotEmpty) {
+          iD = result.first['ID'] as int;
+        }
+        iD++;
+
+        columns[_table.key.nameColumn] = iD;
+      }
+      else {
+        throw ArgumentError('Cannot use autoincrement for type ${columns[_table.key.nameColumn].runtimeType}');
+      }
+    }
+    return columns;
   }
 
 }

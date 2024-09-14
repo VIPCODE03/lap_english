@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:lap_english/Person.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'Student.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,27 +10,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo ok',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -42,15 +26,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -58,87 +33,135 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int a = 1;
+  int current = 1;
+
+  late StudentDB _studentDB;
+
+  late List<Student> _students = [];
 
   @override
   void initState() {
     super.initState();
-    _getPerson();
+    _studentDB = StudentDB();
+    _loadStudent();
   }
 
-  String _name = "ngu";
-
-  int total = 0;
-  var personDao = PersonDao();
-  
-  var persons;
-
-  Future<void> _getPerson() async {
-    final persons = await personDao.getAll(firstToLast: true);
+  Future<void> _loadStudent() async {
+    final students = await _studentDB.getPageData(index: current, limit: 4, firstToLast: false);
     setState(() {
-      total = persons.length;
-      _name = persons[total - 1].name;
+      _students = students;
     });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      personDao.insert(Person("${Random.secure().nextInt(1000)}", total, "Béc lin"));
-      _getPerson();
-    });
+  Future<void> _insert(Student obj) async {
+    await _studentDB.insert(obj);
+  }
+
+  Future<void> _update(Student oldObj, Student newObj) async {
+    bool updated = await _studentDB.update(oldObj, newObj);
+    if(!updated) {
+      Fluttertoast.showToast(
+        msg: "Cập nhật thất bại, vui lòng kiểm tra giá trị hoặc thử lại",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+      );
+    }
+  }
+
+  Future<void> _delete() async {
+    await _studentDB.xoa();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Danh sách: ${_students.length}'),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _students.length,
+                    itemBuilder: (context, index) {
+                      final student = _students[index];
+                      return ListTile(
+                          title: Text(student.name),
+                          subtitle: Text('${student.age}'),
+                          trailing: Text(student.class_),
+                          onLongPress: () => {
+                            a++,
+                            _update(student, Student(student.name, student.age + 1, student.class_)),
+                            _loadStudent()
+                          }
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '$_name',
-              style: Theme.of(context).textTheme.headlineMedium,
+
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: TextButton(
+                  onPressed: () { if(current != 1) current--; _loadStudent(); },
+                  child: const Text('Trước'),
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: TextButton(
+                  onPressed: () { _delete(); current = 1; _loadStudent(); },
+                  child: const Text('Xóa'),
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: TextButton(
+                  onPressed: () {
+                    current++;
+                    _loadStudent();
+                    },
+                  child: const Text('Tiếp'),
+                ),
+              ),
             ),
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          a++; // Increment `a` first
+          _insert(Student('Đào Như Triệu $a', 1, 'K87'));
+          setState(() {
+            _loadStudent();
+          });
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
