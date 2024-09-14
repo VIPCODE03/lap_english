@@ -21,15 +21,15 @@ class PersonTable extends TableSchema<Person> {
   Columns columns(Person obj) => ColumnBuild(addColumn: [
       column(name: "tên", value: obj.name),
       column(name: "tuổi", value: obj.age),
-      column(name: "địa chỉ", value: obj.adress)
+      column(name: "địa_chỉ", value: obj.adress)
   ]);
 
   @override
   Person generate(Column column) => Person(
-          column["tên"],
-          column["tuổi"],
-          column["địa chỉ"
-      ]);
+          column["tên"] ?? "",
+          column["tuổi"] ?? 0,
+          column["địa_chỉ"] ?? ""
+      );
 
   @override
   String get key => "tên";
