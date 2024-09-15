@@ -8,10 +8,17 @@ import 'Database.dart';
 
 abstract class BaseDatabase<T> {
   late Future<Database?> _database;
-  late final TableSchema<T> _table;
 
-  BaseDatabase(DatabaseApp db, this._table) {
-    _database = db.initializeDatabase();
+  DatabaseApp get database;
+  TableSchema<T> get table;
+
+  BaseDatabase() {
+    if(database.isContainsTable(table)) {
+      _database = database.initializeDatabase();
+    }
+    else {
+      throw ArgumentError('Table ${table.runtimeType} not found in database ${database.name}');
+    }
   }
 
   /*  Các hàm truy vấn  */
@@ -19,12 +26,12 @@ abstract class BaseDatabase<T> {
   //===   insert    ===
   Future<bool> insert(T obj) async {
     try {
-      if(!_table.key.autoIncrement) if(await _checkExist(obj)) return false;
-      Columns columns = await _autoIncrement(_table.columns(obj));
+      if(!table.key.autoIncrement) if(await _checkExist(obj)) return false;
+      Columns columns = await _autoIncrement(table.columns(obj));
 
       final db = await _database;
       await db?.insert(
-        _table.tableName,
+        table.tableName,
         columns,
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
@@ -41,16 +48,16 @@ abstract class BaseDatabase<T> {
   //===   update  ===
   Future<bool> update(T oldObj, T newObj) async {
     try {
-      if(_table.key.autoIncrement && (_table.columns(oldObj)[_table.key.nameColumn] != _table.columns(newObj)[_table.key.nameColumn])) {
+      if(table.key.autoIncrement && (table.columns(oldObj)[table.key.nameColumn] != table.columns(newObj)[table.key.nameColumn])) {
         return false;
       }
 
       final db = await _database;
       await db?.update(
-        _table.tableName,
-        _table.columns(newObj),
-        where: '${_table.key.nameColumn} = ?',
-        whereArgs: [_table.columns(oldObj)[_table.key.nameColumn]],
+        table.tableName,
+        table.columns(newObj),
+        where: '${table.key.nameColumn} = ?',
+        whereArgs: [table.columns(oldObj)[table.key.nameColumn]],
       );
       return true;
     }
@@ -67,9 +74,9 @@ abstract class BaseDatabase<T> {
     try {
       final db = await _database;
       await db?.delete(
-        _table.tableName,
-        where: '${_table.key.nameColumn} = ?',
-        whereArgs: [_table.columns(obj)[_table.key.nameColumn]],
+        table.tableName,
+        where: '${table.key.nameColumn} = ?',
+        whereArgs: [table.columns(obj)[table.key.nameColumn]],
       );
       return true;
     }
@@ -86,9 +93,9 @@ abstract class BaseDatabase<T> {
     final db = await _database;
     final List<Map<String, Object?>>? datas;
     if(firstToLast) {
-      datas = await db?.query(_table.tableName);
+      datas = await db?.query(table.tableName);
     } else {
-      datas = await db?.query(_table.tableName, orderBy: 'ID DESC',);
+      datas = await db?.query(table.tableName, orderBy: 'ID DESC',);
     }
     return _generate(datas!);
   }
@@ -100,9 +107,9 @@ abstract class BaseDatabase<T> {
 
     final List<Map<String, Object?>>? datas;
     if(firstToLast) {
-      datas = await db?.query(_table.tableName, limit: limit, offset: offset);
+      datas = await db?.query(table.tableName, limit: limit, offset: offset);
     } else {
-      datas = await db?.query(_table.tableName, orderBy: 'ID DESC', limit: limit, offset: offset);
+      datas = await db?.query(table.tableName, orderBy: 'ID DESC', limit: limit, offset: offset);
     }
     return _generate(datas!);
   }
@@ -110,7 +117,7 @@ abstract class BaseDatabase<T> {
   //===   Lấy tổng số bản ghi   ===
   Future<int> getCount() async {
     final db = await _database;
-    List<Map<String, Object?>>? result = await db?.rawQuery('SELECT COUNT(*) AS count FROM ${_table.tableName}');
+    List<Map<String, Object?>>? result = await db?.rawQuery('SELECT COUNT(*) AS count FROM ${table.tableName}');
     int count = Sqflite.firstIntValue(result!) ?? 0;
     return count;
   }
@@ -118,7 +125,7 @@ abstract class BaseDatabase<T> {
   //===   Truy vấn theo query   ===
   Future<List<T>> query(String query, [List<dynamic>? args]) async {
     final db = await _database;
-    List<Map<String, Object?>>? datas; await db?.rawQuery(query, args);
+    List<Map<String, Object?>>? datas = await db?.rawQuery(query, args);
 
     if(datas!.isEmpty && query.toUpperCase().contains('INSERT') || query.toUpperCase().contains('UPDATE')) {
       final check = await _CheckNewlyAddedRecords();
@@ -135,14 +142,14 @@ abstract class BaseDatabase<T> {
   Future<bool> _CheckNewlyAddedRecords() async {
     final newly = await getPageData(index: 1, limit: 1, firstToLast: false);
     T obj = newly[0];
-    Column column = _table.columns(obj);
-    final keyValue = column[_table.key.nameColumn];
+    Column column = table.columns(obj);
+    final keyValue = column[table.key.nameColumn];
     final ids = await _getIdsByKey(keyValue);
     if(ids.length >= 2) {
-      print('Record already exists by key ${_table.key} = $keyValue');
+      print('Record already exists by key ${table.key} = $keyValue');
       final db = await _database;
       await db?.delete(
-        _table.tableName,
+          table.tableName,
         where: 'ID = ?',
         whereArgs: [ids[1]]
       );
@@ -154,13 +161,13 @@ abstract class BaseDatabase<T> {
   //===   Kiểm tra tồn tại  ===
   Future<bool> _checkExist(T obj) async {
     final db = await _database;
-    Column column = _table.columns(obj);
-    dynamic value = column[_table.key.nameColumn];
-    List<Map<String, Object?>>? result = await db?.rawQuery('SELECT COUNT(*) FROM ${_table.tableName} WHERE ${_table.key.nameColumn} = ?;',[value]);
+    Column column = table.columns(obj);
+    dynamic value = column[table.key.nameColumn];
+    List<Map<String, Object?>>? result = await db?.rawQuery('SELECT COUNT(*) FROM ${table.tableName} WHERE ${table.key.nameColumn} = ?;',[value]);
     final count = Sqflite.firstIntValue(result!) ?? 0;
     if(count >= 1) {
       if (kDebugMode) {
-        print('Record already exists by key ${_table.key} = $value');
+        print('Record already exists by key ${table.key} = $value');
       }
       return true;
     }
@@ -171,7 +178,7 @@ abstract class BaseDatabase<T> {
   Future<List<int>> _getIdsByKey(dynamic keyValue) async {
     final db = await _database;
     final result = await db?.rawQuery(
-      'SELECT ID FROM ${_table.tableName} WHERE ${_table.key} = ?',
+      'SELECT ID FROM ${table.tableName} WHERE ${table.key} = ?',
       [keyValue],
     );
 
@@ -186,14 +193,14 @@ abstract class BaseDatabase<T> {
       final Map<String, dynamic> mutableData = Map.from(data);
 
       mutableData.forEach((key, value) {
-        mutableData[key] = _parseValue(_table.columns(_table.generate({}))[key].runtimeType, value);
+        mutableData[key] = _parseValue(table.columns(table.generate({}))[key].runtimeType, value);
       });
 
       processedData.add(mutableData);
     }
 
     if (processedData.isNotEmpty) {
-      return List.generate(processedData.length, (i) => _table.generate(processedData[i]));
+      return List.generate(processedData.length, (i) => table.generate(processedData[i]));
     } else {
       return [];
     }
@@ -215,11 +222,11 @@ abstract class BaseDatabase<T> {
   //===   Tăng dữ liệu id thêm 1  ===
   Future<Columns> _autoIncrement(Columns columns) async {
     final db = await _database;
-    if(_table.key.autoIncrement) {
-      if(columns[_table.key.nameColumn] is int) {
+    if(table.key.autoIncrement) {
+      if(columns[table.key.nameColumn] is int) {
         int iD = 0;
         List<Map<String, Object?>>? result = await db?.query(
-          _table.tableName,
+          table.tableName,
           columns: ['ID'],
           orderBy: "ID DESC",
           limit: 1,
@@ -230,10 +237,10 @@ abstract class BaseDatabase<T> {
         }
         iD++;
 
-        columns[_table.key.nameColumn] = iD;
+        columns[table.key.nameColumn] = iD;
       }
       else {
-        throw ArgumentError('Cannot use autoincrement for type ${columns[_table.key.nameColumn].runtimeType}');
+        throw ArgumentError('Cannot use autoincrement for type ${columns[table.key.nameColumn].runtimeType}');
       }
     }
     return columns;

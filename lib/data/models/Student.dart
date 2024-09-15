@@ -1,8 +1,7 @@
 
-import 'package:lap_english/vip_sqflite/BaseDatabase.dart';
-import 'package:lap_english/vip_sqflite/Database.dart';
-
-import 'initdatabase.dart';
+import '../../a_librarys/vip_sqflite/BaseDatabase.dart';
+import '../../a_librarys/vip_sqflite/Database.dart';
+import '../database/Database.dart';
 
 class Student {
   String name;
@@ -36,8 +35,18 @@ class StudentTable extends TableSchema<Student> {
 
 }
 
-class StudentDB extends BaseDatabase<Student> {
-  StudentDB() : super(initdatabase(), StudentTable());
 
-  xoa() => query('DELETE FROM student');
+class StudentDB extends BaseDatabase<Student> {
+
+  @override
+  DatabaseApp get database => initdatabase();
+
+  @override
+  TableSchema<Student> get table => StudentTable();
+
+  xoa() => query('DELETE FROM ${table.tableName}');
+
+  timkiemtheoten(String name) => query('SELECT * FROM ${table.tableName} WHERE tên LIKE ?', ['%$name%']);
+
+
 }

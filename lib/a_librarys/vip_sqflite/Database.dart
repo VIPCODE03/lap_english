@@ -53,7 +53,9 @@ class DatabaseApp {
   late final int _version;
   late final List<TableSchema<dynamic>> _tableSchemas;
 
-  /*  Constructor */
+  String get name => _name;
+
+  //-Constructor ------------------------------------/
   DatabaseApp({
     required String name,
     required int version,
@@ -64,14 +66,9 @@ class DatabaseApp {
         _tableSchemas = tableSchemas;
 
 
-  /*  Hàm khởi tạo basedatabase */
-  TableSchema<T>? getTableSchema<T>(T obj) {
-    for (var schema in _tableSchemas) {
-      if (schema is TableSchema<T>) {
-        return schema;
-      }
-    }
-    return null;
+  //-Hàm khởi tạo basedatabase   ----------------------/
+  bool isContainsTable<T>(TableSchema<T> table) {
+    return _tableSchemas.any((tableSchema) => tableSchema.runtimeType == table.runtimeType);
   }
 
   //===   Hàm khởi tạo database   ===
