@@ -1,5 +1,6 @@
-import 'package:lap_english/Student.dart';
-import 'package:lap_english/vip_sqflite/Database.dart';
+
+import 'package:lap_english/data/models/Student.dart';
+import '../../a_librarys/vip_sqflite/Database.dart';
 
 ///===  Hàm khởi tạo database    ===
 DatabaseApp initdatabase() {

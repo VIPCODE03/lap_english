@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'Student.dart';
+import 'data/models/Student.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,6 +54,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Future<void> _loadStudentWithName(String name) async {
+    final students = await _studentDB.timkiemtheoten(name);
+    setState(() {
+      _students = students;
+    });
+  }
+
+
   Future<void> _insert(Student obj) async {
     await _studentDB.insert(obj);
   }
@@ -88,23 +96,37 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           children: <Widget>[
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Danh sách: ${_students.length}'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (query) {
+                      setState(() {
+                        _loadStudentWithName(query);
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Tìm kiếm sinh viên',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: _students.length,
                     itemBuilder: (context, index) {
                       final student = _students[index];
                       return ListTile(
-                          title: Text(student.name),
-                          subtitle: Text('${student.age}'),
-                          trailing: Text(student.class_),
-                          onLongPress: () => {
-                            a++,
-                            _update(student, Student(student.name, student.age + 1, student.class_)),
-                            _loadStudent()
-                          }
+                        title: Text(student.name),
+                        subtitle: Text('${student.age}'),
+                        trailing: Text(student.class_),
+                        onLongPress: () {
+                          setState(() {
+                            a++;
+                            _update(student, Student(student.name, student.age + 1, student.class_));
+                            _loadStudent();
+                          });
+                        },
                       );
                     },
                   ),
@@ -113,54 +135,75 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
 
             Align(
-              alignment: Alignment.topLeft,
+              alignment: Alignment.bottomLeft,
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: TextButton(
-                  onPressed: () { if(current != 1) current--; _loadStudent(); },
+                  onPressed: () {
+                    if (current != 1) {
+                      setState(() {
+                        current--;
+                        _loadStudent();
+                      });
+                    }
+                  },
                   child: const Text('Trước'),
                 ),
               ),
             ),
 
             Align(
-              alignment: Alignment.topCenter,
+              alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: TextButton(
-                  onPressed: () { _delete(); current = 1; _loadStudent(); },
+                  onPressed: () {
+                    setState(() {
+                      _delete();
+                      current = 1;
+                      _loadStudent();
+                    });
+                  },
                   child: const Text('Xóa'),
                 ),
               ),
             ),
 
             Align(
-              alignment: Alignment.topRight,
+              alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(2.0),
                 child: TextButton(
                   onPressed: () {
-                    current++;
-                    _loadStudent();
-                    },
+                    setState(() {
+                      current++;
+                      _loadStudent();
+                    });
+                  },
                   child: const Text('Tiếp'),
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.all(100.0),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    setState(() {
+                      a++;
+                      _insert(Student('ngu$a', 1, 'K87'));
+                      _loadStudent();
+                    });
+                  },
+                  tooltip: 'Increment',
+                  child: const Icon(Icons.add),
                 ),
               ),
             ),
           ],
         ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          a++; // Increment `a` first
-          _insert(Student('Đào Như Triệu $a', 1, 'K87'));
-          setState(() {
-            _loadStudent();
-          });
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
