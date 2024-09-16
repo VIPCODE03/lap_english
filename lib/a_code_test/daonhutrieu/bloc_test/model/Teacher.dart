@@ -2,5 +2,6 @@
 class Teacher {
   int mgv;
   String name;
-  Teacher(this.name, this.mgv);
+  String khoa;
+  Teacher(this.name, this.mgv, this.khoa);
 }
