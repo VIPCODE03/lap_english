@@ -52,7 +52,7 @@ class StudentScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final student = state.students[index];
                     return ListTile(
-                      title: Text(student.name),
+                      title: Text(student.name + student.msv.toString()),
                       subtitle: Text(student.age.toString()),
                       trailing: IconButton(
                         icon: Icon(Icons.delete),
