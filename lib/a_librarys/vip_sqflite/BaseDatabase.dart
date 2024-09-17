@@ -89,27 +89,32 @@ abstract class BaseDatabase<T> {
   }
 
   //===   Lấy tất cả dữ liệu    ===
-  Future<List<T>> getAll({required bool firstToLast}) async {
-    final db = await _database;
-    final List<Map<String, Object?>>? datas;
-    if(firstToLast) {
-      datas = await db?.query(table.tableName);
-    } else {
-      datas = await db?.query(table.tableName, orderBy: 'ID DESC',);
-    }
-    return _generate(datas!);
+  Future<List<T>> getData({
+    required bool firstToLast,
+    int? limit,
+    int? index,
   }
-
-  //===   Lấy dữ liệu theo trang  ===
-  Future<List<T>> getPageData({required int index, required int limit, required bool firstToLast}) async {
+) async {
     final db = await _database;
-    final offset = (index - 1) * limit;
-
     final List<Map<String, Object?>>? datas;
-    if(firstToLast) {
-      datas = await db?.query(table.tableName, limit: limit, offset: offset);
-    } else {
-      datas = await db?.query(table.tableName, orderBy: 'ID DESC', limit: limit, offset: offset);
+
+    if(index == null || limit == null) {
+      if(firstToLast) {
+        datas = await db?.query(table.tableName);
+      }
+      else {
+        datas = await db?.query(table.tableName, orderBy: 'ID DESC');
+      }
+    }
+    else {
+      final offset = (index - 1) * limit;
+
+      if (firstToLast) {
+        datas = await db?.query(table.tableName, limit: limit, offset: offset);
+      }
+      else {
+        datas = await db?.query(table.tableName, orderBy: 'ID DESC', limit: limit, offset: offset);
+      }
     }
     return _generate(datas!);
   }
@@ -140,7 +145,7 @@ abstract class BaseDatabase<T> {
 
   //===   Kiểm tra tồn tại 2 bản ghi và xóa ===
   Future<bool> _CheckNewlyAddedRecords() async {
-    final newly = await getPageData(index: 1, limit: 1, firstToLast: false);
+    final newly = await getData(index: 1, limit: 1, firstToLast: false);
     T obj = newly[0];
     Column column = table.columns(obj);
     final keyValue = column[table.key.nameColumn];

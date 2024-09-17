@@ -48,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _loadStudent() async {
-    final students = await _studentDB.getPageData(index: current, limit: 4, firstToLast: false);
+    final students = await _studentDB.getData(firstToLast: false, limit: 5, index: current);
     setState(() {
       _students = students;
     });

@@ -45,4 +45,6 @@ class StudentDB extends BaseDatabase<Student> {
   @override
   TableSchema<Student> get table => StudentTable();
 
+  deleteAll() => query('DELETE FROM ${table.tableName}');
+
 }
