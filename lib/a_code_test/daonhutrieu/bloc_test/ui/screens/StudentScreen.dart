@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/a_code_test/daonhutrieu/bloc_test/bloc/StudentBloc.dart';
@@ -15,7 +14,7 @@ class StudentScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Student App with BLoC and SQLite'),
+        title: const Text('Student App with BLoC and SQLite'),
       ),
       body: Column(
         children: [
@@ -23,14 +22,14 @@ class StudentScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: contentController,
-              decoration: InputDecoration(labelText: 'Content'),
+              decoration: const InputDecoration(labelText: 'Content'),
             ),
           ),
           ElevatedButton(
@@ -42,7 +41,7 @@ class StudentScreen extends StatelessWidget {
               );
               noteBloc.add(AddStudent(student));
             },
-            child: Text('Add Note'),
+            child: const Text('Add Note'),
           ),
           Expanded(
             child: BlocBuilder<StudentBloc, StudentState>(
@@ -55,7 +54,7 @@ class StudentScreen extends StatelessWidget {
                       title: Text(student.name + student.msv.toString()),
                       subtitle: Text(student.age.toString()),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
                           noteBloc.add(DeleteStudent(student));
                         },
