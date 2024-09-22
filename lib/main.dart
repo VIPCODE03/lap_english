@@ -60,8 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _students = students;
     });
   }
-
-
+  
   Future<void> _insert(Student obj) async {
     await _studentDB.insert(obj);
   }
@@ -105,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         _loadStudentWithName(query);
                       });
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Tìm kiếm sinh viên',
                       border: OutlineInputBorder(),
                     ),
