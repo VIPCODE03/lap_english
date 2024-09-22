@@ -44,6 +44,69 @@ class Row1 extends StatelessWidget {
                 },
               ),
             ),
+
+            Positioned(
+              bottom: 0,
+              right: 10,
+              left: 10,
+              child: Card(
+                child: Center(
+                  child: Container(
+                    width: 500,
+                    // Chiều rộng của thẻ
+                    padding: const EdgeInsets.all(16),
+                    // Khoảng cách bên trong thẻ
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Tiêu đề 1",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              SizedBox(height: 8),
+                              Text("Mô tả nội dung 1"),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Tiêu đề 2",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              SizedBox(height: 8),
+                              Text("Mô tả nội dung 2"),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Tiêu đề 3",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                              SizedBox(height: 8),
+                              Text("Mô tả nội dung 3"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

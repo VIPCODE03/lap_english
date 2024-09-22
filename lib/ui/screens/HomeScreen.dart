@@ -22,7 +22,8 @@ class HomeScreen extends StatelessWidget {
           const Text(
               "Từ vựng",
             style: TextStyle(
-              fontFamily: ''
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
             ),
           ),
           Container(
@@ -33,7 +34,17 @@ class HomeScreen extends StatelessWidget {
           Container(
             height: 150,
             color: Colors.red,
-            child: Center(child: Text('View 4', style: TextStyle(color: Colors.white, fontSize: 20))),
+              child: TextField(
+                cursorColor: Colors.grey,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  fillColor: Colors.white,
+                  labelText: 'Tìm kiếm',
+                ),
+                onChanged: (text) {
+                  print('Text changed to: $text');
+                },
+              )
           ),
           Container(
             height: 150,
