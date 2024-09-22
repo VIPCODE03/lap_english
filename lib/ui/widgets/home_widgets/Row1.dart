@@ -9,11 +9,10 @@ class Row1 extends StatelessWidget {
       home: Scaffold(
         body: Stack(
           children: [
-            // Hình ảnh toàn màn hình
             Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/cover2.gif'),
+                  image: AssetImage('assets/images/cover2.gif'),  //->  Thay đổi hình nền ở đây
                   fit: BoxFit.cover,
                 ),
               ),
@@ -22,7 +21,7 @@ class Row1 extends StatelessWidget {
             //TEXT họ tên ------------------------------------------------------
             const Positioned(
               top: 10,
-              left: 20,
+              left: 10,
               child: Text(
                 "Đào Như Triệu",
                 style: TextStyle(
@@ -36,12 +35,10 @@ class Row1 extends StatelessWidget {
 
             //ICONBUTTON settings ----------------------------------------------
             Positioned(
-              top: 0,
               right: 10,
               child:
               IconButton(
                 icon: const Icon(Icons.settings),
-                color: Colors.green,
                 onPressed: () {
                   print("Icon button pressed");
                 },
