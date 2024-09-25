@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/ui/widgets/home_widgets/Row1.dart';
 import 'package:lap_english/ui/widgets/home_widgets/Row3.dart';
+import 'package:lap_english/ui/widgets/other/Test.dart';
 
 
 class HomeScreen extends StatelessWidget {
@@ -8,6 +9,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double maxHeight = MediaQuery.of(context).size.height;
+    double maxWidth = MediaQuery.of(context).size.width;
     return ListView(
         children: [
           const SizedBox(
@@ -18,7 +21,7 @@ class HomeScreen extends StatelessWidget {
           Container(
             height: 150,
             color: Colors.green,
-            child: Center(child: Text('View 2', style: TextStyle(color: Colors.white, fontSize: 20))),
+            child: ExpandableView(maxHeight: maxHeight, maxWight: maxWidth)
           ),
 
           Text(
@@ -26,9 +29,9 @@ class HomeScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Container(
-            height: 180,
+            height: 210,
             color: Colors.orange,
-            child: const Row3()
+            child: const Row3(data: ["Chủ đề tiếng anh", "Chủ đề tiếng em", "Chủ đề tiếng Trung", "Chủ đề địt nhau", "Chủ đề bú lồn"],)
           ),
           Container(
             height: 150,

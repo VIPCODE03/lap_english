@@ -3,7 +3,12 @@ import 'package:lap_english/constant/AssetsConstant.dart';
 import 'package:lap_english/ui/widgets/other/ProgressBar.dart';
 
 class Row3 extends StatelessWidget {
-  const Row3({super.key});
+  final List<String> data;
+
+  const Row3({
+    super.key,
+    required this.data
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +16,9 @@ class Row3 extends StatelessWidget {
       body: GridView.count(
         scrollDirection: Axis.horizontal,
         crossAxisCount: 1,
-        children: List.generate(5, (index) {
-          return _item(null, "Chủ đề: Con người", 12, 19);
-        }),
+        children: data.map((dt) {
+          return _item(null, dt, 3, data.length);
+        }).toList(),
       ),
     );
   }
@@ -27,7 +32,15 @@ class Row3 extends StatelessWidget {
             height: 100,
             child:  Image(image: file ?? const AssetImage('${AssetsConstant.directoryImageItem}img_item_topic.jpg')),
           ),
-          Text(content),
+          Text(
+            content,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(6),
             child: Stack(
