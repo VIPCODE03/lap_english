@@ -4,6 +4,8 @@ import 'package:lap_english/ui/widgets/home_widgets/Row3.dart';
 
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -19,17 +21,14 @@ class HomeScreen extends StatelessWidget {
             child: Center(child: Text('View 2', style: TextStyle(color: Colors.white, fontSize: 20))),
           ),
 
-          const Text(
-              "Từ vựng",
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-            ),
+          Text(
+            "Từ vựng",
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           Container(
-            height: 150,
+            height: 180,
             color: Colors.orange,
-            child: Row3()
+            child: const Row3()
           ),
           Container(
             height: 150,

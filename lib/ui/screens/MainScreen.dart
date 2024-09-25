@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/ui/screens/Screens.dart';
+import 'package:lap_english/ui/themes/ThemeVip.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-// Bloc quản lý trạng thái của bottom navigation
 class BottomNavCubit extends Cubit<int> {
   BottomNavCubit() : super(0);
 
@@ -15,16 +15,23 @@ class BottomNavCubit extends Cubit<int> {
   }
 }
 
+
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeVip.light,  //->  Light theme
+      darkTheme: ThemeVip.dark,  //-> Dark theme
+      themeMode: ThemeMode.system,  //->  Áp dụng theo hệ thống
       home: BlocProvider(
         create: (_) => BottomNavCubit(),
         child: const MyHomePage(),
       ),
     );
+
   }
 }
 
@@ -42,29 +49,30 @@ class MyHomePage extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<BottomNavCubit, int>(
         builder: (context, state) {
           return BottomNavigationBar(
+            selectedItemColor: Colors.green,
+            unselectedItemColor: const Color(0xB3EA1111),
             currentIndex: state,
             onTap: (index) {
               context.read<BottomNavCubit>().updateIndex(index);
             },
             items: const [
-              //HOME  ----------------------------------------------------------
+              //NAV HOME  ----------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
               ),
 
-              //PROFILE --------------------------------------------------------
+              //NAV PROFILE --------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Profile',
               ),
 
-              //SETTINGS  ------------------------------------------------------
+              //NAV SETTINGS  ------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
                 label: 'Settings',
               ),
-
             ],
           );
         },

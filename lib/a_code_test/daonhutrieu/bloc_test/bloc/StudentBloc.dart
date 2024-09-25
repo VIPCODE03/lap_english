@@ -20,6 +20,7 @@ class LoadStudent extends StudentEvent {}
 /*  State   */
 class StudentState {
   final List<Student> students;
+
   StudentState({required this.students});
 }
 
@@ -34,10 +35,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     });
 
     on<LoadStudent>((event, emit) async {
-      final students = await studentDB.getData(
-          firstToLast: false
-      );
-      emit(StudentState(students: students));
+      final students = await studentDB.getCount();
     });
 
     on<DeleteStudent>((event, emit) async {

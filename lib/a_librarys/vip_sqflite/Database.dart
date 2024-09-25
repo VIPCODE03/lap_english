@@ -146,6 +146,7 @@ class DatabaseApp {
   bool _validityCheck() {
     for (var schema in _tableSchemas) {
       final columns = schema.columns(schema.generate({}));
+
       if(columns.isEmpty) {
         throw ArgumentError('Columns is empty by ${schema.runtimeType}.');
       }
