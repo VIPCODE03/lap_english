@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/images/cover/
     - assets/images/item/
+    - assets/images/menu/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

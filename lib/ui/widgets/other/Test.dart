@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 
 class ExpandableView extends StatefulWidget {
-  final double maxHeight;
-  final double maxWight;
 
-  const ExpandableView({
-    super.key,
-    required this.maxHeight,
-    required this.maxWight
-  });
+  const ExpandableView({super.key});
 
   @override
-  _ExpandableViewState createState() => _ExpandableViewState(maxHeight, maxWight);
+  _ExpandableViewState createState() => _ExpandableViewState();
 }
 
 class _ExpandableViewState extends State<ExpandableView> {
   bool _isExpanded = false;
-  final double maxHeight;
-  final double maxWight;
 
-  _ExpandableViewState(this.maxHeight, this.maxWight);
+  _ExpandableViewState();
 
   void _toggleExpand() {
     setState(() {
       _isExpanded = !_isExpanded;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +28,8 @@ class _ExpandableViewState extends State<ExpandableView> {
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             curve: Curves.fastEaseInToSlowEaseOut,
-            width: _isExpanded ? maxWight : 200,
-            height: _isExpanded ? maxHeight : 200,
+            width: _isExpanded ? MediaQuery.of(context).size.width : 200,
+            height: _isExpanded ? MediaQuery.of(context).size.height : 200,
             decoration: BoxDecoration(
               color: _isExpanded ? Colors.blue : Colors.green,
               borderRadius: BorderRadius.circular(_isExpanded ? 0 : 20),

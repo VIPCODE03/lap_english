@@ -8,4 +8,8 @@ class Screens {
     Center(child: Text('Profile Screen')),
     Center(child: Text('Settings Screen')),
   ];
+
+  static const Map<String, Widget> screen = {
+    "home" : HomeScreen(),
+  };
 }
