@@ -5,3 +5,4 @@ class AssetsConstant {
   static const String directoryImageMenu = "assets/images/menu/";
   static const String directoryImageLogo = "assets/images/logo/";
 }
+

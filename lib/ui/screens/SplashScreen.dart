@@ -1,30 +1,45 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/constant/AssetsConstant.dart';
+import 'package:lap_english/ui/screens/MainScreen.dart';
 
-import '../../constant/AssetsConstant.dart';
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
 
-void main() {
-  runApp(const SplashScreen());
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class SplashScreen extends StatelessWidget {
-   const SplashScreen({super.key});
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    //--- Chuyển hướng sau 3 giây ---
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) {
+            return BlocProvider(
+              create: (_) => BottomNavCubit(),
+              child: const MainScreen(),
+            );
+          }),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Container(
-            width: 200,
-            child: Image(
-                image: NetworkImage(
-                    "https://img.pikbest.com/png-images/20190918/cartoon-snail-loading-loading-gif-animation_2734139.png!bw700")),
+    return Scaffold(
+      body: Center(
+        child: SizedBox(
+          width: 250,
+          child: Image.asset("${AssetsConstant.directoryImageLogo}loading.gif")
           ),
-        )
-      ),
+        ),
     );
   }
-
-
 }
