@@ -14,7 +14,7 @@ class Row1 extends StatelessWidget {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 //---  Thay đổi hình nền ở đây  ---
-                image: AssetImage('${AssetsConstant.directoryImageCover}cover1.gif'),
+                image: AssetImage('${AssetsConstant.directoryImageCover}cover2.gif'),
                 fit: BoxFit.cover,
               ),
             ),
