@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/AssetsConstant.dart';
+import 'package:lap_english/test.dart';
+import 'package:lap_english/ui/screens/LoginScreen.dart';
 
 class Row2 extends StatelessWidget {
   final List<_MenuItem> menuItems = [
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}vocabulary.gif",
         label: "Học từ vựng",
-        fun: () => print('học từ vựng')
+        widget: const LoginScreen()
     ),
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}sentence.gif",
         label: "Học câu",
-        fun: () => print('học câu')
+        widget: HomeScreen()
     ),
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
         label: "Học ngữ pháp",
-        fun: () => print('học ngữ pháp')
+        widget: const LoginScreen()
     ),
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
         label: "Học phát âm",
-        fun: () => print('phát âm')
+        widget: const LoginScreen()
     ),
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}review.gif",
         label: "Ôn tập",
-        fun: () => print('ôn tập')
+        widget: const LoginScreen()
     ),
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
         label: "Luyện viết",
-        fun: () => print('luyện viết')
+        widget: const LoginScreen()
     ),
     _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
         label: "Luyện nghe",
-        fun: () => print('luyện nghe')
+        widget: const LoginScreen()
     ),
   ];
 
@@ -42,15 +44,15 @@ class Row2 extends StatelessWidget {
       body:  GridView.count(
           scrollDirection: Axis.horizontal,
           crossAxisCount: 2,
-          children: menuItems.map((item) => buildMenuItem(item)).toList(),
+          children: menuItems.map((item) => buildMenuItem(context, item)).toList(),
         ),
     );
   }
 
   //ITEM  --------------------------------------------------------------
-  Widget buildMenuItem(_MenuItem item) {
+  Widget buildMenuItem(BuildContext context, _MenuItem item) {
     return InkWell(
-      onTap: () => item.fun(), // Gọi hàm sự kiện nhấn
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.widget)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -84,11 +86,11 @@ class Row2 extends StatelessWidget {
 class _MenuItem {
   final String imagePath;
   final String label;
-  final Function fun;
+  final Widget widget;
 
   _MenuItem({
     required this.imagePath,
     required this.label,
-    required this.fun
+    required this.widget
   });
 }

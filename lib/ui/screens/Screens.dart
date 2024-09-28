@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:lap_english/ui/screens/HomeScreen.dart';
+import 'package:lap_english/ui/screens/LoginScreen.dart';
+import 'package:lap_english/ui/screens/SplashScreen.dart';
 
 class Screens {
   static const List<Widget> screens = [
@@ -11,5 +13,7 @@ class Screens {
 
   static const Map<String, Widget> screen = {
     "home" : HomeScreen(),
+    "splash" : SplashScreen(),
+    "login" : LoginScreen()
   };
 }
