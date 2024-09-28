@@ -10,16 +10,14 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                const SizedBox(
                   width: 200,
                   height: 200,
                   child: Image(
@@ -40,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(10),
                           width: 60,
-                          child: Image(
+                          child: const Image(
                             image: AssetImage('${AssetsConstant.directoryImageLogo}google.png'),
                           ),
                         ),
@@ -56,7 +54,6 @@ class LoginScreen extends StatelessWidget {
             ),
           ),
         ),
-      ),
     );
   }
 }
