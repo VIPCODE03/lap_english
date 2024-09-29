@@ -1,11 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
-class Row3 extends StatelessWidget {
+class Row4 extends StatelessWidget {
   final List<String> data;
 
-  const Row3({
+  const Row4({
     super.key,
     required this.data
   });
@@ -15,7 +15,7 @@ class Row3 extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Đang học',
+          'Gợi ý',
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
       ),
@@ -23,14 +23,13 @@ class Row3 extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         crossAxisCount: 1,
         children: data.map((dt) {
-          return _item(context, null, dt, 3, data.length);
+          return _item(context, null, dt);
         }).toList(),
       ),
     );
   }
 
-  Widget _item(BuildContext context, FileImage? file, String content, int done, int total) {
-    double value = (done / total);
+  Widget _item(BuildContext context, FileImage? file, String content) {
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -67,18 +66,6 @@ class Row3 extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Stack(
-                    children: [
-                      AnimatedProgressBar(
-                        value: value,
-                        label: 'Đã học $done/$total',
-                        duration: const Duration(milliseconds: 700),
-                      ),
-                    ],
                   ),
                 ),
               ],

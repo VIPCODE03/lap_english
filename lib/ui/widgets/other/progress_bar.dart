@@ -19,7 +19,6 @@ class AnimatedProgressBar extends StatelessWidget {
       height: 20,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.green[200],
       ),
         child: LayoutBuilder(
         builder: (context, constraints) {
@@ -34,9 +33,7 @@ class AnimatedProgressBar extends StatelessWidget {
                     width: animatedValue * constraints.maxWidth,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Colors.red, Colors.amber, Colors.green],
-                      ),
+                      color: Theme.of(context).primaryColor
                     ),
                   );
                 },
