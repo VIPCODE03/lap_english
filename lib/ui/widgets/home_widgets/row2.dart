@@ -61,7 +61,7 @@ class Row2 extends StatelessWidget {
         children: [
           // ICON
           CircleAvatar(
-            radius: 35,
+            radius: 33,
             backgroundColor: Theme.of(context).primaryColor,
             child: ClipOval(
               child: Image.asset(
