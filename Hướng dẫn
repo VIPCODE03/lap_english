@@ -1,0 +1,5 @@
+
+Lệnh chạy tạo build assets
+-----------------------------------
+flutter pub run build_runner build
+-----------------------------------

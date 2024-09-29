@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lap_english/constant/AssetsConstant.dart';
-import 'package:lap_english/ui/screens/MainScreen.dart';
+import 'package:lap_english/constant/assets_constant.dart';
+import 'package:lap_english/ui/screens/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

@@ -1,7 +1,7 @@
 
-import 'package:lap_english/data/database/local/table/UserTable.dart';
+import 'package:lap_english/data/database/local/table/user_table.dart';
 
-import '../../../a_librarys/vip_sqflite/Database.dart';
+import '../../../a_librarys/vip_sqflite/database_vip.dart';
 
 ///===  Hàm khởi tạo database    ===
 DatabaseApp initdatabase() {

@@ -1,8 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:lap_english/ui/screens/HomeScreen.dart';
-import 'package:lap_english/ui/screens/LoginScreen.dart';
-import 'package:lap_english/ui/screens/SplashScreen.dart';
+import 'package:lap_english/ui/screens/home_screen.dart';
+import 'package:lap_english/ui/screens/login_screen.dart';
+import 'package:lap_english/ui/screens/splash_screen.dart';
 
 class Screens {
   static const List<Widget> screens = [

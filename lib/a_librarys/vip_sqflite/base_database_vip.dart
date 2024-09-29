@@ -4,7 +4,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'Database.dart';
+import 'database_vip.dart';
 
 abstract class BaseDatabase<T> {
   late Future<Database?> _database;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/widgets/home_widgets/Row1.dart';
-import 'package:lap_english/ui/widgets/home_widgets/Row2.dart';
-import 'package:lap_english/ui/widgets/home_widgets/Row3.dart';
+import 'package:lap_english/ui/widgets/home_widgets/row1.dart';
+import 'package:lap_english/ui/widgets/home_widgets/row2.dart';
+import 'package:lap_english/ui/widgets/home_widgets/row3.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           //ROW1  --------------------------------------------------------------
           const SizedBox(
-            height: 300,
+            height: 250,
             child: Row1(),
           ),
 

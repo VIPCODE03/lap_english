@@ -1,5 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:lap_english/constant/AssetsConstant.dart';
+import 'package:lap_english/constant/theme_constant.dart';
+import 'package:lap_english/ui/themes/theme.dart';
+import 'package:lap_english/ui/themes/themes.dart';
+import 'package:provider/provider.dart';
+
+import '../../../gen/assets.gen.dart';
 
 class Row1 extends StatelessWidget {
   const Row1({super.key});
@@ -11,10 +18,12 @@ class Row1 extends StatelessWidget {
         children: [
           //CONTAINER làm nền hình ảnh  ---------------------------
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                //---  Thay đổi hình nền ở đây  ---
-                image: AssetImage('${AssetsConstant.directoryImageCover}cover2.gif'),
+                image: AssetImage(Provider
+                    .of<Themes>(context, listen: false)
+                    .themeVip.imagePath
+                ),
                 fit: BoxFit.cover,
               ),
             ),
@@ -40,8 +49,10 @@ class Row1 extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                print("Icon button pressed");
-              },
+                Provider
+                    .of<Themes>(context, listen: false)
+                    .updateTheme(ThemeConstant.themes[Random().nextInt(ThemeConstant.themes.length)]);
+                },
             ),
           ),
 
@@ -76,7 +87,7 @@ class Row1 extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -89,12 +100,16 @@ class Row1 extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 16),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16
+          ),
         ),
         const SizedBox(height: 8),
         Text(
           content,
           style: const TextStyle(
+              color: Colors.white,
               fontSize: 24,
               fontWeight: FontWeight.bold
           ),

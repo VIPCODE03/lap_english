@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'Screens.dart';
+import 'screens.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});

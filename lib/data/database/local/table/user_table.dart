@@ -1,5 +1,5 @@
 
-import 'package:lap_english/a_librarys/vip_sqflite/Database.dart';
+import 'package:lap_english/a_librarys/vip_sqflite/database_vip.dart';
 import 'package:lap_english/data/model/User.dart';
 
 class UserTable extends TableSchema<User> {

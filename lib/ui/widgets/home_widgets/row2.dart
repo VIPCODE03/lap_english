@@ -1,37 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/constant/AssetsConstant.dart';
+import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/test.dart';
-import 'package:lap_english/ui/screens/LoginScreen.dart';
+import 'package:lap_english/ui/screens/login_screen.dart';
 
 class Row2 extends StatelessWidget {
   final List<_MenuItem> menuItems = [
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}vocabulary.gif",
+    _MenuItem(imagePath: Assets.images.menu.vocabulary.path,
         label: "Học từ vựng",
-        widget: const LoginScreen()
+        openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}sentence.gif",
+    _MenuItem(imagePath: Assets.images.menu.sentence.path,
         label: "Học câu",
-        widget: HomeScreen()
+        openScreen: HomeScreen()
     ),
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
+    _MenuItem(imagePath: Assets.images.menu.grammar.path,
         label: "Học ngữ pháp",
-        widget: const LoginScreen()
+        openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
+    _MenuItem(imagePath: Assets.images.menu.grammar.path,
         label: "Học phát âm",
-        widget: const LoginScreen()
+        openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}review.gif",
+    _MenuItem(imagePath: Assets.images.menu.review.path,
         label: "Ôn tập",
-        widget: const LoginScreen()
+        openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
+    _MenuItem(imagePath: Assets.images.menu.sentence.path,
         label: "Luyện viết",
-        widget: const LoginScreen()
+        openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: "${AssetsConstant.directoryImageMenu}grammar.gif",
+    _MenuItem(imagePath: Assets.images.menu.sentence.path,
         label: "Luyện nghe",
-        widget: const LoginScreen()
+        openScreen: const LoginScreen()
     ),
   ];
 
@@ -39,7 +39,10 @@ class Row2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Góc học tập'),
+        title: const Text(
+            'Góc học tập',
+          style: TextStyle(fontWeight: FontWeight.w700),
+        ),
       ),
       body:  GridView.count(
           scrollDirection: Axis.horizontal,
@@ -52,14 +55,14 @@ class Row2 extends StatelessWidget {
   //ITEM  --------------------------------------------------------------
   Widget buildMenuItem(BuildContext context, _MenuItem item) {
     return InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.widget)),
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // ICON
           CircleAvatar(
-            radius: 30,
-            backgroundColor: Colors.blue.shade100,
+            radius: 35,
+            backgroundColor: Theme.of(context).primaryColor,
             child: ClipOval(
               child: Image.asset(
                 item.imagePath,
@@ -86,11 +89,11 @@ class Row2 extends StatelessWidget {
 class _MenuItem {
   final String imagePath;
   final String label;
-  final Widget widget;
+  final Widget openScreen;
 
   _MenuItem({
     required this.imagePath,
     required this.label,
-    required this.widget
+    required this.openScreen
   });
 }
