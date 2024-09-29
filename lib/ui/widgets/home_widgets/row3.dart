@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/constant/AssetsConstant.dart';
-import 'package:lap_english/ui/widgets/other/ProgressBar.dart';
+import 'package:lap_english/constant/assets_constant.dart';
+import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
 class Row3 extends StatelessWidget {
   final List<String> data;
@@ -17,20 +18,21 @@ class Row3 extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         crossAxisCount: 1,
         children: data.map((dt) {
-          return _item(null, dt, 3, data.length);
+          return _item(context, null, dt, 3, data.length);
         }).toList(),
       ),
     );
   }
 
-  Widget _item(FileImage? file, String content, int done, int total) {
+  Widget _item(BuildContext context, FileImage? file, String content, int done, int total) {
     double value = (done/total);
     return Card(
+      color: Theme.of(context).cardColor,
       child: Column(
         children: [
           SizedBox(
             height: 100,
-            child:  Image(image: file ?? const AssetImage('${AssetsConstant.directoryImageItem}img_item_topic.jpg')),
+            child:  Image(image: file ?? Assets.images.item.itemTopic.provider()),
           ),
           Text(
             content,

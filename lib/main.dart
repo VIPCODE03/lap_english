@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/screens/SplashScreen.dart';
-import 'package:lap_english/ui/themes/ThemeVip.dart';
+import 'package:lap_english/ui/screens/splash_screen.dart';
+import 'package:lap_english/ui/themes/themes.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+      ChangeNotifierProvider(
+        create: (BuildContext context) => Themes(),
+        child: const MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,12 +17,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeVip.light,  //->  Light theme
-      darkTheme: ThemeVip.dark,  //-> Dark theme
-      themeMode: ThemeMode.system,  //->  Áp dụng theo hệ thống
-      home: const SplashScreen()
+    return Consumer<Themes>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: Themes.lightTheme(themeProvider.themeVip.theme),
+          darkTheme: Themes.dartTheme(themeProvider.themeVip.theme),
+          themeMode: ThemeMode.system,
+          home: const SplashScreen(),
+        );
+      },
     );
   }
 }

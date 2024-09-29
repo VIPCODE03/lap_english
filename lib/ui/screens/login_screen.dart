@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/constant/AssetsConstant.dart';
+import 'package:lap_english/constant/assets_constant.dart';
 
 void main() {
   runApp(const LoginScreen());

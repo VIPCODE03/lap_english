@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/colors/GreenColor.dart';
+import 'package:lap_english/ui/colors/blue_color.dart';
 
-class ThemeVip {
+class ThemeBlueVip {
   /*  Sáng  */
   static ThemeData light = ThemeData(
     brightness: Brightness.light,
-    primaryColor: Colors.lightGreen,
+    primaryColor: LightBlueColors.primaryColor,
     textTheme: const TextTheme(
       titleMedium: TextStyle(
           fontSize: 24
@@ -13,14 +13,14 @@ class ThemeVip {
     ),
 
     //CARD  -------------------------------------
-    cardColor: LightGreenColors.cardColor,
+    cardColor: LightBlueColors.cardColor,
 
   );
 
   /*  Tối   */
   static ThemeData dark = ThemeData(
     brightness: Brightness.dark,
-    primaryColor: Colors.green,
+    primaryColor: DarkBlueColors.primaryColor,
     textTheme: const TextTheme(
       titleMedium: TextStyle(
           fontSize: 24
@@ -28,7 +28,7 @@ class ThemeVip {
     ),
 
     //CARD  -------------------------------------
-    cardColor: DarkGreenColors.cardColor,
+    cardColor: DarkBlueColors.cardColor,
 
   );
 }
