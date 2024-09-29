@@ -2,11 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/theme_constant.dart';
-import 'package:lap_english/ui/themes/theme.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:provider/provider.dart';
-
-import '../../../gen/assets.gen.dart';
 
 class Row1 extends StatelessWidget {
   const Row1({super.key});
