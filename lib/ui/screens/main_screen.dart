@@ -22,19 +22,19 @@ class MainScreen extends StatelessWidget {
               context.read<BottomNavCubit>().updateIndex(index);
             },
             items: const [
-              //NAV HOME  ----------------------------------------------------------
+              ///NAV HOME  ----------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
               ),
 
-              //NAV PROFILE --------------------------------------------------------
+              ///NAV PROFILE --------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: 'Profile',
               ),
 
-              //NAV SETTINGS  ------------------------------------------------------
+              ///NAV SETTINGS  ------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
                 label: 'Settings',

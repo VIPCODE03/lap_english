@@ -1,39 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/test.dart';
+import 'package:lap_english/ui/screens/learn_screen/learn_vocabulay_screen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 
+import '../../../data/bloc/viewtest.dart';
+
 class Row2 extends StatelessWidget {
-  final List<_MenuItem> menuItems = [
-    _MenuItem(imagePath: Assets.images.menu.vocabulary.path,
+  final List<MenuItem> menuItems = [
+    MenuItem(imagePath: Assets.images.menu.learnVocabulay.path,
         label: "Học từ vựng",
-        openScreen: const LoginScreen()
+        openScreen: VocabularyPage()
     ),
-    _MenuItem(imagePath: Assets.images.menu.sentence.path,
+    MenuItem(imagePath: Assets.images.menu.learnSentence.path,
         label: "Học câu",
         openScreen: HomeScreen()
     ),
-    _MenuItem(imagePath: Assets.images.menu.grammar.path,
+    MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
         label: "Học ngữ pháp",
-        openScreen: const LoginScreen()
+        openScreen: const LearnVocabularyScreen()
     ),
-    _MenuItem(imagePath: Assets.images.menu.grammar.path,
+    MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Học phát âm",
         openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: Assets.images.menu.review.path,
+    MenuItem(imagePath: Assets.images.menu.learnReview.path,
         label: "Ôn tập",
         openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: Assets.images.menu.sentence.path,
+    MenuItem(imagePath: Assets.images.menu.learnWrite.path,
         label: "Luyện viết",
         openScreen: const LoginScreen()
     ),
-    _MenuItem(imagePath: Assets.images.menu.sentence.path,
+    MenuItem(imagePath: Assets.images.menu.learnListen.path,
         label: "Luyện nghe",
         openScreen: const LoginScreen()
     ),
   ];
+
+  Row2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +58,7 @@ class Row2 extends StatelessWidget {
   }
 
   //ITEM  --------------------------------------------------------------
-  Widget buildMenuItem(BuildContext context, _MenuItem item) {
+  Widget buildMenuItem(BuildContext context, MenuItem item) {
     return InkWell(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
       child: Column(
@@ -61,7 +66,7 @@ class Row2 extends StatelessWidget {
         children: [
           // ICON
           CircleAvatar(
-            radius: 33,
+            radius: 35,
             backgroundColor: Theme.of(context).primaryColor,
             child: ClipOval(
               child: Image.asset(
@@ -86,12 +91,12 @@ class Row2 extends StatelessWidget {
   }
 }
 
-class _MenuItem {
+class MenuItem {
   final String imagePath;
   final String label;
   final Widget openScreen;
 
-  _MenuItem({
+  MenuItem({
     required this.imagePath,
     required this.label,
     required this.openScreen

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lap_english/constant/assets_constant.dart';
+import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/main_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: SizedBox(
           width: 250,
-          child: Image.asset("${AssetsConstant.directoryImageLogo}loading.gif")
+          child: Image(image: Assets.images.logo.loading.provider())
           ),
         ),
     );

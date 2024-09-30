@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LightBlueColors {
-  static const primaryColor = Color(0xFF1782CD); // Màu chính (blue)
+  static const primaryColor = Color(0xB31782CD); // Màu chính (blue)
   static const accentColor = Color(0xFFFFC107); // Màu nhấn (amber)
   static const backgroundColor = Color(0xFFF5F5F5); // Màu nền
   static const textColor = Color(0xFF212121); // Màu văn bản
@@ -12,7 +12,7 @@ class LightBlueColors {
 
 
 class DarkBlueColors {
-  static const primaryColor = Color(0xFF106CAE); // Màu chính (blue)
+  static const primaryColor = Color(0xB3106CAE); // Màu chính (blue)
   static const accentColor = Color(0xFFFFC107); // Màu nhấn (amber)
   static const backgroundColor = Color(0xFFF5F5F5); // Màu nền
   static const textColor = Color(0xFF212121); // Màu văn bản
