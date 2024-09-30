@@ -35,7 +35,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     });
 
     on<LoadStudent>((event, emit) async {
-      final students = await studentDB.getCount();
+      final students = await studentDB.getData(firstToLast: true);
+      emit(StudentState(students: students));
     });
 
     on<DeleteStudent>((event, emit) async {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
@@ -23,13 +25,13 @@ class Row3 extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         crossAxisCount: 1,
         children: data.map((dt) {
-          return _item(context, null, dt, 3, data.length);
+          return _item(context, Assets.images.item.dongvat.provider(), dt, 3, data.length + Random().nextInt(5));
         }).toList(),
       ),
     );
   }
 
-  Widget _item(BuildContext context, FileImage? file, String content, int done, int total) {
+  Widget _item(BuildContext context, ImageProvider? file, String content, int done, int total) {
     double value = (done / total);
 
     return Card(
@@ -55,10 +57,10 @@ class Row3 extends StatelessWidget {
           //
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start, // Căn lề bên trái
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0), // Thêm khoảng cách
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
                     content,
                     maxLines: 2,

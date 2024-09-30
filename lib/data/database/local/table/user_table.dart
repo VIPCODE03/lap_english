@@ -1,6 +1,6 @@
 
 import 'package:lap_english/a_librarys/vip_sqflite/database_vip.dart';
-import 'package:lap_english/data/model/User.dart';
+import 'package:lap_english/data/model/user.dart';
 
 class UserTable extends TableSchema<User> {
   @override
