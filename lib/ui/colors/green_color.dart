@@ -7,7 +7,7 @@ class LightGreenColors {
   static const textColor = Color(0xFF212121); // Màu văn bản
   static const buttonColor = Color(0xFF1565C0); // Màu cho button
 
-  static const cardColor = Color(0x1A30CD18);
+  static const cardColor = Color(0x1A88F379);
 }
 
 
@@ -18,5 +18,5 @@ class DarkGreenColors {
   static const textColor = Color(0xFF212121); // Màu văn bản
   static const buttonColor = Color(0xFF1565C0); // Màu cho button
 
-  static const cardColor = Color(0x1A20AC11);
+  static const cardColor = Color(0x1A71CF67);
 }

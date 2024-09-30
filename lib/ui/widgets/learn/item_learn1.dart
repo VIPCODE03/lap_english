@@ -50,7 +50,7 @@ class ListViewVocabulary extends StatelessWidget {
                         color: Colors.white,
                         padding: const EdgeInsets.all(5),
                         child: Image.network(
-                          "https://thuthuatnhanh.com/wp-content/uploads/2020/09/hinh-anh-dong-vat-de-thuong-chu-khi-hoat-hinh.jpg",
+                          subTopic.imageUrl,
                           fit: BoxFit.cover,
                           width: 60,
                           height: 60,

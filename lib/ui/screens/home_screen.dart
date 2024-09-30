@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           //ROW1  --------------------------------------------------------------
           const SizedBox(
-            height: 250,
+            height: 300,
             child: Row1(),
           ),
 
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
           Container(
             height: 150,
             color: Colors.purple,
-            child: Center(child: Text('View 5', style: TextStyle(color: Colors.white, fontSize: 20))),
+            child: const Center(child: Text('View 5', style: TextStyle(color: Colors.white, fontSize: 20))),
           ),
         ],
       );
