@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/constant/assets_constant.dart';
-
-void main() {
-  runApp(const LoginScreen());
-}
+import 'package:lap_english/gen/assets.gen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -30,16 +26,16 @@ class LoginScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      print("login");
+                      Navigator.pop(context);
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           width: 60,
-                          child: const Image(
-                            image: AssetImage('${AssetsConstant.directoryImageLogo}google.png'),
+                          child: Image(
+                            image: Assets.images.logo.google.provider(),
                           ),
                         ),
                         const SizedBox(width: 10),

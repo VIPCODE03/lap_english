@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/ui/screens/learn_screen/learn_vocabulay_screen.dart';
+import 'package:lap_english/ui/widgets/other/expandable_view.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,56 +10,86 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Splash Screen Example',
-      home: SplashScreen(),
+      home: GridPage(),
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
+class GridPage extends StatefulWidget {
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _GridPageState createState() => _GridPageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // Chuyển hướng sau 3 giây
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+class _GridPageState extends State<GridPage> {
+  double _expandedHeight = 100.0; // Chiều cao mặc định
+  int? _expandedIndex; // Chỉ số của item đang mở rộng
+
+  void _toggleExpand(int index) {
+    setState(() {
+      if (_expandedIndex == index) {
+        _expandedIndex = null; // Đóng item nếu đã mở
+      } else {
+        _expandedIndex = index; // Mở item mới
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = [Colors.red, Colors.green, Colors.blue, Colors.orange, Colors.purple];
+
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: Center(
-        child: Text(
-          'Splash Screen',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+      appBar: AppBar(title: Text('Grid View Animation')),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
         ),
+        itemCount: colors.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () => _toggleExpand(index),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              height: _expandedIndex == index ? 300 : _expandedHeight,
+              color: colors[index],
+              margin: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  'Item $index',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 }
+
+
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
+        title: const Text('Home Screen'),
       ),
-      body: Center(
-        child: Text(
-          'Welcome to Home Screen!',
-          style: TextStyle(fontSize: 24),
+      body: Container(
+        child: ListView.builder(
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return MainTopic(
+                  expand: const LearnVocabularyScreen(),
+                  child: Container(
+                    child: Text("ahihi"
+                    ),
+                  )
+              );
+            }
         ),
-      ),
+      )
     );
   }
 }
