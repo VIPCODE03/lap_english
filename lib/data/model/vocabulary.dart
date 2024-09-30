@@ -21,9 +21,10 @@ class MainVocabularyTopic {
 class SubVocabularyTopic {
   int id;
   String name;
+  String imageUrl;
   List<Word> words;
 
-  SubVocabularyTopic(this.id, this.name, this.words);
+  SubVocabularyTopic(this.id, this.name, this.imageUrl, this.words);
 
   factory SubVocabularyTopic.fromJson(Map<String, dynamic> json) => _$SubVocabularyTopicFromJson(json);
 

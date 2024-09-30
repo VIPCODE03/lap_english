@@ -7,7 +7,7 @@ class LightBlueColors {
   static const textColor = Color(0xFF212121); // Màu văn bản
   static const buttonColor = Color(0xFF1565C0); // Màu cho button
 
-  static const cardColor = Color(0x1A2383D0);
+  static const cardColor = Color(0x1A7BBFF6);
 }
 
 
@@ -18,5 +18,5 @@ class DarkBlueColors {
   static const textColor = Color(0xFF212121); // Màu văn bản
   static const buttonColor = Color(0xFF1565C0); // Màu cho button
 
-  static const cardColor = Color(0x1A11629C);
+  static const cardColor = Color(0x1A67A2CF);
 }
