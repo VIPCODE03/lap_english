@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/bloc/vocabulary_bloc.dart';
-import 'package:lap_english/ui/widgets/learn/item_learn1.dart';
+import 'package:lap_english/ui/widgets/learn/menu/item_learn1.dart';
 
-class LearnVocabularyScreen extends StatelessWidget {
-  const LearnVocabularyScreen({super.key});
+class MenuVocabularyScreen extends StatelessWidget {
+  const MenuVocabularyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class LearnVocabularyScreen extends StatelessWidget {
             }
 
             return const Center(
-                child: Text('Press the button to load vocabulary.'));
+                child: Text('Không có dữ liệu'));
           },
         ),
       ),
