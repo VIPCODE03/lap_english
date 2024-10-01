@@ -6,11 +6,7 @@ class ThemeGreenVip {
   static ThemeData light = ThemeData(
     brightness: Brightness.light,
     primaryColor: LightGreenColors.primaryColor,
-    textTheme: const TextTheme(
-      titleMedium: TextStyle(
-          fontSize: 24
-      ),
-    ),
+    fontFamily: "MainFont",
 
     //CARD  -------------------------------------
     cardColor: LightGreenColors.cardColor,
@@ -21,11 +17,7 @@ class ThemeGreenVip {
   static ThemeData dark = ThemeData(
     brightness: Brightness.dark,
     primaryColor: DarkGreenColors.primaryColor,
-    textTheme: const TextTheme(
-      titleMedium: TextStyle(
-          fontSize: 24
-      ),
-    ),
+    fontFamily: "MainFont",
 
     //CARD  -------------------------------------
     cardColor: DarkGreenColors.cardColor,

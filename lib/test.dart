@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/screens/learn_screen/learn_vocabulay_screen.dart';
+import 'package:lap_english/ui/screens/learn_screen/vocabulary/menu_screen.dart';
 import 'package:lap_english/ui/widgets/other/expandable_view.dart';
 
 void main() {
@@ -80,8 +80,8 @@ class HomeScreen extends StatelessWidget {
         child: ListView.builder(
             itemCount: 3,
             itemBuilder: (context, index) {
-              return MainTopic(
-                  expand: const LearnVocabularyScreen(),
+              return ExpandedView(
+                  expand: const MenuVocabularyScreen(),
                   child: Container(
                     child: Text("ahihi"
                     ),
