@@ -176,13 +176,14 @@ class ListViewVocabulary extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var word = words[index];
                       return ExpandedView(
-                        expand: _itemWord(word, true),
-                        child: _itemWord(word, false)
+                        expand: _itemWord(context, word, true),
+                        child: _itemWord(context, word, false)
                       );
                     },
                   ),
                 ),
 
+                ///BUTTON chuyển tới quiz ----------------------------------------------------
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
@@ -195,6 +196,7 @@ class ListViewVocabulary extends StatelessWidget {
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
+                            fontSize: 20
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -212,14 +214,20 @@ class ListViewVocabulary extends StatelessWidget {
   }
 
   ///ITEM từ vựng   -----------------------------------------------------------
-  Widget _itemWord(Word word, bool expanded) {
+  Widget _itemWord(BuildContext context, Word word, bool expanded) {
     final textToSpeakUtil = TextToSpeakUtil();
     return Column(
       children: [
         ListTile(
-          title: Text("${word.word} (${word.type}): ${word.meaning}"),
+          title: Align(
+            alignment: Alignment.centerLeft,
+              child: Column(children: [
+                Text(word.word, style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor)),
+                Text(word.meaning)
+              ]),
+          ),
           subtitle: expanded
-              ? Text("US: ${word.pronounceUS} \nUK: ${word.pronounceUK}")
+              ? Text("Loại: ${word.type}m \nUS: ${word.pronounceUS} \nUK: ${word.pronounceUK} \nVí dụ: ${word.examples.first}")
               : null,
           trailing: Row(
             mainAxisSize: MainAxisSize.min,

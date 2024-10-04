@@ -26,28 +26,58 @@ class MockData {
         },
         {
           "id": 102,
-          "name": "Anh Triệu đẹp trai vkl",
+          "name": "Trái cây",
           "imageUrl": "https://img.lovepik.com/element/40102/1171.png_1200.png", 
           "words": [
             {
               "id": 1002,
-              "word": "FuckYou",
-              "meaning": "Con mẹ mày",
-              "pronounceUK": "phát âm UK",
-              "pronounceUS": "phát âm US",
-              "type": "Động từ",
-              "level": "Trung bình",
-              "examples": ["Ví dụ 3", "Ví dụ 4"]
+              "word": "Apple",
+              "meaning": "Táo",
+              "pronounceUK": "ˈæpl",
+              "pronounceUS": "ˈæpəl",
+              "type": "Danh từ",
+              "level": "Dễ",
+              "examples": ["She ate an apple.", "The apple is red."]
             },
             {
               "id": 1003,
-              "word": "Ớ ớ",
-              "meaning": "Địt mẹ mày",
-              "pronounceUK": "phát âm UK",
-              "pronounceUS": "phát âm US",
-              "type": "Động từ",
+              "word": "Banana",
+              "meaning": "Chuối",
+              "pronounceUK": "bəˈnɑːnə",
+              "pronounceUS": "bəˈnænə",
+              "type": "Danh từ",
+              "level": "Dễ",
+              "examples": ["I like eating bananas.", "Bananas are yellow."]
+            },
+            {
+              "id": 1004,
+              "word": "Orange",
+              "meaning": "Cam",
+              "pronounceUK": "ˈɒrɪndʒ",
+              "pronounceUS": "ˈɔːrɪndʒ",
+              "type": "Danh từ",
+              "level": "Dễ",
+              "examples": ["He drinks orange juice.", "Oranges are rich in vitamin C."]
+            },
+            {
+              "id": 1005,
+              "word": "Grapes",
+              "meaning": "Nho",
+              "pronounceUK": "ɡreɪps",
+              "pronounceUS": "ɡreɪps",
+              "type": "Danh từ",
+              "level": "Dễ",
+              "examples": ["She bought a bunch of grapes.", "Grapes are sweet."]
+            },
+            {
+              "id": 1006,
+              "word": "Pineapple",
+              "meaning": "Dứa",
+              "pronounceUK": "ˈpaɪnæpl",
+              "pronounceUS": "ˈpaɪnˌæpl",
+              "type": "Danh từ",
               "level": "Trung bình",
-              "examples": ["Ví dụ 3", "Ví dụ 4"]
+              "examples": ["Pineapples are tropical fruits.", "The pineapple is sour."]
             }
           ]
         }
