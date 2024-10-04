@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/test.dart';
-import 'package:lap_english/ui/screens/learn_screen/learn_vocabulay_screen.dart';
+import 'package:lap_english/ui/screens/learn_screen/vocabulary/menu_screen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 
 import '../../../data/bloc/viewtest.dart';
 
 class Row2 extends StatelessWidget {
   final List<MenuItem> menuItems = [
-    MenuItem(imagePath: Assets.images.menu.learnVocabulay.path,
+    MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
         label: "Học từ vựng",
-        openScreen: VocabularyPage()
+        openScreen: const MenuVocabularyScreen()
     ),
     MenuItem(imagePath: Assets.images.menu.learnSentence.path,
         label: "Học câu",
@@ -18,7 +18,7 @@ class Row2 extends StatelessWidget {
     ),
     MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
         label: "Học ngữ pháp",
-        openScreen: const LearnVocabularyScreen()
+        openScreen: const MenuVocabularyScreen()
     ),
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Học phát âm",
@@ -57,34 +57,40 @@ class Row2 extends StatelessWidget {
     );
   }
 
-  //ITEM  --------------------------------------------------------------
+  ///ITEM  --------------------------------------------------------------
   Widget buildMenuItem(BuildContext context, MenuItem item) {
     return InkWell(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // ICON
-          CircleAvatar(
-            radius: 35,
-            backgroundColor: Theme.of(context).primaryColor,
-            child: ClipOval(
-              child: Image.asset(
-                item.imagePath,
-                fit: BoxFit.cover,
-                width: 60,
-                height: 60,
+          ///CONTAINER cover  --------------------------------------------------
+          Container(
+            padding: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(20)
+            ),
+            ///ICON ------------------------------------------------------------
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                color: Colors.white60,
+                child: Image.asset(
+                  item.imagePath,
+                  fit: BoxFit.cover,
+                  width: 50,
+                  height: 50,
+                ),
               ),
             ),
           ),
 
           const SizedBox(height: 10),
 
-          // TEXT
-          Text(
-            item.label,
-            style: const TextStyle(fontSize: 16),
-          ),
+          ///TEXT --------------------------------------------------------------
+          Text(item.label, style: const TextStyle(fontSize: 18)),
         ],
       ),
     );

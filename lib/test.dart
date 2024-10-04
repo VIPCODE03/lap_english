@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/screens/learn_screen/learn_vocabulay_screen.dart';
+import 'package:lap_english/ui/screens/learn_screen/vocabulary/menu_screen.dart';
 import 'package:lap_english/ui/widgets/other/expandable_view.dart';
 
-void main() {
-  runApp(MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -80,8 +78,8 @@ class HomeScreen extends StatelessWidget {
         child: ListView.builder(
             itemCount: 3,
             itemBuilder: (context, index) {
-              return MainTopic(
-                  expand: const LearnVocabularyScreen(),
+              return ExpandedView(
+                  expand: const MenuVocabularyScreen(),
                   child: Container(
                     child: Text("ahihi"
                     ),
@@ -92,4 +90,35 @@ class HomeScreen extends StatelessWidget {
       )
     );
   }
+}
+
+void main() {
+  String input = "hello <Linda>, how are you.";
+  Map<String, bool> resultMap = parseStringToMap(input);
+
+  print(resultMap);
+}
+
+Map<String, bool> parseStringToMap(String input) {
+  Map<String, bool> result = {};
+
+  // Tách chuỗi bằng cách sử dụng biểu thức chính quy
+  final regex = RegExp(r'<(.*?)>|(\S+)');
+  Iterable<Match> matches = regex.allMatches(input);
+
+  for (var match in matches) {
+    // Kiểm tra xem match có nằm trong dấu < >
+    String? matchedString = match.group(0);
+    if (matchedString != null) {
+      // Nếu có dấu < >, thì true
+      if (matchedString.startsWith('<') && matchedString.endsWith('>')) {
+        result[matchedString.substring(1, matchedString.length - 1)] = true;
+      } else {
+        // Nếu không, thì false
+        result[matchedString] = false;
+      }
+    }
+  }
+
+  return result;
 }

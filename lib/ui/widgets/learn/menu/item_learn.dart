@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
-import '../../../data/model/vocabulary.dart';
+import '../../../../data/model/vocabulary.dart';
 
 class LearnWidget {
 

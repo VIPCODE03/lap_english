@@ -2,7 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lap_english/data/model/vocabulary.dart';
-import 'package:lap_english/ui/screens/login_screen.dart';
+import 'package:lap_english/ui/screens/learn_screen/vocabulary/learn_vocabulary.dart';
+
+import '../../../../gen/assets.gen.dart';
+import '../../../../utils/text_to_speak.dart';
+import '../../other/expandable_view.dart';
 
 class ListViewVocabulary extends StatelessWidget {
   final List<MainVocabularyTopic> _mainTopicList;
@@ -28,7 +32,7 @@ class ListViewVocabulary extends StatelessWidget {
   ///ITEM chủ đề con  ----------------------------------------------------------
   Widget _buildItemSub(BuildContext context, SubVocabularyTopic subTopic, bool state) {
     return InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen(),)),
+      onTap: () => _showDialogWordList(context, subTopic.words),
       child: Column(
         children: [
           Column(
@@ -77,10 +81,7 @@ class ListViewVocabulary extends StatelessWidget {
               const SizedBox(width: 20),
 
               ///TEXT tên chủ đề con ----------------------------------------------------------
-              Text(
-                subTopic.name,
-                style: const TextStyle(fontSize: 14),
-              ),
+              Text(subTopic.name, style: const TextStyle(fontSize: 14), maxLines: 2, textAlign: TextAlign.center),
             ],
           ),
         ],
@@ -133,7 +134,7 @@ class ListViewVocabulary extends StatelessWidget {
         ///GRIDVIEW danh sách chủ đề con  --------------------------------------
         const SizedBox(height: 20),
         SizedBox(
-          height: 125                                                                  ,
+          height: 130                                                                  ,
           child: GridView.count(
             scrollDirection: Axis.horizontal,
             crossAxisCount: 1,
@@ -148,6 +149,112 @@ class ListViewVocabulary extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           color: Colors.grey,
         ),
+      ],
+    );
+  }
+
+  ///DIALOG hiển thị danh sách từ vựng  ------------------------------------------
+  void _showDialogWordList(BuildContext context, List<Word> words) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: Column(
+              children: [
+                Image(
+                  width: MediaQuery.of(context).size.width,
+                  repeat: ImageRepeat.repeat,
+                  height: 50,
+                  image: Assets.images.logo.left.provider(),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: words.length,
+                    itemBuilder: (context, index) {
+                      var word = words[index];
+                      return ExpandedView(
+                        expand: _itemWord(context, word, true),
+                        child: _itemWord(context, word, false)
+                      );
+                    },
+                  ),
+                ),
+
+                ///BUTTON chuyển tới quiz ----------------------------------------------------
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LearnVocabularyScreen.normal(words: words))),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Học bài",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  ///ITEM từ vựng   -----------------------------------------------------------
+  Widget _itemWord(BuildContext context, Word word, bool expanded) {
+    final textToSpeakUtil = TextToSpeakUtil();
+    return Column(
+      children: [
+        ListTile(
+          title: Align(
+            alignment: Alignment.centerLeft,
+              child: Column(children: [
+                Text(word.word, style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor)),
+                Text(word.meaning)
+              ]),
+          ),
+          subtitle: expanded
+              ? Text("Loại: ${word.type}m \nUS: ${word.pronounceUS} \nUK: ${word.pronounceUK} \nVí dụ: ${word.examples.first}")
+              : null,
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("US"),
+              IconButton(
+                onPressed: () {
+                  textToSpeakUtil.speak(word.word, TextToSpeakUtil.languageUS,
+                      TextToSpeakUtil.rateNormal);
+                },
+                icon: const Icon(Icons.volume_up),
+              ),
+              const Text("UK"),
+              IconButton(
+                onPressed: () {
+                  textToSpeakUtil.speak(word.word, TextToSpeakUtil.languageUK,
+                      TextToSpeakUtil.rateNormal);
+                },
+                icon: const Icon(Icons.volume_up),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          color: Colors.grey,
+          height: 1,
+        )
       ],
     );
   }
