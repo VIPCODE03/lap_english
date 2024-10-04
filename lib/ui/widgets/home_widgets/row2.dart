@@ -73,15 +73,15 @@ class Row2 extends StatelessWidget {
             ),
             ///ICON ------------------------------------------------------------
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
               child: Container(
-                padding: const EdgeInsets.all(2),
-                color: Colors.white70,
+                padding: const EdgeInsets.all(5),
+                color: Colors.white60,
                 child: Image.asset(
                   item.imagePath,
                   fit: BoxFit.cover,
-                  width: 60,
-                  height: 60,
+                  width: 50,
+                  height: 50,
                 ),
               ),
             ),
