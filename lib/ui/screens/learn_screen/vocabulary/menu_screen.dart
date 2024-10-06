@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/bloc/vocabulary_bloc.dart';
-import 'package:lap_english/ui/widgets/learn/menu/item_learn1.dart';
+import 'package:lap_english/ui/widgets/learn/menu/menu_vocabulary.dart';
 
 class MenuVocabularyScreen extends StatelessWidget {
   const MenuVocabularyScreen({super.key});
@@ -9,6 +9,7 @@ class MenuVocabularyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Học từ vựng'),
       ),

@@ -1,10 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:lap_english/constant/quizz_constant.dart';
 import 'package:lap_english/data/model/quizz.dart';
 import 'package:lap_english/data/model/vocabulary.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizz_page.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quiz_vocabulary/quizz_choose_one_word.dart';
+import 'package:lap_english/ui/screens/quizz_screen.dart';
+import '../../../widgets/learn/quiz/quizzes.dart';
 
 class LearnVocabularyScreen extends StatelessWidget {
   final List<Word> words;
@@ -16,10 +15,10 @@ class LearnVocabularyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var quizz = Quizzes.createQuizzVocabulary(QuizzConstant.quizzesVocabulary(), words);
-    return Scaffold(
+    var quizz = Quizzes.createQuizzVocabulary(mode: QuizzMode.basic, words: words);
+    return Scaffold(resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Học Từ Vựng'),
+        title: const Text('Học Từ Vựng1 '),
       ),
       body: QuizzPage(children: QuizzVocabularys.create(context, quizz))
 

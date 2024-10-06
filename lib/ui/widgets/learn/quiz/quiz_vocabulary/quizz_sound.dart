@@ -64,8 +64,8 @@ class _SoundState extends QuizzWidgetState<QuizzSoundOfWord, SoundOfWord> {
                 onTap: () {
                   setState(() {
                     selectedKey = key; //-> Cập nhật item được chọn
-                    widget.state.isAnswered.value = true;
-                    widget.state.isCorrect = widget.quizz.answers[key];
+                    widget.status.isAnswered.value = true;
+                    widget.status.isCorrect = widget.quizz.answers[key];
                     _textToSpeakUtil.speak(key, TextToSpeakUtil.languageUK, TextToSpeakUtil.rateNormal);
                   });
                 },

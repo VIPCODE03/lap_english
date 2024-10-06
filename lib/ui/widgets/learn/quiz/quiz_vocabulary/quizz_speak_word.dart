@@ -26,7 +26,7 @@ class _QuizzSpeakWordState extends QuizzWidgetState<QuizzSpeakWord, QuizzSpeakWo
   void initState() {
     super.initState();
     _initSpeech();
-    widget.state.isChecked.addListener(() {
+    widget.status.isChecked.addListener(() {
       _stopListening();
     });
   }
@@ -53,9 +53,10 @@ class _QuizzSpeakWordState extends QuizzWidgetState<QuizzSpeakWord, QuizzSpeakWo
     setState(() {
       _lastWords = result.recognizedWords;
       if(_lastWords != "") {
-        widget.state.isCorrect = widget.quizz.answer.trim().toLowerCase() == _lastWords.trim().toLowerCase();
-        widget.state.isAnswered.value = true;
-        widget.state.correctAnswer = widget.quizz.answer.trim().toLowerCase();
+        _stopListening();
+        widget.status.isCorrect = widget.quizz.answer.trim().toLowerCase() == _lastWords.trim().toLowerCase();
+        widget.status.isAnswered.value = true;
+        widget.status.correctAnswer = widget.quizz.answer.trim().toLowerCase();
       }
     });
   }
@@ -87,24 +88,23 @@ class _QuizzSpeakWordState extends QuizzWidgetState<QuizzSpeakWord, QuizzSpeakWo
               showTwoGlows: true,
               duration: const Duration(seconds: 3),
               endRadius: 66.0,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: _speechToText.isNotListening ? _startListening : _stopListening,
-
-                  child: CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: _speechToText.isNotListening ? Colors.grey : Colors.red,
-                    child: Icon(
-                      _speechToText.isNotListening ? Icons.mic : Icons.mic_none,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(50),
+                onTap: _speechToText.isNotListening
+                    ? _startListening
+                    : _stopListening,
+                child: CircleAvatar(
+                  radius: 40.0,
+                  backgroundColor:
+                      _speechToText.isNotListening ? Colors.grey : Colors.red,
+                  child: Icon(
+                    _speechToText.isNotListening ? Icons.mic_none : Icons.mic,
+                    color: Colors.white,
+                    size: 30,
                   ),
                 ),
-              ),
             ),
+          ),
           ],
         ),
     );
