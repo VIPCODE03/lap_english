@@ -53,7 +53,7 @@ class QuizzSoundOfWord extends QuizzVocabulary {
   late bool isHidden;
   @override
   List<QuizzVocabulary> createQuizz(List<Word> words) {
-    List<QuizzVocabulary> quizzes = [];
+    List<QuizzSoundOfWord> quizzes = [];
     //--- Tạo quizz cho mỗi từ  ---
     for(var word in words) {
       var quizzSoundOfWord = QuizzSoundOfWord();
@@ -78,4 +78,31 @@ class QuizzSoundOfWord extends QuizzVocabulary {
     }
     return quizzes;
   }
+}
+
+/*  Nói */
+class QuizzSpeakWord extends QuizzVocabulary {
+  String answer = "";
+
+  @override
+  List<QuizzVocabulary> createQuizz(List<Word> words) {
+    List<QuizzSpeakWord> quizzes = [];
+    for(var word in words) {
+      var quizzSpeak = QuizzSpeakWord();
+      quizzSpeak.answer = word.word;
+      var isWord = Random().nextBool();
+      quizzSpeak.question = "Cách đọc từ "
+          "${isWord
+          ? "<${word.word}>"
+          : "<${word.meaning}>"}";
+
+      quizzSpeak.answers = {};
+      quizzes.add(quizzSpeak);
+    }
+    return quizzes;
+  }
+
+  @override
+  Skill get skill => Skills.speakking;
+
 }

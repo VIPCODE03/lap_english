@@ -5,6 +5,7 @@ class QuizzConstant {
   static List<QuizzVocabulary> quizzesVocabulary() => [
     QuizzChooseOneWord(),
     QuizzSoundOfWord(),
+    QuizzSpeakWord(),
   ];
 
 }

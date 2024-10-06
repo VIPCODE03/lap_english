@@ -16,10 +16,7 @@ class AdaptiveText extends StatelessWidget {
           if (texts[part] == true) {
             return TextSpan(
               text: part,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 20,
-              ), // Định dạng khác
+              style: Theme.of(context).textTheme.titleLarge,
             );
           } else {
             return TextSpan(
