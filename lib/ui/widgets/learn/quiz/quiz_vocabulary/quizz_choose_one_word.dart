@@ -49,7 +49,7 @@ class _ChooseOneWordWidgetState extends State<_ChooseOneWord> {
       child: Column(
         children: [
           ///AdaptiveText câu hỏi ----------------------------------------------
-          AdaptiveText(texts: TextToMapText.parseStringToMap(widget.quizz.question)),
+          AdaptiveText(texts: parseStringToMap(widget.quizz.question)),
           const SizedBox(height: 20),
 
           ///Listview danh sách đáp án  ----------------------------------------

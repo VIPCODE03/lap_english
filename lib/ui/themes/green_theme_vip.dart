@@ -7,6 +7,9 @@ class ThemeGreenVip {
     brightness: Brightness.light,
     primaryColor: LightGreenColors.primaryColor,
     fontFamily: "MainFont",
+    textTheme: const TextTheme(
+        titleLarge: TextStyle(color: LightGreenColors.textColor)
+    ),
 
     //CARD  -------------------------------------
     cardColor: LightGreenColors.cardColor,
@@ -18,6 +21,9 @@ class ThemeGreenVip {
     brightness: Brightness.dark,
     primaryColor: DarkGreenColors.primaryColor,
     fontFamily: "MainFont",
+    textTheme: const TextTheme(
+        titleLarge: TextStyle(color: DarkGreenColors.textColor)
+    ),
 
     //CARD  -------------------------------------
     cardColor: DarkGreenColors.cardColor,

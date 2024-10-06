@@ -7,6 +7,9 @@ class ThemeOrangeVip {
     brightness: Brightness.light,
     primaryColor: LightOrangeColors.primaryColor,
     fontFamily: "MainFont",
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(color: LightOrangeColors.textColor)
+    ),
 
     //CARD  -------------------------------------
     cardColor: LightOrangeColors.cardColor,
@@ -18,6 +21,9 @@ class ThemeOrangeVip {
     brightness: Brightness.dark,
     primaryColor: DarkOrangeColors.primaryColor,
     fontFamily: "MainFont",
+    textTheme: const TextTheme(
+        titleLarge: TextStyle(color: DarkOrangeColors.textColor)
+    ),
 
     //CARD  -------------------------------------
     cardColor: DarkOrangeColors.cardColor,

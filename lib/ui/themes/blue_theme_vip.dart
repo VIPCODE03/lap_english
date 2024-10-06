@@ -7,6 +7,9 @@ class ThemeBlueVip {
     brightness: Brightness.light,
     primaryColor: LightBlueColors.primaryColor,
     fontFamily: "MainFont",
+    textTheme: const TextTheme(
+        titleLarge: TextStyle(color: LightBlueColors.textColor)
+    ),
 
     //CARD  -------------------------------------
     cardColor: LightBlueColors.cardColor,
@@ -18,6 +21,9 @@ class ThemeBlueVip {
     brightness: Brightness.dark,
     primaryColor: DarkBlueColors.primaryColor,
     fontFamily: "MainFont",
+    textTheme: const TextTheme(
+        titleLarge: TextStyle(color: DarkBlueColors.textColor)
+    ),
 
     //CARD  -------------------------------------
     cardColor: DarkBlueColors.cardColor,
