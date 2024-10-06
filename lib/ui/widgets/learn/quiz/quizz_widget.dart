@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz.dart';
 
-class QuizzStateA {
+class QuizzStatus {
   ValueNotifier<bool> isAnswered = ValueNotifier<bool>(false);
   ValueNotifier<bool> isChecked = ValueNotifier<bool>(false);
   bool? isCorrect;
@@ -11,7 +11,7 @@ class QuizzStateA {
 
 abstract class QuizzWidget<T extends Quizz> extends StatefulWidget {
   final T quizz;
-  final QuizzStateA state = QuizzStateA();
+  final QuizzStatus status = QuizzStatus();
 
   QuizzWidget({super.key, required this.quizz});
 

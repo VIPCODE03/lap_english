@@ -2,6 +2,7 @@
 import 'dart:math';
 
 import 'package:lap_english/data/model/quizz.dart';
+import 'package:lap_english/data/model/skill.dart';
 import 'package:lap_english/data/model/vocabulary.dart';
 
 /*  QuizVocabulary trừu tượng   */
@@ -24,20 +25,43 @@ class QuizzChooseOneWord extends QuizzVocabulary {
 
     //--- Tạo đáp án cho mỗi từ ---
     for(var word in words) {
-      int total = Random().nextInt(2) + 2;  //->  Tạo số đáp án
       var quizzChooseOneWord = QuizzChooseOneWord();
-      quizzChooseOneWord.question = "Chọn từ có nghĩa với <${word.word}>";
-
-      //--- Tạo đáp án ---
       quizzChooseOneWord.answers = {};
-      List<Word> wordsT = [word];
-      List<Word> copy = List.from(words)..remove(word);
-      copy.shuffle();
-      wordsT.addAll(copy.take(total).toList());
 
-      wordsT.shuffle();
-      for(var w in wordsT) {
+      //--- Dạng từ tương tự  ---
+      if(word.word.length > 3 && Random().nextBool()) {
+        quizzChooseOneWord.question = "Chọn từ có nghĩa với <${word.meaning}>";
+
+        //--- Tạo đáp án ---
+        String wordS = word.word;
+        int indexAdd = Random().nextInt(wordS.length - 1);
+        int indexDelete = Random().nextInt(wordS.length -1) + 1;
+        String charAtIndex = wordS[indexAdd + 1];
+        String wordAdd = wordS.substring(0, indexAdd + 1) + charAtIndex + wordS.substring(indexAdd);
+        String wordDelete = wordS.substring(0, indexDelete) + wordS.substring(indexDelete + 1);
+        String wordReplace = wordS.substring(0, indexDelete) + charAtIndex + wordS.substring(indexDelete + 1);
+        List<String> similarWords = [wordS, wordAdd, wordDelete, wordReplace];
+        similarWords.shuffle();
+        for(var w in similarWords) {
+          quizzChooseOneWord.answers[w] = (w == wordS);
+        }
+      }
+
+      //--- Dạng hỏi nghĩa  ---
+      else {
+        int total = Random().nextInt(2) + 2; //->  Tạo số đáp án
+        quizzChooseOneWord.question = "Chọn từ có nghĩa với <${word.word}>";
+
+        //--- Tạo đáp án ---
+        List<Word> wordsT = [word];
+        List<Word> copy = List.from(words)..remove(word);
+        copy.shuffle();
+        wordsT.addAll(copy.take(total).toList());
+
+        wordsT.shuffle();
+        for (var w in wordsT) {
           quizzChooseOneWord.answers[w.meaning] = (w == word);
+        }
       }
 
       //--- Thêm quizz vào danh sách  ---
@@ -46,11 +70,16 @@ class QuizzChooseOneWord extends QuizzVocabulary {
     }
     return quizzes;
   }
+
+  @override
+  Skill get skill => Skills.reading;
 }
 
 /*  Chọn âm thanh của từ  */
 class QuizzSoundOfWord extends QuizzVocabulary {
   late bool isHidden;
+  late String? correctWord;
+
   @override
   List<QuizzVocabulary> createQuizz(List<Word> words) {
     List<QuizzSoundOfWord> quizzes = [];
@@ -61,23 +90,30 @@ class QuizzSoundOfWord extends QuizzVocabulary {
 
       //--- Tạo câu hỏi ---
       if(quizzSoundOfWord.isHidden) {quizzSoundOfWord.question = "Phát âm của từ <${word.word}>";}
-      else {quizzSoundOfWord.question = "Bạn nghe được từ gì?";}
+      else {
+        quizzSoundOfWord.question = "Bạn nghe được từ gì?";
+        quizzSoundOfWord.correctWord = word.word;
+      }
 
       //--- Tạo đáp án ---
-      quizzSoundOfWord.answers = {word.word : true};
-      List<Word> answersWrong = [];
+      quizzSoundOfWord.answers = {};
+      List<Word> answers = [word];
       List<Word> copy = List.from(words)..remove(word);
       copy.shuffle();
-      answersWrong.addAll(copy.take(1).toList());
+      answers.addAll(copy.take(1).toList());
 
-      for(var wordWrong in answersWrong) {
-        quizzSoundOfWord.answers[wordWrong.word] = false;
+      answers.shuffle();
+      for(var w in answers) {
+        quizzSoundOfWord.answers[w.word] = w == word;
       }
 
       quizzes.add(quizzSoundOfWord);
     }
     return quizzes;
   }
+
+  @override
+  Skill get skill => Skills.listening;
 }
 
 /*  Nói */
@@ -104,5 +140,29 @@ class QuizzSpeakWord extends QuizzVocabulary {
 
   @override
   Skill get skill => Skills.speakking;
+
+}
+
+/*  Hoàn thành từ */
+class QuizzWriteWord extends QuizzVocabulary {
+  String answer = "";
+
+  @override
+  List<QuizzVocabulary> createQuizz(List<Word> words) {
+    List<QuizzWriteWord> quizzes = [];
+
+    for(var word in words) {
+      var quizzWrite = QuizzWriteWord();
+      quizzWrite.question = "Điền từ có nghĩa với <${word.meaning}>";
+      quizzWrite.answer = word.word.toLowerCase().trim();
+      quizzWrite.answers = {answer : true};
+      quizzes.add(quizzWrite);
+    }
+
+    return quizzes;
+  }
+
+  @override
+  Skill get skill => Skills.writing;
 
 }

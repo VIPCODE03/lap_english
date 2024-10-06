@@ -134,7 +134,7 @@ class ListViewVocabulary extends StatelessWidget {
         ///GRIDVIEW danh sách chủ đề con  --------------------------------------
         const SizedBox(height: 20),
         SizedBox(
-          height: 130                                                                  ,
+          height: 130,
           child: GridView.count(
             scrollDirection: Axis.horizontal,
             crossAxisCount: 1,
@@ -177,17 +177,25 @@ class ListViewVocabulary extends StatelessWidget {
                       var word = words[index];
                       return ExpandedView(
                         expand: _itemWord(context, word, true),
-                        child: _itemWord(context, word, false)
+                        child: _itemWord(context, word, false),
                       );
                     },
                   ),
                 ),
 
-                ///BUTTON chuyển tới quiz ----------------------------------------------------
+                ///BUTTON chuyển tới quizz ----------------------------------------------------
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LearnVocabularyScreen.normal(words: words))),
+                    onPressed: () {
+                      Navigator.pop(context); // Đóng dialog trước
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LearnVocabularyScreen.normal(words: words),
+                        ),
+                      );
+                    },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -196,7 +204,7 @@ class ListViewVocabulary extends StatelessWidget {
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20
+                            fontSize: 20,
                           ),
                         ),
                         const SizedBox(width: 8),
