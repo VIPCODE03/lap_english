@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/a_data_test/datatest.dart';
+import '../../services/bot.dart';
 import '../model/vocabulary.dart';
 
 /*  Event   */
@@ -29,18 +30,23 @@ class VocabularyError extends VocabularyState {
 
 /*  Bloc  */
 class VocabularyBloc extends Bloc<VocabularyEvent, VocabularyState> {
+  GeminiAI gemini = GeminiAI(model: GeminiAI.flash);
   VocabularyBloc() : super(VocabularyInitial()) {
 
     //---   Load dữ liệu  ---
     on<LoadVocabulary>((event, emit) async {
       emit(VocabularyLoading());
+      List<dynamic> jsonData = [];
       try {
-        await Future.delayed(const Duration(milliseconds: 1500));
         // Dữ liệu JSON chuỗi mẫu
         const String jsonString = MockData.jsonString;
+        String jsonAI = await gemini.ask(createWord()) ?? '';
 
         //---   Chuyển json -> đối tượng  ---
-        List<dynamic> jsonData = jsonDecode(jsonString);
+       jsonData.addAll(jsonDecode(jsonString));
+       if(jsonAI.isNotEmpty) {
+         jsonData.addAll(jsonDecode(jsonAI));
+       }
         List<MainVocabularyTopic> topics = jsonData
             .map((item) => MainVocabularyTopic.fromJson(item))
             .toList();
@@ -50,6 +56,5 @@ class VocabularyBloc extends Bloc<VocabularyEvent, VocabularyState> {
         emit(VocabularyError('Failed to load vocabulary: $e'));
       }
     });
-
   }
 }

@@ -1,6 +1,8 @@
 
 import 'package:lap_english/constant/quizz_constant.dart';
+import 'package:lap_english/data/model/quizz_sentence.dart';
 import 'package:lap_english/data/model/quizz_vocabulary.dart';
+import 'package:lap_english/data/model/sentence.dart';
 import 'package:lap_english/data/model/skill.dart';
 import 'package:lap_english/data/model/vocabulary.dart';
 
@@ -36,6 +38,29 @@ class Quizzes {
       quizzesVocabulary.addAll(quizz.create());
     }
     return quizzesVocabulary;
+  }
+
+  static List<Quizz> createQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) {
+    List<Quizz> quizzes = [];
+    List<QuizzSentence> quizzList;
+
+    switch(mode) {
+      case QuizzMode.basic:
+        quizzList = QuizzConstant.quizzesSentenceBasic();
+        break;
+      case QuizzMode.medium:
+        quizzList = QuizzConstant.quizzesSentenceBasic();
+        break;
+      case QuizzMode.advanced:
+        quizzList = QuizzConstant.quizzesSentenceBasic();
+        break;
+    }
+
+    for(var quizz in quizzList) {
+      quizz.sentences = sentences;
+      quizzes.addAll(quizz.create());
+    }
+    return quizzes;
   }
 }
 

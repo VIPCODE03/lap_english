@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/bloc/vocabulary_bloc.dart';
 import 'package:lap_english/ui/widgets/learn/menu/menu_vocabulary.dart';
 
+
 class MenuVocabularyScreen extends StatelessWidget {
   const MenuVocabularyScreen({super.key});
 
@@ -11,7 +12,7 @@ class MenuVocabularyScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Học từ vựng'),
+        title: const Text('Từ vựng theo chủ đề'),
       ),
       body: BlocProvider(
         create: (context) => VocabularyBloc()..add(LoadVocabulary()),
@@ -24,7 +25,7 @@ class MenuVocabularyScreen extends StatelessWidget {
 
             } else if (state is VocabularyLoaded) {
               ///ListViewVocabulary --------------------------------------------
-              return ListViewVocabulary.builder(mainTopicList: state.topics);
+              return MenuVocabulary.builder(mainTopicList: state.topics);
             }
 
             return const Center(
@@ -35,3 +36,4 @@ class MenuVocabularyScreen extends StatelessWidget {
     );
   }
 }
+

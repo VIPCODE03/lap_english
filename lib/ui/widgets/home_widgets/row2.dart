@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import 'package:lap_english/test.dart';
-import 'package:lap_english/ui/screens/learn_screen/vocabulary/menu_screen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 
-import '../../../data/bloc/viewtest.dart';
+import '../../screens/menu_screen/menu_screen.dart';
+import '../../screens/menu_screen/menu_sentence_screen.dart';
 
 class Row2 extends StatelessWidget {
   final List<MenuItem> menuItems = [
@@ -14,7 +13,7 @@ class Row2 extends StatelessWidget {
     ),
     MenuItem(imagePath: Assets.images.menu.learnSentence.path,
         label: "Học câu",
-        openScreen: HomeScreen()
+        openScreen: const MenuSentenceScreen()
     ),
     MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
         label: "Học ngữ pháp",

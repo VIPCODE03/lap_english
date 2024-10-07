@@ -42,19 +42,22 @@ dependencies:
   json_annotation: ^4.9.0 #Json
   google_fonts: ^6.2.1  #Font chữ google
   flutter_tts: ^3.5.0 # Chuyển văn bản thành lời nói
-  speech_to_text: ^7.0.0  # Hoặc phiên bản mới nhất
+  speech_to_text: ^7.0.0  # Chuyển giọng nói thành văn bản
   avatar_glow: ^2.0.1
+  audioplayers: ^6.1.0  # Phát âm thanh
+  just_audio: ^0.9.41
 
-    # The following adds the Cupertino Icons font to your application.
+  # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  google_generative_ai: ^0.4.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_gen_runner: 5.7.0
-  build_runner: ^2.1.11
-  json_serializable: ^6.1.4
+  build_runner: ^2.1.11 # Chạy build code
+  json_serializable: ^6.1.4 # Tạo json
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -79,6 +82,7 @@ flutter:
     - assets/images/item/
     - assets/images/menu/
     - assets/images/logo/
+    - assets/sounds/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

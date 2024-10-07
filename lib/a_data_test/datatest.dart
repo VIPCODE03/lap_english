@@ -5,22 +5,112 @@ class MockData {
   [
     {
       "id": 1,
-      "name": "Anh triệu đẹp troai",
+      "name": "Phổ biến",
       "subTopics": [
         {
           "id": 101,
-          "name": "Anh Triệu đẹp trai",
-          "imageUrl": "https://i.pinimg.com/originals/7a/c5/7d/7ac57db8e58ff6159e5353276e9287cf.jpg", 
+          "name": "Gia đình",
+          "imageUrl": "https://anvientv.com.vn/uploads/upload/1672721733_chup-anh-gia-dinh-4-nguoi(7).jpg", 
           "words": [
             {
               "id": 1001,
-              "word": "Fuck",
-              "meaning": "Địt nhau",
-              "pronounceUK": "phát âm UK",
-              "pronounceUS": "phát âm US",
+              "word": "Father",
+              "meaning": "Bố, cha",
+              "pronounceUK": "/ˈfɑːðər/",
+              "pronounceUS": "/ˈfɑːðər/",
               "type": "Danh từ",
-              "level": "Dễ",
-              "examples": ["Ví dụ 1", "Ví dụ 2"]
+              "level": "A1",
+              "examples": ["My father is a doctor.", "I love my father."]
+            },
+            {
+              "id": 1002,
+              "word": "Mother",
+              "meaning": "Mẹ, bà",
+              "pronounceUK": "/ˈmʌðər/",
+              "pronounceUS": "/ˈmʌðər/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["My mother cooks well.", "I miss my mother."]
+            },
+            {
+              "id": 1003,
+              "word": "Brother",
+              "meaning": "Anh, em trai",
+              "pronounceUK": "/ˈbrʌðər/",
+              "pronounceUS": "/ˈbrʌðər/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["I have one brother.", "My brother plays football."]
+            },
+            {
+              "id": 1004,
+              "word": "Sister",
+              "meaning": "Chị, em gái",
+              "pronounceUK": "/ˈsɪstər/",
+              "pronounceUS": "/ˈsɪstər/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["My sister is very kind.", "I share a room with my sister."]
+            },
+            {
+              "id": 1005,
+              "word": "Grandfather",
+              "meaning": "Ông, ông ngoại",
+              "pronounceUK": "/ˈɡrændfɑːðər/",
+              "pronounceUS": "/ˈɡrændfɑːðər/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["My grandfather tells stories.", "I visit my grandfather on weekends."]
+            },
+            {
+              "id": 1006,
+              "word": "Grandmother",
+              "meaning": "Bà, bà ngoại",
+              "pronounceUK": "/ˈɡrændˌmʌðər/",
+              "pronounceUS": "/ˈɡrændˌmʌðər/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["My grandmother bakes cookies.", "I love my grandmother."]
+            },
+            {
+              "id": 1007,
+              "word": "Aunt",
+              "meaning": "Dì, cô",
+              "pronounceUK": "/ænt/",
+              "pronounceUS": "/ænt/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["My aunt lives in another city.", "I visit my aunt during holidays."]
+            },
+            {
+              "id": 1008,
+              "word": "Uncle",
+              "meaning": "Chú, bác",
+              "pronounceUK": "/ˈʌŋkl/",
+              "pronounceUS": "/ˈʌŋkl/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["My uncle is funny.", "I play with my uncle."]
+            },
+            {
+              "id": 1009,
+              "word": "Cousin",
+              "meaning": "Anh, chị, em họ",
+              "pronounceUK": "/ˈkʌz.ən/",
+              "pronounceUS": "/ˈkʌz.ən/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["I have many cousins.", "My cousin is my best friend."]
+            },
+            {
+              "id": 1010,
+              "word": "Family",
+              "meaning": "Gia đình",
+              "pronounceUK": "/ˈfæm.ɪ.li/",
+              "pronounceUS": "/ˈfæm.ɪ.li/",
+              "type": "Danh từ",
+              "level": "A1",
+              "examples": ["I love my family.", "We have a big family."]
             }
           ]
         },
@@ -180,3 +270,4 @@ class MockData {
   ]
   ''';
 }
+

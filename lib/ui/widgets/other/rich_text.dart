@@ -12,19 +12,21 @@ class AdaptiveText extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: parts.map((part) {
-          // Kiểm tra nếu phần là từ cần phân biệt
+          //--- Dạng đặc biệt  ---
           if (texts[part] == true) {
             return TextSpan(
               text: part,
               style: Theme.of(context).textTheme.titleLarge,
             );
-          } else {
+          }
+          //--- Dạng bình thường  ---
+          else {
             return TextSpan(
               text: part,
               style: const TextStyle(
                 color: Colors.brown,
                 fontSize: 20,
-              ), // Định dạng mặc định
+              ),
             );
           }
         }).toList(),
