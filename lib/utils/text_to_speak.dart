@@ -15,9 +15,9 @@ class TextToSpeakUtil {
 
   //===   Khởi tạo  ===
   Future<void> _initialize() async {
-    await _flutterTts.setLanguage("en-US");
-    await _flutterTts.setPitch(0.66); //-> Thiết lập cao độ
-    await _flutterTts.setSpeechRate(0.35); //->  Thiết lập tốc độ nói
+    await _flutterTts.setLanguage(languageUK);
+    await _flutterTts.setPitch(1.0); //-> Thiết lập cao độ
+    await _flutterTts.setSpeechRate(rateNormal); //->  Thiết lập tốc độ nói
   }
 
   //===   Đọc văn bản   ===

@@ -15,12 +15,19 @@ class QuizzWritingW extends QuizzWidget<QuizzWriteWord> {
 
 class _QuizzWritingState extends QuizzWidgetState<QuizzWriteWord, QuizzWritingW> {
   final TextEditingController _controller = TextEditingController();
+  var _enabled = true;
+
   late List<String> userInput;
 
   @override
   void initState() {
     super.initState();
     userInput = List<String>.filled(widget.quizz.answer.length, '');
+    widget.status.isChecked.addListener(() {
+      setState(() {
+        _enabled = false;
+      });
+    });
   }
 
   @override
@@ -82,6 +89,7 @@ class _QuizzWritingState extends QuizzWidgetState<QuizzWriteWord, QuizzWritingW>
                         opacity: 0,
                         child: TextField(
                           controller: _controller,
+                          enabled: _enabled,
                           onChanged: (text) {
                             setState(() {
                               _updateUserInput(text);

@@ -25,6 +25,19 @@ class $AssetsImagesGen {
   $AssetsImagesMenuGen get menu => const $AssetsImagesMenuGen();
 }
 
+class $AssetsSoundsGen {
+  const $AssetsSoundsGen();
+
+  /// File path: assets/sounds/sound_correct.mp3
+  String get soundCorrect => 'assets/sounds/sound_correct.mp3';
+
+  /// File path: assets/sounds/test.mp3
+  String get test => 'assets/sounds/test.mp3';
+
+  /// List of all assets
+  List<String> get values => [soundCorrect, test];
+}
+
 class $AssetsImagesCoverGen {
   const $AssetsImagesCoverGen();
 
@@ -141,6 +154,7 @@ class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsSoundsGen sounds = $AssetsSoundsGen();
 }
 
 class AssetGenImage {

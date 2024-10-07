@@ -1,8 +1,6 @@
 
+import 'package:lap_english/data/model/quizz_sentence.dart';
 import 'package:lap_english/data/model/quizz_vocabulary.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
-
-import '../data/model/quizz.dart';
 
 class QuizzConstant {
   static List<QuizzVocabulary> quizzesVocabularyBasic() => [
@@ -12,7 +10,7 @@ class QuizzConstant {
     QuizzWriteWord(),
   ];
 
-  static Map<Quizz, QuizzWidget> quizzes() => {
-
-  };
+  static List<QuizzSentence> quizzesSentenceBasic() => [
+    QuizzSentenceChoose(),
+  ];
 }

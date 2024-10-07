@@ -1,15 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lap_english/data/model/vocabulary.dart';
+import 'package:lap_english/data/model/sentence.dart';
 import 'package:lap_english/ui/screens/learn_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
 import '../../other/expandable_view.dart';
 
-class MenuVocabulary extends StatelessWidget {
-  final List<MainVocabularyTopic> _mainTopicList;
+class MenuSentence extends StatelessWidget {
+  final List<MainSentenceTopic> _mainTopicList;
   final textToSpeakUtil = TextToSpeakUtil();
 
   @override
@@ -23,17 +22,17 @@ class MenuVocabulary extends StatelessWidget {
     );
   }
 
-  MenuVocabulary.builder({
+  MenuSentence.builder({
     super.key,
-    required List<MainVocabularyTopic> mainTopicList
+    required List<MainSentenceTopic> mainTopicList
   })
       : _mainTopicList = mainTopicList;
 
 
-  ///ITEM chủ đề con  ----------------------------------------------------------
-  Widget _buildItemSub(BuildContext context, SubVocabularyTopic subTopic, bool state) {
+  /// ITEM chủ đề con  ----------------------------------------------------------
+  Widget _buildItemSub(BuildContext context, SubSentenceTopic subTopic, bool state) {
     return InkWell(
-      onTap: () => _showDialogWordList(context, subTopic.words),
+      onTap: () => _showDialogSentenceList(context, subTopic.sentences),
       child: Column(
         children: [
           Column(
@@ -45,8 +44,7 @@ class MenuVocabulary extends StatelessWidget {
                     margin: const EdgeInsets.all(5),
                     padding: const EdgeInsets.all(1.5),
                     decoration: BoxDecoration(
-                      color:
-                          state ? Theme.of(context).primaryColor : Colors.grey,
+                      color: state ? Theme.of(context).primaryColor : Colors.grey,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: ClipRRect(
@@ -63,7 +61,6 @@ class MenuVocabulary extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   ///ICON hoàn thành  ------------------------------------------------
                   Positioned(
                     right: 0,
@@ -78,9 +75,7 @@ class MenuVocabulary extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(width: 20),
-
               ///TEXT tên chủ đề con ----------------------------------------------------------
               Text(subTopic.name, style: const TextStyle(fontSize: 14), maxLines: 2, textAlign: TextAlign.center),
             ],
@@ -90,8 +85,8 @@ class MenuVocabulary extends StatelessWidget {
     );
   }
 
-  ///ITEM chủ đề chính  --------------------------------------------------------
-  Widget _buildItemMain(BuildContext context, MainVocabularyTopic mainTopic) {
+  /// ITEM chủ đề chính  --------------------------------------------------------
+  Widget _buildItemMain(BuildContext context, MainSentenceTopic mainTopic) {
     return Column(
       children: [
         Container(
@@ -111,7 +106,7 @@ class MenuVocabulary extends StatelessWidget {
                     child: Text(mainTopic.name,
                         style: GoogleFonts.pangolin(
                             fontWeight: FontWeight.w900,
-                            fontSize: 24  ,
+                            fontSize: 24,
                             color: Theme.of(context).primaryColor)
                     ),
                   ),
@@ -139,8 +134,8 @@ class MenuVocabulary extends StatelessWidget {
           child: GridView.count(
             scrollDirection: Axis.horizontal,
             crossAxisCount: 1,
-            children: mainTopic.subTopics.map((subTopic) {
-              return _buildItemSub(context, subTopic, mainTopic.subTopics.indexOf(subTopic) < 3 );
+            children: mainTopic.subSentenceTopics.map((subTopic) {
+              return _buildItemSub(context, subTopic, mainTopic.subSentenceTopics.indexOf(subTopic) < 3 );
             }).toList(),
           ),
         ),
@@ -154,8 +149,8 @@ class MenuVocabulary extends StatelessWidget {
     );
   }
 
-  ///DIALOG hiển thị danh sách từ vựng  ------------------------------------------
-  void _showDialogWordList(BuildContext context, List<Word> words) {
+  ///DIALOG hiển thị danh sách câu  ------------------------------------------
+  void _showDialogSentenceList(BuildContext context, List<Sentence> sentences) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -173,27 +168,26 @@ class MenuVocabulary extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: words.length,
+                    itemCount: sentences.length,
                     itemBuilder: (context, index) {
-                      var word = words[index];
+                      var sentence = sentences[index];
                       return ExpandedView(
-                        expand: _itemWord(context, word, true),
-                        child: _itemWord(context, word, false),
+                        expand: _itemSentence(context, sentence),
+                        child: _itemSentence(context, sentence),
                       );
                     },
                   ),
                 ),
-
                 ///BUTTON chuyển tới quizz ----------------------------------------------------
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pop(context); // Đóng dialog trước
+                      Navigator.pop(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LearnScreen.vocabulary(words: words),
+                          builder: (context) => LearnScreen.sentence(sentences: sentences)
                         ),
                       );
                     },
@@ -222,43 +216,14 @@ class MenuVocabulary extends StatelessWidget {
     );
   }
 
-  ///ITEM từ vựng   -----------------------------------------------------------
-  Widget _itemWord(BuildContext context, Word word, bool expanded) {
+  /// ITEM câu  -----------------------------------------------------------
+  Widget _itemSentence(BuildContext context, Sentence sentence) {
     return Column(
       children: [
         ListTile(
-          title: Align(
-            alignment: Alignment.centerLeft,
-              child: Column(children: [
-                Text(word.word, style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor)),
-                Text(word.meaning)
-              ]),
+            title: Text(sentence.sentence, style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor)),
+            subtitle:Text(sentence.translation)
           ),
-          subtitle: expanded
-              ? Text("Loại: ${word.type}m \nUS: ${word.pronounceUS} \nUK: ${word.pronounceUK} \nVí dụ: ${word.examples.first}")
-              : null,
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text("US"),
-              IconButton(
-                onPressed: () {
-                  textToSpeakUtil.speak(word.word, TextToSpeakUtil.languageUS,
-                      TextToSpeakUtil.rateNormal);
-                },
-                icon: const Icon(Icons.volume_up),
-              ),
-              const Text("UK"),
-              IconButton(
-                onPressed: () {
-                  textToSpeakUtil.speak(word.word, TextToSpeakUtil.languageUK,
-                      TextToSpeakUtil.rateNormal);
-                },
-                icon: const Icon(Icons.volume_up),
-              ),
-            ],
-          ),
-        ),
         Container(
           color: Colors.grey,
           height: 1,

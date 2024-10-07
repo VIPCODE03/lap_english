@@ -21,13 +21,27 @@ class _SoundState extends QuizzWidgetState<QuizzSoundOfWord, SoundOfWord> {
   String? selectedKey; //-> Biến lưu item được chọn
 
   @override
+  void initState() {
+    super.initState();
+
+    //--- Nói câu hỏi ---
+    if(!widget.quizz.isHidden) {
+      Future.delayed(const Duration(milliseconds: 1000)).then((_) {
+        _textToSpeakUtil.speak(
+            widget.quizz.correctWord!,
+            TextToSpeakUtil.languageUK,
+            TextToSpeakUtil.rateNormal
+        );
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ///AdaptiveText câu hỏi ------------------------------------------------
-        AdaptiveText(
-          texts: parseStringToMap(widget.quizz.question),
-        ),
+        AdaptiveText(texts: parseStringToMap(widget.quizz.question)),
 
         ///Hộp âm thanh --------------------------------------------------------
         const SizedBox(height: 20),
@@ -66,7 +80,9 @@ class _SoundState extends QuizzWidgetState<QuizzSoundOfWord, SoundOfWord> {
                     selectedKey = key; //-> Cập nhật item được chọn
                     widget.status.isAnswered.value = true;
                     widget.status.isCorrect = widget.quizz.answers[key];
-                    _textToSpeakUtil.speak(key, TextToSpeakUtil.languageUK, TextToSpeakUtil.rateNormal);
+                    widget.quizz.isHidden
+                        ? _textToSpeakUtil.speak(key, TextToSpeakUtil.languageUK, TextToSpeakUtil.rateNormal)
+                        : null;
                   });
                 },
                 child: AnimatedContainer(
