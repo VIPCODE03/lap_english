@@ -10,14 +10,14 @@ abstract class QuizzSentence extends Quizz {
   set sentences(List<Sentence> sentences) => _sentences = sentences;
 
   @override
-  List<Quizz> create() => createQuizz(_sentences);
+  List<Quizz> generate() => generateQuizzSentence(_sentences);
 
-  List<QuizzSentence> createQuizz(List<Sentence> sentences);
+  List<QuizzSentence> generateQuizzSentence(List<Sentence> sentences);
 }
 
 class QuizzSentenceChoose extends QuizzSentence {
   @override
-  List<QuizzSentence> createQuizz(List<Sentence> sentences) {
+  List<QuizzSentence> generateQuizzSentence(List<Sentence> sentences) {
     List<QuizzSentenceChoose> quizzes = [];
 
     for(var sentence in sentences) {
