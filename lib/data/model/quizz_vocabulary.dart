@@ -11,16 +11,16 @@ abstract class QuizzVocabulary extends Quizz {
   set words(List<Word> words) => _words = words;
 
   @override
-  List<Quizz> create() => createQuizz(_words);
+  List<Quizz> generate() => generateQuizzVocabulary(_words);
 
   //===   Hàm các lớp con cần khởi tạo  ===
-  List<QuizzVocabulary> createQuizz(List<Word> words);
+  List<QuizzVocabulary> generateQuizzVocabulary(List<Word> words);
 }
 
 /*  Trắc nghiệm 2-4 đáp án  */
 class QuizzChooseOneWord extends QuizzVocabulary {
   @override
-  List<QuizzVocabulary> createQuizz(List<Word> words) {
+  List<QuizzVocabulary> generateQuizzVocabulary(List<Word> words) {
     List<QuizzVocabulary> quizzes = [];
 
     //--- Tạo đáp án cho mỗi từ ---
@@ -72,7 +72,7 @@ class QuizzChooseOneWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.reading;
+  SkillType get skillType => SkillType.reading;
 }
 
 /*  Chọn âm thanh của từ  */
@@ -81,7 +81,7 @@ class QuizzSoundOfWord extends QuizzVocabulary {
   late String? correctWord;
 
   @override
-  List<QuizzVocabulary> createQuizz(List<Word> words) {
+  List<QuizzVocabulary> generateQuizzVocabulary(List<Word> words) {
     List<QuizzSoundOfWord> quizzes = [];
     //--- Tạo quizz cho mỗi từ  ---
     for(var word in words) {
@@ -113,7 +113,7 @@ class QuizzSoundOfWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.listening;
+  SkillType get skillType => SkillType.listening;
 }
 
 /*  Nói */
@@ -121,7 +121,7 @@ class QuizzSpeakWord extends QuizzVocabulary {
   String answer = "";
 
   @override
-  List<QuizzVocabulary> createQuizz(List<Word> words) {
+  List<QuizzVocabulary> generateQuizzVocabulary(List<Word> words) {
     List<QuizzSpeakWord> quizzes = [];
     for(var word in words) {
       var quizzSpeak = QuizzSpeakWord();
@@ -139,7 +139,7 @@ class QuizzSpeakWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.speakking;
+  SkillType get skillType => SkillType.speaking;
 
 }
 
@@ -148,7 +148,7 @@ class QuizzWriteWord extends QuizzVocabulary {
   String answer = "";
 
   @override
-  List<QuizzVocabulary> createQuizz(List<Word> words) {
+  List<QuizzVocabulary> generateQuizzVocabulary(List<Word> words) {
     List<QuizzWriteWord> quizzes = [];
 
     for(var word in words) {
@@ -163,6 +163,6 @@ class QuizzWriteWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.writing;
+  SkillType get skillType => SkillType.writing;
 
 }

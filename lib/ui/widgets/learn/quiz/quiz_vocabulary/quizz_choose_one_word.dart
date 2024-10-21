@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz_vocabulary.dart';
+import 'package:lap_english/ui/widgets/home_widgets/row4.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/rich_text.dart';
 import 'package:lap_english/utils/text_to_maptext.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */
-class ChooseOneWord extends QuizzWidget<QuizzChooseOneWord> {
-  ChooseOneWord({super.key, required super.quizz});
+class WdgQuizzChooseOneWord extends WdgQuizz<QuizzChooseOneWord> {
+  WdgQuizzChooseOneWord({super.key, required super.quizz});
 
   @override
-  QuizzWidgetState<QuizzChooseOneWord, QuizzWidget<QuizzChooseOneWord>> createState() => _ChooseOneWordWidgetState();
+  WdgQuizzState<QuizzChooseOneWord, WdgQuizz<QuizzChooseOneWord>> createState() => _ChooseOneWordWidgetState();
 }
 
-class _ChooseOneWordWidgetState extends QuizzWidgetState<QuizzChooseOneWord, ChooseOneWord> {
+class _ChooseOneWordWidgetState extends WdgQuizzState<QuizzChooseOneWord, WdgQuizzChooseOneWord> {
   String? selectedKey;
 
   @override
@@ -21,7 +22,7 @@ class _ChooseOneWordWidgetState extends QuizzWidgetState<QuizzChooseOneWord, Cho
       child: Column(
         children: [
           ///AdaptiveText câu hỏi ----------------------------------------------
-          AdaptiveText(texts: parseStringToMap(widget.quizz.question)),
+          WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
           const SizedBox(height: 20),
 
           ///Listview danh sách đáp án  ----------------------------------------

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class AdaptiveText extends StatelessWidget {
+class WdgAdaptiveText extends StatelessWidget {
   final Map<String, bool> texts;
 
-  const AdaptiveText({super.key, required this.texts});
+  const WdgAdaptiveText({super.key, required this.texts});
 
   @override
   Widget build(BuildContext context) {

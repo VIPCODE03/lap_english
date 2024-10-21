@@ -33,7 +33,7 @@ class LearnWidget {
             const Positioned(
               bottom: 10,
                 left: 10,
-                child: AnimatedProgressBar(value: 0.3, label: "Đã học 3/9", duration: Duration(milliseconds: 500))
+                child: WdgAnimatedProgressBar(value: 0.3, label: "Đã học 3/9", duration: Duration(milliseconds: 500))
             ),
           ],
         ),
@@ -60,7 +60,7 @@ class LearnWidget {
                     const Positioned(
                       bottom: 10,
                       left: 10,
-                      child: AnimatedProgressBar(
+                      child: WdgAnimatedProgressBar(
                           value: 0.5,
                           label: 'Đã học 3/9',
                           duration: Duration(milliseconds: 500),

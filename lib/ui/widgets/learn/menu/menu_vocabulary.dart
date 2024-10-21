@@ -2,13 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lap_english/data/model/vocabulary.dart';
-import 'package:lap_english/ui/screens/learn_screen.dart';
+import 'package:lap_english/ui/screens/quizz_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
 import '../../other/expandable_view.dart';
 
-class MenuVocabulary extends StatelessWidget {
+class WdgMenuVocabulary extends StatelessWidget {
   final List<MainVocabularyTopic> _mainTopicList;
   final textToSpeakUtil = TextToSpeakUtil();
 
@@ -23,7 +23,7 @@ class MenuVocabulary extends StatelessWidget {
     );
   }
 
-  MenuVocabulary.builder({
+  WdgMenuVocabulary.build({
     super.key,
     required List<MainVocabularyTopic> mainTopicList
   })
@@ -176,7 +176,7 @@ class MenuVocabulary extends StatelessWidget {
                     itemCount: words.length,
                     itemBuilder: (context, index) {
                       var word = words[index];
-                      return ExpandedView(
+                      return WdgExpandedView(
                         expand: _itemWord(context, word, true),
                         child: _itemWord(context, word, false),
                       );
@@ -193,7 +193,7 @@ class MenuVocabulary extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LearnScreen.vocabulary(words: words),
+                          builder: (context) => QuizzScreen.vocabulary(words: words)
                         ),
                       );
                     },
