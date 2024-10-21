@@ -9,14 +9,14 @@ class QuizzStatus {
   String? correctAnswer;
 }
 
-abstract class QuizzWidget<T extends Quizz> extends StatefulWidget {
+abstract class WdgQuizz<T extends Quizz> extends StatefulWidget {
   final T quizz;
   final QuizzStatus status = QuizzStatus();
 
-  QuizzWidget({super.key, required this.quizz});
+  WdgQuizz({super.key, required this.quizz});
 
   @override
-  QuizzWidgetState<T, QuizzWidget<T>> createState();
+  WdgQuizzState<T, WdgQuizz<T>> createState();
 }
 
-abstract class QuizzWidgetState<T extends Quizz, W extends QuizzWidget<T>> extends State<W> {}
+abstract class WdgQuizzState<T extends Quizz, W extends WdgQuizz<T>> extends State<W> {}

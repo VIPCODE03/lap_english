@@ -9,15 +9,15 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 import '../../../../../data/model/quizz_vocabulary.dart';
 
-class QuizzSpeakWordWidget extends QuizzWidget<QuizzSpeakWord> {
-  QuizzSpeakWordWidget({super.key, required super.quizz});
+class WdgQuizzSpeakWord extends WdgQuizz<QuizzSpeakWord> {
+  WdgQuizzSpeakWord({super.key, required super.quizz});
 
   @override
-  QuizzWidgetState<QuizzSpeakWord, QuizzWidget<QuizzSpeakWord>> createState() => _QuizzSpeakWordState();
+  WdgQuizzState<QuizzSpeakWord, WdgQuizz<QuizzSpeakWord>> createState() => _WdgQuizzSpeakWordState();
 
 }
 
-class _QuizzSpeakWordState extends QuizzWidgetState<QuizzSpeakWord, QuizzSpeakWordWidget> {
+class _WdgQuizzSpeakWordState extends WdgQuizzState<QuizzSpeakWord, WdgQuizzSpeakWord> {
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
@@ -67,7 +67,7 @@ class _QuizzSpeakWordState extends QuizzWidgetState<QuizzSpeakWord, QuizzSpeakWo
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AdaptiveText(
+            WdgAdaptiveText(
               texts: parseStringToMap(widget.quizz.question),
             ),
             Expanded(

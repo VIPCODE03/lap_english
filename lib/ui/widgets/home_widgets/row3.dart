@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
-class Row3 extends StatelessWidget {
+class WdgRow3 extends StatelessWidget {
   final List<String> data;
 
-  const Row3({
+  const WdgRow3({
     super.key,
     required this.data
   });
@@ -75,7 +75,7 @@ class Row3 extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   child: Stack(
                     children: [
-                      AnimatedProgressBar(
+                      WdgAnimatedProgressBar(
                         value: value,
                         label: 'Đã học $done/$total',
                         duration: const Duration(milliseconds: 700),

@@ -10,7 +10,7 @@ import 'package:lap_english/data/model/vocabulary.dart';
 abstract class Quizz {
   late String question;
   late Map<String, bool> answers;
-  Skill get skill;
+  SkillType get skillType;
 
   List<Quizz> generate();
 }

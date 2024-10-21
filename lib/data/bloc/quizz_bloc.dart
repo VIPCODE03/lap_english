@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class QuizzEvent {}
 
+//===   Khởi tạo  ===
 class QuizzInit extends QuizzEvent {}
 
+//===   Chuyển tiếp  ===
 class QuizzNext extends QuizzEvent{}
 
+//===   Kiểm tra  ===
 class QuizzCheck extends QuizzEvent {}
 
 /*  States  */
@@ -29,26 +32,28 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
   final int total;
 
   QuizzBloc(this.total) : super(QuizzInitial()) {
+
+    //---   Khởi tạo  ---
     on<QuizzInit>((event, emit) {
-      // Khởi tạo quiz với câu hỏi đầu tiên
       emit(QuizzInProgress(0, 1.0 / total));
     });
 
+    //--- Chuyển quizz  ---
     on<QuizzNext>((event, emit) {
       if (state is QuizzInProgress) {
         final currentState = state as QuizzInProgress;
         int nextIndex = currentState.currentIndex + 1;
 
-        if (nextIndex < total) {
-          // Chuyển sang quiz tiếp theo
+        if (nextIndex < total) {  //->  Vẫn còn quizz
           emit(QuizzInProgress(nextIndex, (nextIndex + 1) / total));
-        } else {
-          // Nếu đã hoàn thành, chuyển sang trạng thái hoàn thành
+        }
+        else {  //->  Đã hoàn thành
           emit(QuizzCompleted());
         }
       }
     });
 
+    //---   Kiểm tra  ---
     on<QuizzCheck>((event, emit) {
       if (state is QuizzInProgress) {
         // Logic kiểm tra câu trả lời có thể được xử lý ở đây

@@ -1,17 +1,35 @@
-
+/*  Các kĩ năng */
 class Skill {
-  static const String speakking = "speakking";
-  static const String writing = "writing";
-  static const String listening = "listening";
-  static const String reading = "reading";
+  double reading;
+  double writing;
+  double speaking;
+  double listening;
 
-  String skill;
-  Skill(this.skill);
+  Skill(
+      this.reading,
+      this.writing,
+      this.listening,
+      this.speaking
+      );
+
+  static String skillName(SkillType skillType) {
+    switch(skillType) {
+      case SkillType.reading:
+        return "Kĩ năng đọc";
+      case SkillType.writing:
+        return "Kĩ năng viết";
+      case SkillType.listening:
+        return "Kĩ năng nghe";
+      case SkillType.speaking:
+        return "Kĩ năng nói";
+    }
+  }
 }
 
-class Skills {
-  static final Skill speakking = Skill(Skill.speakking);
-  static final Skill writing = Skill(Skill.writing);
-  static final Skill listening = Skill(Skill.listening);
-  static final Skill reading = Skill(Skill.reading);
+enum SkillType {
+  reading,
+  writing,
+  listening,
+  speaking,
 }
+

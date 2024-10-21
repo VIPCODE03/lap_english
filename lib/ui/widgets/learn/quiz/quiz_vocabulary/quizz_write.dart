@@ -5,15 +5,15 @@ import 'package:lap_english/ui/widgets/other/rich_text.dart';
 
 import '../../../../../utils/text_to_maptext.dart';
 
-class QuizzWritingW extends QuizzWidget<QuizzWriteWord> {
-  QuizzWritingW({super.key, required super.quizz});
+class WdgQuizzWriteWord extends WdgQuizz<QuizzWriteWord> {
+  WdgQuizzWriteWord({super.key, required super.quizz});
 
   @override
-  QuizzWidgetState<QuizzWriteWord, QuizzWidget<QuizzWriteWord>> createState()
-  => _QuizzWritingState();
+  WdgQuizzState<QuizzWriteWord, WdgQuizz<QuizzWriteWord>> createState()
+  => _WdgQuizzWriteWordState();
 }
 
-class _QuizzWritingState extends QuizzWidgetState<QuizzWriteWord, QuizzWritingW> {
+class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWriteWord> {
   final TextEditingController _controller = TextEditingController();
   var _enabled = true;
 
@@ -43,7 +43,7 @@ class _QuizzWritingState extends QuizzWidgetState<QuizzWriteWord, QuizzWritingW>
       body: Column(
           children: [
             ///AdaptiveText hiển thị câu hỏi  ----------------------------------
-            AdaptiveText(texts: parseStringToMap(widget.quizz.question)),
+            WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
 
             ///Ô nhập đáp án  --------------------------------------------
             const SizedBox(height: 50),

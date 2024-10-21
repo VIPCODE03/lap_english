@@ -5,15 +5,15 @@ import 'package:lap_english/ui/widgets/other/rich_text.dart';
 import 'package:lap_english/utils/text_to_maptext.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */
-class QuizzSentenceChooseW extends QuizzWidget<QuizzSentenceChoose> {
-  QuizzSentenceChooseW({super.key, required super.quizz});
+class WdgQuizzSentenceChoose extends WdgQuizz<QuizzSentenceChoose> {
+  WdgQuizzSentenceChoose({super.key, required super.quizz});
 
   @override
-  QuizzWidgetState<QuizzSentenceChoose, QuizzWidget<QuizzSentenceChoose>> createState()
-  => _ChooseOneWordWidgetState();
+  WdgQuizzState<QuizzSentenceChoose, WdgQuizz<QuizzSentenceChoose>> createState()
+  => _WdgQuizzSentenceChooseState();
 }
 
-class _ChooseOneWordWidgetState extends QuizzWidgetState<QuizzSentenceChoose, QuizzSentenceChooseW> {
+class _WdgQuizzSentenceChooseState extends WdgQuizzState<QuizzSentenceChoose, WdgQuizzSentenceChoose> {
   String? selectedKey;
 
   @override
@@ -21,7 +21,7 @@ class _ChooseOneWordWidgetState extends QuizzWidgetState<QuizzSentenceChoose, Qu
     return Column(
         children: [
           ///AdaptiveText câu hỏi ----------------------------------------------
-          AdaptiveText(texts: parseStringToMap(widget.quizz.question)),
+          WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
           const SizedBox(height: 20),
 
           ///Listview danh sách đáp án  ----------------------------------------

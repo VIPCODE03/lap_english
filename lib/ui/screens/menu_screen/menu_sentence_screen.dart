@@ -21,8 +21,8 @@ class MenuSentenceScreen extends StatelessWidget {
               ///Progress Bar --------------------------------------------------
               return const Center(child: CircularProgressIndicator());
             } else if (state is SentenceLoaded) {
-              ///ListViewSentence ---------------------------------------------
-              return MenuSentence.builder(mainTopicList: state.topics);
+              ///ListViewSentence ----------------------------------------------
+              return WdgMenuSentence.build(mainTopicList: state.topics);
             }
 
             return const Center(

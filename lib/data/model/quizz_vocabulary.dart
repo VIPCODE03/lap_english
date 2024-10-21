@@ -72,7 +72,7 @@ class QuizzChooseOneWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.reading;
+  SkillType get skillType => SkillType.reading;
 }
 
 /*  Chọn âm thanh của từ  */
@@ -113,7 +113,7 @@ class QuizzSoundOfWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.listening;
+  SkillType get skillType => SkillType.listening;
 }
 
 /*  Nói */
@@ -139,7 +139,7 @@ class QuizzSpeakWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.speakking;
+  SkillType get skillType => SkillType.speaking;
 
 }
 
@@ -163,6 +163,6 @@ class QuizzWriteWord extends QuizzVocabulary {
   }
 
   @override
-  Skill get skill => Skills.writing;
+  SkillType get skillType => SkillType.writing;
 
 }

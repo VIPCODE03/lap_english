@@ -25,7 +25,7 @@ class MenuVocabularyScreen extends StatelessWidget {
 
             } else if (state is VocabularyLoaded) {
               ///ListViewVocabulary --------------------------------------------
-              return MenuVocabulary.builder(mainTopicList: state.topics);
+              return WdgMenuVocabulary.build(mainTopicList: state.topics);
             }
 
             return const Center(

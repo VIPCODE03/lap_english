@@ -41,5 +41,5 @@ class QuizzSentenceChoose extends QuizzSentence {
   }
 
   @override
-  Skill get skill => Skills.reading;
+  SkillType get skillType => SkillType.reading;
 }

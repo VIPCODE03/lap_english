@@ -8,15 +8,15 @@ import '../../../other/rich_text.dart';
 import '../quizz_widget.dart';
 
 /*  Quizz chọn âm thanh */
-class SoundOfWord extends QuizzWidget<QuizzSoundOfWord> {
-  SoundOfWord({super.key, required super.quizz});
+class WdgQuizzSoundOfWord extends WdgQuizz<QuizzSoundOfWord> {
+  WdgQuizzSoundOfWord({super.key, required super.quizz});
 
   @override
-  QuizzWidgetState<QuizzSoundOfWord, QuizzWidget<QuizzSoundOfWord>> createState() => _SoundState();
+  WdgQuizzState<QuizzSoundOfWord, WdgQuizz<QuizzSoundOfWord>> createState() => _WdgQuizzSoundOfWordState();
 
 }
 
-class _SoundState extends QuizzWidgetState<QuizzSoundOfWord, SoundOfWord> {
+class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizzSoundOfWord> {
   final TextToSpeakUtil _textToSpeakUtil = TextToSpeakUtil();
   String? selectedKey; //-> Biến lưu item được chọn
 
@@ -41,7 +41,7 @@ class _SoundState extends QuizzWidgetState<QuizzSoundOfWord, SoundOfWord> {
     return Column(
       children: [
         ///AdaptiveText câu hỏi ------------------------------------------------
-        AdaptiveText(texts: parseStringToMap(widget.quizz.question)),
+        WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
 
         ///Hộp âm thanh --------------------------------------------------------
         const SizedBox(height: 20),

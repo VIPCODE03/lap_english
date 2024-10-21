@@ -5,15 +5,15 @@ import 'package:lap_english/constant/theme_constant.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:provider/provider.dart';
 
-class Row1 extends StatelessWidget {
-  const Row1({super.key});
+class WdgRow1 extends StatelessWidget {
+  const WdgRow1({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          //CONTAINER làm nền hình ảnh  ---------------------------
+          ///CONTAINER làm nền hình ảnh  ---------------------------
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -26,7 +26,7 @@ class Row1 extends StatelessWidget {
             ),
           ),
 
-          //TEXT họ tên ------------------------------------------------------
+          ///TEXT họ tên ------------------------------------------------------
           const Positioned(
             top: 10,
             left: 10,
@@ -40,7 +40,7 @@ class Row1 extends StatelessWidget {
             ),
           ),
 
-          //ICONBUTTON settings ----------------------------------------------
+          ///ICONBUTTON settings ----------------------------------------------
           Positioned(
             right: 10,
             child: IconButton(
@@ -53,7 +53,7 @@ class Row1 extends StatelessWidget {
             ),
           ),
 
-          //CARD thông tin ----------------------------------------------
+          ///CARD thông tin ----------------------------------------------
           Positioned(
             bottom: 0,
             right: 10,
@@ -66,17 +66,17 @@ class Row1 extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //COLUMN  1 --------------------------------------------
+                    ///COLUMN  1 --------------------------------------------
                     Expanded(
                       child: _column('Số từ đã học', '100 từ'),
                     ),
 
-                    //COLUMN  2 --------------------------------------------
+                    ///COLUMN  2 --------------------------------------------
                     Expanded(
                       child: _column('Chuỗi ngày', '5'),
                     ),
 
-                    //COLUMN  3 --------------------------------------------
+                    ///COLUMN  3 --------------------------------------------
                     Expanded(
                       child: _column('Thời gian học', '23 ngày'),
                     ),
@@ -90,6 +90,7 @@ class Row1 extends StatelessWidget {
     );
   }
 
+  ///Item thông tin -------------------------------------------------------
   Widget _column(String title, String content) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
