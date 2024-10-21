@@ -10,14 +10,14 @@ import 'package:lap_english/data/model/vocabulary.dart';
 abstract class Quizz {
   late String question;
   late Map<String, bool> answers;
-  Skill get skill;
+  SkillType get skillType;
 
-  List<Quizz> create();
+  List<Quizz> generate();
 }
 
 /*  Class khởi tạo các loại quizz   */
 class Quizzes {
-  static List<Quizz> createQuizzVocabulary({required QuizzMode mode, required List<Word> words}) {
+  static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<Word> words}) {
     List<Quizz> quizzesVocabulary = [];
     List<QuizzVocabulary> quizzList;
 
@@ -35,12 +35,12 @@ class Quizzes {
 
     for(var quizz in quizzList) {
       quizz.words = words;
-      quizzesVocabulary.addAll(quizz.create());
+      quizzesVocabulary.addAll(quizz.generate());
     }
     return quizzesVocabulary;
   }
 
-  static List<Quizz> createQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) {
+  static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) {
     List<Quizz> quizzes = [];
     List<QuizzSentence> quizzList;
 
@@ -58,7 +58,7 @@ class Quizzes {
 
     for(var quizz in quizzList) {
       quizz.sentences = sentences;
-      quizzes.addAll(quizz.create());
+      quizzes.addAll(quizz.generate());
     }
     return quizzes;
   }

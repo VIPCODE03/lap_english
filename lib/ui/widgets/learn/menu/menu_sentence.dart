@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lap_english/data/model/sentence.dart';
-import 'package:lap_english/ui/screens/learn_screen.dart';
+import 'package:lap_english/ui/screens/quizz_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
 import '../../other/expandable_view.dart';
 
-class MenuSentence extends StatelessWidget {
+class WdgMenuSentence extends StatelessWidget {
   final List<MainSentenceTopic> _mainTopicList;
   final textToSpeakUtil = TextToSpeakUtil();
 
@@ -22,68 +22,11 @@ class MenuSentence extends StatelessWidget {
     );
   }
 
-  MenuSentence.builder({
+  WdgMenuSentence.build({
     super.key,
     required List<MainSentenceTopic> mainTopicList
   })
       : _mainTopicList = mainTopicList;
-
-
-  /// ITEM chủ đề con  ----------------------------------------------------------
-  Widget _buildItemSub(BuildContext context, SubSentenceTopic subTopic, bool state) {
-    return InkWell(
-      onTap: () => _showDialogSentenceList(context, subTopic.sentences),
-      child: Column(
-        children: [
-          Column(
-            children: [
-              ///ẢNH tải từ server  --------------------------------------------------
-              Stack(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.all(1.5),
-                    decoration: BoxDecoration(
-                      color: state ? Theme.of(context).primaryColor : Colors.grey,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(5),
-                        child: Image.network(
-                          subTopic.imageUrl,
-                          fit: BoxFit.cover,
-                          width: 60,
-                          height: 60,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ///ICON hoàn thành  ------------------------------------------------
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: state ? const Icon(Icons.check, color: Colors.white, size: 16) : null,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 20),
-              ///TEXT tên chủ đề con ----------------------------------------------------------
-              Text(subTopic.name, style: const TextStyle(fontSize: 14), maxLines: 2, textAlign: TextAlign.center),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 
   /// ITEM chủ đề chính  --------------------------------------------------------
   Widget _buildItemMain(BuildContext context, MainSentenceTopic mainTopic) {
@@ -149,6 +92,62 @@ class MenuSentence extends StatelessWidget {
     );
   }
 
+  /// ITEM chủ đề con  ----------------------------------------------------------
+  Widget _buildItemSub(BuildContext context, SubSentenceTopic subTopic, bool state) {
+    return InkWell(
+      onTap: () => _showDialogSentenceList(context, subTopic.sentences),
+      child: Column(
+        children: [
+          Column(
+            children: [
+              ///ẢNH tải từ server  --------------------------------------------------
+              Stack(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(1.5),
+                    decoration: BoxDecoration(
+                      color: state ? Theme.of(context).primaryColor : Colors.grey,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(5),
+                        child: Image.network(
+                          subTopic.imageUrl,
+                          fit: BoxFit.cover,
+                          width: 60,
+                          height: 60,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ///ICON hoàn thành  ------------------------------------------------
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: state ? const Icon(Icons.check, color: Colors.white, size: 16) : null,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 20),
+              ///TEXT tên chủ đề con ----------------------------------------------------------
+              Text(subTopic.name, style: const TextStyle(fontSize: 14), maxLines: 2, textAlign: TextAlign.center),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   ///DIALOG hiển thị danh sách câu  ------------------------------------------
   void _showDialogSentenceList(BuildContext context, List<Sentence> sentences) {
     showDialog(
@@ -171,7 +170,7 @@ class MenuSentence extends StatelessWidget {
                     itemCount: sentences.length,
                     itemBuilder: (context, index) {
                       var sentence = sentences[index];
-                      return ExpandedView(
+                      return WdgExpandedView(
                         expand: _itemSentence(context, sentence),
                         child: _itemSentence(context, sentence),
                       );
@@ -187,8 +186,8 @@ class MenuSentence extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LearnScreen.sentence(sentences: sentences)
-                        ),
+                          builder: (context) => QuizzScreen.sentence(sentences: sentences)
+                      ),
                       );
                     },
                     child: Row(

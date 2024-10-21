@@ -2,10 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 
-import '../../screens/menu_screen/menu_screen.dart';
+import '../../screens/menu_screen/menu_vocabulary_screen.dart';
 import '../../screens/menu_screen/menu_sentence_screen.dart';
 
-class Row2 extends StatelessWidget {
+class MenuItem {
+  final String imagePath;
+  final String label;
+  final Widget openScreen;
+
+  MenuItem({
+    required this.imagePath,
+    required this.label,
+    required this.openScreen
+  });
+}
+
+class WdgRow2 extends StatelessWidget {
   final List<MenuItem> menuItems = [
     MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
         label: "Học từ vựng",
@@ -37,7 +49,7 @@ class Row2 extends StatelessWidget {
     ),
   ];
 
-  Row2({super.key});
+  WdgRow2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -56,31 +68,31 @@ class Row2 extends StatelessWidget {
     );
   }
 
-  ///ITEM  --------------------------------------------------------------
+  ///ITEM  ---------------------------------------------------------------------
   Widget buildMenuItem(BuildContext context, MenuItem item) {
     return InkWell(
+      //--- Chuyển sang giao diện học tập  ---
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ///CONTAINER cover  --------------------------------------------------
           Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(1.5),
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.circular(20)
             ),
             ///ICON ------------------------------------------------------------
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(20),
               child: Container(
-                padding: const EdgeInsets.all(5),
-                color: Colors.white60,
+                padding: const EdgeInsets.all(6),
+                color: Colors.white54,
                 child: Image.asset(
                   item.imagePath,
-                  fit: BoxFit.cover,
-                  width: 50,
-                  height: 50,
+                  width: 45,
+                  height: 45,
                 ),
               ),
             ),
@@ -89,21 +101,10 @@ class Row2 extends StatelessWidget {
           const SizedBox(height: 10),
 
           ///TEXT --------------------------------------------------------------
-          Text(item.label, style: const TextStyle(fontSize: 18)),
+          Text(item.label, style: const TextStyle(fontSize: 16)),
         ],
       ),
     );
   }
 }
 
-class MenuItem {
-  final String imagePath;
-  final String label;
-  final Widget openScreen;
-
-  MenuItem({
-    required this.imagePath,
-    required this.label,
-    required this.openScreen
-  });
-}

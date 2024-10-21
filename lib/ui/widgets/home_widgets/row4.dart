@@ -2,10 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 
-class Row4 extends StatelessWidget {
+class WdgRow4 extends StatelessWidget {
   final List<String> data;
 
-  const Row4({
+  const WdgRow4({
     super.key,
     required this.data
   });

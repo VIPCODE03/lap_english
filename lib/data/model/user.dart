@@ -1,13 +1,16 @@
+import 'package:lap_english/data/model/skill.dart';
+import 'package:lap_english/data/model/title.dart';
 
+/*  Người dùng  */
 class User {
   late final int id;
   late final String name;
   final String email;
   final String password;
   late final int age;
-  late final List<int> vocabularyTopicsLearned;
-  late final List<int> sentenceTopicsLearned;
-  late final List<int> grammarsLearned;
+
+  late final Skill skills;
+  late final List<Title> titles;
 
   User(
       this.id,
@@ -15,9 +18,9 @@ class User {
       this.email,
       this.password,
       this.age,
-      this.vocabularyTopicsLearned,
-      this.sentenceTopicsLearned,
-      this.grammarsLearned);
+      this.skills,
+      this.titles,
+      );
 
   User.local(this.email, this.password);
 }

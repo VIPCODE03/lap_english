@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class AnimatedProgressBar extends StatelessWidget {
+class WdgAnimatedProgressBar extends StatelessWidget {
   final double value; //->  Giá trị phần trăm
   final String label; //->  Chuỗi hiển thị bên trong
   final Duration duration; //-> Thời gian cho hiệu ứng
 
-  const AnimatedProgressBar({
+  const WdgAnimatedProgressBar({
     super.key,
     required this.value,
     required this.label,

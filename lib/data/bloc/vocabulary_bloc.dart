@@ -40,20 +40,21 @@ class VocabularyBloc extends Bloc<VocabularyEvent, VocabularyState> {
       try {
         // Dữ liệu JSON chuỗi mẫu
         const String jsonString = MockData.jsonString;
-        String jsonAI = await gemini.ask(createWord()) ?? '';
+        jsonData.addAll(jsonDecode(jsonString));
 
-        //---   Chuyển json -> đối tượng  ---
-       jsonData.addAll(jsonDecode(jsonString));
-       if(jsonAI.isNotEmpty) {
-         jsonData.addAll(jsonDecode(jsonAI));
-       }
+       //  String jsonAI = await gemini.ask(createWord()) ?? '';
+       //
+       //  //---   Chuyển json -> đối tượng  ---
+       // if(jsonAI.isNotEmpty) {
+       //   jsonData.addAll(jsonDecode(jsonAI));
+       // }
         List<MainVocabularyTopic> topics = jsonData
             .map((item) => MainVocabularyTopic.fromJson(item))
             .toList();
 
         emit(VocabularyLoaded(topics));
       } catch (e) {
-        emit(VocabularyError('Failed to load vocabulary: $e'));
+         emit(VocabularyError('Failed to load vocabulary: $e'));
       }
     });
   }

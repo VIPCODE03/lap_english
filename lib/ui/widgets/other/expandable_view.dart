@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class ExpandedView extends StatefulWidget {
+class WdgExpandedView extends StatefulWidget {
   final Widget child;
   final Widget expand;
 
-  const ExpandedView({super.key, required this.child, required this.expand});
+  const WdgExpandedView({super.key, required this.child, required this.expand});
 
   @override
   ExpandableViewState createState() => ExpandableViewState();
 }
 
-class ExpandableViewState extends State<ExpandedView> with SingleTickerProviderStateMixin {
+class ExpandableViewState extends State<WdgExpandedView> with SingleTickerProviderStateMixin {
   bool _isExpanded = false;
   late AnimationController _controller;
 
