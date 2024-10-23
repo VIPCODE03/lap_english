@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz_vocabulary.dart';
+import 'package:lap_english/data/model/quizz/quizz_vocabulary.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/rich_text.dart';
 

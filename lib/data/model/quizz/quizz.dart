@@ -1,10 +1,11 @@
 
 import 'package:lap_english/constant/quizz_constant.dart';
-import 'package:lap_english/data/model/quizz_sentence.dart';
-import 'package:lap_english/data/model/quizz_vocabulary.dart';
-import 'package:lap_english/data/model/sentence.dart';
-import 'package:lap_english/data/model/skill.dart';
-import 'package:lap_english/data/model/vocabulary.dart';
+import 'package:lap_english/data/model/quizz/quizz_sentence.dart';
+import 'package:lap_english/data/model/quizz/quizz_vocabulary.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/model/learn/vocabulary.dart';
+
+import '../user/skill.dart';
 
 /*  Class quizz trừu tượng  */
 abstract class Quizz {

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz.dart';
+
+import '../../../../data/model/quizz/quizz.dart';
 
 class QuizzStatus {
   ValueNotifier<bool> isAnswered = ValueNotifier<bool>(false);

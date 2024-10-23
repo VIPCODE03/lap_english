@@ -7,7 +7,7 @@ import 'package:lap_english/utils/text_to_maptext.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
-import '../../../../../data/model/quizz_vocabulary.dart';
+import '../../../../../data/model/quizz/quizz_vocabulary.dart';
 
 class WdgQuizzSpeakWord extends WdgQuizz<QuizzSpeakWord> {
   WdgQuizzSpeakWord({super.key, required super.quizz});

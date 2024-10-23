@@ -2,13 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lap_english/data/model/sentence.dart';
-import 'package:lap_english/data/model/skill.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizzes.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import '../../data/bloc/quizz_bloc.dart';
-import '../../data/model/quizz.dart';
-import '../../data/model/vocabulary.dart';
+import '../../data/model/quizz/quizz.dart';
+import '../../data/model/user/skill.dart';
+import '../../data/model/learn/vocabulary.dart';
 import '../widgets/learn/quiz/quizz_widget.dart';
 
 class QuizzScreen extends StatelessWidget {

@@ -1,13 +1,13 @@
 
-import 'package:lap_english/data/model/quizz_sentence.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quiz_vocabulary/quizz_choose_one_word.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quiz_vocabulary/quizz_sound.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quiz_vocabulary/quizz_speak_word.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quiz_vocabulary/quizz_write.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_sentence/quizz_sentence_choose_one.dart';
 
-import '../../../../data/model/quizz.dart';
-import '../../../../data/model/quizz_vocabulary.dart';
+import '../../../../data/model/quizz/quizz.dart';
+import '../../../../data/model/quizz/quizz_sentence.dart';
+import '../../../../data/model/quizz/quizz_vocabulary.dart';
 import 'quizz_widget.dart';
 
 class QuizzItems {

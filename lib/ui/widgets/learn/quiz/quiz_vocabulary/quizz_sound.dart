@@ -1,7 +1,7 @@
 /*  Quizz trắc nghiệm 2-4 đáp án  */
 import 'package:flutter/material.dart';
 
-import '../../../../../data/model/quizz_vocabulary.dart';
+import '../../../../../data/model/quizz/quizz_vocabulary.dart';
 import '../../../../../utils/text_to_maptext.dart';
 import '../../../../../utils/text_to_speak.dart';
 import '../../../other/rich_text.dart';

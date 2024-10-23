@@ -82,9 +82,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/cover/
-    - assets/images/item/
+    - assets/images/icon/
     - assets/images/menu/
-    - assets/images/logo/
+    - assets/images/item/
     - assets/sounds/
 
   # To add assets to your application, add an assets section, like this:

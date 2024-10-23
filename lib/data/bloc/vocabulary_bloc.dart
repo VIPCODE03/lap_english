@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/a_data_test/datatest.dart';
 import '../../services/bot.dart';
-import '../model/vocabulary.dart';
+import '../model/learn/vocabulary.dart';
 
 /*  Event   */
 abstract class VocabularyEvent {}

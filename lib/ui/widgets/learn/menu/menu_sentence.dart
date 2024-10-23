@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lap_english/data/model/sentence.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/ui/screens/quizz_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
@@ -163,7 +163,7 @@ class WdgMenuSentence extends StatelessWidget {
                   width: MediaQuery.of(context).size.width,
                   repeat: ImageRepeat.repeat,
                   height: 50,
-                  image: Assets.images.logo.left.provider(),
+                  image: Assets.images.cover.headbock.provider(),
                 ),
                 Expanded(
                   child: ListView.builder(

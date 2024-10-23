@@ -1,9 +1,10 @@
 
 import 'dart:core';
 
-import 'package:lap_english/data/model/quizz.dart';
-import 'package:lap_english/data/model/sentence.dart';
-import 'package:lap_english/data/model/skill.dart';
+import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
+
+import '../user/skill.dart';
 
 abstract class QuizzSentence extends Quizz {
   late List<Sentence> _sentences;

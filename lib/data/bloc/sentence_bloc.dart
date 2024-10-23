@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../services/bot.dart';
-import '../model/sentence.dart';
+import '../model/learn/sentence.dart';
 
 /*  Event   */
 abstract class SentenceEvent {}

@@ -1,9 +1,10 @@
 
 import 'dart:math';
 
-import 'package:lap_english/data/model/quizz.dart';
-import 'package:lap_english/data/model/skill.dart';
-import 'package:lap_english/data/model/vocabulary.dart';
+import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/data/model/learn/vocabulary.dart';
+
+import '../user/skill.dart';
 
 /*  QuizVocabulary trừu tượng   */
 abstract class QuizzVocabulary extends Quizz {

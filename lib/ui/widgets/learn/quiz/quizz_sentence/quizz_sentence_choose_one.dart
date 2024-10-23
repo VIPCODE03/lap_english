@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz_sentence.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/rich_text.dart';
 import 'package:lap_english/utils/text_to_maptext.dart';
+
+import '../../../../../data/model/quizz/quizz_sentence.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */
 class WdgQuizzSentenceChoose extends WdgQuizz<QuizzSentenceChoose> {

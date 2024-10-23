@@ -1,48 +1,66 @@
-import 'package:flutter/material.dart';
-import 'package:lap_english/ui/widgets/profile_widgets/row1_profile.dart';
+import 'dart:convert';
 
-class ProfileScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:lap_english/a_data_test/data_user_test.dart';
+import 'package:lap_english/data/model/user/user.dart';
+
+import '../widgets/nav_profile_widgets/row1_profile.dart';
+import '../widgets/nav_profile_widgets/row2_profile.dart';
+import '../widgets/nav_profile_widgets/row3_profile.dart';
+
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      child:
-      ListView(
-      children: const [
-        ///ROW1  --------------------------------------------------------------
-        SizedBox(
-          height: 300,
-          child: WdgRow1Profile(),
-        ),
+  ProfileScreenState createState() => ProfileScreenState();
+}
 
-        // ///ROW2  ------------------------- -------------------------------------
-        // SizedBox(
-        //     height: 260,
-        //     child: WdgRow2()
-        // ),
-        //
-        // ///ROW3  --------------------------------------------------------------
-        // const SizedBox(
-        //     height: 250,
-        //     child: WdgRow3(data: ["Chủ đề tiếng anh", "Chủ đề tiếng em", "Chủ đề tiếng Trung", "Chủ đề địt nhau", "Chủ đề bú lồn"],)
-        // ),
-        //
-        // ///ROW4  --------------------------------------------------------------
-        // const SizedBox(
-        //     height: 250,
-        //     child: WdgRow4(data: ["Phổ biến", "Thường ngày", "Khen ngợi ai đó"],)
-        // ),
-        //
-        // ///ROW5  --------------------------------------------------------------
-        // Container(
-        //   height: 150,
-        //   color: Colors.purple,
-        //   child: const Center(child: Text('View 5', style: TextStyle(color: Colors.white, fontSize: 20))),
-        // ),
+class ProfileScreenState extends State<ProfileScreen> {
+  late Map<String, dynamic> userMap;
+  late User user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    //---   Khởi tạo user   ---
+    userMap = jsonDecode(UserDataTest.getUserJson());
+    user = User.fromJson(userMap);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        /// ROW1  --------------------------------------------------------------
+        SizedBox(
+          child: WdgRow1Profile(user: user),
+        ),
+        _space(),
+
+        /// ROW2  --------------------------------------------------------------
+        SizedBox(
+          height: 170,
+          child: WdgRow2Profile(skill: user.skills),
+        ),
+        _space(),
+
+        /// ROW3  --------------------------------------------------------------
+        SizedBox(
+          height: 200,
+          child: WdgRow3Profile(user: user),
+        ),
+        _space(),
+
       ],
-      )
+    );
+  }
+
+  Widget _space() {
+    return Container(
+      margin: const EdgeInsets.only(top: 15),
+      height: 0.5,
+      color: Theme.of(context).primaryColor,
     );
   }
 }

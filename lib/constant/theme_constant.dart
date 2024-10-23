@@ -14,8 +14,9 @@ class ThemeConstant {
   static final ThemeVip theme5 = ThemeVip(Assets.images.cover.cover1.path, blueTheme);
   static final ThemeVip theme6 = ThemeVip(Assets.images.cover.cover6.path, greenTheme);
   static final ThemeVip theme7 = ThemeVip(Assets.images.cover.cover7.path, orangeTheme);
+  static final ThemeVip theme8 = ThemeVip(Assets.images.cover.cover8.path, blueTheme);
 
   static final List<ThemeVip> themes = [
-    theme1, theme2, theme3, theme4, theme5, theme6, theme7
+    theme1, theme2, theme3, theme4, theme5, theme6, theme7, theme8,
   ];
 }

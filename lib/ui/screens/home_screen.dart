@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/widgets/home_widgets/row1.dart';
-import 'package:lap_english/ui/widgets/home_widgets/row2.dart';
-import 'package:lap_english/ui/widgets/home_widgets/row3.dart';
 
-import '../widgets/home_widgets/row4.dart';
+import '../widgets/nav_home_widgets/row1.dart';
+import '../widgets/nav_home_widgets/row2.dart';
+import '../widgets/nav_home_widgets/row3.dart';
+import '../widgets/nav_home_widgets/row4.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
