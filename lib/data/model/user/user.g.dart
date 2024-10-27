@@ -17,15 +17,17 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           .map((e) => Title.fromJson(e as Map<String, dynamic>))
           .toList(),
       CumulativePoint.fromJson(json['cumulativePoint'] as Map<String, dynamic>),
+      Task.fromJson(json['task'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'id': instance.id,
-      'name': instance.name,
       'email': instance.email,
       'password': instance.password,
+      'name': instance.name,
       'age': instance.age,
       'skills': instance.skills.toJson(),
       'titles': instance.titles.map((e) => e.toJson()).toList(),
       'cumulativePoint': instance.cumulativePoint.toJson(),
+      'task': instance.task.toJson(),
     };

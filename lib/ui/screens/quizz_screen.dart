@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizzes.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import '../../data/bloc/quizz_bloc.dart';
@@ -30,7 +31,8 @@ class QuizzScreen extends StatelessWidget {
 
   void _init() {
     _quizzes.shuffle();
-    _children = QuizzItems.generate(_quizzes);
+    _children = QuizzItems.generate(_quizzes)
+        .where((quizz) => quizz.quizz.skillType == SkillType.reading).toList();
   }
 
   @override
@@ -100,19 +102,26 @@ class QuizzScreen extends StatelessWidget {
                       Container(
                         height: 50,
                         width: 400,
-                        margin: const EdgeInsets.all(50),
+                        margin: const EdgeInsets.only(right: 50, left: 50, bottom: 30),
                         child: ValueListenableBuilder<bool>(
                           valueListenable: currentQuizz.status.isAnswered,
                           builder: (context, value, child) {
                             return ElevatedButton(
                               onPressed: value
                                   ? () {
-                                      currentQuizz.status.isChecked.value =
-                                          true;
+                                      currentQuizz.status.isChecked.value = true;
+                                      var isCorrect = currentQuizz.status.isCorrect!;
+                                      String title;
+                                      isCorrect
+                                          ? title = state.accolades[state.accoladesIndex]
+                                          : title = state.encouragements[state.encouragementsIndex];
+
                                       _buildBottomDialogResult(
                                           context,
+                                          title,
                                           currentQuizz.status.correctAnswer,
-                                          currentQuizz.status.isCorrect!);
+                                          isCorrect);
+
                                     }
                                   : null,
                               child: const Text('Kiểm tra'),
@@ -133,71 +142,83 @@ class QuizzScreen extends StatelessWidget {
   }
 
   ///Dialog kết quả ------------------------------------------------------------
-  void _buildBottomDialogResult(BuildContext parentContext, String? answerCorrect, bool isCorrect) {
-      showModalBottomSheet(
-        isDismissible: false,
-        enableDrag: false,
-        context: parentContext,
-        builder: (context) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            height: 300,
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
+  void _buildBottomDialogResult(BuildContext parentContext, String title, String? answerCorrect, bool isCorrect) {
+    showModalBottomSheet(
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: parentContext,
+      builder: (context) {
+        return Container(
+          width: MediaQuery.of(context).size.width,
+          height: 200,
+          decoration: BoxDecoration(
+            color: isCorrect
+                ? Colors.green.withAlpha(70)
+                : Colors.red.withAlpha(70),
+          ),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              /// Ảnh ------------------------------------------------------------
+              Positioned(
+                top: -66,
+                right: 0,
+                child: Image.asset(
+                    isCorrect
+                        ? Assets.images.dinosaur.dinosaurOk.path
+                        : Assets.images.dinosaur.dinosaurQuestion.path,
+                    height: 150,
+                  ),
               ),
-            ),
-            child: Column(
-              children: [
-                ///Icon trạng thái (đúng/sai) ------------------------------------
-                Icon(
-                  isCorrect ? Icons.check_circle_outline : Icons.cancel_outlined,
-                  color: isCorrect ? Colors.green : Colors.red,
-                  size: 50,
-                ),
-                const SizedBox(height: 16),
 
-                ///Text hiển thị kết quả (đúng/sai) -------------------------------
-                Text(
-                  isCorrect ? 'Chính xác!' : 'Chưa chính xác!',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    color: isCorrect ? Colors.green : Colors.red,
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                ///Text hiển thị đáp án đúng  -------------------------------------
-                Text(
-                  answerCorrect != null ? 'Đáp án đúng: $answerCorrect' : '',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 20),
-
-                ///Button tiếp tục  -----------------------------------------------
-                Container(
-                  height: 50,
-                  width: 400,
-                  margin: const EdgeInsets.only(top: 20),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      parentContext.read<QuizzBloc>().add(QuizzCheck());
-                      Navigator.pop(context); //->  Đóng BottomSheet
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isCorrect ? Colors.green : Colors.red,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+              /// Nội dung  --------------------------------------------------------
+              Container(
+                alignment: Alignment.bottomCenter,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        color: isCorrect ? Colors.green : Colors.red,
+                      ),
                     ),
-                    child: const Text('Tiếp tục'),
-                  ),
+                    const SizedBox(height: 10),
+                    Text(
+                      answerCorrect != null ? 'Đáp án đúng: $answerCorrect' : '',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 50,
+                      width: 400,
+                      margin: const EdgeInsets.only(right: 50, left: 50, bottom: 30),
+                      child:
+                        ElevatedButton(
+                          onPressed: () {
+                            parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));  //-> Check
+                            Navigator.pop(context); //->  Đóng BottomSheet
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: isCorrect ? Colors.green : Colors.red,
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          ),
+                          child: const Text('Tiếp tục'),
+                        ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      );
-    }
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

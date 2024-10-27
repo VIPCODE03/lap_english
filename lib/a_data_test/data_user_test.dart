@@ -1,6 +1,10 @@
 import 'dart:convert';
-import 'dart:math';
 
+import 'package:lap_english/data/model/task/daily_task.dart';
+import 'package:lap_english/data/model/task/roll_call.dart';
+import 'package:lap_english/data/model/task/task.dart';
+
+import '../data/model/reward.dart';
 import '../data/model/user/cumulative_point.dart';
 import '../data/model/user/skill.dart';
 import '../data/model/user/title.dart';
@@ -25,10 +29,10 @@ class UserDataTest {
             name: 'Kim cương',
             rewardType: RewardType.diamond,
             quantity: 5,
+            isRewardClaimed: false
           ),
-          completed: 10,
+          progress: 5,
           total: 10,
-          isRewardClaimed: true,
         ),
         Title(
           id: 2,
@@ -39,21 +43,31 @@ class UserDataTest {
             name: 'Kim cương',
             rewardType: RewardType.diamond,
             quantity: 5,
+            isRewardClaimed: true
           ),
-          completed: 10,
+          progress: 10,
           total: 10,
-          isRewardClaimed: true,
         ),
       ],
-      CumulativePoint(50, 100),
+      CumulativePoint(0, 0),
+      Task(
+        dailyTasks: [
+          DailyTask(1, 'Học thêm 1 chủ đề', 0, 1, Reward(name: "Kim cương", rewardType: RewardType.diamond, quantity: 10, isRewardClaimed: false)),
+          DailyTask(1, 'Ôn tập 2 chủ đề', 1, 2, Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 50, isRewardClaimed: false)),
+        ],
+
+        rollCall: RollCall(currentDay: 2, days: [1,2,3,4,5,6,7], rewards: [
+          Reward(name: "Kim cương", rewardType: RewardType.diamond, quantity: 5, isRewardClaimed: true),
+          Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 50, isRewardClaimed: false),
+          Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 50, isRewardClaimed: false),
+          Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 100, isRewardClaimed: false),
+          Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 75, isRewardClaimed: false),
+          Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 125, isRewardClaimed: false),
+          Reward(name: "Kim cương", rewardType: RewardType.diamond, quantity: 25, isRewardClaimed: false)
+        ])
+      ),
     );
 
-    // Chuyển đổi đối tượng User thành JSON
     return jsonEncode(user.toJson());
   }
 }
-
-void main() {
-  print(UserDataTest.getUserJson());
-}
-

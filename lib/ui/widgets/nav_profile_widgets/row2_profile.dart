@@ -17,15 +17,10 @@ class WdgRow2Profile extends StatelessWidget {
     List<double> skills = [skill.reading, skill.writing, skill.speaking, skill.listening];
     double max = skills.reduce((a, b) => a > b ? a : b);
 
-    return Scaffold(
-        appBar: AppBar(title: const Text('Vấn đề kĩ năng :)',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)
-            )
-        ),
-        body: Row(
+    return Row(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 15, right: 50),
+              padding: const EdgeInsets.only(left: 50, right: 50),
               child: RadarChart(
                 length: 4,
                 radius: 50,
@@ -42,13 +37,12 @@ class WdgRow2Profile extends StatelessWidget {
                 radars: [
                   RadarTile(
                     values: skills.map((skill) => skill / max * 0.9).toList(),
-                    backgroundColor: Color.alphaBlend(
-                        Colors.white.withOpacity(0.5),
-                        Theme.of(context).primaryColor),
+                    backgroundColor: Theme.of(context).primaryColor.withOpacity(0.3)
                   ),
                 ],
               ),
             ),
+
             Expanded(
                 child: Column(
                   children: [
@@ -56,7 +50,7 @@ class WdgRow2Profile extends StatelessWidget {
                   ],
             ))
           ],
-        ));
+        );
   }
 
   ///Item tên skill -----------------------------------------------------------
@@ -79,6 +73,7 @@ class WdgRow2Profile extends StatelessWidget {
   }
 }
 
+///Đỉnh radar ----------------------------------------------------------
 class _RadarVertex extends StatelessWidget implements PreferredSizeWidget {
   final double radius;
   final Color color;

@@ -15,6 +15,9 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/cover
   $AssetsImagesCoverGen get cover => const $AssetsImagesCoverGen();
 
+  /// Directory path: assets/images/dinosaur
+  $AssetsImagesDinosaurGen get dinosaur => const $AssetsImagesDinosaurGen();
+
   /// Directory path: assets/images/icon
   $AssetsImagesIconGen get icon => const $AssetsImagesIconGen();
 
@@ -88,6 +91,44 @@ class $AssetsImagesCoverGen {
         cover7,
         cover8,
         headbock
+      ];
+}
+
+class $AssetsImagesDinosaurGen {
+  const $AssetsImagesDinosaurGen();
+
+  /// File path: assets/images/dinosaur/dinosaur_book.png
+  AssetGenImage get dinosaurBook =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_book.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_learn.png
+  AssetGenImage get dinosaurLearn =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_learn.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_ok.png
+  AssetGenImage get dinosaurOk =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_ok.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_question.png
+  AssetGenImage get dinosaurQuestion =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_question.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_teacher.png
+  AssetGenImage get dinosaurTeacher =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_teacher.png');
+
+  /// File path: assets/images/dinosaur/dinosaurcorrect.png
+  AssetGenImage get dinosaurcorrect =>
+      const AssetGenImage('assets/images/dinosaur/dinosaurcorrect.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        dinosaurBook,
+        dinosaurLearn,
+        dinosaurOk,
+        dinosaurQuestion,
+        dinosaurTeacher,
+        dinosaurcorrect
       ];
 }
 

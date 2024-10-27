@@ -1,12 +1,17 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import '../../../data/bloc/user_bloc.dart';
 import '../../../data/model/user/user.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WdgRow1Profile extends StatelessWidget {
   final User user;
+
   const WdgRow1Profile({
     super.key,
-    required this.user
+    required this.user,
   });
 
   @override
@@ -17,8 +22,25 @@ class WdgRow1Profile extends StatelessWidget {
         Align(
           alignment: Alignment.topRight,
           child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.settings)
+            onPressed: () {
+              user.name = "Anh Triệu đẹp trai vãi ò";
+              user.skills.listening = Random().nextDouble() * 10;
+              user.skills.speaking = Random().nextDouble() * 10;
+              user.skills.writing = Random().nextDouble() * 10;
+              user.skills.reading = Random().nextDouble() * 10;
+              var task = user.task;
+              if(task.rollCall.currentDay == 7) {
+                task.rollCall.currentDay = 1;
+                for (var reward in task.rollCall.rewards) {
+                  reward.isRewardClaimed = false;
+                }
+              } else {
+                task.rollCall.currentDay++;
+              }
+
+              context.read<UserBloc>().add(UserEventUpdate());
+            },
+            icon: const Icon(Icons.edit_note),
           ),
         ),
 
@@ -38,7 +60,7 @@ class WdgRow1Profile extends StatelessWidget {
                   radius: 50,
                   child: ClipOval(
                     child: Image.network(
-                      'https://cdn-media.sforum.vn/storage/app/media/THANHAN/2/2a/avatar-dep-89.jpg',
+                      'https://khoinguonsangtao.vn/wp-content/uploads/2022/10/hinh-anh-chu-mo.jpg',
                       fit: BoxFit.cover,
                       width: 100,
                       height: 100,
@@ -133,5 +155,4 @@ class WdgRow1Profile extends StatelessWidget {
       ],
     );
   }
-
 }

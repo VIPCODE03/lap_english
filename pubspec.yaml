@@ -85,6 +85,7 @@ flutter:
     - assets/images/icon/
     - assets/images/menu/
     - assets/images/item/
+    - assets/images/dinosaur/
     - assets/sounds/
 
   # To add assets to your application, add an assets section, like this:

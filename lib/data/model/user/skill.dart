@@ -4,10 +4,10 @@ part 'skill.g.dart';
 
 @JsonSerializable()
 class Skill {
-  final double reading;
-  final double writing;
-  final double speaking;
-  final double listening;
+  double reading;
+  double writing;
+  double speaking;
+  double listening;
 
   Skill(this.reading, this.writing, this.listening, this.speaking);
 

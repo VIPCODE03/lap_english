@@ -16,6 +16,7 @@ class MainScreen extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<BottomNavCubit, int>(
         builder: (context, state) {
           return BottomNavigationBar(
+            unselectedItemColor: Colors.grey,
             selectedItemColor: Theme.of(context).primaryColor,
             currentIndex: state,
             onTap: (index) {
@@ -25,19 +26,25 @@ class MainScreen extends StatelessWidget {
               ///NAV HOME  ----------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                label: '',
               ),
 
               ///NAV PROFILE --------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
-                label: 'Profile',
+                label: '',
+              ),
+
+              ///NAV TASK --------------------------------------------------------
+              BottomNavigationBarItem(
+                icon: Icon(Icons.add_chart_outlined),
+                label: '',
               ),
 
               ///NAV SETTINGS  ------------------------------------------------------
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
-                label: 'Settings',
+                label: '',
               ),
             ],
           );
