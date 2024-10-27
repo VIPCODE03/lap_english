@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import '../../../data/bloc/user_bloc.dart';
+import '../../../data/bloc/data_bloc/data_bloc.dart';
 import '../../../data/model/user/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,7 +38,7 @@ class WdgRow1Profile extends StatelessWidget {
                 task.rollCall.currentDay++;
               }
 
-              context.read<UserBloc>().add(UserEventUpdate());
+              context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
             },
             icon: const Icon(Icons.edit_note),
           ),

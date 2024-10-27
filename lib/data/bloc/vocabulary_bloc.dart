@@ -41,13 +41,6 @@ class VocabularyBloc extends Bloc<VocabularyEvent, VocabularyState> {
         // Dữ liệu JSON chuỗi mẫu
         const String jsonString = MockData.jsonString;
         jsonData.addAll(jsonDecode(jsonString));
-
-       //  String jsonAI = await gemini.ask(createWord()) ?? '';
-       //
-       //  //---   Chuyển json -> đối tượng  ---
-       // if(jsonAI.isNotEmpty) {
-       //   jsonData.addAll(jsonDecode(jsonAI));
-       // }
         List<MainVocabularyTopic> topics = jsonData
             .map((item) => MainVocabularyTopic.fromJson(item))
             .toList();

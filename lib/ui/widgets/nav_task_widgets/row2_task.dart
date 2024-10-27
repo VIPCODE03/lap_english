@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
 import 'package:lap_english/ui/colors/color_mix.dart';
 
@@ -39,7 +40,7 @@ class WdgRow2Task extends StatelessWidget {
           var reward = rollCall.rewards[index];
           if(!reward.isRewardClaimed) {
             reward.claimReward(user);
-            context.read<UserBloc>().add(UserEventUpdate());
+            context.read<DataBloc<User>>().add(DataEventUpdate(datas: [user]));
           }
         }
       },

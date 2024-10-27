@@ -28,7 +28,7 @@ class WdgRow1Task extends StatelessWidget {
                 ),
                 SizedBox(height: 5),
                 Text(
-                  'Học tập mỗi ngày để có thêm nhiều phần thưởng',
+                  'Hãy nhớ quay lại đây để nhận thưởng nhé <3',
                   style: TextStyle(
                     fontSize: 14,
                   ),

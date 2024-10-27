@@ -25,7 +25,7 @@ class UserStateInitialized extends UserState {
   UserStateInitialized({required this.user});
 
   UserStateInitialized update({User? newUser}) {
-    cacheManager.save(user);
+    cacheManager.save(CacheKeys.user, [user]);
     return UserStateInitialized(user: newUser ?? user);
   }
 }
@@ -39,17 +39,17 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     //---   Load user   ---
     on<UserEventLoad>((event, emit) {
       //--- Kiểm tra dữ liệu trong bộ nhớ đệm   ---
-      final User user;
+      List<User> users = [];
       final cacheUser = cacheManager.get(CacheKeys.user);
       if(cacheUser != null) {
-        user = User.fromJson(cacheUser);
+        users = cacheUser.map((item) => User.fromJson(item)).toList();
       }
       else {
         final userMap = jsonDecode(UserDataTest.getUserJson());
-        user = User.fromJson(userMap);
-        cacheManager.save(user);
+        users.add(User.fromJson(userMap));
+        cacheManager.save(CacheKeys.user, users);
       }
-      emit(UserStateInitialized(user: user));
+      emit(UserStateInitialized(user: users.first));
     });
 
     //---   Cập nhật user   ---

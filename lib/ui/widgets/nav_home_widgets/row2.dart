@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
-
-import '../../screens/menu_screen/menu_vocabulary_screen.dart';
-import '../../screens/menu_screen/menu_sentence_screen.dart';
+import 'package:lap_english/ui/screens/menu_screen.dart';
 
 class MenuItem {
   final String imagePath;
@@ -21,15 +21,15 @@ class WdgRow2 extends StatelessWidget {
   final List<MenuItem> menuItems = [
     MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
         label: "Học từ vựng",
-        openScreen: const MenuVocabularyScreen()
+        openScreen: const MenuScreen<MainVocabularyTopic>(title: "Từ vựng theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnSentence.path,
         label: "Học câu",
-        openScreen: const MenuSentenceScreen()
+        openScreen: const MenuScreen<MainSentenceTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
         label: "Học ngữ pháp",
-        openScreen: const MenuVocabularyScreen()
+        openScreen: const MenuScreen<MainSentenceTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Học phát âm",

@@ -68,6 +68,6 @@ class UserDataTest {
       ),
     );
 
-    return jsonEncode(user.toJson());
+    return jsonEncode([user.toJson()]);
   }
 }

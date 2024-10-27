@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/main_screen.dart';
 
@@ -22,10 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) {
-            return BlocProvider(
-              create: (_) => BottomNavCubit(),
-              child: const MainScreen(),
-            );
+            return const MainScreen();
           }),
         );
       }

@@ -117,6 +117,10 @@ class $AssetsImagesDinosaurGen {
   AssetGenImage get dinosaurTeacher =>
       const AssetGenImage('assets/images/dinosaur/dinosaur_teacher.png');
 
+  /// File path: assets/images/dinosaur/dinosaur_try.png
+  AssetGenImage get dinosaurTry =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_try.png');
+
   /// File path: assets/images/dinosaur/dinosaurcorrect.png
   AssetGenImage get dinosaurcorrect =>
       const AssetGenImage('assets/images/dinosaur/dinosaurcorrect.png');
@@ -128,6 +132,7 @@ class $AssetsImagesDinosaurGen {
         dinosaurOk,
         dinosaurQuestion,
         dinosaurTeacher,
+        dinosaurTry,
         dinosaurcorrect
       ];
 }

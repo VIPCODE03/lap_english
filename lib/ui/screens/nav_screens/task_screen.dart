@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/model/user/user.dart';
 import 'package:lap_english/ui/widgets/nav_task_widgets/row1_task.dart';
 import 'package:lap_english/ui/widgets/nav_task_widgets/row2_task.dart';
-import '../../../data/bloc/user_bloc.dart';
+import '../../../data/bloc/data_bloc/data_bloc.dart';
 import '../../widgets/nav_task_widgets/row3_task.dart';
 import '../../widgets/other/group.dart';
 
@@ -17,15 +18,15 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserBloc()..add(UserEventLoad()),
+      create: (context) => DataBloc<User>()..add(DataEventLoad<User>()),
       child: Scaffold(
-        body: BlocBuilder<UserBloc, UserState>(
+        body: BlocBuilder<DataBloc<User>, DataState<User>>(
           builder: (context, state) {
-            if (state is UserStateInitial) {
+            if (state is DataStateLoading<User>) {
               return const Center(child: CircularProgressIndicator());
 
-            } else if (state is UserStateInitialized) {
-              final user = state.user;
+            } else if (state is DataStateLoaded<User>) {
+              final user = state.data.first;
 
               return ListView(
                 children: [
@@ -41,7 +42,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
                   /// ROW4  --------------------------------------------------------------
                   const WdgGroup(title: 'Nhiệm vụ hàng ngày', opacity: 0.06, height: 15),
-                  WdgRow3Task(dailyTasks: user.task.dailyTasks),
+                  WdgRow3Task(user: user),
                 ],
               );
             }
