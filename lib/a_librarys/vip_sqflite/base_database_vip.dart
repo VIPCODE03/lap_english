@@ -133,7 +133,7 @@ abstract class BaseDatabase<T> {
     List<Map<String, Object?>>? datas = await db?.rawQuery(query, args);
 
     if(datas!.isEmpty && query.toUpperCase().contains('INSERT') || query.toUpperCase().contains('UPDATE')) {
-      final check = await _CheckNewlyAddedRecords();
+      final check = await _checkNewlyAddedRecords();
       if(check) {
         return _generate(datas);
       }
@@ -144,14 +144,16 @@ abstract class BaseDatabase<T> {
   /*  Hàm kiểm tra và khởi tạo dữ liệu  */
 
   //===   Kiểm tra tồn tại 2 bản ghi và xóa ===
-  Future<bool> _CheckNewlyAddedRecords() async {
+  Future<bool> _checkNewlyAddedRecords() async {
     final newly = await getData(index: 1, limit: 1, firstToLast: false);
     T obj = newly[0];
     Column column = table.columns(obj);
     final keyValue = column[table.key.nameColumn];
     final ids = await _getIdsByKey(keyValue);
     if(ids.length >= 2) {
-      print('Record already exists by key ${table.key} = $keyValue');
+      if (kDebugMode) {
+        print('Record already exists by key ${table.key} = $keyValue');
+      }
       final db = await _database;
       await db?.delete(
           table.tableName,

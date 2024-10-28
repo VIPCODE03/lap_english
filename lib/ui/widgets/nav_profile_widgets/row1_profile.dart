@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/widgets/other/button.dart';
 import '../../../data/bloc/data_bloc/data_bloc.dart';
 import '../../../data/model/user/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +22,8 @@ class WdgRow1Profile extends StatelessWidget {
         /// Hàng 1 --------------------------------------------------------------
         Align(
           alignment: Alignment.topRight,
-          child: IconButton(
-            onPressed: () {
+          child: WdgButton(
+            onTap: () {
               user.name = "Anh Triệu đẹp trai vãi ò";
               user.skills.listening = Random().nextDouble() * 10;
               user.skills.speaking = Random().nextDouble() * 10;
@@ -40,7 +41,8 @@ class WdgRow1Profile extends StatelessWidget {
 
               context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
             },
-            icon: const Icon(Icons.edit_note),
+            color: Colors.transparent,
+            child: const Icon(Icons.edit_note, size: 30),
           ),
         ),
 

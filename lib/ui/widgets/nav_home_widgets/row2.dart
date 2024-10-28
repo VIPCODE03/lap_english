@@ -4,6 +4,7 @@ import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
+import 'package:lap_english/ui/widgets/other/button.dart';
 
 class MenuItem {
   final String imagePath;
@@ -20,19 +21,19 @@ class MenuItem {
 class WdgRow2 extends StatelessWidget {
   final List<MenuItem> menuItems = [
     MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
-        label: "Học từ vựng",
+        label: "Từ vựng",
         openScreen: const MenuScreen<MainVocabularyTopic>(title: "Từ vựng theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnSentence.path,
-        label: "Học câu",
+        label: "Câu",
         openScreen: const MenuScreen<MainSentenceTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
-        label: "Học ngữ pháp",
+        label: "Ngữ pháp",
         openScreen: const MenuScreen<MainSentenceTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
-        label: "Học phát âm",
+        label: "Phát âm",
         openScreen: const LoginScreen()
     ),
     MenuItem(imagePath: Assets.images.menu.learnReview.path,
@@ -60,50 +61,51 @@ class WdgRow2 extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.w700),
         ),
       ),
-      body:  GridView.count(
-          scrollDirection: Axis.horizontal,
-          crossAxisCount: 2,
-          children: menuItems.map((item) => buildMenuItem(context, item)).toList(),
-        ),
+      body: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: menuItems.map((item) => buildMenuItem(context, item)).toList(),
+      )
     );
   }
 
   ///ITEM  ---------------------------------------------------------------------
   Widget buildMenuItem(BuildContext context, MenuItem item) {
-    return InkWell(
-      //--- Chuyển sang giao diện học tập  ---
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ///CONTAINER cover  --------------------------------------------------
-          Container(
-            padding: const EdgeInsets.all(1.5),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(20)
-            ),
-            ///ICON ------------------------------------------------------------
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                color: Colors.white54,
-                child: Image.asset(
-                  item.imagePath,
-                  width: 45,
-                  height: 45,
+    return WdgButton(
+        //--- Chuyển sang giao diện học tập  ---
+        onTap: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => item.openScreen)),
+        color: Colors.transparent,
+        child: Column(
+          children: [
+            ///CONTAINER cover  --------------------------------------------------
+            Container(
+              height: 66,
+              width: 66,
+              padding: const EdgeInsets.all(1.5),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(20)),
+
+              ///ICON ------------------------------------------------------------
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  color: Colors.white54,
+                  child: Image.asset(
+                    item.imagePath,
+                    width: 45,
+                    height: 45,
+                  ),
                 ),
               ),
             ),
-          ),
 
-          const SizedBox(height: 10),
-
-          ///TEXT --------------------------------------------------------------
-          Text(item.label, style: const TextStyle(fontSize: 16)),
-        ],
-      ),
+            ///TEXT --------------------------------------------------------------
+            Text(item.label, maxLines: 1, style: const TextStyle(fontSize: 16))
+          ],
+        )
     );
   }
 }

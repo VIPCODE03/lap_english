@@ -4,6 +4,8 @@ import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/rich_text.dart';
 import 'package:lap_english/utils/text_to_maptext.dart';
 
+import '../../../other/button.dart';
+
 /*  Quizz trắc nghiệm 2-4 đáp án  */
 class WdgQuizzChooseOneWord extends WdgQuizz<QuizzChooseOneWord> {
   WdgQuizzChooseOneWord({super.key, required super.quizz});
@@ -40,35 +42,23 @@ class _ChooseOneWordWidgetState extends WdgQuizzState<QuizzChooseOneWord, WdgQui
                     duration: const Duration(milliseconds: 200),
                     margin: const EdgeInsets.all(5),
                     height: 66,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: isSelected
-                          ? Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 1
-                          )
-                          : null,
-                      boxShadow: isSelected
-                          ? [
-                        BoxShadow(
-                          color: Theme.of(context).primaryColor,
-                          offset: const Offset(0, 1),
-                          blurRadius: 10,
-                        )
-                      ]
-                          : null,
+                  child: WdgButton(
+                    onTap: () {
+                      setState(() {
+                        selectedKey = option;
+                        widget.status.isAnswered.value = true;
+                        widget.status.isCorrect = isCorrect;
+                      });
+                    },
+                    color: isSelected
+                      ? Theme.of(context).primaryColor.withAlpha(90)
+                      : Theme.of(context).primaryColor.withAlpha(30),
+                    borderRadius: BorderRadius.circular(12),
+                    child: Text(
+                      option,
+                      style: const TextStyle(fontSize: 20),
                     ),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedKey = option;
-                            widget.status.isAnswered.value = true;
-                            widget.status.isCorrect = isCorrect;
-                          });
-                        },
-                        child: Text(option, style: const TextStyle(fontSize: 20)),
-                      ),
-
+                  ),
                 );
               },
             ),

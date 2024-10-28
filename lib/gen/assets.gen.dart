@@ -31,14 +31,17 @@ class $AssetsImagesGen {
 class $AssetsSoundsGen {
   const $AssetsSoundsGen();
 
-  /// File path: assets/sounds/sound_correct.mp3
-  String get soundCorrect => 'assets/sounds/sound_correct.mp3';
+  /// File path: assets/sounds/aaaa.mp3
+  String get aaaa => 'assets/sounds/aaaa.mp3';
+
+  /// File path: assets/sounds/correct.mp3
+  String get correct => 'assets/sounds/correct.mp3';
 
   /// File path: assets/sounds/test.mp3
   String get test => 'assets/sounds/test.mp3';
 
   /// List of all assets
-  List<String> get values => [soundCorrect, test];
+  List<String> get values => [aaaa, correct, test];
 }
 
 class $AssetsImagesCoverGen {

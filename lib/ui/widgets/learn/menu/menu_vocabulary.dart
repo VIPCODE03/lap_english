@@ -6,6 +6,7 @@ import 'package:lap_english/ui/screens/quizz_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
+import '../../other/button.dart';
 import '../../other/expandable_view.dart';
 
 class WdgMenuVocabulary extends StatelessWidget {
@@ -29,10 +30,19 @@ class WdgMenuVocabulary extends StatelessWidget {
   })
       : _mainTopicList = mainTopicList;
 
+  WdgMenuVocabulary.search({
+    super.key,
+    required String search,
+    required List<MainVocabularyTopic> mainTopicList
+  })
+      : _mainTopicList = mainTopicList
+      .where((topic) => topic.name.toLowerCase().contains(search.toLowerCase()))
+      .toList();
 
   ///ITEM chủ đề con  ----------------------------------------------------------
   Widget _buildItemSub(BuildContext context, SubVocabularyTopic subTopic, bool state) {
-    return InkWell(
+    return WdgButton(
+      color: Colors.transparent,
       onTap: () => _showDialogWordList(context, subTopic.words),
       child: Column(
         children: [
@@ -156,6 +166,12 @@ class WdgMenuVocabulary extends StatelessWidget {
 
   ///DIALOG hiển thị danh sách từ vựng  ------------------------------------------
   void _showDialogWordList(BuildContext context, List<Word> words) {
+    //---   Tạo hiệu ứng  ---
+    final  dialogAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 250),
+      vsync: Navigator.of(context),
+    )..forward();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -163,63 +179,101 @@ class WdgMenuVocabulary extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
-            child: Column(
-              children: [
-                Image(
-                  width: MediaQuery.of(context).size.width,
-                  repeat: ImageRepeat.repeat,
-                  height: 50,
-                  image: Assets.images.cover.headbock.provider(),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: words.length,
-                    itemBuilder: (context, index) {
-                      var word = words[index];
-                      return WdgExpandedView(
-                        expand: _itemWord(context, word, true),
-                        child: _itemWord(context, word, false),
-                      );
-                    },
+            child: AnimatedBuilder(
+              animation: dialogAnimationController,
+              builder: (context, child) {
+                return ScaleTransition(
+                  scale: CurvedAnimation(
+                    parent: dialogAnimationController,
+                    curve: Curves.fastLinearToSlowEaseIn,
                   ),
-                ),
-
-                ///BUTTON chuyển tới quizz ----------------------------------------------------
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Đóng dialog trước
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuizzScreen.vocabulary(words: words)
-                        ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  child: Opacity(
+                    opacity: dialogAnimationController.value,
+                    child: Column(
                       children: [
-                        Text(
-                          "Học bài",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                        /// Ảnh bìa ----------------------------------------------------
+                        Image(
+                          width: MediaQuery.of(context).size.width,
+                          repeat: ImageRepeat.repeat,
+                          height: 50,
+                          image: Assets.images.cover.headbock.provider(),
                         ),
-                        const SizedBox(width: 8),
-                        Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor),
+
+                        /// Danh sách tạo sau --------------------------------------------
+                        FutureBuilder(
+                          future: Future.delayed(const Duration(milliseconds: 10)),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: words.length,
+                                  itemBuilder: (context, index) {
+                                    var word = words[index];
+                                    return WdgExpandedView(
+                                      expand: _itemWord(context, word, true),
+                                      child: _itemWord(context, word, false),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+
+                        /// Buton học bài ---------------------------------------------------
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            WdgButton(
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => QuizzScreen.vocabulary(words: words),
+                                  ),
+                                );
+                              },
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Học bài',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_double_arrow_right,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         );
       },
     );
+
+    //--- Đóng hiệu ứng ---
+    dialogAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.dismissed) {
+        dialogAnimationController.dispose();
+      }
+    });
   }
 
   ///ITEM từ vựng   -----------------------------------------------------------
@@ -234,7 +288,7 @@ class WdgMenuVocabulary extends StatelessWidget {
                 Text(word.meaning)
               ]),
           ),
-          subtitle: expanded
+          subtitle: expanded //-> Trạng thái mở rộng
               ? Text("Loại: ${word.type}m \nUS: ${word.pronounceUS} \nUK: ${word.pronounceUK} \nVí dụ: ${word.examples.first}")
               : null,
           trailing: Row(

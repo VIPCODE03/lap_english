@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,16 +5,19 @@ import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizzes.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
+import 'package:lap_english/utils/player_audio.dart';
 import '../../data/bloc/quizz_bloc.dart';
 import '../../data/model/quizz/quizz.dart';
 import '../../data/model/user/skill.dart';
 import '../../data/model/learn/vocabulary.dart';
 import '../widgets/learn/quiz/quizz_widget.dart';
+import '../widgets/other/button.dart';
 
 class QuizzScreen extends StatelessWidget {
   late final List<WdgQuizz> _children;
   final String _title;
   final List<Quizz> _quizzes;
+  final AudioPlayerUtil _audio = AudioPlayerUtil();
 
   QuizzScreen.vocabulary({super.key, required List<Word> words})
     :
@@ -37,6 +39,8 @@ class QuizzScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool next = false;
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text(_title)),
@@ -75,26 +79,26 @@ class QuizzScreen extends StatelessWidget {
                       Expanded(
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 400),
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
-                            var begin = Random().nextBool()
-                                ? const Offset(0.5, 1.0)
-                                : const Offset(1.0, -0.5);
-                            const end = Offset.zero;
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: Curves.easeOutBack));
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            var right = const Offset(1.0, 0.0);
+                            var left = const Offset(0.0, 5.0);
+                            const center = Offset.zero;
+                            next = !next;
+
+                            var tween = Tween(
+                                begin: next ? right : left,
+                                end: center)
+                                .chain(CurveTween(curve: Curves.easeInOutCubic));
 
                             return SlideTransition(
                               position: animation.drive(tween),
                               child: child,
                             );
                           },
-                          child:
-                              currentQuizz.key != ValueKey(state.currentIndex)
-                                  ? Container(
-                                      key: ValueKey(state.currentIndex),
-                                      child: currentQuizz)
-                                  : currentQuizz,
+                          child: currentQuizz.key != ValueKey(state.currentIndex)
+                              ? Container(key: ValueKey(state.currentIndex),
+                                child: currentQuizz)
+                              : const SizedBox(),
                         ),
                       ),
 
@@ -106,25 +110,39 @@ class QuizzScreen extends StatelessWidget {
                         child: ValueListenableBuilder<bool>(
                           valueListenable: currentQuizz.status.isAnswered,
                           builder: (context, value, child) {
-                            return ElevatedButton(
-                              onPressed: value
-                                  ? () {
-                                      currentQuizz.status.isChecked.value = true;
-                                      var isCorrect = currentQuizz.status.isCorrect!;
-                                      String title;
-                                      isCorrect
-                                          ? title = state.accolades[state.accoladesIndex]
-                                          : title = state.encouragements[state.encouragementsIndex];
+                            return WdgButton(
+                              onTap: () {
+                                if (value) {
+                                  currentQuizz.status.isChecked.value = true;
+                                  var isCorrect = currentQuizz.status.isCorrect!;
+                                  String title = isCorrect
+                                      ? state.accolades[state.accoladesIndex]
+                                      : state.encouragements[state.encouragementsIndex];
 
-                                      _buildBottomDialogResult(
-                                          context,
-                                          title,
-                                          currentQuizz.status.correctAnswer,
-                                          isCorrect);
+                                  _buildBottomDialogResult(
+                                      context,
+                                      title,
+                                      currentQuizz.status.correctAnswer,
+                                      isCorrect);
 
-                                    }
-                                  : null,
-                              child: const Text('Kiểm tra'),
+                                  //--- Âm thanh đúng/sai ---
+                                  if(isCorrect) {
+                                    _audio.play(Sound.correct);
+                                  }
+                                  else {
+                                    _audio.play(Sound.wrong);
+                                  }
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              color: value
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.white30,
+                              child: const Text(
+                                'Kiểm tra',
+                                style: TextStyle(
+                                  fontSize: 20,),
+                              ),
                             );
                           },
                         ),
@@ -151,7 +169,7 @@ class QuizzScreen extends StatelessWidget {
       builder: (context) {
         return Container(
           width: MediaQuery.of(context).size.width,
-          height: 200,
+          height: 250,
           decoration: BoxDecoration(
             color: isCorrect
                 ? Colors.green.withAlpha(70)
@@ -200,17 +218,18 @@ class QuizzScreen extends StatelessWidget {
                       width: 400,
                       margin: const EdgeInsets.only(right: 50, left: 50, bottom: 30),
                       child:
-                        ElevatedButton(
-                          onPressed: () {
+                        WdgButton(
+                          onTap: () {
                             parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));  //-> Check
                             Navigator.pop(context); //->  Đóng BottomSheet
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isCorrect ? Colors.green : Colors.red,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
+                          borderRadius: BorderRadius.circular(12),
+                          color: isCorrect ? Colors.green : Colors.red,
+                          child: const Text(
+                            'Tiếp tục',
+                            style: TextStyle(fontSize: 20),
                           ),
-                          child: const Text('Tiếp tục'),
-                        ),
+                        )
                     ),
                   ],
                 ),

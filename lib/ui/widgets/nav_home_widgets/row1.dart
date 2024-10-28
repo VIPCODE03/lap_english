@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/theme_constant.dart';
 import 'package:lap_english/ui/themes/themes.dart';
+import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:provider/provider.dart';
 
 class WdgRow1 extends StatelessWidget {
@@ -43,13 +44,14 @@ class WdgRow1 extends StatelessWidget {
           ///ICONBUTTON settings ----------------------------------------------
           Positioned(
             right: 10,
-            child: IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
+            child: WdgButton(
+              onTap: () {
                 Provider
                     .of<Themes>(context, listen: false)
                     .updateTheme(ThemeConstant.themes[Random().nextInt(ThemeConstant.themes.length)]);
                 },
+              color: Colors.transparent,
+              child: const Icon(Icons.ac_unit, color: Colors.white),
             ),
           ),
 
