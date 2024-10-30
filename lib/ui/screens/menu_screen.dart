@@ -39,8 +39,7 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
+    return Scaffold(resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: _isSearching
             ? TextField(
@@ -68,6 +67,7 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
             ),
         ],
       ),
+
       body: GestureDetector(
         onTap: () {
           if (_isSearching) _toggleSearch();

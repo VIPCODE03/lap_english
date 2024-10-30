@@ -42,9 +42,6 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWrit
       resizeToAvoidBottomInset: false,
       body: Column(
           children: [
-            ///AdaptiveText hiển thị câu hỏi  ----------------------------------
-            WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
-
             ///Ô nhập đáp án  --------------------------------------------
             const SizedBox(height: 50),
             Container(

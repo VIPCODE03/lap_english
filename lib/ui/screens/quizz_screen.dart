@@ -5,16 +5,16 @@ import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizzes.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
+import 'package:lap_english/ui/widgets/other/rich_text.dart';
 import 'package:lap_english/utils/player_audio.dart';
+import 'package:lap_english/utils/text_to_maptext.dart';
 import '../../data/bloc/quizz_bloc.dart';
 import '../../data/model/quizz/quizz.dart';
 import '../../data/model/user/skill.dart';
 import '../../data/model/learn/vocabulary.dart';
-import '../widgets/learn/quiz/quizz_widget.dart';
 import '../widgets/other/button.dart';
 
 class QuizzScreen extends StatelessWidget {
-  late final List<WdgQuizz> _children;
   final String _title;
   final List<Quizz> _quizzes;
   final AudioPlayerUtil _audio = AudioPlayerUtil();
@@ -33,30 +33,28 @@ class QuizzScreen extends StatelessWidget {
 
   void _init() {
     _quizzes.shuffle();
-    _children = QuizzItems.generate(_quizzes)
-        .where((quizz) => quizz.quizz.skillType == SkillType.reading).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     bool next = false;
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text(_title)),
         body: Center(
           child: BlocProvider(
-            create: (context) => QuizzBloc(_children.length)..add(QuizzInit()),
+            create: (context) => QuizzBloc(_quizzes.length)..add(QuizzInit()),
             child: BlocBuilder<QuizzBloc, QuizzState>(
               builder: (context, state) {
                 if (state is QuizzInProgress) {
-                  final currentQuizz = _children[state.currentIndex];
+                  final currentQuizz = QuizzItems.generateA(_quizzes[state.currentIndex]);
 
                   return Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       ///Progressbar  ----------------------------------------------
                       Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         child: WdgAnimatedProgressBar(
                             value: state.progress, label: ''),
                       ),
@@ -74,11 +72,17 @@ class QuizzScreen extends StatelessWidget {
                         ),
                       ),
 
+                      ///Text câu hỏi -------------------------------------------
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        alignment: Alignment.centerLeft,
+                        child: WdgAdaptiveText(texts: parseStringToMap(currentQuizz.quizz.question))
+                      ),
+
                       ///Slide quizz  ----------------------------------------------
-                      const SizedBox(height: 16),
                       Expanded(
                         child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 400),
+                          duration: const Duration(milliseconds: 666),
                           transitionBuilder: (Widget child, Animation<double> animation) {
                             var right = const Offset(1.0, 0.0);
                             var left = const Offset(0.0, 5.0);
@@ -90,11 +94,18 @@ class QuizzScreen extends StatelessWidget {
                                 end: center)
                                 .chain(CurveTween(curve: Curves.easeInOutCubic));
 
+                            animation.addStatusListener((status) {
+                              if (status == AnimationStatus.completed) {
+                                currentQuizz.status.isStarted.value = true;
+                              }
+                            });
+
                             return SlideTransition(
                               position: animation.drive(tween),
                               child: child,
                             );
                           },
+
                           child: currentQuizz.key != ValueKey(state.currentIndex)
                               ? Container(key: ValueKey(state.currentIndex),
                                 child: currentQuizz)
@@ -113,17 +124,12 @@ class QuizzScreen extends StatelessWidget {
                             return WdgButton(
                               onTap: () {
                                 if (value) {
+                                  //--- Lấy kết quả ---
                                   currentQuizz.status.isChecked.value = true;
                                   var isCorrect = currentQuizz.status.isCorrect!;
                                   String title = isCorrect
                                       ? state.accolades[state.accoladesIndex]
                                       : state.encouragements[state.encouragementsIndex];
-
-                                  _buildBottomDialogResult(
-                                      context,
-                                      title,
-                                      currentQuizz.status.correctAnswer,
-                                      isCorrect);
 
                                   //--- Âm thanh đúng/sai ---
                                   if(isCorrect) {
@@ -132,6 +138,13 @@ class QuizzScreen extends StatelessWidget {
                                   else {
                                     _audio.play(Sound.wrong);
                                   }
+
+                                  //--- Mở dialog ---
+                                  _buildBottomDialogResult(
+                                      context,
+                                      title,
+                                      currentQuizz.status.correctAnswer,
+                                      isCorrect);
                                 }
                               },
                               borderRadius: BorderRadius.circular(12),

@@ -16,5 +16,6 @@ class QuizzConstant {
   //===   Tạo quizz câu đơn giản  ===
   static List<QuizzSentence> quizzesSentenceBasic() => [
     QuizzSentenceChoose(),
+    QuizzSentenceSelected()
   ];
 }

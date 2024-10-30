@@ -6,23 +6,22 @@ class TextToSpeakUtil {
 
   static const String languageUS = "en-US";
   static const String languageUK = "en-UK";
+  static const String languageAU = "en-AU";
 
   final FlutterTts _flutterTts = FlutterTts();
 
   TextToSpeakUtil() {
+     _flutterTts.setLanguage(languageUS);
     _initialize();
   }
 
   //===   Khởi tạo  ===
   Future<void> _initialize() async {
-    await _flutterTts.setLanguage(languageUK);
     await _flutterTts.setPitch(1.0); //-> Thiết lập cao độ
-    await _flutterTts.setSpeechRate(rateNormal); //->  Thiết lập tốc độ nói
   }
 
   //===   Đọc văn bản   ===
   Future<void> speak(String text, String language, double rate) async {
-    await _flutterTts.setLanguage(language);
     await _flutterTts.setSpeechRate(rate);
 
     if (text.isNotEmpty) {

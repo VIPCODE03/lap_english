@@ -41,7 +41,7 @@ dependencies:
   http: ^1.2.2
   json_annotation: ^4.9.0 #Json
   google_fonts: ^6.2.1  #Font chữ google
-  flutter_tts: ^3.5.0 # Chuyển văn bản thành lời nói
+  flutter_tts: ^4.0.2 # Chuyển văn bản thành lời nói
   speech_to_text: ^7.0.0  # Chuyển giọng nói thành văn bản
   avatar_glow: ^2.0.1 # Hiệu ứng avatar
   audioplayers: ^6.1.0  # Phát âm thanh

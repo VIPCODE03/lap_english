@@ -27,6 +27,9 @@ class AudioPlayerUtil {
         break;
     }
 
+    if(_playerState == PlayerState.playing) {
+      stop();
+    }
     await _player.resume();
     _playerState = PlayerState.playing;
   }
