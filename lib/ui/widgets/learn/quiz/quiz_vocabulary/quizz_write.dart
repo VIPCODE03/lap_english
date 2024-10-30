@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz_vocabulary.dart';
+import 'package:lap_english/data/model/quizz/quizz_vocabulary.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/rich_text.dart';
 
@@ -42,9 +42,6 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWrit
       resizeToAvoidBottomInset: false,
       body: Column(
           children: [
-            ///AdaptiveText hiển thị câu hỏi  ----------------------------------
-            WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
-
             ///Ô nhập đáp án  --------------------------------------------
             const SizedBox(height: 50),
             Container(

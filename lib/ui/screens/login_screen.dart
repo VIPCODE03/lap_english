@@ -35,7 +35,7 @@ class LoginScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           width: 60,
                           child: Image(
-                            image: Assets.images.logo.google.provider(),
+                            image: Assets.images.icon.google.provider(),
                           ),
                         ),
                         const SizedBox(width: 10),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class LightBlueColors {
-  static const primaryColor = Color(0xB31782CD);
+  static const primaryColor = Color(0xB320A6FF);
   static const accentColor = Color(0xFFFFC107);
   static const backgroundColor = Color(0xFFF5F5F5);
   static const textColor = Color(0xFF2383D0);
@@ -12,7 +12,7 @@ class LightBlueColors {
 
 
 class DarkBlueColors {
-  static const primaryColor = Color(0xB3106CAE);
+  static const primaryColor = Color(0xB30070BF);
   static const accentColor = Color(0xFFFFC107);
   static const backgroundColor = Color(0xFFF5F5F5);
   static const textColor = Color(0xFF189FFF);

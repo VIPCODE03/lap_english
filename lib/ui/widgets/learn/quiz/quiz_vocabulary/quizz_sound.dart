@@ -1,10 +1,8 @@
 /*  Quizz trắc nghiệm 2-4 đáp án  */
 import 'package:flutter/material.dart';
-
-import '../../../../../data/model/quizz_vocabulary.dart';
-import '../../../../../utils/text_to_maptext.dart';
+import 'package:lap_english/ui/widgets/other/button.dart';
+import '../../../../../data/model/quizz/quizz_vocabulary.dart';
 import '../../../../../utils/text_to_speak.dart';
-import '../../../other/rich_text.dart';
 import '../quizz_widget.dart';
 
 /*  Quizz chọn âm thanh */
@@ -24,45 +22,32 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
   void initState() {
     super.initState();
 
-    //--- Nói câu hỏi ---
-    if(!widget.quizz.isHidden) {
-      Future.delayed(const Duration(milliseconds: 1000)).then((_) {
-        _textToSpeakUtil.speak(
-            widget.quizz.correctWord!,
-            TextToSpeakUtil.languageUK,
-            TextToSpeakUtil.rateNormal
-        );
-      });
-    }
+    //--- Phát âm thanh ---
+    widget.status.isStarted.addListener(() {
+      if(widget.status.isStarted.value) {
+        _textToSpeakUtil.speak(widget.quizz.correctWord!, TextToSpeakUtil.languageAU, TextToSpeakUtil.rateNormal);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ///AdaptiveText câu hỏi ------------------------------------------------
-        WdgAdaptiveText(texts: parseStringToMap(widget.quizz.question)),
-
         ///Hộp âm thanh --------------------------------------------------------
         const SizedBox(height: 20),
         SizedBox(
           child: widget.quizz.isHidden //-> Ẩn hiện theo loại quizz
               ? null
-              : GestureDetector(
+              : WdgButton(
                 onTap: () => _textToSpeakUtil.speak(
                     widget.quizz.correctWord!,
-                    TextToSpeakUtil.languageUK,
+                    TextToSpeakUtil.languageAU,
                     TextToSpeakUtil.rateNormal
                 ),
-                child: Container(
-                  height: 60,
-                  width: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  child: const Icon(Icons.volume_up),
-                ),
+                borderRadius: BorderRadius.circular(12),
+                color: Theme.of(context).primaryColor,
+                child: const Icon(Icons.volume_up, size: 40),
           ),
         ),
 
@@ -72,9 +57,11 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
           child: GridView.count(
             shrinkWrap: true,
             crossAxisCount: 2,
+            crossAxisSpacing: 50,
+            padding: const EdgeInsets.all(20),
             children: widget.quizz.answers.keys.map((key) {
               final bool isSelected = key == selectedKey; //->  Kiểm tra trạng thái
-              return GestureDetector(
+              return WdgButton(
                 onTap: () {
                   setState(() {
                     selectedKey = key; //-> Cập nhật item được chọn
@@ -85,30 +72,33 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
                         : null;
                   });
                 },
+                borderRadius: BorderRadius.circular(20),
+                color: isSelected 
+                    ? Theme.of(context).primaryColor.withAlpha(100)
+                    : Theme.of(context).primaryColor.withAlpha(50)
+                ,
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: 50,
-                  width: 50,
+                  duration: const Duration(milliseconds: 300),
+                  height: 125,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: isSelected
-                        ? Border.all(color: Theme.of(context).primaryColor, width: 4)
+                        ? Border.all(color: Theme.of(context).primaryColor.withAlpha(50), width: 4)
                         : null,
                     boxShadow: isSelected
                         ? [
                       BoxShadow(
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColor.withAlpha(50),
                         offset: const Offset(1, 5),
                         blurRadius: 10,
                       )
                     ]
                         : null,
                   ),
-                  child: Card(
-                    child: widget.quizz.isHidden
-                        ? const Center(child: Icon(Icons.volume_up))
-                        : Center(child: Text(key)),
-                  ),
+                  child: widget.quizz.isHidden
+                        ? const Center(child: Icon(
+                      Icons.volume_up, size: 50))
+                        : Center(child: Text(key, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
                 ),
               );
             }).toList(),

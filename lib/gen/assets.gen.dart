@@ -15,11 +15,14 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/cover
   $AssetsImagesCoverGen get cover => const $AssetsImagesCoverGen();
 
+  /// Directory path: assets/images/dinosaur
+  $AssetsImagesDinosaurGen get dinosaur => const $AssetsImagesDinosaurGen();
+
+  /// Directory path: assets/images/icon
+  $AssetsImagesIconGen get icon => const $AssetsImagesIconGen();
+
   /// Directory path: assets/images/item
   $AssetsImagesItemGen get item => const $AssetsImagesItemGen();
-
-  /// Directory path: assets/images/logo
-  $AssetsImagesLogoGen get logo => const $AssetsImagesLogoGen();
 
   /// Directory path: assets/images/menu
   $AssetsImagesMenuGen get menu => const $AssetsImagesMenuGen();
@@ -28,14 +31,17 @@ class $AssetsImagesGen {
 class $AssetsSoundsGen {
   const $AssetsSoundsGen();
 
-  /// File path: assets/sounds/sound_correct.mp3
-  String get soundCorrect => 'assets/sounds/sound_correct.mp3';
+  /// File path: assets/sounds/aaaa.mp3
+  String get aaaa => 'assets/sounds/aaaa.mp3';
+
+  /// File path: assets/sounds/correct.mp3
+  String get correct => 'assets/sounds/correct.mp3';
 
   /// File path: assets/sounds/test.mp3
   String get test => 'assets/sounds/test.mp3';
 
   /// List of all assets
-  List<String> get values => [soundCorrect, test];
+  List<String> get values => [aaaa, correct, test];
 }
 
 class $AssetsImagesCoverGen {
@@ -69,9 +75,104 @@ class $AssetsImagesCoverGen {
   AssetGenImage get cover7 =>
       const AssetGenImage('assets/images/cover/cover7.gif');
 
+  /// File path: assets/images/cover/cover8.gif
+  AssetGenImage get cover8 =>
+      const AssetGenImage('assets/images/cover/cover8.gif');
+
+  /// File path: assets/images/cover/headbock.png
+  AssetGenImage get headbock =>
+      const AssetGenImage('assets/images/cover/headbock.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        cover1,
+        cover2,
+        cover3,
+        cover4,
+        cover5,
+        cover6,
+        cover7,
+        cover8,
+        headbock
+      ];
+}
+
+class $AssetsImagesDinosaurGen {
+  const $AssetsImagesDinosaurGen();
+
+  /// File path: assets/images/dinosaur/dinosaur_book.png
+  AssetGenImage get dinosaurBook =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_book.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_learn.png
+  AssetGenImage get dinosaurLearn =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_learn.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_ok.png
+  AssetGenImage get dinosaurOk =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_ok.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_question.png
+  AssetGenImage get dinosaurQuestion =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_question.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_teacher.png
+  AssetGenImage get dinosaurTeacher =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_teacher.png');
+
+  /// File path: assets/images/dinosaur/dinosaur_try.png
+  AssetGenImage get dinosaurTry =>
+      const AssetGenImage('assets/images/dinosaur/dinosaur_try.png');
+
+  /// File path: assets/images/dinosaur/dinosaurcorrect.png
+  AssetGenImage get dinosaurcorrect =>
+      const AssetGenImage('assets/images/dinosaur/dinosaurcorrect.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [
+        dinosaurBook,
+        dinosaurLearn,
+        dinosaurOk,
+        dinosaurQuestion,
+        dinosaurTeacher,
+        dinosaurTry,
+        dinosaurcorrect
+      ];
+}
+
+class $AssetsImagesIconGen {
+  const $AssetsImagesIconGen();
+
+  /// File path: assets/images/icon/dimound.png
+  AssetGenImage get dimound =>
+      const AssetGenImage('assets/images/icon/dimound.png');
+
+  /// File path: assets/images/icon/dimounds.png
+  AssetGenImage get dimounds =>
+      const AssetGenImage('assets/images/icon/dimounds.png');
+
+  /// File path: assets/images/icon/gold.png
+  AssetGenImage get gold => const AssetGenImage('assets/images/icon/gold.png');
+
+  /// File path: assets/images/icon/golds.png
+  AssetGenImage get golds =>
+      const AssetGenImage('assets/images/icon/golds.png');
+
+  /// File path: assets/images/icon/google.png
+  AssetGenImage get google =>
+      const AssetGenImage('assets/images/icon/google.png');
+
+  /// File path: assets/images/icon/loading.gif
+  AssetGenImage get loading =>
+      const AssetGenImage('assets/images/icon/loading.gif');
+
+  /// File path: assets/images/icon/title.png
+  AssetGenImage get title =>
+      const AssetGenImage('assets/images/icon/title.png');
+
   /// List of all assets
   List<AssetGenImage> get values =>
-      [cover1, cover2, cover3, cover4, cover5, cover6, cover7];
+      [dimound, dimounds, gold, golds, google, loading, title];
 }
 
 class $AssetsImagesItemGen {
@@ -87,24 +188,6 @@ class $AssetsImagesItemGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [dongvat, itemTopic];
-}
-
-class $AssetsImagesLogoGen {
-  const $AssetsImagesLogoGen();
-
-  /// File path: assets/images/logo/google.png
-  AssetGenImage get google =>
-      const AssetGenImage('assets/images/logo/google.png');
-
-  /// File path: assets/images/logo/left.png
-  AssetGenImage get left => const AssetGenImage('assets/images/logo/left.png');
-
-  /// File path: assets/images/logo/loading.gif
-  AssetGenImage get loading =>
-      const AssetGenImage('assets/images/logo/loading.gif');
-
-  /// List of all assets
-  List<AssetGenImage> get values => [google, left, loading];
 }
 
 class $AssetsImagesMenuGen {

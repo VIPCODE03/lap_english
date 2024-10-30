@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lap_english/data/model/sentence.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/ui/screens/quizz_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
+import '../../other/button.dart';
 import '../../other/expandable_view.dart';
 
 class WdgMenuSentence extends StatelessWidget {
@@ -27,6 +28,15 @@ class WdgMenuSentence extends StatelessWidget {
     required List<MainSentenceTopic> mainTopicList
   })
       : _mainTopicList = mainTopicList;
+
+  WdgMenuSentence.search({
+    super.key,
+    required String search,
+    required List<MainSentenceTopic> mainTopicList
+  })
+      : _mainTopicList = mainTopicList
+          .where((topic) => topic.name.toLowerCase().contains(search.toLowerCase()))
+          .toList();
 
   /// ITEM chủ đề chính  --------------------------------------------------------
   Widget _buildItemMain(BuildContext context, MainSentenceTopic mainTopic) {
@@ -94,7 +104,8 @@ class WdgMenuSentence extends StatelessWidget {
 
   /// ITEM chủ đề con  ----------------------------------------------------------
   Widget _buildItemSub(BuildContext context, SubSentenceTopic subTopic, bool state) {
-    return InkWell(
+    return WdgButton(
+      color: Colors.transparent,
       onTap: () => _showDialogSentenceList(context, subTopic.sentences),
       child: Column(
         children: [
@@ -150,6 +161,12 @@ class WdgMenuSentence extends StatelessWidget {
 
   ///DIALOG hiển thị danh sách câu  ------------------------------------------
   void _showDialogSentenceList(BuildContext context, List<Sentence> sentences) {
+    //---   Tạo hiệu ứng  ---
+    final  dialogAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 250),
+      vsync: Navigator.of(context),
+    )..forward();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -157,61 +174,93 @@ class WdgMenuSentence extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
-            child: Column(
-              children: [
-                Image(
-                  width: MediaQuery.of(context).size.width,
-                  repeat: ImageRepeat.repeat,
-                  height: 50,
-                  image: Assets.images.logo.left.provider(),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: sentences.length,
-                    itemBuilder: (context, index) {
-                      var sentence = sentences[index];
-                      return WdgExpandedView(
-                        expand: _itemSentence(context, sentence),
-                        child: _itemSentence(context, sentence),
-                      );
-                    },
+            child: AnimatedBuilder(
+              animation: dialogAnimationController,
+              builder: (context, child) {
+                return ScaleTransition(
+                  scale: CurvedAnimation(
+                    parent: dialogAnimationController,
+                    curve: Curves.fastLinearToSlowEaseIn,
                   ),
-                ),
-                ///BUTTON chuyển tới quizz ----------------------------------------------------
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => QuizzScreen.sentence(sentences: sentences)
-                      ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                  child: Opacity(
+                    opacity: dialogAnimationController.value,
+                    child: Column(
                       children: [
-                        Text(
-                          "Học bài",
-                          style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
+                        /// Ảnh bìa ----------------------------------------------------
+                        Image(
+                          width: MediaQuery.of(context).size.width,
+                          repeat: ImageRepeat.repeat,
+                          height: 50,
+                          image: Assets.images.cover.headbock.provider(),
                         ),
-                        const SizedBox(width: 8),
-                        Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor),
+
+                        /// Danh sách tạo sau --------------------------------------------
+                        FutureBuilder(
+                          future: Future.delayed(const Duration(milliseconds: 10)),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.done) {
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: sentences.length,
+                                  itemBuilder: (context, index) {
+                                    var word = sentences[index];
+                                    return WdgExpandedView(
+                                      expand: _itemSentence(context, word),
+                                      child: _itemSentence(context, word  ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return const SizedBox();
+                            }
+                          },
+                        ),
+
+                        /// Buton học bài ---------------------------------------------------
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            WdgButton(
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => QuizzScreen.sentence(sentences: sentences),
+                                  ),
+                                );
+                              },
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Học bài',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_double_arrow_right,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         );
-      },
+        },
     );
   }
 
