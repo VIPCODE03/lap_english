@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz/quizz_vocabulary.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
-import 'package:lap_english/ui/widgets/other/rich_text.dart';
+import 'package:lap_english/data/model/quizz/quizz_write.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 
-import '../../../../../utils/text_to_maptext.dart';
-
-class WdgQuizzWriteWord extends WdgQuizz<QuizzWriteWord> {
-  WdgQuizzWriteWord({super.key, required super.quizz});
+class WdgQuizzWrite extends WdgQuizz<QuizzWrite> {
+  WdgQuizzWrite({super.key, required super.quizz});
 
   @override
-  WdgQuizzState<QuizzWriteWord, WdgQuizz<QuizzWriteWord>> createState()
+  WdgQuizzState<QuizzWrite, WdgQuizz<QuizzWrite>> createState()
   => _WdgQuizzWriteWordState();
 }
 
-class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWriteWord> {
+class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
   final TextEditingController _controller = TextEditingController();
   var _enabled = true;
 
@@ -22,7 +19,7 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWrit
   @override
   void initState() {
     super.initState();
-    userInput = List<String>.filled(widget.quizz.answer.length, '');
+    userInput = List<String>.filled(widget.quizz.answerCorrect.length, '');
     widget.status.isChecked.addListener(() {
       setState(() {
         _enabled = false;
@@ -56,7 +53,7 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWrit
                       child: Row       (
                         mainAxisAlignment: MainAxisAlignment.center,
                         children:
-                        List.generate(widget.quizz.answer.length, (index) {
+                        List.generate(widget.quizz.answerCorrect.length, (index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 3),
                             child: Column(
@@ -92,7 +89,7 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWrit
                               _updateUserInput(text);
                             });
                           },
-                          maxLength: widget.quizz.answer.length,
+                          maxLength: widget.quizz.answerCorrect.length,
                         ),
                       ),
                     )
@@ -126,12 +123,12 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWriteWord, WdgQuizzWrit
 
   //=== set trạng thái  ===
   void setStatus(String answer) {
-    if (answer.length < widget.quizz.answer.length) {
+    if (answer.length < widget.quizz.answerCorrect.length) {
       widget.status.isAnswered.value = false;
     } else {
       widget.status.isAnswered.value = true;
-      widget.status.isCorrect = answer.toLowerCase().trim() == widget.quizz.answer;
-      widget.status.correctAnswer = widget.quizz.answer;
+      widget.status.isCorrect = answer.toLowerCase().trim() == widget.quizz.answerCorrect;
+      widget.status.correctAnswer = widget.quizz.answerCorrect;
     }
   }
 }

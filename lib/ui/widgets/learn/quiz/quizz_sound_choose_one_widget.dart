@@ -1,20 +1,18 @@
-/*  Quizz trắc nghiệm 2-4 đáp án  */
 import 'package:flutter/material.dart';
+import 'package:lap_english/data/model/quizz/quizz_sound_choose_one.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
-import '../../../../../data/model/quizz/quizz_vocabulary.dart';
 import '../../../../../utils/text_to_speak.dart';
-import '../quizz_widget.dart';
 
-/*  Quizz chọn âm thanh */
-class WdgQuizzSoundOfWord extends WdgQuizz<QuizzSoundOfWord> {
-  WdgQuizzSoundOfWord({super.key, required super.quizz});
+class WdgQuizzSoundChooseOne extends WdgQuizz<QuizzSoundChooseOne> {
+  WdgQuizzSoundChooseOne({super.key, required super.quizz});
 
   @override
-  WdgQuizzState<QuizzSoundOfWord, WdgQuizz<QuizzSoundOfWord>> createState() => _WdgQuizzSoundOfWordState();
-
+  WdgQuizzState<QuizzSoundChooseOne, WdgQuizz<QuizzSoundChooseOne>> createState()
+   => _WdgQuizzSoundChooseOneState();
 }
 
-class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizzSoundOfWord> {
+class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, WdgQuizzSoundChooseOne> {
   final TextToSpeakUtil _textToSpeakUtil = TextToSpeakUtil();
   String? selectedKey; //-> Biến lưu item được chọn
 
@@ -25,7 +23,11 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
     //--- Phát âm thanh ---
     widget.status.isStarted.addListener(() {
       if(widget.status.isStarted.value) {
-        _textToSpeakUtil.speak(widget.quizz.correctWord!, TextToSpeakUtil.languageAU, TextToSpeakUtil.rateNormal);
+        _textToSpeakUtil.speak(
+            widget.quizz.answerCorrect,
+            TextToSpeakUtil.languageAU,
+            TextToSpeakUtil.rateNormal
+        );
       }
     });
   }
@@ -37,18 +39,17 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
         ///Hộp âm thanh --------------------------------------------------------
         const SizedBox(height: 20),
         SizedBox(
-          child: widget.quizz.isHidden //-> Ẩn hiện theo loại quizz
+          child: widget.quizz.showSoundBox //-> Ẩn hiện theo loại quizz
               ? null
               : WdgButton(
-                onTap: () => _textToSpeakUtil.speak(
-                    widget.quizz.correctWord!,
-                    TextToSpeakUtil.languageAU,
-                    TextToSpeakUtil.rateNormal
+                  onTap: () => _textToSpeakUtil.speak(
+                      widget.quizz.answerCorrect,
+                      TextToSpeakUtil.languageAU,
+                      TextToSpeakUtil.rateNormal),
+                  borderRadius: BorderRadius.circular(12),
+                  color: Theme.of(context).primaryColor,
+                  child: const Icon(Icons.volume_up, size: 40),
                 ),
-                borderRadius: BorderRadius.circular(12),
-                color: Theme.of(context).primaryColor,
-                child: const Icon(Icons.volume_up, size: 40),
-          ),
         ),
 
         ///Danh sách đáp án ----------------------------------------------------
@@ -59,21 +60,21 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
             crossAxisCount: 2,
             crossAxisSpacing: 50,
             padding: const EdgeInsets.all(20),
-            children: widget.quizz.answers.keys.map((key) {
+            children: widget.quizz.answers.map((key) {
               final bool isSelected = key == selectedKey; //->  Kiểm tra trạng thái
               return WdgButton(
                 onTap: () {
                   setState(() {
                     selectedKey = key; //-> Cập nhật item được chọn
                     widget.status.isAnswered.value = true;
-                    widget.status.isCorrect = widget.quizz.answers[key];
-                    widget.quizz.isHidden
+                    widget.status.isCorrect = widget.quizz.answersCorrect[key];
+                    widget.quizz.showSoundBox
                         ? _textToSpeakUtil.speak(key, TextToSpeakUtil.languageUK, TextToSpeakUtil.rateNormal)
                         : null;
                   });
                 },
                 borderRadius: BorderRadius.circular(20),
-                color: isSelected 
+                color: isSelected
                     ? Theme.of(context).primaryColor.withAlpha(100)
                     : Theme.of(context).primaryColor.withAlpha(50)
                 ,
@@ -95,10 +96,10 @@ class _WdgQuizzSoundOfWordState extends WdgQuizzState<QuizzSoundOfWord, WdgQuizz
                     ]
                         : null,
                   ),
-                  child: widget.quizz.isHidden
-                        ? const Center(child: Icon(
+                  child: widget.quizz.showSoundBox
+                      ? const Center(child: Icon(
                       Icons.volume_up, size: 50))
-                        : Center(child: Text(key, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
+                      : Center(child: Text(key, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
                 ),
               );
             }).toList(),

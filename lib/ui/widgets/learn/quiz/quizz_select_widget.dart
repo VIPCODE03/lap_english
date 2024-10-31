@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
-import '../../../../../data/model/quizz/quizz_sentence.dart';
-import '../../../other/button.dart';
+import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
+import '../../other/button.dart';
 
 /*  Quizz chọn đáp án  */
-class WdgQuizzSentenceSelect extends WdgQuizz<QuizzSentenceSelected> {
-  WdgQuizzSentenceSelect({super.key, required super.quizz});
+class WdgQuizzSelect extends WdgQuizz<QuizzSelect> {
+  WdgQuizzSelect({super.key, required super.quizz});
 
   @override
-  WdgQuizzState<QuizzSentenceSelected, WdgQuizz<QuizzSentenceSelected>>
-      createState() => _WdgQuizzSentenceChooseState();
+  WdgQuizzState<QuizzSelect, WdgQuizz<QuizzSelect>> createState()
+    => _WdgQuizzSelectState();
 }
 
-class _WdgQuizzSentenceChooseState extends WdgQuizzState<QuizzSentenceSelected, WdgQuizzSentenceSelect> {
+class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
   String? selectedKey;
   GlobalKey testScreenKey = GlobalKey();
   late Offset offset = Offset.zero;
@@ -46,14 +46,13 @@ class _WdgQuizzSentenceChooseState extends WdgQuizzState<QuizzSentenceSelected, 
         child: widget.status.isStarted.value == true
             ? _WdgButtonSelect(
                 key: testScreenKey,
-                datas: widget.quizz.answersSelect,
+                datas: widget.quizz.answers,
                 height: 50,
                 offset: offset,
                 onSelectionChanged: (value) => {
                   if (value.isNotEmpty)
                     {
-                      widget.status.isCorrect = value.toString() ==
-                          widget.quizz.answerCorrects.toString(),
+                      widget.status.isCorrect = value.toString() == widget.quizz.answersCorrect.keys.toList().toString(),
                       widget.status.isAnswered.value = true,
                       widget.status.correctAnswer = widget.quizz.answerCorrect,
                     }

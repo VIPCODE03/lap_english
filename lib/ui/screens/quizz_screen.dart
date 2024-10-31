@@ -3,51 +3,63 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizzes.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
-import 'package:lap_english/ui/widgets/other/rich_text.dart';
+import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:lap_english/utils/player_audio.dart';
-import 'package:lap_english/utils/text_to_maptext.dart';
 import '../../data/bloc/quizz_bloc.dart';
 import '../../data/model/quizz/quizz.dart';
 import '../../data/model/user/skill.dart';
 import '../../data/model/learn/vocabulary.dart';
 import '../widgets/other/button.dart';
 
-class QuizzScreen extends StatelessWidget {
+class QuizzScreen extends StatefulWidget {
   final String _title;
   final List<Quizz> _quizzes;
-  final AudioPlayerUtil _audio = AudioPlayerUtil();
 
   QuizzScreen.vocabulary({super.key, required List<Word> words})
     :
       _title = "Quizz từ vựng",
-      _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words)
-  {_init();}
+      _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
 
   QuizzScreen.sentence({super.key, required List<Sentence> sentences})
       :
         _title = "Quizz câu",
-        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences)
-  {_init();}
+        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
 
-  void _init() {
-    _quizzes.shuffle();
+  @override
+  State<StatefulWidget> createState() => _QuizzScreenState();
+}
+
+class _QuizzScreenState extends State<QuizzScreen> {
+  final AudioPlayerUtil _audio = AudioPlayerUtil();
+  bool showQuizz = false;
+  bool next = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget._quizzes.shuffle();
+
+    Future.delayed(const Duration(milliseconds: 100), () {
+      setState(() {
+        showQuizz = true;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    bool next = false;
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(title: Text(_title)),
+        appBar: AppBar(title: Text(widget._title)),
         body: Center(
           child: BlocProvider(
-            create: (context) => QuizzBloc(_quizzes.length)..add(QuizzInit()),
+            create: (context) => QuizzBloc(widget._quizzes.length)..add(QuizzInit()),
             child: BlocBuilder<QuizzBloc, QuizzState>(
               builder: (context, state) {
                 if (state is QuizzInProgress) {
-                  final currentQuizz = QuizzItems.generateA(_quizzes[state.currentIndex]);
+                  final currentQuizz = WdgQuizzes.generate(widget._quizzes[state.currentIndex]);
 
                   return Column(
                     mainAxisSize: MainAxisSize.min,
@@ -66,17 +78,17 @@ class QuizzScreen extends StatelessWidget {
                         child: Text(
                           Skill.skillName(currentQuizz.quizz.skillType),
                           style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700
                           ),
                         ),
                       ),
 
                       ///Text câu hỏi -------------------------------------------
                       Container(
-                        padding: const EdgeInsets.all(10),
-                        alignment: Alignment.centerLeft,
-                        child: WdgAdaptiveText(texts: parseStringToMap(currentQuizz.quizz.question))
+                          padding: const EdgeInsets.all(10),
+                          alignment: Alignment.centerLeft,
+                          child: WdgSpecialText(text: currentQuizz.quizz.question)
                       ),
 
                       ///Slide quizz  ----------------------------------------------
@@ -106,10 +118,10 @@ class QuizzScreen extends StatelessWidget {
                             );
                           },
 
-                          child: currentQuizz.key != ValueKey(state.currentIndex)
-                              ? Container(key: ValueKey(state.currentIndex),
-                                child: currentQuizz)
-                              : const SizedBox(),
+                          child: Container(
+                            key: UniqueKey(),
+                            child: showQuizz ? currentQuizz : null,
+                          ),
                         ),
                       ),
 
@@ -162,6 +174,7 @@ class QuizzScreen extends StatelessWidget {
                       ),
                     ],
                   );
+
                 } else if (state is QuizzCompleted) {
                   return const Center(child: Text('Quiz Completed!'));
                 }
@@ -169,7 +182,8 @@ class QuizzScreen extends StatelessWidget {
               },
             ),
           ),
-        ));
+        )
+    );
   }
 
   ///Dialog kết quả ------------------------------------------------------------
@@ -196,11 +210,11 @@ class QuizzScreen extends StatelessWidget {
                 top: -66,
                 right: 0,
                 child: Image.asset(
-                    isCorrect
-                        ? Assets.images.dinosaur.dinosaurOk.path
-                        : Assets.images.dinosaur.dinosaurQuestion.path,
-                    height: 150,
-                  ),
+                  isCorrect
+                      ? Assets.images.dinosaur.dinosaurOk.path
+                      : Assets.images.dinosaur.dinosaurQuestion.path,
+                  height: 150,
+                ),
               ),
 
               /// Nội dung  --------------------------------------------------------
@@ -211,7 +225,7 @@ class QuizzScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(height: 16),
+                    /// Text tiêu đề  --------------------------------------------
                     Text(
                       title,
                       style: TextStyle(
@@ -221,16 +235,20 @@ class QuizzScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
+
+                    /// Text đáp án ---------------------------------------------
                     Text(
                       answerCorrect != null ? 'Đáp án đúng: $answerCorrect' : '',
                       style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 20),
+
+                    /// Button chuyển tiếp  --------------------------------------
                     Container(
-                      height: 50,
-                      width: 400,
-                      margin: const EdgeInsets.only(right: 50, left: 50, bottom: 30),
-                      child:
+                        height: 50,
+                        width: 400,
+                        margin: const EdgeInsets.only(right: 50, left: 50, bottom: 30),
+                        child:
                         WdgButton(
                           onTap: () {
                             parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));  //-> Check
