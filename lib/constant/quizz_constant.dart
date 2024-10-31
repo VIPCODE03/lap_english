@@ -15,7 +15,7 @@ class QuizzConstant {
     QuizzChooseOneVocabulary(),
     QuizzSelectVocabulary(),
     QuizzSoundChooseOneVocabulary(),
-    // QuizzSpeakVocabulary(),
+    QuizzSpeakVocabulary(),
     QuizzWriteVocabulary(),
   ];
 

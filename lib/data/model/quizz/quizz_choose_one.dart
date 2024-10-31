@@ -30,6 +30,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
 
         //--- Tạo đáp án ---
         String wordS = word.word;
+        Set<String> answers = {};
         int indexAdd = Random().nextInt(wordS.length - 1);
         int indexDelete = Random().nextInt(wordS.length -1) + 1;
         String charAtIndex = wordS[indexAdd + 1];
@@ -38,10 +39,13 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
         String wordReplace = wordS.substring(0, indexDelete) + charAtIndex + wordS.substring(indexDelete + 1);
         List<String> similarWords = [wordS, wordAdd, wordDelete, wordReplace];
         similarWords.shuffle();
+
         for(var w in similarWords) {
-          quizzChooseOneWord.answers.add(w);
+          answers.add(w);
           quizzChooseOneWord.answersCorrect[w] = (w == wordS);
         }
+
+        quizzChooseOneWord.answers = answers.toList();
       }
 
       //--- Dạng 2  ---
@@ -50,6 +54,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
         quizzChooseOneWord.question = "Chọn từ có nghĩa với <${word.word}>";
 
         //--- Tạo đáp án ---
+        Set<String> answers = {};
         List<Word> wordsT = [word];
         List<Word> copy = List.from(datas)..remove(word);
         copy.shuffle();
@@ -57,9 +62,11 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
 
         wordsT.shuffle();
         for (var w in wordsT) {
-          quizzChooseOneWord.answers.add(w.meaning);
+          answers.add(w.meaning);
           quizzChooseOneWord.answersCorrect[w.meaning] = (w == word);
         }
+
+        quizzChooseOneWord.answers = answers.toList();
       }
 
       //--- Thêm quizz vào danh sách  ---

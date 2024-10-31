@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
-import 'package:lap_english/ui/widgets/nav_task_widgets/row1_task.dart';
-import 'package:lap_english/ui/widgets/nav_task_widgets/row2_task.dart';
 import '../../../data/bloc/data_bloc/data_bloc.dart';
-import '../../widgets/nav_task_widgets/row3_task.dart';
+import '../../widgets/nav/task_widgets/row1_task.dart';
+import '../../widgets/nav/task_widgets/row2_task.dart';
+import '../../widgets/nav/task_widgets/row3_task.dart';
 import '../../widgets/other/group.dart';
 
 class TaskScreen extends StatefulWidget {

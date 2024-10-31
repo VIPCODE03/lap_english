@@ -28,8 +28,7 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
           bool isSelected = option == selectedKey;
 
           ///Button đáp án  -----------------------------------------------
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+          return Container(
             margin: const EdgeInsets.all(5),
             height: 66,
             child: WdgButton(

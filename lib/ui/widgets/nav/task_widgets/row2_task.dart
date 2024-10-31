@@ -4,8 +4,7 @@ import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
 import 'package:lap_english/ui/colors/color_mix.dart';
 
-import '../../../data/bloc/user_bloc.dart';
-import '../../../data/model/task/roll_call.dart';
+import '../../../../data/model/task/roll_call.dart';
 
 class WdgRow2Task extends StatelessWidget {
   final User user;

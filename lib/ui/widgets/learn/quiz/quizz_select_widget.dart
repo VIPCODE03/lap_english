@@ -144,7 +144,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
                   height: 2,
                   width: widthMax,
                   decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: Colors.grey.withAlpha(70),
                       borderRadius: BorderRadius.circular(50)
                   ),
                 ),
@@ -300,7 +300,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       textDirection: TextDirection.ltr,
     )..layout();
 
-    double width = textPainter.size.width + 30;
+    double width = textPainter.size.width + 25;
     return width > 50 ? width : 50;
   }
 

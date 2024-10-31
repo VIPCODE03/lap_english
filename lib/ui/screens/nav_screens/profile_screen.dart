@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
 import '../../../data/bloc/data_bloc/data_bloc.dart';
-import '../../widgets/nav_profile_widgets/row1_profile.dart';
-import '../../widgets/nav_profile_widgets/row2_profile.dart';
+import '../../widgets/nav/profile_widgets/row1_profile.dart';
+import '../../widgets/nav/profile_widgets/row2_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -38,7 +38,6 @@ class ProfileScreen extends StatelessWidget {
             }
 
             else if(state is DataStateError<User>) {
-              print(state.message);
               return const Center(child: Text('Lỗi'));
             }
 
