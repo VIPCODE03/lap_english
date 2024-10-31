@@ -30,5 +30,7 @@ class SpeechToTextUtil {
   }
 
   void dispose() {
+    _speechToText.cancel();
   }
+
 }

@@ -1,16 +1,18 @@
 
 import 'package:lap_english/constant/quizz_constant.dart';
-import 'package:lap_english/data/model/quizz/quizz_sentence.dart';
-import 'package:lap_english/data/model/quizz/quizz_vocabulary.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 
 import '../user/skill.dart';
 
 /*  Class quizz trừu tượng  */
-abstract class Quizz {
-  late String question;
-  late Map<String, bool> answers;
+abstract class Quizz<T> {
+  late final List<T> datas;
+  String question = "";
+  List<String> answers = [];
+  String answerCorrect = "";
+  Map<String, bool> answersCorrect = {};
+
   SkillType get skillType;
 
   List<Quizz> generate();
@@ -19,8 +21,8 @@ abstract class Quizz {
 /*  Class khởi tạo các loại quizz   */
 class Quizzes {
   static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<Word> words}) {
-    List<Quizz> quizzesVocabulary = [];
-    List<QuizzVocabulary> quizzList;
+    List<Quizz> quizzes = [];
+    List<Quizz<Word>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -35,15 +37,15 @@ class Quizzes {
     }
 
     for(var quizz in quizzList) {
-      quizz.words = words;
-      quizzesVocabulary.addAll(quizz.generate());
+      quizz.datas = words;
+      quizzes.addAll(quizz.generate());
     }
-    return quizzesVocabulary;
+    return quizzes;
   }
 
   static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) {
     List<Quizz> quizzes = [];
-    List<QuizzSentence> quizzList;
+    List<Quizz<Sentence>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -58,7 +60,7 @@ class Quizzes {
     }
 
     for(var quizz in quizzList) {
-      quizz.sentences = sentences;
+      quizz.datas = sentences;
       quizzes.addAll(quizz.generate());
     }
     return quizzes;

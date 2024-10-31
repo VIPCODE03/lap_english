@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz/quizz_vocabulary.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
-import '../../../other/button.dart';
+import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
+import '../../other/button.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */
-class WdgQuizzChooseOneWord extends WdgQuizz<QuizzChooseOneWord> {
-  WdgQuizzChooseOneWord({super.key, required super.quizz});
+class WdgQuizzChooseOne extends WdgQuizz<QuizzChooseOne> {
+  WdgQuizzChooseOne({super.key, required super.quizz});
 
   @override
-  WdgQuizzState<QuizzChooseOneWord, WdgQuizz<QuizzChooseOneWord>>
-      createState() => _ChooseOneWordWidgetState();
+  WdgQuizzState<QuizzChooseOne, WdgQuizz<QuizzChooseOne>> createState()
+    => _WdgQuizzChooseOneState();
 }
 
-class _ChooseOneWordWidgetState
-    extends WdgQuizzState<QuizzChooseOneWord, WdgQuizzChooseOneWord> {
+class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChooseOne> {
   String? selectedKey;
 
   @override
@@ -23,8 +22,8 @@ class _ChooseOneWordWidgetState
         padding: const EdgeInsets.all(20),
         itemCount: widget.quizz.answers.length,
         itemBuilder: (context, index) {
-          var option = widget.quizz.answers.keys.elementAt(index);
-          bool isCorrect = widget.quizz.answers[option] ?? false;
+          var option = widget.quizz.answers.elementAt(index);
+          bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
           if (isCorrect) widget.status.correctAnswer = option;
           bool isSelected = option == selectedKey;
 

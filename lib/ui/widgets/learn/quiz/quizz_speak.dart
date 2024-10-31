@@ -1,21 +1,21 @@
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:lap_english/ui/widgets/learn/quiz/quizz_widget.dart';
+import 'package:lap_english/data/model/quizz/quizz_speak.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
+import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
+import '../../../../utils/speech_to_text.dart';
 
-import '../../../../../data/model/quizz/quizz_vocabulary.dart';
-import '../../../../../utils/speech_to_text.dart';
-
-class WdgQuizzSpeakWord extends WdgQuizz<QuizzSpeakWord> {
-  WdgQuizzSpeakWord({super.key, required super.quizz});
+class WdgQuizzSpeak extends WdgQuizz<QuizzSpeak> {
+  WdgQuizzSpeak({super.key, required super.quizz});
 
   @override
-  WdgQuizzState<QuizzSpeakWord, WdgQuizz<QuizzSpeakWord>> createState() => _WdgQuizzSpeakWordState();
+  WdgQuizzState<QuizzSpeak, WdgQuizz<QuizzSpeak>> createState() => _WdgQuizzSpeakState();
 
 }
 
-class _WdgQuizzSpeakWordState extends WdgQuizzState<QuizzSpeakWord, WdgQuizzSpeakWord> {
+class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
   final SpeechToTextUtil _speechUtil = SpeechToTextUtil();
 
   @override
@@ -25,6 +25,12 @@ class _WdgQuizzSpeakWordState extends WdgQuizzState<QuizzSpeakWord, WdgQuizzSpea
     widget.status.isChecked.addListener(() {
       _stopListening();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _speechUtil.dispose();
   }
 
   void _initSpeech() async {
@@ -47,9 +53,9 @@ class _WdgQuizzSpeakWordState extends WdgQuizzState<QuizzSpeakWord, WdgQuizzSpea
       _speechUtil.updateLastWords(result);
       if (_speechUtil.lastWords != "") {
         _stopListening();
-        widget.status.isCorrect = widget.quizz.answer.trim().toLowerCase() == _speechUtil.lastWords.trim().toLowerCase();
+        widget.status.isCorrect = widget.quizz.answerCorrect.trim().toLowerCase() == _speechUtil.lastWords.trim().toLowerCase();
         widget.status.isAnswered.value = true;
-        widget.status.correctAnswer = widget.quizz.answer.trim().toLowerCase();
+        widget.status.correctAnswer = _speechUtil.lastWords;
       }
     });
   }
@@ -60,6 +66,8 @@ class _WdgQuizzSpeakWordState extends WdgQuizzState<QuizzSpeakWord, WdgQuizzSpea
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          WdgSpecialText(text: widget.quizz.pronounce),
+
           Expanded(
             child: Center(
               child: Text(

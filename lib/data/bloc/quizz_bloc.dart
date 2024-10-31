@@ -33,7 +33,7 @@ class QuizzInProgress extends QuizzState {
     "Kiên trì sẽ làm được"
   ];
 
-  final int currentIndex;
+  late final int currentIndex;
   final double progress;
   final int accoladesIndex;
   final int encouragementsIndex;
@@ -48,7 +48,9 @@ class QuizzCompleted extends QuizzState {}
 
 /*  BLOC  */
 class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
+  int currentIndex = 1;
   final int total;
+  bool isNext = false;
 
   QuizzBloc(this.total) : super(QuizzInitial()) {
 
@@ -61,12 +63,12 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
     on<QuizzNext>((event, emit) {
       if (state is QuizzInProgress) {
         final currentState = state as QuizzInProgress;
-        int nextIndex = currentState.currentIndex + 1;
-
-        if (nextIndex < total) {  //->  Vẫn còn quizz
-          emit(QuizzInProgress(nextIndex, (nextIndex + 1) / total,
+        isNext ? currentIndex++ : isNext = true;
+        if (currentIndex < total) {  //->  Vẫn còn quizz
+          emit(QuizzInProgress(currentIndex, (currentIndex) / total,
               accoladesIndex: currentState.accoladesIndex,
-              encouragementsIndex: currentState.encouragementsIndex));
+              encouragementsIndex: currentState.encouragementsIndex)
+          );
         } else {  //->  Đã hoàn thành
           emit(QuizzCompleted());
         }
