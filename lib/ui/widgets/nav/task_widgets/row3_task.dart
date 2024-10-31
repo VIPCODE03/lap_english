@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
-import '../../../data/model/task/daily_task.dart';
-import '../other/button.dart';
+
+import '../../../../data/model/task/daily_task.dart';
+import '../../other/button.dart';
 
 class WdgRow3Task extends StatefulWidget {
   final User user;

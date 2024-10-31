@@ -16,7 +16,6 @@ class QuizzWriteVocabulary extends QuizzWrite<Word> {
     for(var word in datas) {
       var quizzWrite = QuizzWriteVocabulary();
       quizzWrite.question = "Điền từ có nghĩa: <${word.meaning}>";
-
       quizzWrite.answerCorrect = word.word.toLowerCase().trim();
       quizzes.add(quizzWrite);
     }

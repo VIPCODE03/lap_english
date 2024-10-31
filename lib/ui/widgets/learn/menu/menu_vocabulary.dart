@@ -168,7 +168,7 @@ class WdgMenuVocabulary extends StatelessWidget {
   void _showDialogWordList(BuildContext context, List<Word> words) {
     //---   Tạo hiệu ứng  ---
     final  dialogAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 300),
       vsync: Navigator.of(context),
     )..forward();
 
@@ -176,93 +176,89 @@ class WdgMenuVocabulary extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: AnimatedBuilder(
-              animation: dialogAnimationController,
-              builder: (context, child) {
-                return ScaleTransition(
+          backgroundColor: Colors.transparent,
+          child: AnimatedBuilder(
+            animation: dialogAnimationController,
+            builder: (context, child) {
+              return ScaleTransition(
                   scale: CurvedAnimation(
                     parent: dialogAnimationController,
-                    curve: Curves.fastLinearToSlowEaseIn,
+                    curve: Curves.easeInOutSine,
                   ),
                   child: Opacity(
                     opacity: dialogAnimationController.value,
-                    child: Column(
-                      children: [
-                        /// Ảnh bìa ----------------------------------------------------
-                        Image(
-                          width: MediaQuery.of(context).size.width,
-                          repeat: ImageRepeat.repeat,
-                          height: 50,
-                          image: Assets.images.cover.headbock.provider(),
-                        ),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).dialogBackgroundColor,
+                          borderRadius: BorderRadius.circular(4)
+                      ),
+                      child: Column(
+                        children: [
+                          /// Ảnh bìa ----------------------------------------------------
+                          Image(
+                            width: MediaQuery.of(context).size.width,
+                            repeat: ImageRepeat.repeat,
+                            height: 50,
+                            image: Assets.images.cover.headbock.provider(),
+                          ),
 
-                        /// Danh sách tạo sau --------------------------------------------
-                        FutureBuilder(
-                          future: Future.delayed(const Duration(milliseconds: 10)),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: words.length,
-                                  itemBuilder: (context, index) {
-                                    var word = words[index];
-                                    return WdgExpandedView(
-                                      expand: _itemWord(context, word, true),
-                                      child: _itemWord(context, word, false),
-                                    );
-                                  },
-                                ),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
-                        ),
-
-                        /// Buton học bài ---------------------------------------------------
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            WdgButton(
-                              onTap: () {
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => QuizzScreen.vocabulary(words: words),
-                                  ),
-                                );
-                              },
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(12),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Học bài',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_double_arrow_right,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ],
+                          /// Danh sách từ vựng --------------------------------------------
+                          if(dialogAnimationController.isCompleted)
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: words.length,
+                                itemBuilder: (context, index) {
+                                  var word = words[index];
+                                  return WdgExpandedView(
+                                    expand: _itemWord(context, word, true),
+                                    child: _itemWord(context, word, false),
+                                  );
+                                },
                               ),
                             ),
-                          ],
-                        ),
-                      ],
+
+                          /// Buton học bài ---------------------------------------------------
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              WdgButton(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => QuizzScreen.vocabulary(words: words),
+                                    ),
+                                  );
+                                },
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(12),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Học bài',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_double_arrow_right,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  )
+              );
+            },
           ),
         );
       },

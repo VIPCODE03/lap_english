@@ -28,10 +28,7 @@ class Quizzes {
       case QuizzMode.basic:
         quizzList = QuizzConstant.quizzesVocabularyBasic();
         break;
-      case QuizzMode.medium:
-        quizzList = QuizzConstant.quizzesVocabularyBasic();
-        break;
-      case QuizzMode.advanced:
+      case QuizzMode.custom:
         quizzList = QuizzConstant.quizzesVocabularyBasic();
         break;
     }
@@ -51,10 +48,7 @@ class Quizzes {
       case QuizzMode.basic:
         quizzList = QuizzConstant.quizzesSentenceBasic();
         break;
-      case QuizzMode.medium:
-        quizzList = QuizzConstant.quizzesSentenceBasic();
-        break;
-      case QuizzMode.advanced:
+      case QuizzMode.custom:
         quizzList = QuizzConstant.quizzesSentenceBasic();
         break;
     }
@@ -70,6 +64,5 @@ class Quizzes {
 /*  Chế độ quizz  */
 enum QuizzMode {
   basic,
-  medium,
-  advanced,
+  custom
 }

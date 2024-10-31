@@ -18,13 +18,14 @@ class QuizzSelectSentence extends QuizzSelect<Sentence> {
     for(var sentence in datas) {
       var quizzSelect = QuizzSelectSentence();
       quizzSelect.question = "Hoàn thành câu: <${sentence.translation}>";
+
+      //--- Tạo đáp án  ---
+      quizzSelect.answerCorrect = sentence.sentence;
       quizzSelect.answersCorrect = {
         for (var item in sentence.sentence.split(' '))
-          item : true
+          item: true
       };
-      quizzSelect.answerCorrect = sentence.sentence;
       quizzSelect.answers.addAll(quizzSelect.answersCorrect.keys.toList());
-
       quizzSelect.answers.shuffle();
       quizzes.add(quizzSelect);
     }

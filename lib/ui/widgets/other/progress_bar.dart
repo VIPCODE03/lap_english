@@ -18,31 +18,35 @@ class WdgAnimatedProgressBar extends StatelessWidget {
       margin: const EdgeInsets.all(5.0),
       height: 20,
       decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Theme.of(context).primaryColor,
+        ),
         borderRadius: BorderRadius.circular(15),
       ),
         child: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
-            children: [
-              TweenAnimationBuilder<double>(
-                tween: Tween<double>(begin: 0, end: value),
-                duration: duration,
-                builder: (context, double animatedValue, child) {
-                  return Container(
-                    height: double.infinity,
-                    width: animatedValue * constraints.maxWidth,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).primaryColor
-                    ),
-                  );
-                },
-              ),
+              children: [
+                TweenAnimationBuilder<double>(
+                  tween: Tween<double>(begin: 0, end: value),
+                  duration: duration,
+                  builder: (context, double animatedValue, child) {
+                    return Container(
+                      height: double.infinity,
+                      width: animatedValue * constraints.maxWidth,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Theme.of(context).primaryColor.withAlpha(70)
+                      ),
+                    );
+                  },
+                ),
 
-              Center(
-                child: Text(label),
-              ),
-            ],
+                Center(
+                  child: Text(label),
+                ),
+              ],
           );
         }),
     );
