@@ -1,5 +1,6 @@
 
 import 'package:lap_english/data/model/learn/vocabulary.dart';
+
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 
