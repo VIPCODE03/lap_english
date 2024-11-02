@@ -18,38 +18,40 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ListView.builder(
+      child: Container(
         padding: const EdgeInsets.all(20),
-        itemCount: widget.quizz.answers.length,
-        itemBuilder: (context, index) {
-          var option = widget.quizz.answers.elementAt(index);
-          bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
-          if (isCorrect) widget.status.correctAnswer = option;
-          bool isSelected = option == selectedKey;
+        child: Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: widget.quizz.answers.map((option) {
+            bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
+            if (isCorrect) widget.status.correctAnswer = option;
+            bool isSelected = option == selectedKey;
 
-          ///Button đáp án  -----------------------------------------------
-          return Container(
-            margin: const EdgeInsets.all(5),
-            height: 66,
-            child: WdgButton(
-              onTap: () {
-                setState(() {
-                  selectedKey = option;
-                  widget.status.isAnswered.value = true;
-                  widget.status.isCorrect = isCorrect;
-                });
-              },
-              color: isSelected
-                  ? Theme.of(context).primaryColor.withAlpha(90)
-                  : Theme.of(context).primaryColor.withAlpha(30),
-              borderRadius: BorderRadius.circular(12),
-              child: Text(
-                option,
-                style: const TextStyle(fontSize: 20),
+            return Container(
+              constraints: const BoxConstraints(minHeight: 66),
+              width: MediaQuery.of(context).size.width - 50,
+              child: WdgButton(
+                onTap: () {
+                  setState(() {
+                    selectedKey = option;
+                    widget.status.isAnswered.value = true;
+                    widget.status.isCorrect = isCorrect;
+                  });
+                },
+                color: isSelected
+                    ? Theme.of(context).primaryColor.withAlpha(90)
+                    : Theme.of(context).primaryColor.withAlpha(30),
+                borderRadius: BorderRadius.circular(12),
+                child: Text(
+                  option,
+                  style: const TextStyle(fontSize: 20),
+                ),
               ),
-            ),
-          );
-        },
+            );
+          }).toList(),
+        ),
       ),
     );
   }

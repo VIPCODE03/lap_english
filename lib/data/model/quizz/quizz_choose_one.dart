@@ -37,8 +37,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
         String wordAdd = wordS.substring(0, indexAdd + 1) + charAtIndex + wordS.substring(indexAdd);
         String wordDelete = wordS.substring(0, indexDelete) + wordS.substring(indexDelete + 1);
         String wordReplace = wordS.substring(0, indexDelete) + charAtIndex + wordS.substring(indexDelete + 1);
-        List<String> similarWords = [wordS, wordAdd, wordDelete, wordReplace];
-        similarWords.shuffle();
+        List<String> similarWords = [wordS, wordAdd, wordDelete, wordReplace]..shuffle();
 
         for(var w in similarWords) {
           answers.add(w);
@@ -78,7 +77,6 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
 }
 
 /*  Câu */
-
 class QuizzChooseOneSentence extends QuizzChooseOne<Sentence> {
   @override
   List<Quizz> generate() {
@@ -91,7 +89,7 @@ class QuizzChooseOneSentence extends QuizzChooseOne<Sentence> {
       List<Sentence> answers = [sentence];
       List<Sentence> copy = List.from(datas)..remove(sentence);
       copy.shuffle();
-      answers.addAll(copy.take(2).toList());
+      answers.addAll(copy.take(Random().nextBool() ? 2 : 1).toList());
       answers.shuffle();
 
       for(var s in answers) {

@@ -37,11 +37,17 @@ class $AssetsSoundsGen {
   /// File path: assets/sounds/correct.mp3
   String get correct => 'assets/sounds/correct.mp3';
 
+  /// File path: assets/sounds/fbi.mp3
+  String get fbi => 'assets/sounds/fbi.mp3';
+
   /// File path: assets/sounds/test.mp3
   String get test => 'assets/sounds/test.mp3';
 
+  /// File path: assets/sounds/wrong.mp3
+  String get wrong => 'assets/sounds/wrong.mp3';
+
   /// List of all assets
-  List<String> get values => [aaaa, correct, test];
+  List<String> get values => [aaaa, correct, fbi, test, wrong];
 }
 
 class $AssetsImagesCoverGen {
@@ -147,16 +153,8 @@ class $AssetsImagesIconGen {
   AssetGenImage get dimound =>
       const AssetGenImage('assets/images/icon/dimound.png');
 
-  /// File path: assets/images/icon/dimounds.png
-  AssetGenImage get dimounds =>
-      const AssetGenImage('assets/images/icon/dimounds.png');
-
   /// File path: assets/images/icon/gold.png
   AssetGenImage get gold => const AssetGenImage('assets/images/icon/gold.png');
-
-  /// File path: assets/images/icon/golds.png
-  AssetGenImage get golds =>
-      const AssetGenImage('assets/images/icon/golds.png');
 
   /// File path: assets/images/icon/google.png
   AssetGenImage get google =>
@@ -170,9 +168,13 @@ class $AssetsImagesIconGen {
   AssetGenImage get title =>
       const AssetGenImage('assets/images/icon/title.png');
 
+  /// File path: assets/images/icon/volumn_gif.gif
+  AssetGenImage get volumnGif =>
+      const AssetGenImage('assets/images/icon/volumn_gif.gif');
+
   /// List of all assets
   List<AssetGenImage> get values =>
-      [dimound, dimounds, gold, golds, google, loading, title];
+      [dimound, gold, google, loading, title, volumnGif];
 }
 
 class $AssetsImagesItemGen {
