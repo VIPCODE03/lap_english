@@ -163,7 +163,7 @@ class WdgMenuSentence extends StatelessWidget {
   void _showDialogSentenceList(BuildContext context, List<Sentence> sentences) {
     //---   Tạo hiệu ứng  ---
     final  dialogAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 300),
       vsync: Navigator.of(context),
     )..forward();
 
@@ -171,20 +171,24 @@ class WdgMenuSentence extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: AnimatedBuilder(
+          backgroundColor: Colors.transparent,
+          child: AnimatedBuilder(
               animation: dialogAnimationController,
               builder: (context, child) {
                 return ScaleTransition(
                   scale: CurvedAnimation(
                     parent: dialogAnimationController,
-                    curve: Curves.fastLinearToSlowEaseIn,
+                    curve: Curves.easeInOutSine,
                   ),
                   child: Opacity(
                     opacity: dialogAnimationController.value,
-                    child: Column(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).dialogBackgroundColor,
+                          borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Column(
                       children: [
                         /// Ảnh bìa ----------------------------------------------------
                         Image(
@@ -195,29 +199,21 @@ class WdgMenuSentence extends StatelessWidget {
                         ),
 
                         /// Danh sách tạo sau --------------------------------------------
-                        FutureBuilder(
-                          future: Future.delayed(const Duration(milliseconds: 10)),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: sentences.length,
-                                  itemBuilder: (context, index) {
-                                    var word = sentences[index];
-                                    return WdgExpandedView(
-                                      expand: _itemSentence(context, word),
-                                      child: _itemSentence(context, word  ),
-                                    );
-                                  },
-                                ),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
-                        ),
+                        if(dialogAnimationController.isCompleted)
+                          Expanded(
+                            child: ListView.builder(
+                                itemCount: sentences.length,
+                                itemBuilder: (context, index) {
+                                  var word = sentences[index];
+                                  return WdgExpandedView(
+                                    expand: _itemSentence(context, word),
+                                    child: _itemSentence(context, word),
+                                  );
+                                },
+                              ),
+                          ),
 
-                        /// Buton học bài ---------------------------------------------------
+                          /// Buton học bài ---------------------------------------------------
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -255,9 +251,9 @@ class WdgMenuSentence extends StatelessWidget {
                       ],
                     ),
                   ),
+                  )
                 );
               },
-            ),
           ),
         );
         },

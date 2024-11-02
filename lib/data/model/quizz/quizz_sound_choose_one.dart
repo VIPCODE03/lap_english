@@ -33,7 +33,7 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<Word> {
       List<Word> answers = [word];
       List<Word> copy = List.from(datas)..remove(word);
       copy.shuffle();
-      answers.addAll(copy.take(1).toList());
+      answers.addAll(copy.take(Random().nextBool() ? 1 : 3).toList());
       answers.shuffle();
 
       for(var w in answers) {

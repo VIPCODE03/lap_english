@@ -3,9 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
-import '../../../data/bloc/data_bloc/data_bloc.dart';
-import '../../../data/model/user/user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../data/bloc/data_bloc/data_bloc.dart';
+import '../../../../data/model/user/user.dart';
 
 class WdgRow1Profile extends StatelessWidget {
   final User user;
@@ -62,7 +63,7 @@ class WdgRow1Profile extends StatelessWidget {
                   radius: 50,
                   child: ClipOval(
                     child: Image.network(
-                      'https://khoinguonsangtao.vn/wp-content/uploads/2022/10/hinh-anh-chu-mo.jpg',
+                      user.avatar ?? '',
                       fit: BoxFit.cover,
                       width: 100,
                       height: 100,

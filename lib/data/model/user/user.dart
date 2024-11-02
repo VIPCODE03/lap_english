@@ -9,28 +9,24 @@ part 'user.g.dart';
 /*  Người dùng  */
 @JsonSerializable(explicitToJson: true)
 class User {
-  final int id;
   final String email;
-  String password;
   String name;
-  int age;
+  String? avatar;
 
   final Skill skills;
   final List<Title> titles;
   final CumulativePoint cumulativePoint;
   final Task task;
 
-  User(
-      this.id,
-      this.name,
-      this.email,
-      this.password,
-      this.age,
-      this.skills,
-      this.titles,
-      this.cumulativePoint,
-      this.task
-      );
+  User({
+    required this.name,
+    required this.email,
+    this.avatar,
+    required this.skills,
+    required this.titles,
+    required this.cumulativePoint,
+    required this.task,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

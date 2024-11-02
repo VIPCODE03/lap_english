@@ -55,11 +55,11 @@ class _QuizzScreenState extends State<QuizzScreen> {
         appBar: AppBar(title: Text(widget._title)),
         body: Center(
           child: BlocProvider(
-            create: (context) => QuizzBloc(widget._quizzes.length)..add(QuizzInit()),
+            create: (context) => QuizzBloc(widget._quizzes)..add(QuizzInit()),
             child: BlocBuilder<QuizzBloc, QuizzState>(
               builder: (context, state) {
                 if (state is QuizzInProgress) {
-                  final currentQuizz = WdgQuizzes.generate(widget._quizzes[state.currentIndex]);
+                  final currentQuizz = WdgQuizzes.generate(state.currentQuizz);
 
                   return Column(
                     mainAxisSize: MainAxisSize.min,
@@ -123,6 +123,23 @@ class _QuizzScreenState extends State<QuizzScreen> {
                             child: showQuizz ? currentQuizz : null,
                           ),
                         ),
+                      ),
+
+                      /// Button skip quizz nói hoặc nghe ----------------------------------
+                      if(currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening)
+                      Container(
+                          margin: const EdgeInsets.all(10),
+                          child: WdgButton(
+                              color: Colors.transparent,
+                              onTap: () {
+                                context.read<QuizzBloc>().add(QuizzSkip());
+                              },
+                              child: Text(currentQuizz.quizz.skillType == SkillType.speaking
+                                  ? 'Hiện tại không nói được'
+                                  : 'Hiện tại không nghe được',
+                                style: TextStyle(fontSize: 20, color: Colors.grey.withAlpha(70)),
+                              ),
+                          )
                       ),
 
                       ///Button kiểm tra  ------------------------------------------
