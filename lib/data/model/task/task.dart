@@ -19,3 +19,4 @@ class Task {
 
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 }
+

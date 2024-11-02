@@ -13,13 +13,11 @@ import '../data/model/user/user.dart';
 class UserDataTest {
   static String getUserJson() {
     User user = User(
-      1,
-      'Đào Như Triệu',
-      'daonhutrieu15052003@gmail.com',
-      'password123',
-      25,
-      Skill(2, 4, 3, 3),
-      [
+      name: 'Đào Như Triệu',
+      email: 'daonhutrieu15052003@gmail.com',
+      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCXQ1UUU1jQuqgDqViOYhd_jz3Aj3J8yAuwQ&s',
+      skills: Skill(2, 4, 3, 3),
+      titles:[
         Title(
           id: 1,
           image: 'url_to_image',
@@ -49,11 +47,12 @@ class UserDataTest {
           total: 10,
         ),
       ],
-      CumulativePoint(0, 0),
-      Task(
+      cumulativePoint: CumulativePoint(0, 0, 0),
+      task: Task(
         dailyTasks: [
-          DailyTask(1, 'Học thêm 1 chủ đề', 0, 1, Reward(name: "Kim cương", rewardType: RewardType.diamond, quantity: 10, isRewardClaimed: false)),
-          DailyTask(1, 'Ôn tập 2 chủ đề', 1, 2, Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 50, isRewardClaimed: false)),
+          DailyTask(1, 'Học thêm 1 chủ đề từ vựng', 0, 1, Reward(name: "Kim cương", rewardType: RewardType.diamond, quantity: 10, isRewardClaimed: false)),
+          DailyTask(1, 'Ôn tập 1 chủ đề ngẫu nhiên', 1, 2, Reward(name: "Vàng", rewardType: RewardType.gold, quantity: 50, isRewardClaimed: false)),
+          DailyTask(1, 'Học 1 chủ đề câu', 1, 2, Reward(name: "Kim cương", rewardType: RewardType.diamond, quantity: 5, isRewardClaimed: false)),
         ],
 
         rollCall: RollCall(currentDay: 2, days: [1,2,3,4,5,6,7], rewards: [

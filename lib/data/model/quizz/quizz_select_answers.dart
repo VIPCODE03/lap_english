@@ -62,7 +62,7 @@ class QuizzSelectVocabulary extends QuizzSelect<Word> {
       quizzSelect.answerCorrect = answersCorrect.keys.toString();
 
       //--- Tạo danh sách đáp án  ---
-      List<Word> additionalWords = (datas.toList()..shuffle())
+      List<Word> additionalWords = (datas..shuffle())
           .where((word) => !selectedWords.contains(word))
           .take(2)
           .toList();

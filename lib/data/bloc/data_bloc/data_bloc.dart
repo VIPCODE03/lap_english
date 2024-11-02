@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/bloc/data_bloc/load_data.dart';
 import 'package:lap_english/data/bloc/data_bloc/update_data.dart';
@@ -37,7 +38,10 @@ class DataBloc<T> extends Bloc<DataEvent, DataState<T>> {
         final data = await (LoadDatas.load[T]!() as Future<List<T>>);
         emit(DataStateLoaded<T>(data));
       } catch (e) {
-        emit(DataStateError<T>('Failed to load data: $e'));
+        emit(DataStateError<T>('Lỗi tải dữ liệu'));
+        if(kDebugMode) {
+          rethrow;
+        }
       }
     });
 

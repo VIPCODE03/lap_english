@@ -21,10 +21,15 @@ class TextToSpeakUtil {
   }
 
   //===   Đọc văn bản   ===
-  Future<void> speak(String text, String language, double rate) async {
+  Future<void> speak(String text, String language, double rate, {Function? onComplete}) async {
     await _flutterTts.setSpeechRate(rate);
 
     if (text.isNotEmpty) {
+      _flutterTts.setCompletionHandler(() {
+        if (onComplete != null) {
+          onComplete();
+        }
+      });
       await _flutterTts.speak(text);
     }
   }
@@ -34,4 +39,8 @@ class TextToSpeakUtil {
     await _flutterTts.stop();
   }
 
+  //=== Giải phóng dữ liệu  ===
+  Future<void> dispose() async {
+    _flutterTts.cancelHandler;
+  }
 }

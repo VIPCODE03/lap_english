@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
             }
 
             else if(state is DataStateError<User>) {
-              return const Center(child: Text('Lỗi'));
+              return Center(child: Text(state.message));
             }
 
             return const Center(child: Text('Error loading user'));

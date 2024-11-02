@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/main_screen.dart';
 
+import '../../data/caching/cache_manager.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -14,18 +16,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _navigateToMainScreen();
+  }
 
-    //--- Chuyển hướng sau 3 giây ---
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) {
-            return const MainScreen();
-          }),
-        );
-      }
-    });
+  //=== Khởi tạo bộ nhớ và chuyển tới màn hình chính  ===
+  Future<void> _navigateToMainScreen() async {
+    await Future.delayed(const Duration(seconds: 2));
+    await CacheManager.init();
+
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return const MainScreen();
+        }),
+      );
+    }
   }
 
   @override

@@ -3,11 +3,7 @@ import 'package:lap_english/ui/screens/splash_screen.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:provider/provider.dart';
 
-import 'data/caching/cache_manager.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await CacheManager.init(); //-> Khởi tạo quản lý bộ nhớ đệm
+void main() {
   runApp(
       ChangeNotifierProvider(
         create: (BuildContext context) => Themes(),

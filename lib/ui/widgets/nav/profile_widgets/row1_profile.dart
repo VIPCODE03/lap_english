@@ -63,7 +63,7 @@ class WdgRow1Profile extends StatelessWidget {
                   radius: 50,
                   child: ClipOval(
                     child: Image.network(
-                      'https://khoinguonsangtao.vn/wp-content/uploads/2022/10/hinh-anh-chu-mo.jpg',
+                      user.avatar ?? '',
                       fit: BoxFit.cover,
                       width: 100,
                       height: 100,
