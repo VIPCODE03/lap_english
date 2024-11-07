@@ -31,6 +31,7 @@ SubVocabularyTopic _$SubVocabularyTopicFromJson(Map<String, dynamic> json) =>
       (json['words'] as List<dynamic>)
           .map((e) => Word.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isLearned: json['isLearned'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$SubVocabularyTopicToJson(SubVocabularyTopic instance) =>
@@ -39,6 +40,7 @@ Map<String, dynamic> _$SubVocabularyTopicToJson(SubVocabularyTopic instance) =>
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'words': instance.words,
+      'isLearned': instance.isLearned,
     };
 
 Word _$WordFromJson(Map<String, dynamic> json) => Word(

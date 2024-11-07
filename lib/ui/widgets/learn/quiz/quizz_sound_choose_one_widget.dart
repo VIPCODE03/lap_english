@@ -22,7 +22,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
 
     //--- Phát âm thanh ---
     widget.status.isStarted.addListener(() {
-      if(widget.status.isStarted.value) {
+      if(widget.status.isStarted.value && widget.quizz.showSoundBox) {
         _speak(widget.quizz.answerCorrect);
       }
     });
@@ -34,6 +34,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
     _textToSpeakUtil.dispose();
   }
 
+  //=== Speak ===
   Future<void> _speak(String text) async {
     _textToSpeakUtil.speak(text, TextToSpeakUtil.languageAU, TextToSpeakUtil.rateNormal);
   }
@@ -46,13 +47,13 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
         const SizedBox(height: 20),
         SizedBox(
           child: widget.quizz.showSoundBox //-> Ẩn hiện theo loại quizz
-              ? null
-              : WdgButton(
-                  onTap: () => _speak(widget.quizz.answerCorrect),
-                  borderRadius: BorderRadius.circular(12),
-                  color: Theme.of(context).primaryColor,
-                  child: const Icon(Icons.volume_up, size: 50),
-                ),
+              ? WdgButton(
+            onTap: () => _speak(widget.quizz.answerCorrect),
+            borderRadius: BorderRadius.circular(12),
+            color: Theme.of(context).primaryColor,
+            child: const Icon(Icons.volume_up, size: 50),
+          )
+              : null
         ),
 
         ///Danh sách đáp án ----------------------------------------------------
@@ -65,8 +66,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
                 crossAxisCount: 2,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
-                childAspectRatio: 1,
-              ),
+                childAspectRatio: 1),
               itemCount: widget.quizz.answers.length,
               itemBuilder: (context, index) {
                 final key = widget.quizz.answers[index];
@@ -77,7 +77,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
                       selectedKey = key;
                       widget.status.isAnswered.value = true;
                       widget.status.isCorrect = widget.quizz.answersCorrect[key];
-                      widget.quizz.showSoundBox ? _speak(key) : null;
+                      widget.quizz.showSoundBox ? null : _speak(key);
                     });
                   },
                   borderRadius: BorderRadius.circular(20),
@@ -85,13 +85,14 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
                       ? Theme.of(context).primaryColor.withAlpha(100)
                       : Theme.of(context).primaryColor.withAlpha(50),
                   child: widget.quizz.showSoundBox
-                      ? const Center(child: Icon(Icons.volume_up, size: 50))
-                      : Center(
+                      ? Center(
                           child: Text(
                             key,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                        ),
+                        )
+                      : const Center(child: Icon(Icons.volume_up, size: 50)),
                 );
               },
             ),

@@ -3,8 +3,8 @@ import '../../model/learn/sentence.dart';
 import '../../model/learn/vocabulary.dart';
 import '../../model/user/user.dart';
 
-class UpdateDatas {
-  static final Map<Type, Future<void> Function(List<dynamic>)> update = {
+mixin UpdateDatas {
+  final Map<Type, Future<void> Function(List<dynamic>)> update = {
     MainVocabularyTopic: (datas) => _vocabularyUpdate(datas as List<MainVocabularyTopic>),
     MainSentenceTopic: (datas) => _sentenceUpdate(datas as List<MainSentenceTopic>),
     User: (datas) => _userUpdate(datas as List<User>),

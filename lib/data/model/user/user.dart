@@ -1,8 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:lap_english/data/model/task/task.dart';
+import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/data/model/user/cumulative_point.dart';
 import 'package:lap_english/data/model/user/skill.dart';
-import 'package:lap_english/data/model/user/title.dart';
+import '../task_and_reward/title.dart';
 
 part 'user.g.dart';
 
@@ -14,9 +14,9 @@ class User {
   String? avatar;
 
   final Skill skills;
-  final List<Title> titles;
+  final List<MdlTitle> titles;
+  final List<MdlDailyTask> dailyTasks;
   final CumulativePoint cumulativePoint;
-  final Task task;
 
   User({
     required this.name,
@@ -24,8 +24,8 @@ class User {
     this.avatar,
     required this.skills,
     required this.titles,
+    required this.dailyTasks,
     required this.cumulativePoint,
-    required this.task,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

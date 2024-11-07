@@ -34,11 +34,11 @@ class _TaskScreenState extends State<TaskScreen> {
                   const WdgRow1Task(),
 
                   /// ROW3  --------------------------------------------------------------
-                  const WdgGroup(title: 'Chuỗi ngày học', opacity: 0, height: 0),
-                  SizedBox(
-                    height: 125,
-                    child: WdgRow2Task(user: user),
-                  ),
+                  // const WdgGroup(title: 'Chuỗi ngày học', opacity: 0, height: 0),
+                  // SizedBox(
+                  //   height: 125,
+                  //   child: WdgRow2Task(user: user),
+                  // ),
 
                   /// ROW4  --------------------------------------------------------------
                   const WdgGroup(title: 'Nhiệm vụ hàng ngày', opacity: 0.06, height: 15),

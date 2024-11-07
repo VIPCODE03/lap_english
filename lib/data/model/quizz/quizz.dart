@@ -66,3 +66,46 @@ enum QuizzMode {
   basic,
   custom
 }
+
+class QuizzResult {
+  bool isNew;
+  TypeQuizz type;
+
+  int total;
+  int totalSpeak;
+  int totalListen;
+  int totalRead;
+  int totalWrite;
+
+  int correct = 0;
+  int correctSpeak = 0;
+  int correctListen = 0;
+  int correctWrite = 0;
+  int correctRead = 0;
+  int correctConsecutive = 0;
+
+  QuizzResult(this.total, this.totalWrite, this.totalListen, this.totalRead, this.totalSpeak, this.isNew, this.type);
+
+  //=== Cập nhật kết quả  ===
+  void update(bool isCorrect, SkillType skill, int newCorrectConsecutive) {
+    if(isCorrect) {
+      correct++;
+      if(correctConsecutive < newCorrectConsecutive) correctConsecutive = newCorrectConsecutive;
+
+      switch(skill) {
+        case SkillType.reading:
+          correctRead++; break;
+        case SkillType.writing:
+          correctWrite++; break;
+        case SkillType.listening:
+          correctListen++; break;
+        case SkillType.speaking:
+          correctSpeak++; break;
+      }
+    }
+  }
+}
+
+enum TypeQuizz {
+  quizzVocabulary, quizzSentence, quizzCustom
+}

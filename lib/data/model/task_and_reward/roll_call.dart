@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
-import '../reward.dart';
+import 'package:lap_english/data/model/task_and_reward/reward.dart';
 
 part 'roll_call.g.dart';
 

@@ -23,10 +23,10 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<Word> {
 
       //--- Tạo câu hỏi ---
       if(quizzSound.showSoundBox) {
-        quizzSound.question = "Phát âm: <${word.word}>";
+        quizzSound.question = "Bạn nghe được từ gì?";
       }
       else {
-        quizzSound.question = "Bạn nghe được từ gì?";
+        quizzSound.question = "Phát âm: <${word.word}>";
       }
 
       //--- Tạo đáp án ---

@@ -30,6 +30,7 @@ SubSentenceTopic _$SubSentenceTopicFromJson(Map<String, dynamic> json) =>
       (json['sentences'] as List<dynamic>)
           .map((e) => Sentence.fromJson(e as Map<String, dynamic>))
           .toList(),
+      isLearned: json['isLearned'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$SubSentenceTopicToJson(SubSentenceTopic instance) =>
@@ -38,6 +39,7 @@ Map<String, dynamic> _$SubSentenceTopicToJson(SubSentenceTopic instance) =>
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'sentences': instance.sentences,
+      'isLearned': instance.isLearned,
     };
 
 Sentence _$SentenceFromJson(Map<String, dynamic> json) => Sentence(

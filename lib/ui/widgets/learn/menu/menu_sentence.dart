@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/services/task_service.dart';
 import 'package:lap_english/ui/screens/quizz_screen.dart';
 
 import '../../../../gen/assets.gen.dart';
@@ -88,7 +92,7 @@ class WdgMenuSentence extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             crossAxisCount: 1,
             children: mainTopic.subSentenceTopics.map((subTopic) {
-              return _buildItemSub(context, subTopic, mainTopic.subSentenceTopics.indexOf(subTopic) < 3 );
+              return _buildItemSub(context, subTopic, subTopic.isLearned);
             }).toList(),
           ),
         ),
@@ -106,7 +110,7 @@ class WdgMenuSentence extends StatelessWidget {
   Widget _buildItemSub(BuildContext context, SubSentenceTopic subTopic, bool state) {
     return WdgButton(
       color: Colors.transparent,
-      onTap: () => _showDialogSentenceList(context, subTopic.sentences),
+      onTap: () => _showDialogSentenceList(context, subTopic),
       child: Column(
         children: [
           Column(
@@ -160,16 +164,16 @@ class WdgMenuSentence extends StatelessWidget {
   }
 
   ///DIALOG hiển thị danh sách câu  ------------------------------------------
-  void _showDialogSentenceList(BuildContext context, List<Sentence> sentences) {
+  void _showDialogSentenceList(BuildContext parentContext, SubSentenceTopic subTopic) {
     //---   Tạo hiệu ứng  ---
     final  dialogAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
-      vsync: Navigator.of(context),
+      vsync: Navigator.of(parentContext),
     )..forward();
 
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: parentContext,
+      builder: (context) {
         return Dialog(
           backgroundColor: Colors.transparent,
           child: AnimatedBuilder(
@@ -202,9 +206,9 @@ class WdgMenuSentence extends StatelessWidget {
                         if(dialogAnimationController.isCompleted)
                           Expanded(
                             child: ListView.builder(
-                                itemCount: sentences.length,
+                                itemCount: subTopic.sentences.length,
                                 itemBuilder: (context, index) {
-                                  var word = sentences[index];
+                                  var word = subTopic.sentences[index];
                                   return WdgExpandedView(
                                     expand: _itemSentence(context, word),
                                     child: _itemSentence(context, word),
@@ -218,14 +222,21 @@ class WdgMenuSentence extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             WdgButton(
-                              onTap: () {
+                              onTap: () async {
                                 Navigator.pop(context);
-                                Navigator.push(
+                                final result = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => QuizzScreen.sentence(sentences: sentences),
+                                    builder: (context) => QuizzScreen.sentence(subTopic: subTopic),
                                   ),
                                 );
+
+                                if (result is QuizzResult) {
+                                  if(parentContext.mounted) {
+                                    subTopic.isLearned = true;
+                                    parentContext.read<DataBloc<MainSentenceTopic>>().add(DataEventUpdate(datas: _mainTopicList));
+                                  }
+                                }
                               },
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(12),

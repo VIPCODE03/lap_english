@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/ui/screens/quizz_screen.dart';
 
+import '../../../../data/bloc/data_bloc/data_bloc.dart';
+import '../../../../data/model/quizz/quizz.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
 import '../../other/button.dart';
@@ -43,7 +46,7 @@ class WdgMenuVocabulary extends StatelessWidget {
   Widget _buildItemSub(BuildContext context, SubVocabularyTopic subTopic, bool state) {
     return WdgButton(
       color: Colors.transparent,
-      onTap: () => _showDialogWordList(context, subTopic.words),
+      onTap: () => _showDialogWordList(context, subTopic),
       child: Column(
         children: [
           Column(
@@ -150,7 +153,7 @@ class WdgMenuVocabulary extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             crossAxisCount: 1,
             children: mainTopic.subTopics.map((subTopic) {
-              return _buildItemSub(context, subTopic, mainTopic.subTopics.indexOf(subTopic) < 3 );
+              return _buildItemSub(context, subTopic, subTopic.isLearned);
             }).toList(),
           ),
         ),
@@ -165,15 +168,15 @@ class WdgMenuVocabulary extends StatelessWidget {
   }
 
   ///DIALOG hiển thị danh sách từ vựng  ------------------------------------------
-  void _showDialogWordList(BuildContext context, List<Word> words) {
+  void _showDialogWordList(BuildContext parentContext, SubVocabularyTopic subTopic) {
     //---   Tạo hiệu ứng  ---
     final  dialogAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
-      vsync: Navigator.of(context),
+      vsync: Navigator.of(parentContext),
     )..forward();
 
     showDialog(
-      context: context,
+      context: parentContext,
       builder: (BuildContext context) {
         return Dialog(
           backgroundColor: Colors.transparent,
@@ -207,9 +210,9 @@ class WdgMenuVocabulary extends StatelessWidget {
                           if(dialogAnimationController.isCompleted)
                             Expanded(
                               child: ListView.builder(
-                                itemCount: words.length,
+                                itemCount: subTopic.words.length,
                                 itemBuilder: (context, index) {
-                                  var word = words[index];
+                                  var word = subTopic.words[index];
                                   return WdgExpandedView(
                                     expand: _itemWord(context, word, true),
                                     child: _itemWord(context, word, false),
@@ -223,14 +226,22 @@ class WdgMenuVocabulary extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               WdgButton(
-                                onTap: () {
+                                onTap: () async {
+                                  subTopic.isLearned = !subTopic.isLearned;
                                   Navigator.pop(context);
-                                  Navigator.push(
+                                  final result = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => QuizzScreen.vocabulary(words: words),
+                                      builder: (context) => QuizzScreen.vocabulary(subTopic: subTopic),
                                     ),
                                   );
+
+                                  if (result is QuizzResult) {
+                                    if(parentContext.mounted) {
+                                      subTopic.isLearned = true;
+                                      parentContext.read<DataBloc<MainVocabularyTopic>>().add(DataEventUpdate(datas: _mainTopicList));
+                                    }
+                                  }
                                 },
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(12),

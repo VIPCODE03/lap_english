@@ -4,6 +4,7 @@ part 'cumulative_point.g.dart';
 
 @JsonSerializable()
 class CumulativePoint {
+
   //Điểm
   int diamond;
   int gold;

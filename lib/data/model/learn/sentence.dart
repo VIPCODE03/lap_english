@@ -18,12 +18,13 @@ class MainSentenceTopic {
 /* Chủ đề con */
 @JsonSerializable()
 class SubSentenceTopic {
-  int id;
+  final int id;
   String name;
   String imageUrl;
   List<Sentence> sentences;
+  bool isLearned;
 
-  SubSentenceTopic(this.id, this.name, this.imageUrl, this.sentences);
+  SubSentenceTopic(this.id, this.name, this.imageUrl, this.sentences, {this.isLearned = false});
 
   factory SubSentenceTopic.fromJson(Map<String, dynamic> json) => _$SubSentenceTopicFromJson(json);
   Map<String, dynamic> toJson() => _$SubSentenceTopicToJson(this);

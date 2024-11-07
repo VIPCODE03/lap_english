@@ -7,8 +7,8 @@ import '../../model/learn/sentence.dart';
 import '../../model/learn/vocabulary.dart';
 import '../../model/user/user.dart';
 
-class LoadDatas {
-  static final Map<Type, Future<List<dynamic>> Function()> load = {
+mixin LoadDatas {
+  final Map<Type, Future<List<dynamic>> Function()> load = {
     MainVocabularyTopic: () => _vocabularyLoad(),
     MainSentenceTopic: () => _sentenceLoad(),
     User: () => _userLoad(),
@@ -16,9 +16,17 @@ class LoadDatas {
 
 //===   Load từ vựng  ===
   static Future<List<MainVocabularyTopic>> _vocabularyLoad() async {
-    const String jsonString = MockData.jsonString;
-    List<dynamic> jsonData = jsonDecode(jsonString);
-    return jsonData.map((item) => MainVocabularyTopic.fromJson(item)).toList();
+    var cacheManager = CacheManager();
+    final cacheData = cacheManager.get(CacheKeys.mainVocabularyTopic);
+    if(cacheData != null) {
+      return cacheData.map((data) => MainVocabularyTopic.fromJson(data)).toList();
+    }
+    else {
+      const String jsonString = MockData.jsonString;
+      List<dynamic> jsonData = jsonDecode(jsonString);
+      return jsonData.map((item) => MainVocabularyTopic.fromJson(item))
+          .toList();
+    }
   }
 
 //===   Load câu  ===

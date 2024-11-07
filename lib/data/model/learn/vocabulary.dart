@@ -23,8 +23,9 @@ class SubVocabularyTopic {
   String name;
   String imageUrl;
   List<Word> words;
+  bool isLearned;
 
-  SubVocabularyTopic(this.id, this.name, this.imageUrl, this.words);
+  SubVocabularyTopic(this.id, this.name, this.imageUrl, this.words, {this.isLearned = false});
 
   factory SubVocabularyTopic.fromJson(Map<String, dynamic> json) => _$SubVocabularyTopicFromJson(json);
 

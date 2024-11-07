@@ -28,14 +28,14 @@ class DataStateError<T> extends DataState<T> {
   DataStateError(this.message);
 }
 
-class DataBloc<T> extends Bloc<DataEvent, DataState<T>> {
+class DataBloc<T> extends Bloc<DataEvent, DataState<T>> with UpdateDatas, LoadDatas {
 
   DataBloc() : super(DataStateInitial<T>()) {
     //--- Load dữ liệu ---
     on<DataEventLoad<T>>((event, emit) async {
       emit(DataStateLoading<T>());
       try {
-        final data = await (LoadDatas.load[T]!() as Future<List<T>>);
+        final data = await (load[T]!() as Future<List<T>>);
         emit(DataStateLoaded<T>(data));
       } catch (e) {
         emit(DataStateError<T>('Lỗi tải dữ liệu'));
@@ -48,7 +48,7 @@ class DataBloc<T> extends Bloc<DataEvent, DataState<T>> {
     //--- Update dữ liệu ---
     on<DataEventUpdate<T>>((event, emit) async {
       if (state is DataStateLoaded<T>) {
-        await UpdateDatas.update[T]!(event.datas);
+        await update[T]!(event.datas);
         emit(DataStateLoaded<T>(event.datas));
       }
     });
