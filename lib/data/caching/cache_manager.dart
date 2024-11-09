@@ -1,6 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:lap_english/data/model/learn/sentence.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/user/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -19,12 +17,6 @@ class CacheManager {
       List<Map<String, dynamic>> jsonList = datas.map((dataJson) {
         if (key == CacheKeys.user) {
           return (dataJson as User).toJson();
-        }
-        else if (key == CacheKeys.mainSentenceTopic) {
-          return (dataJson as MainSentenceTopic).toJson();
-        }
-        else if(key == CacheKeys.mainVocabularyTopic) {
-          return (dataJson as MainVocabularyTopic).toJson();
         }
         else {
           throw Exception('Unsupported key');
@@ -45,6 +37,10 @@ class CacheManager {
     return dataJson != null ? jsonDecode(dataJson) : null;
   }
 
+  Future<void> saveStatus(StatusFlag flag, bool state) async => _caching.setBool(_getKeyStatus(flag), state);
+
+  bool? getStatus(StatusFlag flag) => _caching.getBool(_getKeyStatus(flag));
+
   Future<void> clearCache(String key) async {
     await _caching.remove(key);
   }
@@ -52,11 +48,20 @@ class CacheManager {
   Future<void> clearAllCache() async {
     await _caching.clear();
   }
+
+  String _getKeyStatus(StatusFlag flag) {
+    return switch(flag) {
+      StatusFlag.dataLoaded => 'dataLoaded',
+      StatusFlag.dataNew => 'dataNew',
+    };
+  }
 }
 
 class CacheKeys {
   static const String user = "user";
-  static const String rollCall = "rollCall";
-  static const String mainSentenceTopic = "mainSentenceTopic";
-  static const String mainVocabularyTopic = "mainVocabularyTopic";
+}
+
+enum StatusFlag {
+  dataLoaded,
+  dataNew,
 }

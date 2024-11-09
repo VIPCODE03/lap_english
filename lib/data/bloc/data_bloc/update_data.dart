@@ -1,25 +1,68 @@
+import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
+import 'package:lap_english/data/database/local/dao/vocabulary_dao.dart';
+import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/model/learn/vocabulary.dart';
+
 import '../../caching/cache_manager.dart';
-import '../../model/learn/sentence.dart';
-import '../../model/learn/vocabulary.dart';
 import '../../model/user/user.dart';
 
-class UpdateDatas {
-  static final Map<Type, Future<void> Function(List<dynamic>)> update = {
-    MainVocabularyTopic: (datas) => _vocabularyUpdate(datas as List<MainVocabularyTopic>),
-    MainSentenceTopic: (datas) => _sentenceUpdate(datas as List<MainSentenceTopic>),
+mixin UpdateDatas {
+  final Map<Type, Future<void> Function(List<dynamic>)> update = {
     User: (datas) => _userUpdate(datas as List<User>),
+
+    //--- Từ vựng ---
+    MdlMainVocabularyTopic: (datas) => _updateMainVocabularyTopic(datas as List<MdlMainVocabularyTopic>),
+    MdlSubVocabularyTopic: (datas) => _updateSubVocabularyTopic(datas as List<MdlSubVocabularyTopic>),
+    MdlWord: (datas) => _updateWord(datas as List<MdlWord>),
+
+    //--- Câu ---
+    MdlMainSentenceTopic: (datas) => _updateMainSentenceTopic(datas as List<MdlMainSentenceTopic>),
+    MdlSubSentenceTopic: (datas) => _updateSubSentenceTopic(datas as List<MdlSubSentenceTopic>),
+    MdlSentence: (datas) => _updateSentence(datas as List<MdlSentence>),
   };
 
-  //===   Update từ vựng  ===
-  static Future<void> _vocabularyUpdate(List<MainVocabularyTopic> datas) async {
-    var cacheManager = CacheManager();
-    await cacheManager.save(CacheKeys.mainVocabularyTopic, datas);
+  /*  Cập nhật từ vựng  */
+  static Future<void> _updateMainVocabularyTopic(List<MdlMainVocabularyTopic> datas) async {
+    MainVocabularyTopicDao dao = MainVocabularyTopicDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
   }
 
-  //===   Update câu  ===
-  static Future<void> _sentenceUpdate(List<MainSentenceTopic> datas) async {
-    var cacheManager = CacheManager();
-    await cacheManager.save(CacheKeys.mainSentenceTopic, datas);
+  static Future<void> _updateSubVocabularyTopic(List<MdlSubVocabularyTopic> datas) async {
+    SubVocabularyTopicDao dao = SubVocabularyTopicDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
+  }
+
+  static Future<void> _updateWord(List<MdlWord> datas) async {
+    WordDao dao = WordDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
+  }
+
+  /*  Cập nhật câu  */
+  static Future<void> _updateMainSentenceTopic(List<MdlMainSentenceTopic> datas) async {
+    MainSentenceTopicDao dao = MainSentenceTopicDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
+  }
+
+  static Future<void> _updateSubSentenceTopic(List<MdlSubSentenceTopic> datas) async {
+    SubSentenceTopicDao dao = SubSentenceTopicDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
+  }
+
+  static Future<void> _updateSentence(List<MdlSentence> datas) async {
+    SentenceDao dao = SentenceDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
   }
 
   //===   Update người dùng   ===

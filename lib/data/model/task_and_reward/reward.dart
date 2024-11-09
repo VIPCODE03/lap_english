@@ -1,23 +1,32 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lap_english/data/model/user/user.dart';
 
-import '../../gen/assets.gen.dart';
+import '../../../gen/assets.gen.dart';
 
 part 'reward.g.dart';
 
 @JsonSerializable()
 class Reward {
-  final String name;
   final RewardType rewardType;
   final int quantity;
   bool isRewardClaimed;
 
   Reward({
-    required this.name,
     required this.rewardType,
     required this.quantity,
     this.isRewardClaimed = false,
   });
+
+  String get name {
+    switch(rewardType) {
+      case RewardType.diamond:
+        return "Kim cương";
+      case RewardType.gold:
+        return "Vàng";
+      default:
+        throw ArgumentError('Invalid reward type');
+    }
+  }
 
   String get icon {
     switch(rewardType) {

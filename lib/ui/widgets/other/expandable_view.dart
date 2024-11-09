@@ -30,7 +30,7 @@ class ExpandableViewState extends State<WdgExpandedView> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(7),
       child: GestureDetector(
         onTap: _toggleExpand,
         child: Column(
@@ -38,7 +38,7 @@ class ExpandableViewState extends State<WdgExpandedView> with SingleTickerProvid
             _isExpanded ? SizeTransition(
               sizeFactor: CurvedAnimation(
                 parent: _controller,
-                curve: Curves.elasticOut,
+                curve: Curves.fastLinearToSlowEaseIn
               ),
               child: widget.expand, //->  Hiển thị nội dung mở rộng
             )

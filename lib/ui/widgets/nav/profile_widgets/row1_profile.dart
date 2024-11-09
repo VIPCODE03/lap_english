@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/bloc/data_bloc/data_bloc.dart';
+import '../../../../data/caching/cache_manager.dart';
 import '../../../../data/model/user/user.dart';
 
 class WdgRow1Profile extends StatelessWidget {
@@ -25,21 +27,14 @@ class WdgRow1Profile extends StatelessWidget {
           alignment: Alignment.topRight,
           child: WdgButton(
             onTap: () {
+              CacheManager().saveStatus(StatusFlag.dataLoaded, false);
+
               user.name = "Anh Triệu đẹp trai vãi ò";
               user.skills.listening = Random().nextDouble() * 10;
               user.skills.speaking = Random().nextDouble() * 10;
               user.skills.writing = Random().nextDouble() * 10;
               user.skills.reading = Random().nextDouble() * 10;
-              var task = user.task;
-              if(task.rollCall.currentDay == 7) {
-                task.rollCall.currentDay = 1;
-                for (var reward in task.rollCall.rewards) {
-                  reward.isRewardClaimed = false;
-                }
-              } else {
-                task.rollCall.currentDay++;
-              }
-
+              user.dailyTasks..clear()..addAll(MdlDailyTask.create());
               context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
             },
             color: Colors.transparent,

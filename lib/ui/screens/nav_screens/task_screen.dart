@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
 import '../../../data/bloc/data_bloc/data_bloc.dart';
 import '../../widgets/nav/task_widgets/row1_task.dart';
-import '../../widgets/nav/task_widgets/row2_task.dart';
 import '../../widgets/nav/task_widgets/row3_task.dart';
 import '../../widgets/other/group.dart';
 
@@ -20,7 +19,7 @@ class _TaskScreenState extends State<TaskScreen> {
     return BlocProvider(
       create: (context) => DataBloc<User>()..add(DataEventLoad<User>()),
       child: Scaffold(
-        body: BlocBuilder<DataBloc<User>, DataState<User>>(
+        body: BlocBuilder<DataBloc<User>, DataState>(
           builder: (context, state) {
             if (state is DataStateLoading<User>) {
               return const Center(child: CircularProgressIndicator());
@@ -34,11 +33,11 @@ class _TaskScreenState extends State<TaskScreen> {
                   const WdgRow1Task(),
 
                   /// ROW3  --------------------------------------------------------------
-                  const WdgGroup(title: 'Chuỗi ngày học', opacity: 0, height: 0),
-                  SizedBox(
-                    height: 125,
-                    child: WdgRow2Task(user: user),
-                  ),
+                  // const WdgGroup(title: 'Chuỗi ngày học', opacity: 0, height: 0),
+                  // SizedBox(
+                  //   height: 125,
+                  //   child: WdgRow2Task(user: user),
+                  // ),
 
                   /// ROW4  --------------------------------------------------------------
                   const WdgGroup(title: 'Nhiệm vụ hàng ngày', opacity: 0.06, height: 15),

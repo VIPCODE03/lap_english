@@ -15,7 +15,7 @@ class Student {
 /*  Table */
 class StudentTable extends TableSchema<Student> {
   @override
-  Columns columns(Student obj) => ColumnBuild(addColumn: [
+  Columns columns(Student obj) => columnBuild(addColumn: [
     column(name: 'msv', value: obj.msv),
     column(name: 'name', value: obj.name),
     column(name: 'age', value: obj.age),

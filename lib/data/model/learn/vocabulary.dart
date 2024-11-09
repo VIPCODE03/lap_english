@@ -4,49 +4,50 @@ part 'vocabulary.g.dart';
 
 /*  Chủ đề chính  */
 @JsonSerializable()
-class MainVocabularyTopic {
-  int id;
+class MdlMainVocabularyTopic {
+  final int id;
   String name;
-  List<SubVocabularyTopic> subTopics;
 
-  MainVocabularyTopic(this.id, this.name, this.subTopics);
+  MdlMainVocabularyTopic(this.id, this.name);
 
-  factory MainVocabularyTopic.fromJson(Map<String, dynamic> json) => _$MainVocabularyTopicFromJson(json);
+  factory MdlMainVocabularyTopic.fromJson(Map<String, dynamic> json) => _$MdlMainVocabularyTopicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MainVocabularyTopicToJson(this);
+  Map<String, dynamic> toJson() => _$MdlMainVocabularyTopicToJson(this);
 }
 
 /*  Chủ đề con  */
 @JsonSerializable()
-class SubVocabularyTopic {
-  int id;
+class MdlSubVocabularyTopic {
+  final int id;
   String name;
   String imageUrl;
-  List<Word> words;
+  bool isLearned;
+  int idMainTopic;
 
-  SubVocabularyTopic(this.id, this.name, this.imageUrl, this.words);
+  MdlSubVocabularyTopic(this.id, this.name, this.imageUrl, this.idMainTopic, {this.isLearned = false});
 
-  factory SubVocabularyTopic.fromJson(Map<String, dynamic> json) => _$SubVocabularyTopicFromJson(json);
+  factory MdlSubVocabularyTopic.fromJson(Map<String, dynamic> json) => _$MdlSubVocabularyTopicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SubVocabularyTopicToJson(this);
+  Map<String, dynamic> toJson() => _$MdlSubVocabularyTopicToJson(this);
 }
 
 /*  Từ vựng   */
 @JsonSerializable()
-class Word {
-  int id;
+class MdlWord {
+  final int id;
   String word;
   String meaning;
   String pronounceUK;
   String pronounceUS;
   String type;
   String level;
-  List<String> examples;
+  String example;
+  int idSubTopic;
 
-  Word(this.id, this.word, this.meaning, this.pronounceUK, this.pronounceUS,
-      this.type, this.level, this.examples);
+  MdlWord(this.id, this.word, this.meaning, this.pronounceUK, this.pronounceUS,
+      this.type, this.level, this.example, this.idSubTopic);
 
-  factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
+  factory MdlWord.fromJson(Map<String, dynamic> json) => _$MdlWordFromJson(json);
 
-  Map<String, dynamic> toJson() => _$WordToJson(this);
+  Map<String, dynamic> toJson() => _$MdlWordToJson(this);
 }

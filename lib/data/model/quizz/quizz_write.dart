@@ -8,7 +8,7 @@ abstract class QuizzWrite<T> extends Quizz<T> {
   SkillType get skillType => SkillType.writing;
 }
 
-class QuizzWriteVocabulary extends QuizzWrite<Word> {
+class QuizzWriteVocabulary extends QuizzWrite<MdlWord> {
   @override
   List<Quizz> generate() {
     List<QuizzWriteVocabulary> quizzes = [];

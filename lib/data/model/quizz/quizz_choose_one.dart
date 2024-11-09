@@ -1,10 +1,11 @@
 
 import 'dart:math';
 
-import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
+
+import '../learn/sentence.dart';
 
 /*  Quizz chọn 1 đáp án */
 
@@ -15,7 +16,7 @@ abstract class QuizzChooseOne<T> extends Quizz<T> {
 
 /*  Từ vựng */
 
-class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
+class QuizzChooseOneVocabulary extends QuizzChooseOne<MdlWord> {
   @override
   List<Quizz> generate() {
     List<QuizzChooseOne> quizzes = [];
@@ -54,8 +55,8 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
 
         //--- Tạo đáp án ---
         Set<String> answers = {};
-        List<Word> wordsT = [word];
-        List<Word> copy = List.from(datas)..remove(word);
+        List<MdlWord> wordsT = [word];
+        List<MdlWord> copy = List.from(datas)..remove(word);
         copy.shuffle();
         wordsT.addAll(copy.take(total).toList());
 
@@ -77,7 +78,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
 }
 
 /*  Câu */
-class QuizzChooseOneSentence extends QuizzChooseOne<Sentence> {
+class QuizzChooseOneSentence extends QuizzChooseOne<MdlSentence> {
   @override
   List<Quizz> generate() {
     List<QuizzChooseOneSentence> quizzes = [];
@@ -86,8 +87,8 @@ class QuizzChooseOneSentence extends QuizzChooseOne<Sentence> {
       var quizzChoose = QuizzChooseOneSentence();
       quizzChoose.question = "Chọn bản dịch nghĩa của câu <${sentence.sentence}>";
 
-      List<Sentence> answers = [sentence];
-      List<Sentence> copy = List.from(datas)..remove(sentence);
+      List<MdlSentence> answers = [sentence];
+      List<MdlSentence> copy = List.from(datas)..remove(sentence);
       copy.shuffle();
       answers.addAll(copy.take(Random().nextBool() ? 2 : 1).toList());
       answers.shuffle();

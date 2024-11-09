@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
 
-import '../../../../data/model/task/daily_task.dart';
+import '../../../../data/model/task_and_reward/daily_task.dart';
 import '../../other/button.dart';
 
 class WdgRow3Task extends StatefulWidget {
@@ -16,12 +16,12 @@ class WdgRow3Task extends StatefulWidget {
 }
 
 class _WdgRow4ProfileState extends State<WdgRow3Task> {
-  late List<DailyTask> dailyTasks;
+  late List<MdlDailyTask> dailyTasks;
 
   @override
   void initState() {
     super.initState();
-    dailyTasks = widget.user.task.dailyTasks;
+    dailyTasks = widget.user.dailyTasks;
   }
 
   @override
@@ -37,7 +37,7 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                 children: [
                   ListTile(
                     title: Text(
-                      dailyTask.description,
+                      dailyTask.task.description,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Row(
@@ -61,8 +61,9 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                       child: dailyTask.reward.isRewardClaimed
                           ? WdgButton(
                               onTap: () {
-                                dailyTask.progress = 0;
+                                dailyTask.task.progress = 0;
                                 dailyTask.reward.isRewardClaimed = false;
+                                dailyTask.task.completed = false;
                                 context
                                     .read<DataBloc<User>>()
                                     .add(DataEventUpdate(datas: [widget.user]));
@@ -74,26 +75,26 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
 
                           : WdgButton(
                               onTap: () {
-                                if (dailyTask.progress >= dailyTask.total &&
+                                if (dailyTask.task.progress >= dailyTask.task.total &&
                                     !dailyTask.reward.isRewardClaimed) {
                                   dailyTask.reward.claimReward(widget.user);
-                                } else if (dailyTask.progress <
-                                    dailyTask.total) {
-                                  dailyTask.progress++;
+                                } else if (dailyTask.task.progress <
+                                    dailyTask.task.total) {
+                                  dailyTask.task.progress++;
                                 }
                                 context
                                     .read<DataBloc<User>>()
                                     .add(DataEventUpdate(datas: [widget.user]));
                               },
                               borderRadius: BorderRadius.circular(12),
-                              color: dailyTask.progress < dailyTask.total
+                              color: dailyTask.task.progress < dailyTask.task.total
                                   ? Colors.grey.withAlpha(50)
                                   : Theme.of(context)
                                   .primaryColor
                                   .withAlpha(90),
                               child: Text(
-                                dailyTask.progress < dailyTask.total
-                                    ? '${dailyTask.progress}/${dailyTask.total}'
+                                dailyTask.task.progress < dailyTask.task.total
+                                    ? '${dailyTask.task.progress}/${dailyTask.task.total}'
                                     : 'Nhận thưởng',
                               ),
                       ),

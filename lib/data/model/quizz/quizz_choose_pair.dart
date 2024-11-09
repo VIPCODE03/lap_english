@@ -5,13 +5,13 @@ import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 
 abstract class QuizzChoosePair<T> extends Quizz<T> {
-  List<Map<String, String>> answersPair = [];
+  Map<String, String> answersPair = {};
 
   @override
   SkillType get skillType => SkillType.reading;
 }
 
-class QuizzChoosePairVocabulary extends QuizzChoosePair<Word> {
+class QuizzChoosePairVocabulary extends QuizzChoosePair<MdlWord> {
   @override
   List<Quizz> generate() {
     List<QuizzChoosePairVocabulary> quizzes = [];
@@ -20,7 +20,9 @@ class QuizzChoosePairVocabulary extends QuizzChoosePair<Word> {
       quizzChoosePair.question = "Hoàn thành các cặp từ";
 
       //--- Tạo đáp án  ---
-      quizzChoosePair.answersPair = datas.map((word) => {word.word : word.meaning}).toList();
+      quizzChoosePair.answersPair = {
+        for (var word in datas) word.word : word.meaning
+      };
 
       quizzes.add(quizzChoosePair);
       return quizzes;

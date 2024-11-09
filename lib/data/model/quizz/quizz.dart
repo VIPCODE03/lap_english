@@ -20,9 +20,9 @@ abstract class Quizz<T> {
 
 /*  Class khởi tạo các loại quizz   */
 class Quizzes {
-  static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<Word> words}) {
+  static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<MdlWord> words}) {
     List<Quizz> quizzes = [];
-    List<Quizz<Word>> quizzList;
+    List<Quizz<MdlWord>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -40,9 +40,9 @@ class Quizzes {
     return quizzes;
   }
 
-  static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) {
+  static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<MdlSentence> sentences}) {
     List<Quizz> quizzes = [];
-    List<Quizz<Sentence>> quizzList;
+    List<Quizz<MdlSentence>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -65,4 +65,47 @@ class Quizzes {
 enum QuizzMode {
   basic,
   custom
+}
+
+class QuizzResult {
+  bool isLearned;
+  TypeQuizz type;
+
+  int total;
+  int totalSpeak;
+  int totalListen;
+  int totalRead;
+  int totalWrite;
+
+  int correct = 0;
+  int correctSpeak = 0;
+  int correctListen = 0;
+  int correctWrite = 0;
+  int correctRead = 0;
+  int correctConsecutive = 0;
+
+  QuizzResult(this.total, this.totalWrite, this.totalListen, this.totalRead, this.totalSpeak, this.isLearned, this.type);
+
+  //=== Cập nhật kết quả  ===
+  void update(bool isCorrect, SkillType skill, int newCorrectConsecutive) {
+    if(isCorrect) {
+      correct++;
+      if(correctConsecutive < newCorrectConsecutive) correctConsecutive = newCorrectConsecutive;
+
+      switch(skill) {
+        case SkillType.reading:
+          correctRead++; break;
+        case SkillType.writing:
+          correctWrite++; break;
+        case SkillType.listening:
+          correctListen++; break;
+        case SkillType.speaking:
+          correctSpeak++; break;
+      }
+    }
+  }
+}
+
+enum TypeQuizz {
+  quizzVocabulary, quizzSentence, quizzCustom
 }

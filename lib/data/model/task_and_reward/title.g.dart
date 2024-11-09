@@ -6,22 +6,18 @@ part of 'title.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Title _$TitleFromJson(Map<String, dynamic> json) => Title(
+MdlTitle _$MdlTitleFromJson(Map<String, dynamic> json) => MdlTitle(
       id: (json['id'] as num).toInt(),
       image: json['image'] as String,
       title: json['title'] as String,
-      description: json['description'] as String,
+      task: MdlTask.fromJson(json['task'] as Map<String, dynamic>),
       award: Reward.fromJson(json['award'] as Map<String, dynamic>),
-      progress: (json['progress'] as num).toInt(),
-      total: (json['total'] as num).toInt(),
     );
 
-Map<String, dynamic> _$TitleToJson(Title instance) => <String, dynamic>{
+Map<String, dynamic> _$MdlTitleToJson(MdlTitle instance) => <String, dynamic>{
       'id': instance.id,
       'image': instance.image,
       'title': instance.title,
-      'description': instance.description,
+      'task': instance.task.toJson(),
       'award': instance.award.toJson(),
-      'progress': instance.progress,
-      'total': instance.total,
     };

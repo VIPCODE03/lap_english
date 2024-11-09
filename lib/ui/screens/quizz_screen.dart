@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
@@ -10,21 +11,27 @@ import 'package:lap_english/utils/player_audio.dart';
 import '../../data/bloc/quizz_bloc.dart';
 import '../../data/model/quizz/quizz.dart';
 import '../../data/model/user/skill.dart';
-import '../../data/model/learn/vocabulary.dart';
+import '../widgets/learn/quiz/quizz_result.dart';
 import '../widgets/other/button.dart';
 
 class QuizzScreen extends StatefulWidget {
   final String _title;
   final List<Quizz> _quizzes;
+  final TypeQuizz _typeQuizz;
+  final bool _isLearned;
 
-  QuizzScreen.vocabulary({super.key, required List<Word> words})
+  QuizzScreen.vocabulary({super.key, required List<MdlWord> words, required bool isLearned})
     :
-      _title = "Quizz từ vựng",
-      _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
+        _title = "Quizz từ vựng",
+        _typeQuizz = TypeQuizz.quizzVocabulary,
+        _isLearned = isLearned,
+        _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
 
-  QuizzScreen.sentence({super.key, required List<Sentence> sentences})
+  QuizzScreen.sentence({super.key, required List<MdlSentence> sentences, required bool isLearned})
       :
         _title = "Quizz câu",
+        _typeQuizz = TypeQuizz.quizzSentence,
+        _isLearned = isLearned,
         _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
 
   @override
@@ -41,7 +48,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
     super.initState();
     widget._quizzes.shuffle();
 
-    Future.delayed(const Duration(milliseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 50), () {
       setState(() {
         showQuizz = true;
       });
@@ -55,7 +62,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
         appBar: AppBar(title: Text(widget._title)),
         body: Center(
           child: BlocProvider(
-            create: (context) => QuizzBloc(widget._quizzes)..add(QuizzInit()),
+            create: (context) => QuizzBloc(widget._quizzes, widget._typeQuizz, widget._isLearned)..add(QuizzInit()),
             child: BlocBuilder<QuizzBloc, QuizzState>(
               builder: (context, state) {
                 if (state is QuizzInProgress) {
@@ -193,7 +200,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                   );
 
                 } else if (state is QuizzCompleted) {
-                  return const Center(child: Text('Quiz Completed!'));
+                  return WdgQuizzResult(quizzResult: state.quizzResult);
                 }
                 return const Center(child: CircularProgressIndicator());
               },

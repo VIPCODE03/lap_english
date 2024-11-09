@@ -22,23 +22,23 @@ class WdgRow2 extends StatelessWidget {
   final List<MenuItem> menuItems = [
     MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
         label: "Từ vựng",
-        openScreen: const MenuScreen<MainVocabularyTopic>(title: "Từ vựng theo chủ đề")
+        openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnSentence.path,
         label: "Câu",
-        openScreen: const MenuScreen<MainSentenceTopic>(title: "Câu theo chủ đề")
+        openScreen: const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
         label: "Ngữ pháp",
-        openScreen: const MenuScreen<MainSentenceTopic>(title: "Câu theo chủ đề")
+        openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Phát âm",
-        openScreen: const LoginScreen()
+        openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnReview.path,
         label: "Ôn tập",
-        openScreen: const LoginScreen()
+        openScreen: const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề")
     ),
     MenuItem(imagePath: Assets.images.menu.learnWrite.path,
         label: "Luyện viết",
