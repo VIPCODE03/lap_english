@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/theme_constant.dart';
-import 'package:lap_english/data/caching/cache_manager.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:provider/provider.dart';
