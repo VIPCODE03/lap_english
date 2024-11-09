@@ -7,8 +7,6 @@ import 'package:sqflite/sqflite.dart';
 import 'database_vip.dart';
 
 abstract class BaseDatabase<T> {
-  static bool _isInserting = false;
-
   late Future<Database?> _database;
 
   DatabaseApp get database;
