@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
-import 'package:lap_english/ui/widgets/learn/menu/menu_sentence.dart';
-import 'package:lap_english/ui/widgets/learn/menu/menu_vocabulary.dart';
+import 'package:lap_english/ui/widgets/learn/menu/menu_word_and_sentence.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 
 import '../../data/bloc/data_bloc/data_bloc.dart';
@@ -25,15 +24,14 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
 
   void _toggleSearch() {
     setState(() {
+      if (_isSearching) search = "";
       _isSearching = !_isSearching;
-      if (!_isSearching) search = "";
     });
   }
 
   void _onSearch() {
     setState(() {
       search = _searchController.text;
-      _isSearching = false;
     });
   }
 
@@ -43,73 +41,83 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
       appBar: AppBar(
         title: _isSearching
             ? TextField(
-          controller: _searchController,
-          maxLines: 1,
-          autofocus: true,
-          decoration: const InputDecoration(
-            hintText: 'Tìm kiếm...',
-            border: InputBorder.none,
-          ),
-          onSubmitted: (_) => _onSearch(),
-        )
+                controller: _searchController,
+                maxLines: 1,
+                autofocus: true,
+                decoration: const InputDecoration(
+                  hintText: 'Tìm kiếm...',
+                  border: InputBorder.none,
+                ),
+                onChanged: (_) => _onSearch(),
+              )
             : Text(search.isEmpty ? widget.title : search),
+
         actions: [
           WdgButton(
             onTap: _toggleSearch,
             color: Colors.transparent,
             child: Icon(_isSearching ? Icons.close : Icons.search),
           ),
-          if (_isSearching)
-            WdgButton(
-              onTap: _onSearch,
-              color: Colors.transparent,
-              child: const Icon(Icons.check),
-            ),
+
+
         ],
       ),
 
-      body: GestureDetector(
-        onTap: () {
-          if (_isSearching) _toggleSearch();
-        },
-        child: BlocProvider(
-          create: (context) => DataBloc<T>()..add(DataEventLoad<T>()),
-          child: BlocBuilder<DataBloc<T>, DataState<T>>(
-            builder: (context, state) {
-              if (state is DataStateLoading<T>) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is DataStateLoaded<T>) {
-                datas = state.data;
-                return _buildMenu(datas, search); ///-> menu
-              }
-              return const Center(child: Text('Không có dữ liệu'));
-            },
-          ),
+      body: datas.isNotEmpty
+            ? _buildMenu(_datas(), search)
+            : BlocProvider(
+                create: (context) => DataBloc<T>()..add(DataEventLoad<T>()),
+                child: BlocBuilder<DataBloc<T>, DataState>(
+                  builder: (context, state) {
+                    if (state is DataStateLoading<T>) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is DataStateLoaded<T>) {
+                      datas = state.data;
+                      return _buildMenu(_datas(), search); ///-> menu
+                    }
+                    return const Center(child: Text('Không có dữ liệu'));
+                  },
+                ),
         ),
-      ),
     );
   }
 
   /// Xây dựng menu   ------------------------------------------------------
   Widget _buildMenu(List<T> datas, String search) {
+    /// Menu từ vựng  ------------------------------------------------------
+    if (T == MdlMainVocabularyTopic) {
+      return WdgMenuVW<MdlMainVocabularyTopic, MdlSubVocabularyTopic, MdlWord>(
+          mainTopics: datas as List<MdlMainVocabularyTopic>
+      );
+    }
 
     /// Menu câu  ------------------------------------------------------
-    if (T == MainSentenceTopic) {
-      final mainTopicList = datas as List<MainSentenceTopic>;
-      return search.isEmpty
-          ? WdgMenuSentence.build(mainTopicList: mainTopicList)
-          : WdgMenuSentence.search(search: search, mainTopicList: mainTopicList);
-
-    /// Menu từ vựng  ------------------------------------------------------
-    } else if (T == MainVocabularyTopic) {
-      final mainTopicList = datas as List<MainVocabularyTopic>;
-      return search.isEmpty
-          ? WdgMenuVocabulary.build(mainTopicList: mainTopicList)
-          : WdgMenuVocabulary.search(search: search, mainTopicList: mainTopicList);
-
-    /// Không có dữ liệu  --------------------------------------------------
-    } else {
-      return const Center(child: Text('Không có dữ liệu'));
+    else if(T == MdlMainSentenceTopic) {
+      return WdgMenuVW<MdlMainSentenceTopic, MdlSubSentenceTopic, MdlSentence>
+        (mainTopics: datas as List<MdlMainSentenceTopic>
+      );
     }
+
+    else {
+      throw Exception('Không tìm thấy loại menu');
+    }
+  }
+
+  //=== Hàm lọc dữ liệu ===
+  List<T> _datas() {
+    if (datas is List<MdlMainSentenceTopic>) {
+      var mains = datas as List<MdlMainSentenceTopic>;
+      return mains
+          .where((data) => data.name.toLowerCase().contains(search.toLowerCase()))
+          .toList() as List<T>;
+    }
+    else if (datas is List<MdlMainVocabularyTopic>) {
+      var mains = datas as List<MdlMainVocabularyTopic>;
+      return mains
+          .where((data) => data.name.toLowerCase().contains(search.toLowerCase()))
+          .toList() as List<T>;
+    }
+
+    return <T>[];
   }
 }

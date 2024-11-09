@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => DataBloc<User>()..add(DataEventLoad<User>()),
       child: Scaffold(
-        body: BlocBuilder<DataBloc<User>, DataState<User>>(
+        body: BlocBuilder<DataBloc<User>, DataState>(
           builder: (context, state) {
             if (state is DataStateLoading<User>) {
               return const Center(child: CircularProgressIndicator());

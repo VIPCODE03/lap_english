@@ -1,44 +1,45 @@
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'sentence.g.dart';
 
 /* Chủ đề chính */
 @JsonSerializable()
-class MainSentenceTopic {
-  int id;
+class MdlMainSentenceTopic {
+  final int id;
   String name;
-  List<SubSentenceTopic> subSentenceTopics;
 
-  MainSentenceTopic(this.id, this.name, this.subSentenceTopics);
+  MdlMainSentenceTopic(this.id, this.name, );
 
-  factory MainSentenceTopic.fromJson(Map<String, dynamic> json) => _$MainSentenceTopicFromJson(json);
-  Map<String, dynamic> toJson() => _$MainSentenceTopicToJson(this);
+  factory MdlMainSentenceTopic.fromJson(Map<String, dynamic> json) => _$MdlMainSentenceTopicFromJson(json);
+  Map<String, dynamic> toJson() => _$MdlMainSentenceTopicToJson(this);
 }
 
 /* Chủ đề con */
 @JsonSerializable()
-class SubSentenceTopic {
+class MdlSubSentenceTopic {
   final int id;
   String name;
   String imageUrl;
-  List<Sentence> sentences;
   bool isLearned;
+  int idMainTopic;
 
-  SubSentenceTopic(this.id, this.name, this.imageUrl, this.sentences, {this.isLearned = false});
+  MdlSubSentenceTopic(this.id, this.name, this.imageUrl, this.idMainTopic, {this.isLearned = false});
 
-  factory SubSentenceTopic.fromJson(Map<String, dynamic> json) => _$SubSentenceTopicFromJson(json);
-  Map<String, dynamic> toJson() => _$SubSentenceTopicToJson(this);
+  factory MdlSubSentenceTopic.fromJson(Map<String, dynamic> json) => _$MdlSubSentenceTopicFromJson(json);
+  Map<String, dynamic> toJson() => _$MdlSubSentenceTopicToJson(this);
 }
 
 /* Câu */
 @JsonSerializable()
-class Sentence {
-  int id;
+class MdlSentence {
+  final int id;
   String sentence;
   String translation;
+  int idSubTopic;
 
-  Sentence(this.id, this.sentence, this.translation);
+  MdlSentence(this.id, this.sentence, this.translation, this.idSubTopic);
 
-  factory Sentence.fromJson(Map<String, dynamic> json) => _$SentenceFromJson(json);
-  Map<String, dynamic> toJson() => _$SentenceToJson(this);
+  factory MdlSentence.fromJson(Map<String, dynamic> json) => _$MdlSentenceFromJson(json);
+  Map<String, dynamic> toJson() => _$MdlSentenceToJson(this);
 }

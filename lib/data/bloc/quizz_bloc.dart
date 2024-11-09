@@ -79,16 +79,16 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with TaskService {
   int total = 0;
   int newCorrectConsecutive = 0;
   late TypeQuizz typeQuizz;
-  late bool isNew;
+  late bool isLearned;
 
-  QuizzBloc(this.quizzes, this.typeQuizz, this.isNew) : super(QuizzInitial()) {
+  QuizzBloc(this.quizzes, this.typeQuizz, this.isLearned) : super(QuizzInitial()) {
     total = quizzes.length;
     var totalWrite = quizzes.where((quizz) => quizz.skillType == SkillType.writing).length;
     var totalListen = quizzes.where((quizz) => quizz.skillType == SkillType.listening).length;
     var totalRead = quizzes.where((quizz) => quizz.skillType == SkillType.reading).length;
     var totalSpeak = quizzes.where((quizz) => quizz.skillType == SkillType.speaking).length;
 
-    quizzResult = QuizzResult(total, totalWrite, totalListen, totalRead, totalSpeak, isNew, typeQuizz);
+    quizzResult = QuizzResult(total, totalWrite, totalListen, totalRead, totalSpeak, isLearned, typeQuizz);
 
     //---   Khởi tạo  ---
     on<QuizzInit>((event, emit) {

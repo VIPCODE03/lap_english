@@ -20,9 +20,9 @@ abstract class Quizz<T> {
 
 /*  Class khởi tạo các loại quizz   */
 class Quizzes {
-  static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<Word> words}) {
+  static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<MdlWord> words}) {
     List<Quizz> quizzes = [];
-    List<Quizz<Word>> quizzList;
+    List<Quizz<MdlWord>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -40,9 +40,9 @@ class Quizzes {
     return quizzes;
   }
 
-  static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) {
+  static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<MdlSentence> sentences}) {
     List<Quizz> quizzes = [];
-    List<Quizz<Sentence>> quizzList;
+    List<Quizz<MdlSentence>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -68,7 +68,7 @@ enum QuizzMode {
 }
 
 class QuizzResult {
-  bool isNew;
+  bool isLearned;
   TypeQuizz type;
 
   int total;
@@ -84,7 +84,7 @@ class QuizzResult {
   int correctRead = 0;
   int correctConsecutive = 0;
 
-  QuizzResult(this.total, this.totalWrite, this.totalListen, this.totalRead, this.totalSpeak, this.isNew, this.type);
+  QuizzResult(this.total, this.totalWrite, this.totalListen, this.totalRead, this.totalSpeak, this.isLearned, this.type);
 
   //=== Cập nhật kết quả  ===
   void update(bool isCorrect, SkillType skill, int newCorrectConsecutive) {

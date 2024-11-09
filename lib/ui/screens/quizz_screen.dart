@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
@@ -10,7 +11,6 @@ import 'package:lap_english/utils/player_audio.dart';
 import '../../data/bloc/quizz_bloc.dart';
 import '../../data/model/quizz/quizz.dart';
 import '../../data/model/user/skill.dart';
-import '../../data/model/learn/vocabulary.dart';
 import '../widgets/learn/quiz/quizz_result.dart';
 import '../widgets/other/button.dart';
 
@@ -18,21 +18,21 @@ class QuizzScreen extends StatefulWidget {
   final String _title;
   final List<Quizz> _quizzes;
   final TypeQuizz _typeQuizz;
-  final bool _isLearnNew;
+  final bool _isLearned;
 
-  QuizzScreen.vocabulary({super.key, required SubVocabularyTopic subTopic})
+  QuizzScreen.vocabulary({super.key, required List<MdlWord> words, required bool isLearned})
     :
         _title = "Quizz từ vựng",
         _typeQuizz = TypeQuizz.quizzVocabulary,
-        _isLearnNew = subTopic.isLearned,
-        _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: subTopic.words);
+        _isLearned = isLearned,
+        _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
 
-  QuizzScreen.sentence({super.key, required SubSentenceTopic subTopic})
+  QuizzScreen.sentence({super.key, required List<MdlSentence> sentences, required bool isLearned})
       :
         _title = "Quizz câu",
         _typeQuizz = TypeQuizz.quizzSentence,
-        _isLearnNew = subTopic.isLearned,
-        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: subTopic.sentences);
+        _isLearned = isLearned,
+        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
 
   @override
   State<StatefulWidget> createState() => _QuizzScreenState();
@@ -62,7 +62,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
         appBar: AppBar(title: Text(widget._title)),
         body: Center(
           child: BlocProvider(
-            create: (context) => QuizzBloc(widget._quizzes, widget._typeQuizz, widget._isLearnNew)..add(QuizzInit()),
+            create: (context) => QuizzBloc(widget._quizzes, widget._typeQuizz, widget._isLearned)..add(QuizzInit()),
             child: BlocBuilder<QuizzBloc, QuizzState>(
               builder: (context, state) {
                 if (state is QuizzInProgress) {

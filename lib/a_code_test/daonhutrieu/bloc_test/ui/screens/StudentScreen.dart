@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +44,7 @@ class StudentScreen extends StatelessWidget {
               );
               noteBloc.add(AddStudent(student));
             },
-            child: Text('Add Note'),
+            child: const Text('Add Note'),
           ),
           Expanded(
             child: BlocBuilder<StudentBloc, StudentState>(
@@ -55,8 +57,9 @@ class StudentScreen extends StatelessWidget {
                       title: Text(student.name + student.msv.toString()),
                       subtitle: Text(student.age.toString()),
                       trailing: IconButton(
-                        icon: Icon(Icons.delete),
+                        icon: const Icon(Icons.delete),
                         onPressed: () {
+                          student.name = 'Anh triệu đẹp trai ${Random().nextInt(100)}';
                           noteBloc.add(DeleteStudent(student));
                         },
                       ),

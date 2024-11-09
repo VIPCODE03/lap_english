@@ -7,10 +7,13 @@ import 'package:sqflite/sqflite.dart';
 import 'database_vip.dart';
 
 abstract class BaseDatabase<T> {
+  static bool _isInserting = false;
+
   late Future<Database?> _database;
 
   DatabaseApp get database;
   TableSchema<T> get table;
+  final Map<int, int> _mapDatas = {};
 
   BaseDatabase() {
     if(database.isContainsTable(table)) {
@@ -21,43 +24,43 @@ abstract class BaseDatabase<T> {
     }
   }
 
-  /*  Các hàm truy vấn  */
+  /*  Các hàm truy vấn  *********************************************************/
 
   //===   insert    ===
-  Future<bool> insert(T obj) async {
+  Future<bool> insert(T obj)  async {
     try {
-      if(!table.key.autoIncrement) if(await _checkExist(obj)) return false;
-      Columns columns = await _autoIncrement(table.columns(obj));
+        if(!table.key.autoIncrement && await _checkExist(obj)) {
+            return update(obj);
+        }
+        var columns = await _autoIncrement(table.columns(obj));
 
-      final db = await _database;
-      await db?.insert(
-        table.tableName,
-        columns,
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-      return true;
-    }
-    catch(e) {
-      if (kDebugMode) {
-        print("Error insert: $e");
+        final db = await _database;
+        await db?.insert(
+          table.tableName,
+          columns,
+        );
+
+        return true;
       }
-      return false;
-    }
+      catch(e) {
+        if (kDebugMode) print("Error insert: $e");
+        return false;
+      }
   }
 
   //===   update  ===
-  Future<bool> update(T oldObj, T newObj) async {
+  Future<bool> update(T obj) async {
     try {
-      if(table.key.autoIncrement && (table.columns(oldObj)[table.key.nameColumn] != table.columns(newObj)[table.key.nameColumn])) {
-        return false;
-      }
-
+      var keyID = _mapDatas[obj.hashCode];
       final db = await _database;
       await db?.update(
         table.tableName,
-        table.columns(newObj),
-        where: '${table.key.nameColumn} = ?',
-        whereArgs: [table.columns(oldObj)[table.key.nameColumn]],
+        table.columns(obj),
+        where: keyID != null
+            ? '${TableSchema.primaryKey} = ?'
+            : '${table.key.nameColumn} = ?'
+        ,
+        whereArgs: keyID != null ? [keyID] : [table.columns(obj)[table.key.nameColumn]],
       );
       return true;
     }
@@ -72,13 +75,17 @@ abstract class BaseDatabase<T> {
   //===   delete    ===
   Future<bool> delete(T obj) async {
     try {
-      final db = await _database;
-      await db?.delete(
-        table.tableName,
-        where: '${table.key.nameColumn} = ?',
-        whereArgs: [table.columns(obj)[table.key.nameColumn]],
-      );
-      return true;
+      if(await _checkExist(obj)) {
+        var keyID = _mapDatas[obj.hashCode];
+        final db = await _database;
+        await db?.delete(
+          table.tableName,
+          where: '${TableSchema.primaryKey} = ?',
+          whereArgs: [keyID],
+        );
+        return true;
+      }
+      return false;
     }
     catch(e) {
       if (kDebugMode) {
@@ -90,7 +97,7 @@ abstract class BaseDatabase<T> {
 
   //===   Lấy tất cả dữ liệu    ===
   Future<List<T>> getData({
-    required bool firstToLast,
+    bool firstToLast = false,
     int? limit,
     int? index,
   }
@@ -103,7 +110,7 @@ abstract class BaseDatabase<T> {
         datas = await db?.query(table.tableName);
       }
       else {
-        datas = await db?.query(table.tableName, orderBy: 'ID DESC');
+        datas = await db?.query(table.tableName, orderBy: '${TableSchema.primaryKey} DESC');
       }
     }
     else {
@@ -113,7 +120,7 @@ abstract class BaseDatabase<T> {
         datas = await db?.query(table.tableName, limit: limit, offset: offset);
       }
       else {
-        datas = await db?.query(table.tableName, orderBy: 'ID DESC', limit: limit, offset: offset);
+        datas = await db?.query(table.tableName, orderBy: '${TableSchema.primaryKey} DESC', limit: limit, offset: offset);
       }
     }
     return _generate(datas!);
@@ -141,7 +148,7 @@ abstract class BaseDatabase<T> {
     return _generate(datas);
   }
 
-  /*  Hàm kiểm tra và khởi tạo dữ liệu  */
+  /*  Hàm kiểm tra và khởi tạo dữ liệu  ****************************************/
 
   //===   Kiểm tra tồn tại 2 bản ghi và xóa ===
   Future<bool> _checkNewlyAddedRecords() async {
@@ -157,7 +164,7 @@ abstract class BaseDatabase<T> {
       final db = await _database;
       await db?.delete(
           table.tableName,
-        where: 'ID = ?',
+        where: '${TableSchema.primaryKey} = ?',
         whereArgs: [ids[1]]
       );
       return true;
@@ -185,29 +192,36 @@ abstract class BaseDatabase<T> {
   Future<List<int>> _getIdsByKey(dynamic keyValue) async {
     final db = await _database;
     final result = await db?.rawQuery(
-      'SELECT ID FROM ${table.tableName} WHERE ${table.key} = ?',
+      'SELECT ${TableSchema.primaryKey} FROM ${table.tableName} WHERE ${table.key} = ?',
       [keyValue],
     );
 
-    return result?.map<int>((row) => row['ID'] as int).toList() ?? [];
+    return result?.map<int>((row) => row[TableSchema.primaryKey] as int).toList() ?? [];
   }
 
   //===   Tạo dữ liệu   ===
   List<T> _generate(List<Map<String, dynamic>> datas) {
     List<Map<String, dynamic>> processedData = [];
+    _mapDatas.clear();
 
     for (Map<String, dynamic> data in datas) {
       final Map<String, dynamic> mutableData = Map.from(data);
 
       mutableData.forEach((key, value) {
-        mutableData[key] = _parseValue(table.columns(table.generate({}))[key].runtimeType, value);
+        if (key != TableSchema.primaryKey) {
+          mutableData[key] = _parseValue(table.columns(table.generate({}))[key].runtimeType, value);
+        }
       });
 
       processedData.add(mutableData);
     }
 
     if (processedData.isNotEmpty) {
-      return List.generate(processedData.length, (i) => table.generate(processedData[i]));
+      return List.generate(processedData.length, (i) {
+        final T object = table.generate(processedData[i]);
+        _mapDatas[object.hashCode] = processedData[i][TableSchema.primaryKey];
+        return object;
+      });
     } else {
       return [];
     }
@@ -234,13 +248,13 @@ abstract class BaseDatabase<T> {
         int iD = 0;
         List<Map<String, Object?>>? result = await db?.query(
           table.tableName,
-          columns: ['ID'],
-          orderBy: "ID DESC",
+          columns: [(TableSchema.primaryKey)],
+          orderBy: "${TableSchema.primaryKey} DESC",
           limit: 1,
         );
 
         if (result!.isNotEmpty) {
-          iD = result.first['ID'] as int;
+          iD = result.first[TableSchema.primaryKey] as int;
         }
         iD++;
 

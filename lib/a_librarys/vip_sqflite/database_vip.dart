@@ -7,7 +7,7 @@ typedef Column = Map<String, dynamic>;
 
 /*  Class Table   */
 abstract class TableSchema<T> {
-  static const String primaryKey = 'ID';
+  static const String primaryKey = 'keyID';
 
   Columns columns(T obj);
   String get tableName;
@@ -19,7 +19,7 @@ abstract class TableSchema<T> {
     required dynamic value
   }) => {name: value};
 
-  Columns ColumnBuild({required List<Column> addColumn}) {
+  Columns columnBuild({required List<Column> addColumn}) {
 
     //---   Chuyển đổi column   ---
     Columns columnsB = {};
@@ -107,7 +107,6 @@ class DatabaseApp {
     );
   }
 
-
   //===   Hàm tạo bảng  ===
   List<String> _generateCreateTableStatements(List<TableSchema> schemas) {
     StringBuffer buffer;
@@ -132,7 +131,7 @@ class DatabaseApp {
         buffer.writeln('  $name $columnType,');
       });
 
-      buffer.writeln('  ID INTEGER PRIMARY KEY AUTOINCREMENT');
+      buffer.writeln('  ${TableSchema.primaryKey} INTEGER PRIMARY KEY AUTOINCREMENT');
       buffer.writeln(');');
       buffer.writeln();
 
@@ -153,7 +152,7 @@ class DatabaseApp {
       if(schema.tableName == '') {
         throw ArgumentError('Table name cannot be empty by ${schema.runtimeType}.');
       }
-      if(!columns.containsKey(schema.key.nameColumn) && schema.key != TableSchema.primaryKey ) {
+      if(!columns.containsKey(schema.key.nameColumn) && schema.key.nameColumn != TableSchema.primaryKey ) {
         throw ArgumentError('No matching column found for key "${schema.key.nameColumn}" by ${schema.runtimeType}.');
       }
     }

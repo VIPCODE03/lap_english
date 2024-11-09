@@ -12,7 +12,7 @@ abstract class QuizzSoundChooseOne<T> extends Quizz<T> {
   SkillType get skillType => SkillType.listening;
 }
 
-class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<Word> {
+class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
   @override
   List<Quizz> generate() {
     List<QuizzSoundChooseOneVocabulary> quizzes = [];
@@ -30,8 +30,8 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<Word> {
       }
 
       //--- Tạo đáp án ---
-      List<Word> answers = [word];
-      List<Word> copy = List.from(datas)..remove(word);
+      List<MdlWord> answers = [word];
+      List<MdlWord> copy = List.from(datas)..remove(word);
       copy.shuffle();
       answers.addAll(copy.take(Random().nextBool() ? 1 : 3).toList());
       answers.shuffle();

@@ -71,28 +71,28 @@ class TaskProvider {
   static final Map<String, Function(MdlTask, dynamic)> funUpdate = {
     TaskProvider.funLearnNewTopicWord: (task, data) {
       var quizzResult = data as QuizzResult;
-      if (quizzResult.isNew) {
+      if (!quizzResult.isLearned) {
         task.progress = (task.progress + 1).clamp(0, task.total);
       }
     },
 
     TaskProvider.funLearnReviewTopicWord: (task, data) {
       var quizzResult = data as QuizzResult;
-      if (!quizzResult.isNew) {
+      if (quizzResult.isLearned) {
         task.progress = (task.progress + 1).clamp(0, task.total);
       }
     },
 
     TaskProvider.funLearnNewTopicWord80: (task, data) {
       var quizzResult = data as QuizzResult;
-      if (quizzResult.isNew && (quizzResult.correct/quizzResult.total) >= 0.8) {
+      if (!quizzResult.isLearned && (quizzResult.correct/quizzResult.total) >= 0.8) {
         task.progress = (task.progress + 1).clamp(0, task.total);
       }
     },
 
     TaskProvider.funLearnReviewTopicWord90: (task, data) {
       var quizzResult = data as QuizzResult;
-      if (!quizzResult.isNew && (quizzResult.correct/quizzResult.total) >= 0.9) {
+      if (quizzResult.isLearned && (quizzResult.correct/quizzResult.total) >= 0.9) {
         task.progress = (task.progress + 1).clamp(0, task.total);
       }
     },
@@ -106,7 +106,7 @@ class TaskProvider {
 
     TaskProvider.funLearnReviewVocabulary: (task, data) {
       var quizzResult = data as QuizzResult;
-      if (!quizzResult.isNew && quizzResult.type == TypeQuizz.quizzVocabulary) {
+      if (quizzResult.isLearned && quizzResult.type == TypeQuizz.quizzVocabulary) {
         task.progress = (task.progress + 1).clamp(0, task.total);
       }
     },

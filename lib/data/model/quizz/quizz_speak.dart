@@ -1,6 +1,5 @@
 
 import 'dart:math';
-
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
@@ -12,7 +11,7 @@ abstract class QuizzSpeak<T> extends Quizz<T> {
   SkillType get skillType => SkillType.speaking;
 }
 
-class QuizzSpeakVocabulary extends QuizzSpeak<Word> {
+class QuizzSpeakVocabulary extends QuizzSpeak<MdlWord> {
   @override
   List<Quizz> generate() {
     List<QuizzSpeakVocabulary> quizzes = [];

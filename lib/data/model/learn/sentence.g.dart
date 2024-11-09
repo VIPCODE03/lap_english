@@ -6,50 +6,50 @@ part of 'sentence.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MainSentenceTopic _$MainSentenceTopicFromJson(Map<String, dynamic> json) =>
-    MainSentenceTopic(
+MdlMainSentenceTopic _$MdlMainSentenceTopicFromJson(
+        Map<String, dynamic> json) =>
+    MdlMainSentenceTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
-      (json['subSentenceTopics'] as List<dynamic>)
-          .map((e) => SubSentenceTopic.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
-Map<String, dynamic> _$MainSentenceTopicToJson(MainSentenceTopic instance) =>
+Map<String, dynamic> _$MdlMainSentenceTopicToJson(
+        MdlMainSentenceTopic instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'subSentenceTopics': instance.subSentenceTopics,
     };
 
-SubSentenceTopic _$SubSentenceTopicFromJson(Map<String, dynamic> json) =>
-    SubSentenceTopic(
+MdlSubSentenceTopic _$MdlSubSentenceTopicFromJson(Map<String, dynamic> json) =>
+    MdlSubSentenceTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
       json['imageUrl'] as String,
-      (json['sentences'] as List<dynamic>)
-          .map((e) => Sentence.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      (json['idMainTopic'] as num).toInt(),
       isLearned: json['isLearned'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$SubSentenceTopicToJson(SubSentenceTopic instance) =>
+Map<String, dynamic> _$MdlSubSentenceTopicToJson(
+        MdlSubSentenceTopic instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
-      'sentences': instance.sentences,
       'isLearned': instance.isLearned,
+      'idMainTopic': instance.idMainTopic,
     };
 
-Sentence _$SentenceFromJson(Map<String, dynamic> json) => Sentence(
+MdlSentence _$MdlSentenceFromJson(Map<String, dynamic> json) => MdlSentence(
       (json['id'] as num).toInt(),
       json['sentence'] as String,
       json['translation'] as String,
+      (json['idSubTopic'] as num).toInt(),
     );
 
-Map<String, dynamic> _$SentenceToJson(Sentence instance) => <String, dynamic>{
+Map<String, dynamic> _$MdlSentenceToJson(MdlSentence instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'sentence': instance.sentence,
       'translation': instance.translation,
+      'idSubTopic': instance.idSubTopic,
     };

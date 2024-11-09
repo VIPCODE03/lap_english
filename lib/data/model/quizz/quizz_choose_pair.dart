@@ -11,7 +11,7 @@ abstract class QuizzChoosePair<T> extends Quizz<T> {
   SkillType get skillType => SkillType.reading;
 }
 
-class QuizzChoosePairVocabulary extends QuizzChoosePair<Word> {
+class QuizzChoosePairVocabulary extends QuizzChoosePair<MdlWord> {
   @override
   List<Quizz> generate() {
     List<QuizzChoosePairVocabulary> quizzes = [];

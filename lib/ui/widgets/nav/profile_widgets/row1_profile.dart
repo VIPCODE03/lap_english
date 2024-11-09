@@ -7,6 +7,7 @@ import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../data/bloc/data_bloc/data_bloc.dart';
+import '../../../../data/caching/cache_manager.dart';
 import '../../../../data/model/user/user.dart';
 
 class WdgRow1Profile extends StatelessWidget {
@@ -26,6 +27,8 @@ class WdgRow1Profile extends StatelessWidget {
           alignment: Alignment.topRight,
           child: WdgButton(
             onTap: () {
+              CacheManager().saveStatus(StatusFlag.dataLoaded, false);
+
               user.name = "Anh Triệu đẹp trai vãi ò";
               user.skills.listening = Random().nextDouble() * 10;
               user.skills.speaking = Random().nextDouble() * 10;
