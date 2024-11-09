@@ -191,7 +191,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                     color: Colors.white,
                     padding: const EdgeInsets.all(5),
                     child: Image.network(
-                      "https://thuthuatnhanh.com/wp-content/uploads/2020/03/anh-hoat-hinh-nam-de-thuong.jpg",
+                      imageUrl,
                       fit: BoxFit.cover,
                       width: 60,
                       height: 60,
