@@ -26,7 +26,6 @@ class SentenceTable extends TableSchema<MdlSentence> {
   }
 
   @override
-  // TODO: implement key
   Key get key => Key(nameColumn: id);
 
   @override
