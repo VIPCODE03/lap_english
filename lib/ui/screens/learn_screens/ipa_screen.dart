@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/generate/generate_ipa.dart';
-import 'package:lap_english/test.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
