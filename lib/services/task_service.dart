@@ -63,8 +63,6 @@ class TaskProvider {
     MdlTask(description: "Ôn tập từ vựng đúng trên 90%", progress: 0, total: Random().nextInt(2).toDouble() + 1, completed: false, type: TypeTask.taskQuizz, keyFunUpdate: TaskProvider.funLearnReviewTopicWord),
     MdlTask(description: "Hoàn thành bài học không sai kĩ năng viết", progress: 0, total: Random().nextInt(2).toDouble() + 1, completed: false, type: TypeTask.taskQuizz, keyFunUpdate: TaskProvider.funLearnWithSkillWrite100),
     MdlTask(description: "Ôn tập chủ đề từ vựng", progress: 0, total: Random().nextInt(2).toDouble() + 1, completed: false, type: TypeTask.taskQuizz, keyFunUpdate: TaskProvider.funLearnReviewVocabulary),
-
-
   ];
 
   //=== Cung cấp hàm cập nhật ===

@@ -28,10 +28,14 @@ class ProfileScreen extends StatelessWidget {
                   WdgRow1Profile(user: user),
 
                   /// ROW2  --------------------------------------------------------------
-                  const WdgGroup(title: 'Vấn đề kĩ năng :)', opacity: 0.5, height: 1),
-                  SizedBox(
-                    height: 125,
-                    child: WdgRow2Profile(skill: user.skills),
+                  WdgGroup(
+                    title: 'Vấn đề kĩ năng :)',
+                    opacity: 0.5,
+                    height: 1,
+                    child: SizedBox(
+                      height: 125,
+                      child: WdgRow2Profile(skill: user.skills),
+                    ),
                   ),
                 ],
               );

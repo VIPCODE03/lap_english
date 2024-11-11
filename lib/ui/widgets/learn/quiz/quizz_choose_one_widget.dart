@@ -30,9 +30,10 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
             bool isSelected = option == selectedKey;
 
             return Container(
-              constraints: const BoxConstraints(minHeight: 66),
-              width: MediaQuery.of(context).size.width - 50,
+              constraints: BoxConstraints(minHeight: MediaQuery.of(context).size.height / 12),
+              width: MediaQuery.of(context).size.width - 20,
               child: WdgButton(
+                buttonFit: ButtonFit.none,
                 onTap: () {
                   setState(() {
                     selectedKey = option;
@@ -41,7 +42,7 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
                   });
                 },
                 color: isSelected
-                    ? Theme.of(context).primaryColor.withAlpha(90)
+                    ? Theme.of(context).primaryColor
                     : Theme.of(context).primaryColor.withAlpha(30),
                 borderRadius: BorderRadius.circular(12),
                 child: Text(

@@ -19,15 +19,11 @@ class HomeScreen extends StatelessWidget {
 
           ///ROW2  --------------------------------------------------------------
           SizedBox(
-            height: 260,
             child: WdgRow2()
           ),
 
           ///ROW3  --------------------------------------------------------------
-          const SizedBox(
-            height: 250,
-            child: WdgRow3(data: ["Chủ đề tiếng anh", "Chủ đề tiếng em", "Chủ đề tiếng Trung", "Chủ đề địt nhau", "Chủ đề bú lồn"],)
-          ),
+          const WdgRow3(data: ["Chủ đề tiếng anh", "Chủ đề tiếng em", "Chủ đề tiếng Trung", "Chủ đề địt nhau", "Chủ đề bú lồn"]),
 
           ///ROW4  --------------------------------------------------------------
           const SizedBox(

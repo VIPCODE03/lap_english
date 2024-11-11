@@ -1,14 +1,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/theme_constant.dart';
+import 'package:lap_english/data/caching/cache_manager.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/themes/blue_theme_vip.dart';
 import 'package:lap_english/ui/themes/green_theme_vip.dart';
 import 'package:lap_english/ui/themes/orange_theme_vip.dart';
 import 'package:lap_english/ui/themes/theme.dart';
-import '../../utils/shared_preferences.dart';
 
 class Themes with ChangeNotifier {
+  final caching = CacheManager();
   ThemeVip _themeVip = ThemeVip(Assets.images.cover.cover1.path, ThemeConstant.blueTheme);
 
   Themes() {
@@ -19,15 +20,15 @@ class Themes with ChangeNotifier {
 
   //---   Lấy theme từ bộ nhớ  ---
   Future<void> _loadTheme() async {
-    _themeVip.theme = await SharedPreferencesUtil.getString('color_theme') ?? _themeVip.theme;
-    _themeVip.imagePath = await SharedPreferencesUtil.getString('image_theme') ?? _themeVip.imagePath;
+    _themeVip.theme = caching.getSetting(Setting.theme) ?? _themeVip.theme;
+    _themeVip.imagePath = caching.getSetting(Setting.imageCover) ?? _themeVip.imagePath;
     notifyListeners();
   }
 
   //---   Cập nhật theme vào bộ nhớ  ---
   Future<void> updateTheme(ThemeVip themeVip) async {
-    await SharedPreferencesUtil.saveString('color_theme', themeVip.theme);
-    await SharedPreferencesUtil.saveString('image_theme', themeVip.imagePath);
+    caching.saveSettings(Setting.theme, themeVip.theme);
+    caching.saveSettings(Setting.imageCover, themeVip.imagePath);
     _themeVip = themeVip;
     notifyListeners();
   }

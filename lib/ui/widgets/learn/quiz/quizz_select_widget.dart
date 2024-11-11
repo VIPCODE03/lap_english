@@ -42,22 +42,20 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 700,
+        height: MediaQuery.of(context).size.height,
         child: widget.status.isStarted.value == true
             ? _WdgButtonSelect(
                 key: testScreenKey,
                 datas: widget.quizz.answers,
-                height: 50,
+                height: MediaQuery.of(context).size.height * 0.066,
                 offset: offset,
                 onSelectionChanged: (value) => {
-                  if (value.isNotEmpty)
-                    {
+                  if (value.isNotEmpty) {
                       widget.status.isCorrect = value.toString() == widget.quizz.answersCorrect.keys.toList().toString(),
                       widget.status.isAnswered.value = true,
                       widget.status.correctAnswer = widget.quizz.answerCorrect,
-                    }
-                  else
-                    {
+                  }
+                  else {
                       widget.status.isAnswered.value = false,
                     }
                 },
@@ -94,13 +92,13 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
   int currentIndex = -1;
   List<_ItemAB> selectedList = [];
 
-  final double magin1 = 15;
-  final double magin2 = 50;
+  double magin1 = 10;
+  double magin2 = 30;
   final double spacing = 12;
 
   double heightTotal = 0;
   double widthTotal1 = 15;
-  double widthTotal2 = 50;
+  double widthTotal2 = 30;
   int row1Index = 0;
   int row2Index = 0;
 
@@ -160,7 +158,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
             for (var item in row2)  //-> Hàng 2 ---
               Positioned(
                 left: item.left ?? calculationLocation(false, item.width, widthMax, item),
-                top: item.top,
+                bottom: item.bottom,
                 child: item.widget,
               ),
 
@@ -180,14 +178,15 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
         width: width,
         child: WdgButton(
           key: key,
+          buttonFit: ButtonFit.scaleDown,
           onTap: () {},
           borderRadius: BorderRadius.circular(12),
           color: Colors.transparent,
-          child: Text(
-              text,
-              maxLines: 1,
-              style: const TextStyle(fontSize: 18, color: Colors.transparent)
-          ),
+            child: Text(
+                text,
+                maxLines: 1,
+                style: const TextStyle(fontSize: 18, color: Colors.transparent)
+            ),
         ),
       ),
       widget.height,
@@ -210,50 +209,48 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
           height: widget.height,
           width: _calculateTextWidth(item.text),
           child: WdgButton(
-            onTap: () {
-              setState(() {
-                resetsLocation();
+              buttonFit: ButtonFit.scaleDown,
+              onTap: () {
+                setState(() {
+                  resetsLocation();
 
-                if(item.isMoved) {  //-> Nếu là chọn đáp án
-                  int index = selectedList.indexOf(item);
-                  currentIndex--;
-                  var temp = row1[index];
-                  row1.remove(temp);
-                  row1.add(temp);
-                  selectedList.remove(item);
-                }
-                else {  //-> Nếu là hủy chọn đáp án
-                  currentIndex++;
-                  var index = items.indexOf(item);
-                  for(int i = 0; i < row1.length; i++) {
-                    if(items[index].keyEnd == row1[i].key) {
-                      index = i;
-                      break;
+                  if (item.isMoved) { //-> Nếu là chọn đáp án
+                    int index = selectedList.indexOf(item);
+                    currentIndex--;
+                    var temp = row1[index];
+                    row1.remove(temp);
+                    row1.add(temp);
+                    selectedList.remove(item);
+
+                  } else {  //-> Nếu là hủy chọn đáp án
+                    currentIndex++;
+                    var index = items.indexOf(item);
+                    for (int i = 0; i < row1.length; i++) {
+                      if (items[index].keyEnd == row1[i].key) {
+                        index = i;
+                        break;
+                      }
                     }
+                    var temp = row1[index];
+                    row1.remove(temp);
+                    row1.insert(currentIndex, temp);
+                    selectedList.add(item);
                   }
-                  var temp = row1[index];
-                  row1.remove(temp);
-                  row1.insert(currentIndex, temp);
-                  selectedList.add(item);
-                }
-                item.isMoved = !item.isMoved;
-                changed = true;
-              });
+                  item.isMoved = !item.isMoved;
+                  changed = true;
+                });
 
-              update();
+                update();
 
-              //--- Cập nhật dữ liệu  ---
-              widget.onSelectionChanged?.call(selectedList.map((item) => item.text).toList());
-            },
-            borderRadius: BorderRadius.circular(12),
-            color: Theme.of(context).primaryColor.withAlpha(25),
-            child: Text(
-                item.text,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 18)
-            ),
-          ),
-        )
+                //--- Cập nhật dữ liệu  ---
+                widget.onSelectionChanged?.call(selectedList.map((item)
+                => item.text).toList());
+              },
+              borderRadius: BorderRadius.circular(12),
+              color: Theme.of(context).primaryColor.withAlpha(25),
+                child: Text(item.text,
+                    maxLines: 1, style: const TextStyle(fontSize: 18)),
+              ))
     );
   }
 
@@ -262,11 +259,10 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
     if (changed) {
       //--- 1  ---
       if (answer) {
-        if (widthTotal1 + width + magin1 > widthMax) {
+        if (widthTotal1 + width > widthMax - magin1/2) {
           row1Index++;
           nextRow1 = true;
           widthTotal1 = magin1;
-          heightTotal += item.height + row1Index * spacing;
         }
         item.top = row1Index * item.height + row1Index * spacing;
         double currentLeft = widthTotal1;
@@ -276,14 +272,13 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 
       //--- 2  ---
       else {
-        double spacingRow = 400 - heightTotal;
-        if (widthTotal2 + width + magin2 > widthMax) {
+        if (widthTotal2 + width > widthMax - magin2/2) {
           row2Index++;
           nextRow2 = true;
           widthTotal2 = magin2;
         }
         item.left = widthTotal2;
-        item.top = row2Index * item.height + spacingRow + row2Index * spacing;
+        item.bottom = row2Index * item.height + row2Index * spacing;
         widthTotal2 += width + spacing;
         return item.left;
       }
@@ -300,8 +295,8 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       textDirection: TextDirection.ltr,
     )..layout();
 
-    double width = textPainter.size.width + 25;
-    return width > 50 ? width : 50;
+    double width = textPainter.size.width + 30;
+    return width;
   }
 
   //===   Thiết lập lại vị trí  ===

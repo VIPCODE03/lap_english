@@ -2,48 +2,58 @@ import 'package:flutter/material.dart';
 
 /// Tạo hộp bao quanh -----------------------------------------
 class WdgGroup extends StatelessWidget {
-  final double opacity;
-  final double height;
+  final AlignmentGeometry? alignment;
+  final double? opacity;
+  final double? height;
   final String? title;
+  final TextStyle? titleStyle;
+  final Widget child;
 
   const WdgGroup({
     super.key,
     this.title,
-    required this.opacity,
-    required this.height
+    this.alignment,
+    this.opacity,
+    this.height,
+    required this.child,
+    this.titleStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 20, bottom: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    var maxWidth = MediaQuery.of(context).size.width;
+    return Wrap(
+      direction: Axis.horizontal,
+      children: [
 
-          /// Thanh ngăn cách --------------------------------------------------
-          Opacity(
-            opacity: opacity,
-            child: Container(
-              height: height,
-              color: Theme.of(context).primaryColor,
+        /// Thanh ngăn cách --------------------------------------------------
+        Opacity(
+          opacity: opacity ?? 0,
+          child: Container(
+            height: height,
+            width: maxWidth,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+
+        /// Text tiêu đề  ----------------------------------------------------
+        Padding(
+            padding: const EdgeInsets.only(left: 10, top: 5),
+          child: Text(title ?? '',
+            style: titleStyle ?? const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
             ),
           ),
+        ),
 
-          /// Text tiêu đề  ----------------------------------------------------
-          if(title != null)
-          Container(
-            margin: const EdgeInsets.only(top: 15),
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(title ?? '',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          )
-        ],
-      )
+        /// Child -------------------------------------------------------------
+        const SizedBox(height: 10),
+        Align(
+          alignment: alignment ?? Alignment.topLeft,
+          child: child,
+        )
+      ],
     );
   }
 }

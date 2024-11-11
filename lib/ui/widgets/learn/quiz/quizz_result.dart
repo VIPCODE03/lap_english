@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
 import '../../other/button.dart';
 
@@ -10,7 +11,6 @@ class WdgQuizzResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-          mainAxisSize: MainAxisSize.max,
           children: [
             Text(
               'Quiz Type: ${quizzResult.type.toString().split('.').last}',
@@ -36,10 +36,11 @@ class WdgQuizzResult extends StatelessWidget {
             )),
 
             Container(
-                height: 50,
-                width: 400,
-                margin: const EdgeInsets.only(right: 50, left: 50, bottom: 30),
+                height: MediaQuery.of(context).size.height * 0.07,
+                width: MediaQuery.of(context).size.width - 50,
+                margin: const EdgeInsets.only(bottom: 15),
                 child: WdgButton(
+                  buttonFit: ButtonFit.scaleDown,
                   onTap: () {
                     Navigator.pop(context, quizzResult);
                   },
@@ -55,16 +56,26 @@ class WdgQuizzResult extends StatelessWidget {
   }
 
   Widget _buildSkillResult(String skill, int total, int correct) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '$skill:',
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        Text('Total: $total, Correct: $correct'),
-        const SizedBox(height: 8),
-      ],
-    );
+    double progress = total > 0 ? correct / total : 0;
+    return total > 0
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '$skill:',
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 20,
+                child: WdgAnimatedProgressBar(
+                  value: progress,
+                  label: '${(progress * 100).toStringAsFixed(0)}%',
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+          )
+        : const SizedBox.shrink();
   }
 }

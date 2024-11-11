@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/screens/learn_screens/ipa_screen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
+import 'package:lap_english/ui/widgets/other/group.dart';
 
 class MenuItem {
   final String imagePath;
@@ -34,7 +36,7 @@ class WdgRow2 extends StatelessWidget {
     ),
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Phát âm",
-        openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng chủ đề")
+        openScreen: IPAScreen()
     ),
     MenuItem(imagePath: Assets.images.menu.learnReview.path,
         label: "Ôn tập",
@@ -54,27 +56,21 @@ class WdgRow2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-            'Góc học tập',
-          style: TextStyle(fontWeight: FontWeight.w700),
-        ),
-      ),
-      body: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: menuItems.map((item) => buildMenuItem(context, item)).toList(),
-      )
+    return WdgGroup(
+        title: "Góc học tập",
+        alignment: Alignment.center,
+        child: Wrap(
+          spacing: 10,
+          children: menuItems.map((item) => buildMenuItem(context, item)).toList(),
+        )
     );
   }
 
   ///ITEM  ---------------------------------------------------------------------
   Widget buildMenuItem(BuildContext context, MenuItem item) {
     return WdgButton(
-        //--- Chuyển sang giao diện học tập  ---
-        onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => item.openScreen)),
+        //--- Chuyển giao diện  ---
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
         color: Colors.transparent,
         child: Column(
           children: [
@@ -82,21 +78,21 @@ class WdgRow2 extends StatelessWidget {
             Container(
               height: 66,
               width: 66,
-              padding: const EdgeInsets.all(1.5),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(24)),
 
               ///ICON ------------------------------------------------------------
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(24),
                 child: Container(
-                  padding: const EdgeInsets.all(6),
-                  color: Colors.white54,
+                  padding: const EdgeInsets.all(10),
+                  color: Colors.grey.withAlpha(25).withOpacity(0.5),
                   child: Image.asset(
                     item.imagePath,
-                    width: 45,
-                    height: 45,
+                    width: 33,
+                    height: 33,
                   ),
                 ),
               ),

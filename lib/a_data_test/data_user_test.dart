@@ -1,18 +1,15 @@
-import 'dart:convert';
-
 import '../data/model/task_and_reward/daily_task.dart';
 import '../data/model/user/cumulative_point.dart';
 import '../data/model/user/skill.dart';
 import '../data/model/user/user.dart';
 
-class UserDataTest {
-  static String getUserJson() {
-    User user = User(
+List<User> generateUser() {
+  User user = User(
       name: 'Đào Như Triệu',
       email: 'daonhutrieu15052003@gmail.com',
       avatar: 'https://photos.google.com/photo/AF1QipMl1Dix6LcAyb3aXACFweq0Zn4liRp57PwjYXRc',
       skills: Skill(2, 4, 3, 3),
-      titles:[
+      titles: [
         // MdlTitle(
         //   id: 1,
         //   image: 'url_to_image',
@@ -29,8 +26,7 @@ class UserDataTest {
         // ),
       ],
       cumulativePoint: CumulativePoint(0, 0, 0),
-      dailyTasks: MdlDailyTask.create());
-
-    return jsonEncode([user.toJson()]);
-  }
+      dailyTasks: MdlDailyTask.create()
+  );
+  return [user];
 }

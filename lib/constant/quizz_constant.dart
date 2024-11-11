@@ -16,7 +16,7 @@ class QuizzConstant {
     QuizzSelectVocabulary(),
     QuizzSoundChooseOneVocabulary(),
     QuizzSpeakVocabulary(),
-    QuizzWriteVocabulary(),
+    // QuizzWriteVocabulary(),
   ];
 
   //===   Tạo quizz câu đơn giản  ===

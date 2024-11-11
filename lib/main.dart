@@ -3,14 +3,18 @@ import 'package:lap_english/ui/screens/splash_screen.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(
-      ChangeNotifierProvider(
-        create: (BuildContext context) => Themes(),
-        child: const MyApp(),
-      )
-  );
+import 'data/caching/cache_manager.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await CacheManager.init();
+
+  runApp(ChangeNotifierProvider(
+    create: (BuildContext context) => Themes(),
+    child: const MyApp(),
+  ));
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

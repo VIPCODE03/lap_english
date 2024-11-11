@@ -44,59 +44,57 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
     return Column(
       children: [
         ///Hộp âm thanh --------------------------------------------------------
-        const SizedBox(height: 20),
         SizedBox(
-          child: widget.quizz.showSoundBox //-> Ẩn hiện theo loại quizz
-              ? WdgButton(
-            onTap: () => _speak(widget.quizz.answerCorrect),
-            borderRadius: BorderRadius.circular(12),
-            color: Theme.of(context).primaryColor,
-            child: const Icon(Icons.volume_up, size: 50),
-          )
-              : null
-        ),
+            child: widget.quizz.showSoundBox //-> Ẩn hiện theo loại quizz
+                ? WdgButton(
+                    onTap: () => _speak(widget.quizz.answerCorrect),
+                    borderRadius: BorderRadius.circular(12),
+                    buttonFit: ButtonFit.scaleDown,
+                    color: Theme.of(context).primaryColor,
+                    child:  Icon(Icons.volume_up, size: MediaQuery.of(context).size.height * 0.066)
+                  )
+                : null),
 
         ///Danh sách đáp án ----------------------------------------------------
         Expanded(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5 - 10,
-            child: GridView.builder(
-              padding: const EdgeInsets.all(20),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 1),
-              itemCount: widget.quizz.answers.length,
-              itemBuilder: (context, index) {
-                final key = widget.quizz.answers[index];
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: widget.quizz.answers.map((key) {
                 final bool isSelected = key == selectedKey;
-                return WdgButton(
-                  onTap: () {
-                    setState(() {
-                      selectedKey = key;
-                      widget.status.isAnswered.value = true;
-                      widget.status.isCorrect = widget.quizz.answersCorrect[key];
-                      widget.quizz.showSoundBox ? null : _speak(key);
-                    });
-                  },
-                  borderRadius: BorderRadius.circular(20),
-                  color: isSelected
-                      ? Theme.of(context).primaryColor.withAlpha(100)
-                      : Theme.of(context).primaryColor.withAlpha(50),
-                  child: widget.quizz.showSoundBox
-                      ? Center(
-                          child: Text(
-                            key,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      : const Center(child: Icon(Icons.volume_up, size: 50)),
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 5,
+                  width: MediaQuery.of(context).size.width / 2 - 30,
+                  child: WdgButton(
+                    onTap: () {
+                      setState(() {
+                        selectedKey = key;
+                        widget.status.isAnswered.value = true;
+                        widget.status.isCorrect = widget.quizz.answersCorrect[key];
+                        widget.quizz.showSoundBox ? null : _speak(key);
+                      });
+                    },
+                    buttonFit: ButtonFit.scaleDown,
+                    borderRadius: BorderRadius.circular(20),
+                    color: isSelected
+                        ? Theme.of(context).primaryColor.withAlpha(100)
+                        : Theme.of(context).primaryColor.withAlpha(50),
+                    child: widget.quizz.showSoundBox
+                        ? Center(
+                      child: Text(
+                        key,
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                        : const Center(child: Icon(Icons.volume_up, size: 50)),
+                  ),
                 );
-              },
+              }).toList(),
             ),
           ),
+
         ),
       ],
     );
