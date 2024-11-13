@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           ),
 
           ///ROW3  --------------------------------------------------------------
-          const WdgRow3(data: ["Chủ đề tiếng anh", "Chủ đề tiếng em", "Chủ đề tiếng Trung", "Chủ đề địt nhau", "Chủ đề bú lồn"]),
+          const WdgRow3(data: ["Phổ biến", "Thường ngày", "Khen ngợi ai đó", "Phổ biến", "Thường ngày", "Khen ngợi ai đó"]),
 
           ///ROW4  --------------------------------------------------------------
           const SizedBox(
