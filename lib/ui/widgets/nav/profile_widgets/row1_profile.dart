@@ -83,7 +83,6 @@ class WdgRow1Profile extends StatelessWidget {
         /// SizeBox thông tin ---------------------------------------------------
         Container(
           margin: const EdgeInsets.only(top: 20),
-          height: 66,
           child: Row(
             children: [
               /// Danh hiệu -------------------------------------------------

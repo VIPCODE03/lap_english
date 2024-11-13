@@ -22,14 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   //=== Khởi tạo bộ nhớ và chuyển tới màn hình chính  ===
   Future<void> _navigateToMainScreen() async {
-    await CacheManager.init();
     var cacheData = CacheManager();
 
     if(cacheData.getStatus(StatusFlag.dataLoaded) == null || cacheData.getStatus(StatusFlag.dataLoaded) == false) {
       DataService dataService = DataService();
       await dataService.loadDataServer();
       cacheData.saveStatus(StatusFlag.dataLoaded, true);
-      await Future.delayed(const Duration(seconds: 1));
     }
     else {
       await Future.delayed(const Duration(seconds: 2));
@@ -38,9 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) {
-          return const MainScreen();
-        }),
+        MaterialPageRoute(builder: (context) => const MainScreen()),
       );
     }
   }

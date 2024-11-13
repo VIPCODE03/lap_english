@@ -1,20 +1,26 @@
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 
 class AudioPlayerUtil {
   final AudioPlayer _player = AudioPlayer();
   PlayerState? _playerState;
 
   AudioPlayerUtil() {
-    _player.setVolume(0.25);
     _player.onPlayerComplete.listen((event) {
       _playerState = PlayerState.stopped;
       _onPlaybackComplete();
     });
   }
 
+  //=== Set độ to ===
+  void setVolume(double value) {
+    _player.setVolume(value);
+  }
+
   //=== Phát nhạc ===
   Future<void> play(Sound sound) async {
+    if(_playerState == PlayerState.playing) stop();
     switch(sound) {
       case Sound.wrong:
         await _player.setSourceAsset("sounds/wrong.mp3");
@@ -26,12 +32,39 @@ class AudioPlayerUtil {
         await _player.setSourceAsset("sounds/correct.mp3");
         break;
     }
-
-    if(_playerState == PlayerState.playing) {
-      stop();
-    }
     await _player.resume();
     _playerState = PlayerState.playing;
+  }
+
+  //=== Phát asset ===
+  Future<void> playFromAsset(String url) async {
+    try {
+      if(_playerState == PlayerState.playing) stop();
+      var assetsUrl = url.startsWith('assets/')
+          ? url.replaceFirst('assets/', '')
+          : url;
+      await _player.setSourceAsset(assetsUrl);
+      _playerState = PlayerState.playing;
+      await _player.resume();
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error playing audio: $e");
+      }
+    }
+  }
+
+  //=== Phát url ===
+  Future<void> playFromUrl(String url) async {
+    try {
+      if(_playerState == PlayerState.playing) stop();
+      await _player.setSourceUrl(url);
+      _playerState = PlayerState.playing;
+      await _player.resume();
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error playing audio: $e");
+      }
+    }
   }
 
   //===  Tạm dừng  ===

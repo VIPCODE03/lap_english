@@ -270,14 +270,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: c2b87cb7756efdf69892005af546c56c0b5037f54d2a88269b4f347a505e3ca2
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -310,14 +302,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  fl_chart:
-    dependency: "direct main"
-    description:
-      name: fl_chart
-      sha256: "94307bef3a324a0d329d3ab77b2f0c6e5ed739185ffc029ed28c0f9b019ea7ef"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.69.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -355,14 +339,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  flutter_radar_chart:
-    dependency: "direct main"
-    description:
-      name: flutter_radar_chart
-      sha256: c98b635de2e3f5b0b1300093023845825b616c8e523776a8a3a714c28f23f211
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -397,6 +373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  gif:
+    dependency: "direct main"
+    description:
+      name: gif
+      sha256: ade95694f1471da737922806818ffade2814d1d7f8d10af38ebcf36ace012bc0
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   glob:
     dependency: transitive
     description:

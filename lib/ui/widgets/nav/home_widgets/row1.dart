@@ -22,7 +22,7 @@ class WdgRow1 extends StatelessWidget {
                     .of<Themes>(context, listen: false)
                     .themeVip.imagePath
                 ),
-                fit: BoxFit.cover,
+                fit: BoxFit.cover ,
               ),
             ),
           ),

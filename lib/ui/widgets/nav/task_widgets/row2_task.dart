@@ -2,7 +2,7 @@
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 // import 'package:lap_english/data/model/user/user.dart';
-// import 'package:lap_english/ui/colors/color_mix.dart';
+// import 'package:lap_english/ui/colors/vip_colors.dart';
 //
 // import '../../../../data/model/task_and_reward/roll_call.dart';
 //

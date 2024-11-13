@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/widgets/other/group.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
 class WdgRow3 extends StatelessWidget {
@@ -14,20 +15,18 @@ class WdgRow3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Đang học',
-          style: TextStyle(fontWeight: FontWeight.w700),
+    return WdgGroup(
+      title: 'Đang học',
+      child: SizedBox(
+        height: 200,
+        child: GridView.count(
+          scrollDirection: Axis.horizontal,
+          crossAxisCount: 1,
+          children: data.map((dt) {
+            return _item(context, Assets.images.item.dongvat.provider(), dt, 3, data.length + Random().nextInt(5));
+          }).toList(),
         ),
-      ),
-      body: GridView.count(
-        scrollDirection: Axis.horizontal,
-        crossAxisCount: 1,
-        children: data.map((dt) {
-          return _item(context, Assets.images.item.dongvat.provider(), dt, 3, data.length + Random().nextInt(5));
-        }).toList(),
-      ),
+      )
     );
   }
 
@@ -54,7 +53,6 @@ class WdgRow3 extends StatelessWidget {
             ),
           ),
 
-          //
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +61,7 @@ class WdgRow3 extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     content,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 18,
@@ -71,18 +69,16 @@ class WdgRow3 extends StatelessWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Stack(
-                    children: [
-                      WdgAnimatedProgressBar(
-                        value: value,
-                        label: 'Đã học $done/$total',
-                        duration: const Duration(milliseconds: 700),
-                      ),
-                    ],
+
+                Expanded(
+                  child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: WdgAnimatedProgressBar(
+                    value: value,
+                    label: 'Đã học $done/$total',
+                    duration: const Duration(milliseconds: 700),
                   ),
-                ),
+                ))
               ],
             ),
           ),

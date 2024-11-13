@@ -40,6 +40,9 @@ class $AssetsSoundsGen {
   /// File path: assets/sounds/fbi.mp3
   String get fbi => 'assets/sounds/fbi.mp3';
 
+  /// Directory path: assets/sounds/ipa
+  $AssetsSoundsIpaGen get ipa => const $AssetsSoundsIpaGen();
+
   /// File path: assets/sounds/test.mp3
   String get test => 'assets/sounds/test.mp3';
 
@@ -232,6 +235,209 @@ class $AssetsImagesMenuGen {
         learnSpeak,
         learnVocabulary,
         learnWrite
+      ];
+}
+
+class $AssetsSoundsIpaGen {
+  const $AssetsSoundsIpaGen();
+
+  /// Directory path: assets/sounds/ipa/consonants
+  $AssetsSoundsIpaConsonantsGen get consonants =>
+      const $AssetsSoundsIpaConsonantsGen();
+
+  /// Directory path: assets/sounds/ipa/vowels
+  $AssetsSoundsIpaVowelsGen get vowels => const $AssetsSoundsIpaVowelsGen();
+}
+
+class $AssetsSoundsIpaConsonantsGen {
+  const $AssetsSoundsIpaConsonantsGen();
+
+  /// File path: assets/sounds/ipa/consonants/b.mp3
+  String get b => 'assets/sounds/ipa/consonants/b.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/d.mp3
+  String get dMp3 => 'assets/sounds/ipa/consonants/d.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/dʒ.mp3
+  String get dMp3_ => 'assets/sounds/ipa/consonants/dʒ.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/f.mp3
+  String get f => 'assets/sounds/ipa/consonants/f.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/g.mp3
+  String get g => 'assets/sounds/ipa/consonants/g.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/h.mp3
+  String get h => 'assets/sounds/ipa/consonants/h.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/j.mp3
+  String get j => 'assets/sounds/ipa/consonants/j.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/k.mp3
+  String get k => 'assets/sounds/ipa/consonants/k.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/l.mp3
+  String get l => 'assets/sounds/ipa/consonants/l.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/m.mp3
+  String get m => 'assets/sounds/ipa/consonants/m.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/n.mp3
+  String get n => 'assets/sounds/ipa/consonants/n.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/p.mp3
+  String get p => 'assets/sounds/ipa/consonants/p.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/r.mp3
+  String get r => 'assets/sounds/ipa/consonants/r.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/s.mp3
+  String get s => 'assets/sounds/ipa/consonants/s.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/t.mp3
+  String get tMp3 => 'assets/sounds/ipa/consonants/t.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/t∫.mp3
+  String get tMp3_ => 'assets/sounds/ipa/consonants/t∫.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/v.mp3
+  String get v => 'assets/sounds/ipa/consonants/v.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/w.mp3
+  String get w => 'assets/sounds/ipa/consonants/w.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/z.mp3
+  String get z => 'assets/sounds/ipa/consonants/z.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/ð.mp3
+  String get aMp3 => 'assets/sounds/ipa/consonants/ð.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/ʒ.mp3
+  String get aMp3_ => 'assets/sounds/ipa/consonants/ʒ.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/η.mp3
+  String get aMp3__ => 'assets/sounds/ipa/consonants/η.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/θ.mp3
+  String get aMp3___ => 'assets/sounds/ipa/consonants/θ.mp3';
+
+  /// File path: assets/sounds/ipa/consonants/∫.mp3
+  String get aMp3____ => 'assets/sounds/ipa/consonants/∫.mp3';
+
+  /// List of all assets
+  List<String> get values => [
+        b,
+        dMp3,
+        dMp3_,
+        f,
+        g,
+        h,
+        j,
+        k,
+        l,
+        m,
+        n,
+        p,
+        r,
+        s,
+        tMp3,
+        tMp3_,
+        v,
+        w,
+        z,
+        aMp3,
+        aMp3_,
+        aMp3__,
+        aMp3___,
+        aMp3____
+      ];
+}
+
+class $AssetsSoundsIpaVowelsGen {
+  const $AssetsSoundsIpaVowelsGen();
+
+  /// File path: assets/sounds/ipa/vowels/a dài.mp3
+  String get aDIMp3 => 'assets/sounds/ipa/vowels/a dài.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ơ dài.mp3
+  String get aDIMp3_ => 'assets/sounds/ipa/vowels/ơ dài.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/a ngắn.mp3
+  String get aNgNMp3 => 'assets/sounds/ipa/vowels/a ngắn.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ơ ngắn.mp3
+  String get aNgNMp3_ => 'assets/sounds/ipa/vowels/ơ ngắn.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ae.mp3
+  String get ae => 'assets/sounds/ipa/vowels/ae.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/aɪ.mp3
+  String get aMp3 => 'assets/sounds/ipa/vowels/aɪ.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/aʊ.mp3
+  String get aMp3_ => 'assets/sounds/ipa/vowels/aʊ.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/əʊ.mp3
+  String get aMp3__ => 'assets/sounds/ipa/vowels/əʊ.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ʊə.mp3
+  String get aMp3___ => 'assets/sounds/ipa/vowels/ʊə.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/e.mp3
+  String get e => 'assets/sounds/ipa/vowels/e.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ea.mp3
+  String get ea => 'assets/sounds/ipa/vowels/ea.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ei.mp3
+  String get ei => 'assets/sounds/ipa/vowels/ei.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/i dài.mp3
+  String get iDI => 'assets/sounds/ipa/vowels/i dài.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/i ngắn.mp3
+  String get iNgN => 'assets/sounds/ipa/vowels/i ngắn.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/ie.mp3
+  String get ie => 'assets/sounds/ipa/vowels/ie.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/o dài.mp3
+  String get oDI => 'assets/sounds/ipa/vowels/o dài.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/o ngắn.mp3
+  String get oNgN => 'assets/sounds/ipa/vowels/o ngắn.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/oi.mp3
+  String get oi => 'assets/sounds/ipa/vowels/oi.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/u dài.mp3
+  String get uDI => 'assets/sounds/ipa/vowels/u dài.mp3';
+
+  /// File path: assets/sounds/ipa/vowels/u ngắn.mp3
+  String get uNgN => 'assets/sounds/ipa/vowels/u ngắn.mp3';
+
+  /// List of all assets
+  List<String> get values => [
+        aDIMp3,
+        aDIMp3_,
+        aNgNMp3,
+        aNgNMp3_,
+        ae,
+        aMp3,
+        aMp3_,
+        aMp3__,
+        aMp3___,
+        e,
+        ea,
+        ei,
+        iDI,
+        iNgN,
+        ie,
+        oDI,
+        oNgN,
+        oi,
+        uDI,
+        uNgN
       ];
 }
 

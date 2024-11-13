@@ -1,5 +1,6 @@
 
 import 'package:lap_english/data/database/local/table/sentence_table.dart';
+import 'package:lap_english/data/database/local/table/user_table.dart';
 import 'package:lap_english/data/database/local/table/vocabulary_table.dart';
 
 import '../../../a_librarys/vip_sqflite/database_vip.dart';
@@ -10,6 +11,9 @@ DatabaseApp initdatabase() {
       name: 'data',
       version: 1,
       tableSchemas: [
+        //--- User  ---
+        UserTable(),
+
         //--- Từ vựng ---
         WordTable(),
         SubVocabularyTopicTable(),

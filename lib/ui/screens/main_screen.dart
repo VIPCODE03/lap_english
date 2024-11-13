@@ -8,21 +8,21 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => _BottomNavCubit(),
+        create: (context) => _NavController(),
         child: Scaffold(
-          body: BlocBuilder<_BottomNavCubit, int>(
+          body: BlocBuilder<_NavController, int>(
             builder: (context, state) {
-              return Screens.screens[state]; //-> Chuyển màn hình nav
+              return Screens.navs[state]; //-> Chuyển màn hình nav
             },
           ),
-          bottomNavigationBar: BlocBuilder<_BottomNavCubit, int>(
+          bottomNavigationBar: BlocBuilder<_NavController, int>(
             builder: (context, state) {
               return BottomNavigationBar(
                 unselectedItemColor: Colors.grey,
                 selectedItemColor: Theme.of(context).primaryColor,
                 currentIndex: state,
                 onTap: (index) {
-                  context.read<_BottomNavCubit>().updateIndex(index); //-> Lấy vị trí hiện tại
+                  context.read<_NavController>().updateIndex(index); //-> Lấy vị trí hiện tại
                 },
                 items: const [
                   ///NAV HOME  ----------------------------------------------------------
@@ -58,8 +58,8 @@ class MainScreen extends StatelessWidget {
 }
 
 /*  BLOC NAV  */
-class _BottomNavCubit extends Cubit<int> {
-  _BottomNavCubit() : super(0);
+class _NavController extends Cubit<int> {
+  _NavController() : super(0);
 
   void updateIndex(int index) {
     emit(index);
