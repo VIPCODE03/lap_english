@@ -1,14 +1,13 @@
 import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
+import 'package:lap_english/data/database/local/dao/user_dao.dart';
 import 'package:lap_english/data/database/local/dao/vocabulary_dao.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
-
-import '../../caching/cache_manager.dart';
 import '../../model/user/user.dart';
 
 mixin UpdateDatas {
   final Map<Type, Future<void> Function(List<dynamic>)> update = {
-    User: (datas) => _userUpdate(datas as List<User>),
+    User: (datas) => _updateUser(datas as List<User>),
 
     //--- Từ vựng ---
     MdlMainVocabularyTopic: (datas) => _updateMainVocabularyTopic(datas as List<MdlMainVocabularyTopic>),
@@ -20,6 +19,13 @@ mixin UpdateDatas {
     MdlSubSentenceTopic: (datas) => _updateSubSentenceTopic(datas as List<MdlSubSentenceTopic>),
     MdlSentence: (datas) => _updateSentence(datas as List<MdlSentence>),
   };
+
+  static Future<void> _updateUser(List<User> datas) async {
+    UserDao dao = UserDao();
+    for (var data in datas) {
+      await dao.update(data);
+    }
+  }
 
   /*  Cập nhật từ vựng  */
   static Future<void> _updateMainVocabularyTopic(List<MdlMainVocabularyTopic> datas) async {
@@ -63,11 +69,5 @@ mixin UpdateDatas {
     for (var data in datas) {
       await dao.update(data);
     }
-  }
-
-  //===   Update người dùng   ===
-  static Future<void> _userUpdate(List<User> datas) async {
-    var cacheManager = CacheManager();
-    await cacheManager.save(CacheKeys.user, datas);
   }
 }

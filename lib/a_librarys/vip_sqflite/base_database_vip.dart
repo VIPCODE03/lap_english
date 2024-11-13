@@ -63,9 +63,7 @@ abstract class BaseDatabase<T> {
       return true;
     }
     catch(e) {
-      if (kDebugMode) {
-        print("Error update: $e");
-      }
+      if (kDebugMode) print("Error update: $e");
       return false;
     }
   }
@@ -86,9 +84,7 @@ abstract class BaseDatabase<T> {
       return false;
     }
     catch(e) {
-      if (kDebugMode) {
-        print("Error delete: $e");
-      }
+      if (kDebugMode) print("Error delete: $e");
       return false;
     }
   }
@@ -203,7 +199,7 @@ abstract class BaseDatabase<T> {
     _mapDatas.clear();
 
     for (Map<String, dynamic> data in datas) {
-      final Map<String, dynamic> mutableData = Map.from(data);
+      final mutableData = {...data};
 
       mutableData.forEach((key, value) {
         if (key != TableSchema.primaryKey) {

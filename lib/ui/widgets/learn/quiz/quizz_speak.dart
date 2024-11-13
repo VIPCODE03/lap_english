@@ -17,6 +17,8 @@ class WdgQuizzSpeak extends WdgQuizz<QuizzSpeak> {
 
 class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
   final SpeechToTextUtil _speechUtil = SpeechToTextUtil();
+  double maxHeight = 0;
+  double maxWidth = 0;
 
   @override
   void initState() {
@@ -62,45 +64,57 @@ class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    maxHeight = MediaQuery.of(context).size.height;
+    maxWidth = MediaQuery.of(context).size.width;
+    var isVertical = maxHeight > maxWidth;
+
+    return Container(
+      height: isVertical ? maxHeight : maxHeight - 10,
+      width: maxWidth,
+      margin: const EdgeInsets.only(bottom: 10),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           WdgSpecialText(text: widget.quizz.pronounce),
 
-          Expanded(
-            child: Center(
-              child: Text(
-                _speechUtil.lastWords != ""
-                    ? _speechUtil.lastWords
-                    : 'Nhấn vào mic để nói',
-                style: const TextStyle(fontSize: 20),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          AvatarGlow(
-            glowColor: Theme.of(context).primaryColor,
-            repeat: true,
-            showTwoGlows: true,
-            duration: const Duration(seconds: 3),
-            endRadius: 66.0,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(50),
-              onTap: _speechUtil.isNotListening ? _startListening : _stopListening,
-              child: CircleAvatar(
-                radius: 40.0,
-                backgroundColor: _speechUtil.isNotListening ? Colors.grey : Colors.red,
-                child: Icon(
-                  _speechUtil.isNotListening ? Icons.mic_none : Icons.mic,
-                  color: Colors.white,
-                  size: 30,
+          Expanded(child: Center(
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.center,
+              direction: isVertical ? Axis.vertical : Axis.horizontal,
+              children: [
+                Text(
+                  _speechUtil.lastWords.isNotEmpty
+                      ? _speechUtil.lastWords
+                      : 'Nhấn vào mic để nói',
+                  style: const TextStyle(fontSize: 20),
                 ),
-              ),
+
+                AvatarGlow(
+                  glowColor: Theme.of(context).primaryColor,
+                  repeat: true,
+                  showTwoGlows: true,
+                  duration: const Duration(seconds: 3),
+                  endRadius: maxHeight/10,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(25),
+                    onTap: _speechUtil.isNotListening ? _startListening : _stopListening,
+                    child: CircleAvatar(
+                      radius: maxHeight/15,
+                      backgroundColor: _speechUtil.isNotListening ? Colors.grey : Colors.red,
+                      child: Icon(
+                        _speechUtil.isNotListening ? Icons.mic_none : Icons.mic,
+                        color: Colors.white,
+                        size: maxHeight/15,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
+          ))
         ],
       ),
     );
   }
+
 }

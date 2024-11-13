@@ -4,6 +4,7 @@ class WdgButton extends StatefulWidget {
   final Function onTap;
   final Color? color;
   final BorderRadius? borderRadius;
+  final ButtonFit? buttonFit;
   final Widget child;
 
   const WdgButton({
@@ -12,6 +13,7 @@ class WdgButton extends StatefulWidget {
     this.color,
     this.borderRadius,
     required this.child,
+    this.buttonFit,
   });
 
   @override
@@ -47,7 +49,7 @@ class _WdgButtonState extends State<WdgButton> {
         });
       },
       child: Container(
-        margin: _isPressed ? const EdgeInsets.only(top: 4) : const EdgeInsets.only(top: 0),
+        margin: _isPressed ? const EdgeInsets.only(top: 5) : const EdgeInsets.only(top: 0),
         decoration: BoxDecoration(
           color: widget.color != Colors.transparent
               ? Color.alphaBlend(Colors.white30, widget.color ?? Theme.of(context).primaryColor)
@@ -74,15 +76,26 @@ class _WdgButtonState extends State<WdgButton> {
             ),
           ),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            widget.child,
-          ],
-        )
-      ),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: switch (widget.buttonFit) {
+            null => Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [widget.child]),
+            ButtonFit.none => Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [widget.child]),
+            ButtonFit.scaleDown => FittedBox(
+                fit: BoxFit.none,
+                alignment: Alignment.center,
+                child: widget.child,
+              ),
+          }),
     );
   }
+}
+
+enum ButtonFit {
+  none, scaleDown
 }

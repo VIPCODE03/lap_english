@@ -6,10 +6,12 @@ import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/ui/screens/learn_screens/flip_card_screen.dart';
+import 'package:lap_english/ui/widgets/other/group.dart';
 
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
-import '../../../screens/quizz_screen.dart';
+import '../../../screens/learn_screens/quizz_screen.dart';
 import '../../other/button.dart';
 import '../../other/expandable_view.dart';
 
@@ -23,7 +25,6 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        padding: EdgeInsets.zero,
         itemCount: _mainTopicList.length,
         itemBuilder: (context, index) {
           return _buildItemMain(context, _mainTopicList[index]);
@@ -38,14 +39,12 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
 
     switch (mainTopic) {
       case MdlMainVocabularyTopic _: {
-        mainTopic as MdlMainVocabularyTopic;
         idMainTopic = mainTopic.id;
         nameTopic = mainTopic.name;
         break;
       }
 
       case MdlMainSentenceTopic _: {
-        mainTopic as MdlMainSentenceTopic;
         idMainTopic = mainTopic.id;
         nameTopic = mainTopic.name;
         break;
@@ -56,58 +55,23 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
       create: (context) => DataBloc<S>()..add(DataEventLoad<S>(args: idMainTopic)),
       child: Builder(
         builder: (context) {
-          return Column(
-            children: [
-              Container(
-                height: 1,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.grey,
+          return WdgGroup(
+              title: nameTopic,
+              titleStyle: GoogleFonts.pangolin(
+                fontWeight: FontWeight.w900,
+                fontSize: 20,
+                color: Theme.of(context).primaryColor,
               ),
-
-              /// Tên chủ đề  --------------------------------------------------
-              Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(7),
-                          child: Text(
-                            nameTopic,
-                            style: GoogleFonts.pangolin(
-                              fontWeight: FontWeight.w900,
-                              fontSize: 24,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.all(7),
-                            alignment: Alignment.centerRight,
-                            child: const Text(
-                              "2/5",
-                              style: TextStyle(fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              /// Hộp danh sách chủ đề con  ------------------------------------
-              SizedBox(
-                height: 145,
+              height: 1,
+              opacity: 1,
+              child: SizedBox(
+                height: 150,
                 child: BlocBuilder<DataBloc<S>, DataState>(
                   builder: (context, state) {
                     if (state is DataStateLoading) {  //-> Đang tải dữ liệu
                       return const Center(child: CircularProgressIndicator());
 
-                    } else if (state is DataStateLoaded<S>) { //-> Đã tải xong dữ liệu
+                    } else if (state is DataStateLoaded<S>) {//-> Đã tải xong dữ liệu
                       var subTopics = state.data;
                       _sortSubTopics(subTopics);
 
@@ -119,7 +83,10 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                         ),
                         itemCount: subTopics.length,
                         itemBuilder: (context, index) {
-                          return _buildItemSub(context, subTopics[index]);
+                          return Align(
+                              alignment: Alignment.topCenter,
+                              child: _buildItemSub(context, subTopics[index])
+                          );
                         },
                       );
 
@@ -130,14 +97,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                     return const SizedBox();
                   },
                 ),
-              ),
-
-              Container(
-                height: 1,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.grey,
-              ),
-            ],
+              )
           );
         },
       ),
@@ -152,7 +112,6 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
 
     switch(subTopic) {
       case MdlSubVocabularyTopic _: {
-        subTopic as MdlSubVocabularyTopic;
         imageUrl = subTopic.imageUrl;
         isLearned = subTopic.isLearned;
         name = subTopic.name;
@@ -160,7 +119,6 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
       }
 
       case MdlSubSentenceTopic _: {
-        subTopic as MdlSubSentenceTopic;
         imageUrl = subTopic.imageUrl;
         isLearned = subTopic.isLearned;
         name = subTopic.name;
@@ -173,37 +131,33 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
       onTap: () => _showDialogWordList(context, subTopic),
       child: Column(
         children: [
-          ///ẢNH tải từ server  --------------------------------------------------
           Stack(
             children: [
-              Container(
-                margin: const EdgeInsets.all(3),
-                padding: const EdgeInsets.all(1.5),
-                decoration: BoxDecoration(
-                  color: isLearned
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(5),
-                    child: Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                      width: 60,
-                      height: 60,
-                      errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                        return Image.asset(
-                          Assets.images.dinosaur.dinosaurLearn.path,
-                          fit: BoxFit.cover,
-                          width: 60,
-                          height: 60,
-                        );
-                      },
-                    ),
+              ///ẢNH tải từ server  --------------------------------------------------
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        width: 2,
+                          color: isLearned
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey)),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    width: 60,
+                    height: 60,
+                    errorBuilder: (BuildContext context, Object error,
+                        StackTrace? stackTrace) {
+                      return Image.asset(
+                        Assets.images.dinosaur.dinosaurLearn.path,
+                        fit: BoxFit.cover,
+                        width: 60,
+                        height: 60,
+                      );
+                    },
                   ),
                 ),
               ),
@@ -212,15 +166,10 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
               Positioned(
                 right: 0,
                 top: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  child: isLearned
-                      ? const Icon(Icons.check, color: Colors.white, size: 18)
-                      : null,
-                ),
+                child: isLearned
+                    ? Icon(Icons.check_circle_outline,
+                        color: Theme.of(context).primaryColor, size: 18)
+                    : const SizedBox.shrink(),
               ),
             ],
           ),
@@ -245,17 +194,15 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
 
     switch(data) {
       case MdlWord _: {
-        var word = data as MdlWord;
-        textW = word.word;
-        textMeaning = word.meaning;
-        textExpaned = "Loại: ${word.type}m \nUS: ${word.pronounceUS} \nUK: ${word.pronounceUK} \nVí dụ: ${word.example}";
+        textW = data.word;
+        textMeaning = data.meaning;
+        textExpaned = "Loại: ${data.type}m \nUS: ${data.pronounceUS} \nUK: ${data.pronounceUK} \nVí dụ: ${data.example}";
         break;
       }
 
       case MdlSentence _: {
-        var sentence = data as MdlSentence;
-        textW = sentence.sentence;
-        textMeaning = sentence.translation;
+        textW = data.sentence;
+        textMeaning = data.translation;
         break;
       }
     }
@@ -263,33 +210,45 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: SizedBox(
-            child: Wrap(direction: Axis.vertical, children: [
-              Text(textW,
-                  style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor)
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              WdgButton(
+                color: Colors.transparent,
+                onTap: () {
+                  textToSpeakUtil.speak(
+                    textW,
+                    TextToSpeakUtil.languageUK,
+                    TextToSpeakUtil.rateNormal,
+                  );
+                },
+                child: const Icon(Icons.volume_up, size: 30),
               ),
-              Text(textMeaning)
-            ]),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      textW,
+                      style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                    ),
+                    Text(textMeaning),
+                  ],
+                ),
+              ),
+            ],
           ),
           subtitle: expanded //-> Trạng thái mở rộng
               ? Text(textExpaned)
               : null,
-          trailing: WdgButton(
-            color: Colors.transparent,
-            onTap: () {
-              textToSpeakUtil.speak(textW, TextToSpeakUtil.languageUK,
-                  TextToSpeakUtil.rateNormal);
-            },
-            child: const Icon(Icons.volume_up, size: 30),
-          ),
         ),
-
         Container(
           color: Colors.grey,
           height: 1,
         )
       ],
     );
+
   }
 
   ///DIALOG hiển thị danh sách từ vựng hoặc câu ------------------------------------------
@@ -300,13 +259,11 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
 
     switch(subTopic) {
       case MdlSubSentenceTopic _: {
-        subTopic as MdlSubSentenceTopic;
         idSubTopic = subTopic.id;
         isLearned = subTopic.isLearned;
         break;
       }
       case MdlSubVocabularyTopic _: {
-        subTopic as MdlSubVocabularyTopic;
         idSubTopic = subTopic.id;
         isLearned = subTopic.isLearned;
         break;
@@ -336,7 +293,8 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                   child: Opacity(
                     opacity: dialogAnimationController.value,
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.66,
+                      width: 700,
                       decoration: BoxDecoration(
                         color: Theme.of(context).dialogBackgroundColor,
                         borderRadius: BorderRadius.circular(4),
@@ -348,7 +306,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                           Image(
                             width: MediaQuery.of(context).size.width,
                             repeat: ImageRepeat.repeat,
-                            height: 50,
+                            height: 30,
                             image: Assets.images.cover.headbock.provider(),
                           ),
 
@@ -385,63 +343,81 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                           ),
 
                           /// Button học bài  --------------------------------------------------
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              WdgButton(
-                                onTap: () async {
-                                  if(datas.isNotEmpty) {
-                                    Navigator.pop(context); //-> Đóng dialog
-                                    final result = await Navigator.push( //-> Mở quizz
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) {
-                                            switch (datas) {
-                                              case List<MdlWord> _:
-                                                return QuizzScreen.vocabulary(isLearned: isLearned, words: (datas as List<MdlWord>));
-                                              case List<MdlSentence> _:
-                                                return QuizzScreen.sentence(isLearned: isLearned, sentences: (datas as List<MdlSentence>));
-                                              default:
-                                                return const Center(child: Text('No data available or unsupported type.'));
-                                            }
-                                          }
-                                      ),
-                                    );
+                          FittedBox(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              children: [
+                                if(T == MdlWord)
+                                  WdgButton(
+                                    color: Colors.transparent,
+                                    onTap: () {
+                                      Navigator.push( //-> Mở quizz
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) {
+                                                return FlipCardsScreen(words: datas as List<MdlWord>);
+                                              }));
+                                    },
+                                    child: Text('Thẻ ghi nhớ', style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                                    ),
+                                  ),
 
-                                    //--- Cập nhật là đã học  ---
-                                    if (parentContext.mounted && result is QuizzResult) {
-                                      switch(subTopic) {
-                                        case MdlSubSentenceTopic _: {
-                                          (subTopic as MdlSubSentenceTopic).isLearned = true;
-                                          break;
+
+                                WdgButton(
+                                  buttonFit: ButtonFit.scaleDown,
+                                  onTap: () async {
+                                    if(datas.isNotEmpty) {
+                                      Navigator.pop(context); //-> Đóng dialog
+                                      final result = await Navigator.push( //-> Mở quizz
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) {
+                                              switch (datas) {
+                                                case List<MdlWord> _:
+                                                  return QuizzScreen.vocabulary(isLearned: isLearned, words: (datas as List<MdlWord>));
+                                                case List<MdlSentence> _:
+                                                  return QuizzScreen.sentence(isLearned: isLearned, sentences: (datas as List<MdlSentence>));
+                                                default:
+                                                  return const Center(child: Text('No data available or unsupported type.'));
+                                              }
+                                            }
+                                        ),
+                                      );
+
+                                      //--- Cập nhật là đã học  ---
+                                      if (parentContext.mounted && result is QuizzResult) {
+                                        switch(subTopic) {
+                                          case MdlSubSentenceTopic _: {
+                                            subTopic.isLearned = true;
+                                            break;
+                                          }
+                                          case MdlSubVocabularyTopic _: {
+                                            subTopic.isLearned = true;
+                                            break;
+                                          }
                                         }
-                                        case MdlSubVocabularyTopic _: {
-                                          (subTopic as MdlSubVocabularyTopic).isLearned = true;
-                                          break;
-                                        }
+                                        parentContext.read<DataBloc<S>>().add(DataEventUpdate<S>(datas: [subTopic]));
                                       }
-                                      parentContext.read<DataBloc<S>>().add(DataEventUpdate<S>(datas: [subTopic]));
                                     }
-                                  }
-                                },
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(12),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      isLearned ? 'Ôn tập' : 'Học bài mới',
-                                      style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
-                                    ),
-                                    Icon(
-                                      Icons.keyboard_double_arrow_right,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  ],
+                                  },
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        isLearned ? 'Ôn tập' : 'Học bài mới',
+                                        style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                                      ),
+                                      Icon(
+                                        Icons.keyboard_double_arrow_right,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
+                          )
                         ],
                       ),
                     ),

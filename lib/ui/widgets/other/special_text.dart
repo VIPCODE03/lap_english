@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/main.dart';
 
 class WdgSpecialText extends StatelessWidget {
   final String text;
@@ -20,7 +21,7 @@ class WdgSpecialText extends StatelessWidget {
               text: part,
               style: TextStyle(
                   color: Theme.of(context).primaryColor,
-                  fontSize: 20,
+                  fontSize: isTablet ? 30 : 20,
                   fontWeight: FontWeight.bold),
             );
           }
@@ -29,9 +30,9 @@ class WdgSpecialText extends StatelessWidget {
           else {
             return TextSpan(
               text: part,
-              style: const TextStyle(
+              style: TextStyle(
                   color: Colors.brown,
-                  fontSize: 20,
+                  fontSize: isTablet ? 30 : 20,
                   fontWeight: FontWeight.bold),
             );
           }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
+import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import '../../other/button.dart';
 
@@ -16,22 +17,39 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
   String? selectedKey;
 
   @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          alignment: WrapAlignment.center,
-          children: widget.quizz.answers.map((option) {
-            bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
-            if (isCorrect) widget.status.correctAnswer = option;
-            bool isSelected = option == selectedKey;
+  void initState() {
+    super.initState();
 
-            return Container(
-              constraints: const BoxConstraints(minHeight: 66),
-              width: MediaQuery.of(context).size.width - 50,
+    hasChanged.addListener(change);
+  }
+
+  change() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(change);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        alignment: WrapAlignment.center,
+        direction: orientation == Orientation.portrait ? Axis.horizontal : Axis.vertical,
+        children: widget.quizz.answers.map((option) {
+          bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
+          if (isCorrect) widget.status.correctAnswer = option;
+          bool isSelected = option == selectedKey;
+
+          return FittedBox(
+            child: SizedBox(
+              height: orientation == Orientation.portrait ? maxHeight / 8 : maxHeight * 2/3,
+              width: orientation == Orientation.portrait ? maxWidth - 20 : maxWidth / 4,
+
               child: WdgButton(
                 onTap: () {
                   setState(() {
@@ -41,7 +59,7 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
                   });
                 },
                 color: isSelected
-                    ? Theme.of(context).primaryColor.withAlpha(90)
+                    ? Theme.of(context).primaryColor
                     : Theme.of(context).primaryColor.withAlpha(30),
                 borderRadius: BorderRadius.circular(12),
                 child: Text(
@@ -49,10 +67,9 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
-            );
-          }).toList(),
-        ),
-      ),
+            ),
+          );
+        }).toList(),
     );
   }
 }

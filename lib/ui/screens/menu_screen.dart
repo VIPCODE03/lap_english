@@ -71,11 +71,16 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
                   builder: (context, state) {
                     if (state is DataStateLoading<T>) {
                       return const Center(child: CircularProgressIndicator());
+
                     } else if (state is DataStateLoaded<T>) {
                       datas = state.data;
                       return _buildMenu(_datas(), search); ///-> menu
+
+                    } else if(state is DataStateError<T>) {
+                      return const Center(child: Text('Không có dữ liệu'));
                     }
-                    return const Center(child: Text('Không có dữ liệu'));
+
+                    return const SizedBox.shrink();
                   },
                 ),
         ),
@@ -106,14 +111,12 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
   //=== Hàm lọc dữ liệu ===
   List<T> _datas() {
     if (datas is List<MdlMainSentenceTopic>) {
-      var mains = datas as List<MdlMainSentenceTopic>;
-      return mains
+      return (datas as List<MdlMainSentenceTopic>)
           .where((data) => data.name.toLowerCase().contains(search.toLowerCase()))
           .toList() as List<T>;
     }
     else if (datas is List<MdlMainVocabularyTopic>) {
-      var mains = datas as List<MdlMainVocabularyTopic>;
-      return mains
+      return (datas as List<MdlMainVocabularyTopic>)
           .where((data) => data.name.toLowerCase().contains(search.toLowerCase()))
           .toList() as List<T>;
     }

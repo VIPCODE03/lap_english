@@ -40,8 +40,12 @@ class _TaskScreenState extends State<TaskScreen> {
                   // ),
 
                   /// ROW4  --------------------------------------------------------------
-                  const WdgGroup(title: 'Nhiệm vụ hàng ngày', opacity: 0.06, height: 15),
-                  WdgRow3Task(user: user),
+                  WdgGroup(
+                      title: 'Nhiệm vụ hàng ngày',
+                      opacity: 0.06,
+                      height: 15,
+                      child: WdgRow3Task(user: user)
+                  ),
                 ],
               );
             }
