@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
+import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import '../../other/button.dart';
 
@@ -23,10 +24,22 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
     super.initState();
     widget.status.isStarted.addListener(() {
       if(widget.status.isStarted.value == true) {
-        setState(() {});
-        WidgetsBinding.instance.addPostFrameCallback(_getOffset);
+        update();
       }
     });
+
+    hasChanged.addListener(update);
+  }
+
+  void update() {
+    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback(_getOffset);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(update);
   }
 
   void _getOffset(_) {
@@ -41,13 +54,13 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: MediaQuery.of(context).size.height,
+    var newWidget = SizedBox(
+        height: maxHeight,
         child: widget.status.isStarted.value == true
             ? _WdgButtonSelect(
                 key: testScreenKey,
                 datas: widget.quizz.answers,
-                height: MediaQuery.of(context).size.height * 0.066,
+                height: orientation == Orientation.portrait ? maxHeight * 0.066 : maxHeight * 0.1,
                 offset: offset,
                 onSelectionChanged: (value) => {
                   if (value.isNotEmpty) {
@@ -60,8 +73,12 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
                     }
                 },
               )
+            : widget.status.isEnd.value == true
+            ? null
             : const _WdgButtonSelect(datas: [], height: 50)
     );
+
+    return newWidget;
   }
 }
 
@@ -106,8 +123,8 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
   bool nextRow2 = false;
 
   bool changed = true;
-
-
+  bool init = false;
+  
   @override
   void initState() {
     super.initState();
@@ -115,82 +132,91 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
     for (var text in widget.datas) {
       var keyBegin = GlobalKey();
       var keyEnd = GlobalKey();
-      row1.add(_locationItem(keyEnd, text));
-      row2.add(_locationItem(keyBegin, text));
+      row1.add(_ItemLocation(keyEnd, text));
+      row2.add(_ItemLocation(keyBegin, text));
       items.add(_ItemAB(text, keyBegin, keyEnd));
     }
 
-    changed = true;
+    hasChanged.addListener(onChange);
+  }
+
+  void onChange() {
+    resetsLocation();
     update();
   }
 
   @override
-  Widget build(BuildContext context) {
-    double widthMax = MediaQuery.of(context).size.width;
-    return Container(
-        constraints: const BoxConstraints(
-          minHeight: 700,
-        ),
-        child: Stack(
-          children: [
-            for(int i = 1; i < 4; i++) //-> Dòng kẻ ---
-              Positioned(
-                top: widget.height * i + (i - 1) * spacing + 1,
-                left: magin1,
-                right: magin1,
-                child: Container(
-                  height: 2,
-                  width: widthMax,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.withAlpha(70),
-                      borderRadius: BorderRadius.circular(50)
-                  ),
-                ),
-              ),
-
-            for (var item in row1)  //-> Hàng 1 ---
-              Positioned(
-                left: changed ? calculationLocation(true, item.width, widthMax, item) : item.left,
-                top: item.top,
-                child: item.widget,
-              ),
-
-            for (var item in row2)  //-> Hàng 2 ---
-              Positioned(
-                left: item.left ?? calculationLocation(false, item.width, widthMax, item),
-                bottom: item.bottom,
-                child: item.widget,
-              ),
-
-            ...items.map((item) => _itemSelect(item)), //-> Item  ---
-          ],
-        )
-    );
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(update);
   }
 
-  /// Item vị trí  -----------------------------------------------------------------
-  _ItemLocation _locationItem(GlobalKey key, String text) {
-    double width = _calculateTextWidth(text);
-    return _ItemLocation(
-      key,
-      SizedBox(
-        height: widget.height,
-        width: width,
-        child: WdgButton(
-          key: key,
-          buttonFit: ButtonFit.scaleDown,
-          onTap: () {},
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.transparent,
-            child: Text(
-                text,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 18, color: Colors.transparent)
+  @override
+  Widget build(BuildContext context) {
+    if(orientation == Orientation.portrait) {
+      magin2 = maxWidth / 10;
+    }
+    widthTotal2 = magin2;
+
+    var newWidget = Stack(
+      children: [
+        for (var item in row1)  //-> Hàng 1 ---
+          Positioned(
+            left: calculationLocation(true, _calculateTextWidth(context, item.text), maxWidth, item),
+            top: item.top,
+            child: _itemLocation(item),
+          ),
+
+        for (int i = 1; i < row1Index + ((orientation == Orientation.portrait || isTablet)? 3 : 2); i++) //-> Dòng kẻ ---
+          Positioned(
+            top: widget.height * i + (i - 1) * spacing + 1,
+            left: magin1,
+            right: magin1,
+            child: Container(
+              height: 2,
+              width: maxWidth,
+              decoration: BoxDecoration(
+                  color: Color.alphaBlend(Theme.of(context).primaryColor.withAlpha(25), Colors.grey),
+                  borderRadius: BorderRadius.circular(50)
+              ),
             ),
+          ),
+
+        for (var item in row2)  //-> Hàng 2 ---
+          Positioned(
+            left: calculationLocation(false, _calculateTextWidth(context, item.text), maxWidth, item),
+            bottom: item.bottom,
+            child: _itemLocation(item),
+          ),
+
+        ...items.map((item) => _itemSelect(item)), //-> Item  ---
+      ],
+    );
+
+    if(!init) {
+      init = true;
+      update();
+    }
+    return newWidget;
+  }
+
+  /// Item vị trí -------------------------------------------------------------
+  Widget _itemLocation(_ItemLocation item) {
+    return SizedBox(
+      height: widget.height,
+      width: _calculateTextWidth(context, item.text),
+      child: WdgButton(
+        key: item.key,
+        buttonFit: ButtonFit.scaleDown,
+        onTap: () {},
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.transparent,
+        child: Text(
+            item.text,
+            maxLines: 1,
+            style: const TextStyle(fontSize: 18, color: Colors.transparent)
         ),
       ),
-      widget.height,
-      width,
     );
   }
 
@@ -201,13 +227,13 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       dy = widget.offset?.dy ?? 0;
     }
     return AnimatedPositioned(
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeInOutCubicEmphasized,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutQuint,
         top: item.isMoved ? (item.topEnd - dy) : (item.topBegin - dy),
         left: item.isMoved ? item.leftEnd : item.leftBegin,
         child: SizedBox(
           height: widget.height,
-          width: _calculateTextWidth(item.text),
+          width: _calculateTextWidth(context, item.text),
           child: WdgButton(
               buttonFit: ButtonFit.scaleDown,
               onTap: () {
@@ -237,7 +263,6 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
                     selectedList.add(item);
                   }
                   item.isMoved = !item.isMoved;
-                  changed = true;
                 });
 
                 update();
@@ -256,7 +281,6 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 
   //===   Hàm tính toán vị trí  ===
   double? calculationLocation(bool answer, double width, double widthMax, _ItemLocation item) {
-    if (changed) {
       //--- 1  ---
       if (answer) {
         if (widthTotal1 + width > widthMax - magin1/2) {
@@ -264,7 +288,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
           nextRow1 = true;
           widthTotal1 = magin1;
         }
-        item.top = row1Index * item.height + row1Index * spacing;
+        item.top = row1Index * widget.height + row1Index * spacing;
         double currentLeft = widthTotal1;
         widthTotal1 += width + spacing;
         return currentLeft;
@@ -278,24 +302,29 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
           widthTotal2 = magin2;
         }
         item.left = widthTotal2;
-        item.bottom = row2Index * item.height + row2Index * spacing;
+        item.bottom = row2Index * widget.height + row2Index * spacing;
         widthTotal2 += width + spacing;
         return item.left;
       }
-    }
-    changed = false;
-    return null;
   }
 
   //===   Tính độ rộng item ===
-  double _calculateTextWidth(String text) {
+  double _calculateTextWidth(BuildContext context, String text) {
+    final double baseFontSize = Theme.of(context).textTheme.titleLarge?.fontSize ?? 20;
+    final double textScaleFactor = MediaQuery.of(context).textScaler.textScaleFactor;
+    final double fontSize = baseFontSize * textScaleFactor;
+
     final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: const TextStyle(fontSize: 18)),
+      text: TextSpan(text: text, style: TextStyle(fontSize: fontSize)),
       maxLines: 1,
       textDirection: TextDirection.ltr,
     )..layout();
 
-    double width = textPainter.size.width + 30;
+    double width = textPainter.size.width + 20;
+    if(text.length < 3) {
+      width *= 1.4;
+    }
+
     return width;
   }
 
@@ -326,9 +355,9 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
         item.leftEnd = positionEnd.dx;
 
       }
-      setState(() {
-        resetsLocation();
-      });
+        setState(() {
+          resetsLocation();
+        });
     });
   }
 }
@@ -336,14 +365,12 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 /*  class item vị trí */
 class _ItemLocation {
   final GlobalKey key;
-  final Widget widget;
+  final String text;
   double? bottom;
   double? top;
   double? left;
-  final double width;
-  final double height;
 
-  _ItemLocation(this.key, this.widget, this.height, this.width);
+  _ItemLocation(this.key, this.text);
 }
 
 /*  class item */

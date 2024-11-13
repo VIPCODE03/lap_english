@@ -21,7 +21,7 @@ class WdgAnimatedProgressBar extends StatelessWidget {
           width: 1,
           color: Theme.of(context).primaryColor,
         ),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -34,8 +34,8 @@ class WdgAnimatedProgressBar extends StatelessWidget {
                   return Container(
                     width: animatedValue * constraints.maxWidth,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Theme.of(context).primaryColor.withAlpha(70),
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).primaryColor.withAlpha(50),
                     ),
                   );
                 },

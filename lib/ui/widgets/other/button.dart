@@ -49,7 +49,7 @@ class _WdgButtonState extends State<WdgButton> {
         });
       },
       child: Container(
-        margin: _isPressed ? const EdgeInsets.only(top: 4) : const EdgeInsets.only(top: 0),
+        margin: _isPressed ? const EdgeInsets.only(top: 5) : const EdgeInsets.only(top: 0),
         decoration: BoxDecoration(
           color: widget.color != Colors.transparent
               ? Color.alphaBlend(Colors.white30, widget.color ?? Theme.of(context).primaryColor)

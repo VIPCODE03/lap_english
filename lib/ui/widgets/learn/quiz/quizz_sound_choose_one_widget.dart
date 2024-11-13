@@ -3,6 +3,7 @@ import 'package:lap_english/data/model/quizz/quizz_sound_choose_one.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import '../../../../../utils/text_to_speak.dart';
+import '../../../../main.dart';
 
 class WdgQuizzSoundChooseOne extends WdgQuizz<QuizzSoundChooseOne> {
   WdgQuizzSoundChooseOne({super.key, required super.quizz});
@@ -42,6 +43,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         ///Hộp âm thanh --------------------------------------------------------
         SizedBox(
@@ -51,22 +53,22 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
                     borderRadius: BorderRadius.circular(12),
                     buttonFit: ButtonFit.scaleDown,
                     color: Theme.of(context).primaryColor,
-                    child:  Icon(Icons.volume_up, size: MediaQuery.of(context).size.height * 0.066)
+                    child:  Icon(Icons.volume_up, size: orientation == Orientation.portrait ? maxHeight * 0.066 : maxWidth * 0.055)
                   )
                 : null),
 
         ///Danh sách đáp án ----------------------------------------------------
         Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
             child: Wrap(
+              direction: orientation == Orientation.portrait ? Axis.horizontal : Axis.vertical,
               spacing: 10,
               runSpacing: 10,
+              runAlignment: WrapAlignment.center,
               children: widget.quizz.answers.map((key) {
                 final bool isSelected = key == selectedKey;
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height / 5,
-                  width: MediaQuery.of(context).size.width / 2 - 30,
+                  height: orientation == Orientation.portrait ? maxHeight / 5 : maxHeight * 2/3,
+                  width: orientation == Orientation.portrait ? maxWidth / 2 - 30 : maxWidth / 5,
                   child: WdgButton(
                     onTap: () {
                       setState(() {
@@ -94,8 +96,6 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
               }).toList(),
             ),
           ),
-
-        ),
       ],
     );
   }

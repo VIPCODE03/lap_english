@@ -5,6 +5,7 @@ import 'package:lap_english/ui/widgets/other/group.dart';
 import '../../../data/bloc/data_bloc/data_bloc.dart';
 import '../../widgets/nav/profile_widgets/row1_profile.dart';
 import '../../widgets/nav/profile_widgets/row2_profile.dart';
+import '../../widgets/nav/profile_widgets/row3_profile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,12 +32,21 @@ class ProfileScreen extends StatelessWidget {
                   WdgGroup(
                     title: 'Vấn đề kĩ năng :)',
                     opacity: 0.5,
-                    height: 1,
-                    child: SizedBox(
-                      height: 125,
-                      child: WdgRow2Profile(skill: user.skills),
-                    ),
+                    height: 2,
+                    child: WdgRow2Profile(skill: user.skills),
                   ),
+
+                  const SizedBox(height: 20),
+
+                  /// ROW3  --------------------------------------------------------------
+                  WdgGroup(
+                    title: 'Thống kê',
+                    opacity: 0.1,
+                    height: 15,
+                    alignment: Alignment.center,
+                    child: WdgRow3Profile(user: user),
+                  ),
+
                 ],
               );
             }

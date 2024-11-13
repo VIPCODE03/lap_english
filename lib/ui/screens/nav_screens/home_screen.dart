@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/widgets/nav/home_widgets/row1.dart';
 import 'package:lap_english/ui/widgets/nav/home_widgets/row2.dart';
 import 'package:lap_english/ui/widgets/nav/home_widgets/row3.dart';
@@ -12,9 +13,9 @@ class HomeScreen extends StatelessWidget {
     return ListView(
         children: [
           ///ROW1  --------------------------------------------------------------
-          const SizedBox(
-            height: 300,
-            child: WdgRow1(),
+          SizedBox(
+            height: orientation == Orientation.portrait ? maxHeight / 3 : maxHeight / 2,
+            child: const WdgRow1(),
           ),
 
           ///ROW2  --------------------------------------------------------------
@@ -29,13 +30,6 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
               height: 250,
               child: WdgRow4(data: ["Phổ biến", "Thường ngày", "Khen ngợi ai đó"],)
-          ),
-
-          ///ROW5  --------------------------------------------------------------
-          Container(
-            height: 150,
-            color: Colors.purple,
-            child: const Center(child: Text('View 5', style: TextStyle(color: Colors.white, fontSize: 20))),
           ),
         ],
       );

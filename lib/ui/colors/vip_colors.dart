@@ -3,12 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-class ColorMix {
-  static Color mixWhite(Color color) {
-    return Color.alphaBlend(Colors.white38, color).withAlpha(66);
-  }
-}
-
 class VipColors {
   static Color getRandomColor(BuildContext context) {
     var brightness = MediaQuery.of(context).platformBrightness;

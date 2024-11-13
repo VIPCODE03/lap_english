@@ -69,8 +69,9 @@ class WdgRow2 extends StatelessWidget {
   ///ITEM  ---------------------------------------------------------------------
   Widget buildMenuItem(BuildContext context, MenuItem item) {
     return WdgButton(
-        //--- Chuyển giao diện  ---
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => item.openScreen)),
+        onTap: () => Navigator.push( //-> Chuyển giao diện
+            context,
+            MaterialPageRoute(builder: (context) => item.openScreen)),
         color: Colors.transparent,
         child: Column(
           children: [

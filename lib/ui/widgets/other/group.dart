@@ -32,13 +32,13 @@ class WdgGroup extends StatelessWidget {
           child: Container(
             height: height,
             width: maxWidth,
-            color: Theme.of(context).primaryColor,
+            color: Color.alphaBlend(Theme.of(context).primaryColor.withAlpha(50), Colors.grey),
           ),
         ),
 
         /// Text tiêu đề  ----------------------------------------------------
         Padding(
-            padding: const EdgeInsets.only(left: 10, top: 5),
+          padding: const EdgeInsets.only(left: 10, top: 5),
           child: Text(title ?? '',
             style: titleStyle ?? const TextStyle(
                 fontSize: 20,
