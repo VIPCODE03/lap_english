@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/ipa_screen.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
@@ -21,7 +22,7 @@ class MenuItem {
 }
 
 class WdgRow2 extends StatelessWidget {
-  final List<MenuItem> menuItems = [
+  final List<MenuItem> _menuItems = [
     MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
         label: "Từ vựng",
         openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng theo chủ đề")
@@ -61,7 +62,7 @@ class WdgRow2 extends StatelessWidget {
         alignment: Alignment.center,
         child: Wrap(
           spacing: 10,
-          children: menuItems.map((item) => buildMenuItem(context, item)).toList(),
+          children: _menuItems.map((item) => buildMenuItem(context, item)).toList(),
         )
     );
   }
@@ -79,17 +80,16 @@ class WdgRow2 extends StatelessWidget {
             Container(
               height: 66,
               width: 66,
-              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                border: Border.all(color: Theme.of(context).primaryColor),
                   borderRadius: BorderRadius.circular(24)),
 
               ///ICON ------------------------------------------------------------
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(20),
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  color: Colors.grey.withAlpha(25).withOpacity(0.5),
+                  color: VipColors.onPrimary(context),
                   child: Image.asset(
                     item.imagePath,
                     width: 33,

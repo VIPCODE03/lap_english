@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_write.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
-import 'package:lap_english/ui/widgets/other/button.dart';
 
+import '../../../../main.dart';
 import '../../other/key_broad.dart';
 
 class WdgQuizzWrite extends WdgQuizz<QuizzWrite> {
@@ -15,31 +15,38 @@ class WdgQuizzWrite extends WdgQuizz<QuizzWrite> {
 
 class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
   late List<String> userInput;
-  double maxHeight = 0;
-  double maxWidth = 0;
 
   @override
   void initState() {
     super.initState();
     userInput = List<String>.filled(widget.quizz.answerCorrect.length, '');
+
+    hasChanged.addListener(update);
+  }
+
+  update() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(update);
   }
 
   @override
   Widget build(BuildContext context) {
-    maxHeight = MediaQuery.of(context).size.height;
-    maxWidth = MediaQuery.of(context).size.width;
-    var isVertical = maxHeight > maxWidth;
-
     return SizedBox(
       height: maxHeight,
-      child: Column(
+      child: Stack(
         children: [
-          Expanded(
-            child: Center(
+          Container(
+            alignment: (isTablet || orientation == Orientation.portrait)
+                ? Alignment.center
+                : Alignment.topCenter,
               ///Row hàng text đáp án --------------------------------------
               child: Wrap(
-                children:
-                    List.generate(widget.quizz.answerCorrect.length, (index) {
+                children: List.generate(widget.quizz.answerCorrect.length, (index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
                     child: Column(
@@ -50,7 +57,7 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
                               color: userInput[index].isEmpty
                                   ? Theme.of(context).primaryColor
                                   : null,
-                              fontSize: 30),
+                              fontSize: 20),
                         ),
                       ],
                     ),
@@ -58,17 +65,17 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
                 }),
               ),
             ),
-          ),
-
-          SizedBox(height: maxHeight * 0.01),
 
           /// Bàn phím ảo -------------------------------------------------
-          WdgKeyBroad(
-            maxLength: widget.quizz.answerCorrect.length,
-            suggest: widget.quizz.answerCorrect,
-              onValueChanged: (value) {
-                _updateUserInput(value.toLowerCase());
-          }),
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: WdgKeyBroad(
+                maxLength: widget.quizz.answerCorrect.length,
+                suggest: widget.quizz.answerCorrect,
+                onValueChanged: (value) {
+                  _updateUserInput(value.toLowerCase());
+                }),
+          )
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/user/skill.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:radar_chart/radar_chart.dart';
 
 class WdgRow2Profile extends StatelessWidget {
@@ -37,7 +38,7 @@ class WdgRow2Profile extends StatelessWidget {
                 radars: [
                   RadarTile(
                     values: skills.map((skill) => skill / max * 0.9).toList(),
-                    backgroundColor: Theme.of(context).primaryColor.withOpacity(0.3)
+                    backgroundColor: VipColors.onPrimary(context)
                   ),
                 ],
               ),

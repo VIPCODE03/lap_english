@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 
 class WdgAnimatedProgressBar extends StatelessWidget {
   final double value; //->  Giá trị phần trăm
@@ -19,7 +20,7 @@ class WdgAnimatedProgressBar extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
-          color: Theme.of(context).primaryColor,
+          color: VipColors.primary(context),
         ),
         borderRadius: BorderRadius.circular(12),
       ),
@@ -35,7 +36,7 @@ class WdgAnimatedProgressBar extends StatelessWidget {
                     width: animatedValue * constraints.maxWidth,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      color: Theme.of(context).primaryColor.withAlpha(50),
+                      color: VipColors.onPrimary(context),
                     ),
                   );
                 },
@@ -48,7 +49,7 @@ class WdgAnimatedProgressBar extends StatelessWidget {
                   child: Text(
                     label ?? '',
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color: VipColors.text(context),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

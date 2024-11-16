@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/generate/generate_ipa.dart';
+import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
@@ -53,16 +54,16 @@ class IPAScreen extends StatelessWidget {
   Widget _itemIPA(BuildContext context, IPA ipa) {
     return SizedBox(
       height: 70,
-      width: MediaQuery.of(context).size.width / 6,
+      width: maxWidth / 6,
       child: WdgButton(
         buttonFit: ButtonFit.scaleDown,
-        color: VipColors.getRandomColor(context).withOpacity(0.7),
+        color: VipColors.getRandomColor(context, 70),
         onTap: () => audio.playFromAsset(ipa.soundUrl),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(15),
         child: Text(
           ipa.text,
           style: const TextStyle(
-            fontSize: 20,
+            fontSize: 24,
             fontFamily: 'DroidSans',
           ),
         ),
