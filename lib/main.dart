@@ -37,6 +37,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    lightMode = MediaQuery.of(context).platformBrightness == Brightness.light;
     orientation = MediaQuery.of(context).orientation;
     maxHeight = MediaQuery.of(context).size.height;
     maxWidth = MediaQuery.of(context).size.width;
@@ -50,8 +51,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       builder: (context, themeProvider, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: Themes.lightTheme(themeProvider.themeVip.theme),
-          darkTheme: Themes.dartTheme(themeProvider.themeVip.theme),
+          theme: themeProvider.vipTheme.light,
+          darkTheme: themeProvider.vipTheme.dark,
           themeMode: ThemeMode.system,
           home: const SplashScreen(),
         );
@@ -59,6 +60,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 }
+
+late bool lightMode;
 
 late Orientation orientation;
 

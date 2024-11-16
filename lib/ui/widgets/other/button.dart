@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 
 class WdgButton extends StatefulWidget {
   final Function onTap;
   final Color? color;
+  final int? alpha;
   final BorderRadius? borderRadius;
   final ButtonFit? buttonFit;
   final Widget child;
@@ -14,6 +16,7 @@ class WdgButton extends StatefulWidget {
     this.borderRadius,
     required this.child,
     this.buttonFit,
+    this.alpha,
   });
 
   @override
@@ -52,7 +55,8 @@ class _WdgButtonState extends State<WdgButton> {
         margin: _isPressed ? const EdgeInsets.only(top: 5) : const EdgeInsets.only(top: 0),
         decoration: BoxDecoration(
           color: widget.color != Colors.transparent
-              ? Color.alphaBlend(Colors.white30, widget.color ?? Theme.of(context).primaryColor)
+              ? Color.alphaBlend(Colors.transparent,
+              widget.color ?? VipColors.primary(context)).withAlpha(widget.alpha ?? 100)
               : Colors.transparent,
           borderRadius: widget.borderRadius,
           border: Border(
@@ -60,18 +64,16 @@ class _WdgButtonState extends State<WdgButton> {
               width: _isPressed ? 0.1 : 4,
               color: widget.color != Colors.transparent
                   ? Color.alphaBlend(
-                Colors.grey.withAlpha(50),
-                widget.color ?? Colors.transparent,
-              )
+                    Colors.grey.withAlpha(50),
+                    widget.color ?? Colors.transparent,)
                   : Colors.transparent,
             ),
             right: BorderSide(
               width: _isPressed ? 0.1 : 1,
               color: widget.color != Colors.transparent
                   ? Color.alphaBlend(
-                Colors.grey.withAlpha(50),
-                widget.color ?? Colors.transparent,
-              )
+                      Colors.grey.withAlpha(50),
+                      widget.color ?? Colors.transparent,)
                   : Colors.transparent,
             ),
           ),

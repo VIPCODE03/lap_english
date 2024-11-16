@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 
 class WdgSpecialText extends StatelessWidget {
   final String text;
@@ -19,10 +21,11 @@ class WdgSpecialText extends StatelessWidget {
           if (texts[part] == true) {
             return TextSpan(
               text: part,
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+              style: GoogleFonts.pangolin(
+                  color: VipColors.primary(context),
                   fontSize: isTablet ? 30 : 20,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold,)
+
             );
           }
 
@@ -30,10 +33,11 @@ class WdgSpecialText extends StatelessWidget {
           else {
             return TextSpan(
               text: part,
-              style: TextStyle(
-                  color: Colors.brown,
+              style: GoogleFonts.pangolin(
+                  color: VipColors.text(context),
                   fontSize: isTablet ? 30 : 20,
-                  fontWeight: FontWeight.bold),
+                  fontWeight: FontWeight.bold
+              ),
             );
           }
         }).toList(),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
+import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/utils/text_to_speak.dart';
 
 class FlipCardsScreen extends StatelessWidget {
@@ -11,14 +14,13 @@ class FlipCardsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.66;
-    double width = MediaQuery.of(context).size.width * 0.9;
-    return Scaffold(
-      appBar: AppBar(title: const Text('Thẻ ghi nhớ')),
+    double height = maxHeight * 0.66;
+    double width = maxWidth * 0.9;
+    return WdgScaffold(
+      appBar: const WdgAppBar(title: 'Thẻ ghi nhớ'),
       body: Center(
         child: SizedBox(
-          height: height * 1.1,
-          width: width * 1.05,
+          height: maxHeight * 0.75,
           child: _StackedList(children: [
             ...words.map((word) => item(context, word, height, width)),
           ]),
@@ -31,21 +33,20 @@ class FlipCardsScreen extends StatelessWidget {
     return _WdgFlipCard(
       height: height,
       width: width,
-      color: VipColors.getRandomColor(context),
+      color: VipColors.getRandomColor(context, 50),
       front: Text(word.word, style: const TextStyle(fontSize: 48)),
-      backSide: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
+      backSide: Wrap(
+        alignment: WrapAlignment.center,
+        direction: Axis.vertical,
         children: [
-          Text(word.word, style: const TextStyle(fontSize: 48)),
-          Container(color: VipColors.getRandomColor(context), height: 5),
-          Text(word.meaning, style: const TextStyle(fontSize: 48)),
           WdgButton(
               color: Colors.transparent,
               onTap: () {
                 _textToSpeakUtil.speak(word.word, TextToSpeakUtil.languageUS, TextToSpeakUtil.rateNormal);
               },
               child: const Icon(Icons.volume_up_outlined, size: 48,)),
+          Text(word.word, style: const TextStyle(fontSize: 48)),
+          Text(word.meaning, style: const TextStyle(fontSize: 48)),
         ],
       ),
     );

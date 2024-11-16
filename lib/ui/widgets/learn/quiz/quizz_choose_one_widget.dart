@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
 import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import '../../other/button.dart';
 
@@ -58,9 +59,8 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
                     widget.status.isCorrect = isCorrect;
                   });
                 },
-                color: isSelected
-                    ? Theme.of(context).primaryColor
-                    : Theme.of(context).primaryColor.withAlpha(30),
+                color: VipColors.onPrimary(context),
+                alpha: isSelected ? 100 : 10,
                 borderRadius: BorderRadius.circular(12),
                 child: Text(
                   option,

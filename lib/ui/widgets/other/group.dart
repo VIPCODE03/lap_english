@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 
 /// Tạo hộp bao quanh -----------------------------------------
 class WdgGroup extends StatelessWidget {
@@ -40,11 +42,10 @@ class WdgGroup extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10, top: 5),
           child: Text(title ?? '',
-            style: titleStyle ?? const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
+          style: titleStyle ?? GoogleFonts.pangolin(
+            fontSize: 20,
+            color: VipColors.text(context)),
             ),
-          ),
         ),
 
         /// Child -------------------------------------------------------------

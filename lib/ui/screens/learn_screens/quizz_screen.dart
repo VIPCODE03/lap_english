@@ -4,9 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
+import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
+import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:lap_english/utils/player_audio.dart';
 import '../../../data/bloc/quizz_bloc.dart';
@@ -45,6 +48,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
   bool next = false;
   bool isNext = true;
   late WdgQuizz currentQuizz;
+  double progress = 0;
 
   int a = 0;
 
@@ -62,173 +66,164 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-          body: BlocProvider(
+    return BlocProvider(
             create: (context) => QuizzBloc(widget._quizzes, widget._typeQuizz, widget._isLearned)..add(QuizzInit()),
             child: BlocBuilder<QuizzBloc, QuizzState>(
               builder: (context, state) {
                 if (state is QuizzInProgress) {
                   if(isNext) {
                     currentQuizz = WdgQuizzes.generate(state.currentQuizz);
+                    progress = state.progress;
                     isNext = false;
                   }
 
-                  return Column(
-                    children: [
-                      ///Progressbar  ----------------------------------------------
-                      Container(
-                          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              WdgButton(
-                                  onTap: () {
-                                    _noAudio = true;
-                                    showExitConfirmationDialog(context);
-                                  },
-                                  color: Colors.transparent,
-                                  child: Icon(Icons.design_services, size: isTablet ? 50 : 25)
+                  return  WdgScaffold(
+                      appBar: WdgAppBar(
+                        onBack: () {
+                          _noAudio = true;
+                          showExitConfirmationDialog(context);
+                        },
+                        content: SizedBox(
+                            height: isTablet
+                                ? orientation == Orientation.portrait ? maxHeight * 0.04 : 30
+                                : orientation == Orientation.portrait ? maxHeight * 0.03 : 20 ,
+                            child: WdgAnimatedProgressBar(value: state.progress)),
+                      ),
+                    body: Column(
+                      children: [
+                        ///Text kĩ năng -------------------------------------------
+                        Container(
+                            height: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.05,
+                            margin: const EdgeInsets.all(3),
+                            alignment: Alignment.centerLeft,
+                            child: FittedBox(
+                              child: Text(
+                                Skill.skillName(currentQuizz.quizz.skillType),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w700),
                               ),
-                              Expanded(child: SizedBox(
-                                  height: isTablet
-                                      ? orientation == Orientation.portrait ? maxHeight * 0.04 : 30
-                                      : orientation == Orientation.portrait ? maxHeight * 0.03 : 20 ,
-                                  child: WdgAnimatedProgressBar(value: state.progress)))
-                            ],)
-                      ),
+                            )
+                        ),
 
-                      ///Text kĩ năng -------------------------------------------
-                      Container(
-                          height: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.05,
-                          margin: const EdgeInsets.all(3),
-                          alignment: Alignment.centerLeft,
-                          child: FittedBox(
-                            child: Text(
-                              Skill.skillName(currentQuizz.quizz.skillType),
-                              style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w700),
-                            ),
-                          )
-                      ),
-
-                      ///Text câu hỏi -------------------------------------------
-                      Container(
+                        ///Text câu hỏi -------------------------------------------
+                        Container(
                           constraints: BoxConstraints(minHeight: maxHeight * 0.03),
                           margin: const EdgeInsets.all(3),
                           alignment: Alignment.centerLeft,
                           child: WdgSpecialText(text: currentQuizz.quizz.question),
-                      ),
-
-                      ///Slide quizz  ----------------------------------------------
-                      Expanded(child: AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 666),
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          var right = const Offset(1.0, 0.0);
-                          var left = const Offset(0.0, 5.0);
-                          const center = Offset.zero;
-                          next = !next;
-
-                          var tween = Tween(begin: next ? right : left, end: center)
-                              .chain(CurveTween(curve: Curves.easeInOutCubic));
-
-                          animation.addStatusListener((status) {
-                            if (status == AnimationStatus.completed) {
-                              currentQuizz.status.isStarted.value = true;
-                            }
-                          });
-
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                        child: Container(
-                          key: showQuizz ? currentQuizz.keyID : UniqueKey(),
-                          child: showQuizz ? currentQuizz : const Center(child: Text('Bắt đầu'),),
                         ),
-                      )),
 
-                      /// Button skip quizz nói hoặc nghe ----------------------------------
-                      if (currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening)
-                        FittedBox(
-                      child: SizedBox(
-                          height: orientation == Orientation.portrait
-                              ? maxHeight * 0.03
-                              : maxHeight * 0.07,
-                          width: maxWidth,
-                          child: WdgButton(
-                            buttonFit: ButtonFit.scaleDown,
-                            color: Colors.transparent,
-                            onTap: () {
-                              isNext = true;
-                              context.read<QuizzBloc>().add(QuizzSkip());
-                            },
-                            child: Text(
-                              currentQuizz.quizz.skillType == SkillType.speaking
-                                  ? 'Hiện tại không nói được'
-                                  : 'Hiện tại không nghe được',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.grey.withAlpha(70)),
-                            ),
-                          )),
-                    ),
+                        ///Slide quizz  ----------------------------------------------
+                        Expanded(child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 666),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            var right = const Offset(0.5, 0.0);
+                            var left = const Offset(-10.0, 0.0);
+                            const center = Offset.zero;
+                            next = !next;
 
-                      ///Button kiểm tra  ------------------------------------------
-                      Container(
-                          height: orientation == Orientation.portrait ? maxHeight * 0.07 : maxHeight * 0.1,
-                          width: maxWidth * 0.85,
-                          margin: EdgeInsets.only(bottom: 15, top: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.01),
-                          child: ValueListenableBuilder<bool>(
-                            valueListenable: currentQuizz.status.isAnswered,
-                            builder: (context, value, child) {
-                              return WdgButton(
+                            var tween = Tween(begin: next ? right : left, end: center)
+                                .chain(CurveTween(curve: Curves.easeInOutCubic));
+
+                            animation.addStatusListener((status) {
+                              if (status == AnimationStatus.completed) {
+                                if(showQuizz) currentQuizz.status.isStarted.value = true;
+                              }
+                            });
+
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                          child: Container(
+                            key: showQuizz ? currentQuizz.keyID : UniqueKey(),
+                            child: showQuizz ? currentQuizz : const Center(child: Text('Bắt đầu'),),
+                          ),
+                        )),
+
+                        /// Button skip quizz nói hoặc nghe ----------------------------------
+                        if (currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening)
+                          FittedBox(
+                            child: SizedBox(
+                                height: orientation == Orientation.portrait
+                                    ? maxHeight * 0.03
+                                    : maxHeight * 0.07,
+                                width: maxWidth,
+                                child: WdgButton(
                                   buttonFit: ButtonFit.scaleDown,
+                                  color: Colors.transparent,
                                   onTap: () {
-                                    if (value) {
-                                      isNext = false;
-                                      //--- Lấy kết quả ---
-                                      currentQuizz.status.isChecked.value = true;
-                                      var isCorrect = currentQuizz.status.isCorrect!;
-                                      String title = isCorrect
-                                          ? state.accolades[state.accoladesIndex]
-                                          : state.encouragements[state.encouragementsIndex];
-
-                                      //--- Âm thanh đúng/sai ---
-                                      if(!_noAudio) {
-                                        if(isCorrect) {
-                                          _audio.playFromAsset(Assets.sounds.correct);
-                                        }
-                                        else {
-                                          _audio.playFromAsset(Assets.sounds.wrong);
-                                        }
-                                      }
-
-                                      //--- Mở dialog ---
-                                      _buildBottomDialogResult(
-                                          context,
-                                          title,
-                                          currentQuizz.status.correctAnswer,
-                                          isCorrect);
-                                    }
+                                    isNext = true;
+                                    context.read<QuizzBloc>().add(QuizzSkip());
                                   },
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: value
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.white30,
-                                  child: const FittedBox(
-                                    child: Text(
-                                      'Kiểm tra',
-                                      style: TextStyle(
-                                        fontSize: 20,),
-                                    ),
-                                  )
-                              );
-                            },
-                          )
-                      ),
-                    ],
+                                  child: Text(
+                                    currentQuizz.quizz.skillType == SkillType.speaking
+                                        ? 'Hiện tại không nói được'
+                                        : 'Hiện tại không nghe được',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.grey.withAlpha(70)),
+                                  ),
+                                )),
+                          ),
+
+                        ///Button kiểm tra  ------------------------------------------
+                        Container(
+                            height: orientation == Orientation.portrait ? maxHeight * 0.07 : maxHeight * 0.1,
+                            width: maxWidth * 0.85,
+                            margin: EdgeInsets.only(bottom: 15, top: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.01),
+                            child: ValueListenableBuilder<bool>(
+                              valueListenable: currentQuizz.status.isAnswered,
+                              builder: (context, value, child) {
+                                return WdgButton(
+                                    buttonFit: ButtonFit.scaleDown,
+                                    onTap: () {
+                                      if (value) {
+                                        isNext = false;
+                                        //--- Lấy kết quả ---
+                                        currentQuizz.status.isChecked.value = true;
+                                        var isCorrect = currentQuizz.status.isCorrect!;
+                                        String title = isCorrect
+                                            ? state.accolades[state.accoladesIndex]
+                                            : state.encouragements[state.encouragementsIndex];
+
+                                        //--- Âm thanh đúng/sai ---
+                                        if(!_noAudio) {
+                                          if(isCorrect) {
+                                            _audio.playFromAsset(Assets.sounds.correct);
+                                          }
+                                          else {
+                                            _audio.playFromAsset(Assets.sounds.wrong);
+                                          }
+                                        }
+
+                                        //--- Mở dialog ---
+                                        _buildBottomDialogResult(
+                                            context,
+                                            title,
+                                            currentQuizz.status.correctAnswer,
+                                            isCorrect);
+                                      }
+                                    },
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: value
+                                        ? VipColors.primary(context)
+                                        : Colors.grey,
+                                    alpha: 75,
+                                    child: const FittedBox(
+                                      child: Text(
+                                        'Kiểm tra',
+                                        style: TextStyle(
+                                          fontSize: 20,),
+                                      ),
+                                    )
+                                );
+                              },
+                            )
+                        ),
+                      ],
+                    )
                   );
 
                 } else if (state is QuizzCompleted) {
@@ -237,7 +232,6 @@ class _QuizzScreenState extends State<QuizzScreen> {
                 return const Center(child: CircularProgressIndicator());
               },
             ),
-          ),
     );
   }
   
@@ -308,7 +302,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                               parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));  //-> Check
                               Navigator.pop(context); //->  Đóng BottomSheet
                             },
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(15),
                             color: isCorrect ? Colors.green : Colors.red,
                             child: const Text(
                               'Tiếp tục',

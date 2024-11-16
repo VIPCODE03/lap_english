@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'screens.dart';
 
 class MainScreen extends StatelessWidget {
@@ -18,8 +19,8 @@ class MainScreen extends StatelessWidget {
           bottomNavigationBar: BlocBuilder<_NavController, int>(
             builder: (context, state) {
               return BottomNavigationBar(
-                unselectedItemColor: Colors.grey,
-                selectedItemColor: Theme.of(context).primaryColor,
+                unselectedItemColor: VipColors.onPrimary(context),
+                selectedItemColor: VipColors.primary(context),
                 currentIndex: state,
                 onTap: (index) {
                   context.read<_NavController>().updateIndex(index); //-> Lấy vị trí hiện tại

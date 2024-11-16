@@ -2,6 +2,8 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_speak.dart';
+import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -80,7 +82,7 @@ class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               alignment: WrapAlignment.center,
-              direction: isVertical ? Axis.vertical : Axis.horizontal,
+              direction: Axis.vertical,
               children: [
                 Text(
                   _speechUtil.lastWords.isNotEmpty
@@ -90,21 +92,25 @@ class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
                 ),
 
                 AvatarGlow(
-                  glowColor: Theme.of(context).primaryColor,
+                  glowColor: VipColors.primary(context),
                   repeat: true,
                   showTwoGlows: true,
                   duration: const Duration(seconds: 3),
-                  endRadius: maxHeight/10,
+                  endRadius: maxHeight/15,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(25),
                     onTap: _speechUtil.isNotListening ? _startListening : _stopListening,
                     child: CircleAvatar(
-                      radius: maxHeight/15,
+                      radius: orientation == Orientation.portrait
+                          ? maxHeight / 20
+                          : maxHeight / 15,
                       backgroundColor: _speechUtil.isNotListening ? Colors.grey : Colors.red,
                       child: Icon(
                         _speechUtil.isNotListening ? Icons.mic_none : Icons.mic,
                         color: Colors.white,
-                        size: maxHeight/15,
+                        size: orientation == Orientation.portrait
+                            ? maxHeight / 25
+                            : maxHeight / 20,
                       ),
                     ),
                   ),

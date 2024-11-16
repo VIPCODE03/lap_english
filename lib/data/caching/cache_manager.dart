@@ -8,11 +8,13 @@ class CacheManager {
     _caching = await SharedPreferences.getInstance();
   }
 
-  Future<void> saveSettings(Setting setting, String data) async {
-    _caching.setString(_getSettings(setting), data);
+  Future<void> saveTheme(int indexTheme) async {
+    _caching.setInt("theme", indexTheme);
   }
 
-  String? getSetting(Setting setting) => _caching.getString(_getSettings(setting));
+  int? getTheme() {
+    return _caching.getInt("theme");
+  }
 
   Future<void> saveStatus(StatusFlag flag, bool state) async => _caching.setBool(_getKeyStatus(flag), state);
 
@@ -33,19 +35,9 @@ class CacheManager {
     };
   }
 
-  String _getSettings(Setting setting) {
-    return switch(setting) {
-      Setting.theme => "theme",
-      Setting.imageCover => "imageCover",
-    };
-  }
 }
 
 enum StatusFlag {
   dataLoaded,
   dataNew,
-}
-
-enum Setting {
-  theme, imageCover
 }
