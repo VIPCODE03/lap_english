@@ -88,6 +88,10 @@ class $AssetsImagesCoverGen {
   AssetGenImage get cover8 =>
       const AssetGenImage('assets/images/cover/cover8.gif');
 
+  /// File path: assets/images/cover/cover9.gif
+  AssetGenImage get cover9 =>
+      const AssetGenImage('assets/images/cover/cover9.gif');
+
   /// File path: assets/images/cover/headbock.png
   AssetGenImage get headbock =>
       const AssetGenImage('assets/images/cover/headbock.png');
@@ -102,6 +106,7 @@ class $AssetsImagesCoverGen {
         cover6,
         cover7,
         cover8,
+        cover9,
         headbock
       ];
 }

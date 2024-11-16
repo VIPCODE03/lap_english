@@ -1,7 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/theme_constant.dart';
+import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/themes/theme.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:provider/provider.dart';
@@ -11,16 +11,15 @@ class WdgRow1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Stack(
         children: [
           ///CONTAINER làm nền hình ảnh  ---------------------------
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(Provider
-                    .of<Themes>(context, listen: false)
-                    .themeVip.imagePath
+                    .of<Themes>(context, listen: true)
+                    .vipTheme.imagePath
                 ),
                 fit: BoxFit.cover ,
               ),
@@ -45,11 +44,7 @@ class WdgRow1 extends StatelessWidget {
           Positioned(
             right: 10,
             child: WdgButton(
-              onTap: () {
-                Provider
-                    .of<Themes>(context, listen: false)
-                    .updateTheme(ThemeConstant.themes[Random().nextInt(ThemeConstant.themes.length)]);
-                },
+              onTap: () {showImagePickerBottomSheet(context, ThemeConstant.themes);},
               color: Colors.transparent,
               child: const Icon(Icons.ac_unit, color: Colors.white),
             ),
@@ -61,7 +56,7 @@ class WdgRow1 extends StatelessWidget {
             right: 10,
             left: 10,
             child: Card(
-              color: Theme.of(context).cardColor,
+              color: Colors.white10,
               child: Container(
                 width: 500,
                 padding: const EdgeInsets.all(20),
@@ -88,7 +83,6 @@ class WdgRow1 extends StatelessWidget {
             ),
           )
         ],
-      ),
     );
   }
 
@@ -118,4 +112,36 @@ class WdgRow1 extends StatelessWidget {
     );
   }
 
+  void showImagePickerBottomSheet(BuildContext context, List<VipTheme> themes) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(8.0),
+          height: maxHeight/2,
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 8.0,
+            ),
+            itemCount: themes.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  Provider
+                      .of<Themes>(context, listen: false)
+                      .updateTheme(index);
+                },
+                child: Image.asset(
+                  themes[index].imagePath,
+                  fit: BoxFit.cover,
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 }

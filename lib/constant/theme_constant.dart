@@ -1,22 +1,20 @@
 
 import 'package:lap_english/ui/themes/theme.dart';
 import '../../../gen/assets.gen.dart';
+import '../ui/colors/vip_color.dart';
 
 class ThemeConstant {
-  static const String blueTheme = "blueTheme";
-  static const String greenTheme = "greenTheme";
-  static const String orangeTheme = "orangeTheme";
+  static final List<VipTheme> themes = [
+    VipTheme(imagePath: Assets.images.cover.cover5.path, color: VipOrangeColor()),
+    VipTheme(imagePath: Assets.images.cover.cover4.path, color: VipBlueColor()),
+    VipTheme(imagePath: Assets.images.cover.cover3.path, color: VipOrangeColor()),
+    VipTheme(imagePath: Assets.images.cover.cover2.path, color: VipGreenColor()),
+    VipTheme(imagePath: Assets.images.cover.cover1.path, color: VipBlueColor()),
+    VipTheme(imagePath: Assets.images.cover.cover6.path, color: VipTurquoiseColor()),
+    VipTheme(imagePath: Assets.images.cover.cover7.path, color: VipOrangeColor()),
+    VipTheme(imagePath: Assets.images.cover.cover8.path, color: VipBlueColor()),
+    VipTheme(imagePath: Assets.images.cover.cover9.path, color: VipPuperBrownColor()),
 
-  static final ThemeVip theme1 = ThemeVip(Assets.images.cover.cover5.path, orangeTheme);
-  static final ThemeVip theme2 = ThemeVip(Assets.images.cover.cover4.path, blueTheme);
-  static final ThemeVip theme3 = ThemeVip(Assets.images.cover.cover3.path, orangeTheme);
-  static final ThemeVip theme4 = ThemeVip(Assets.images.cover.cover2.path, greenTheme);
-  static final ThemeVip theme5 = ThemeVip(Assets.images.cover.cover1.path, blueTheme);
-  static final ThemeVip theme6 = ThemeVip(Assets.images.cover.cover6.path, greenTheme);
-  static final ThemeVip theme7 = ThemeVip(Assets.images.cover.cover7.path, orangeTheme);
-  static final ThemeVip theme8 = ThemeVip(Assets.images.cover.cover8.path, blueTheme);
-
-  static final List<ThemeVip> themes = [
-    theme1, theme2, theme3, theme4, theme5, theme6, theme7, theme8,
   ];
 }
+

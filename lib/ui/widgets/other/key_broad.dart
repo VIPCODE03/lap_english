@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 
 class WdgKeyBroad extends StatefulWidget {
@@ -23,9 +25,6 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
   String keySuggest = '';
   bool suggest = false;
 
-  double maxHeight = 0;
-  double maxWidth = 0;
-
   @override
   void initState() {
     super.initState();
@@ -33,6 +32,18 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
     if (widget.suggest.isNotEmpty) {
       keySuggest = widget.suggest[0];
     }
+
+    hasChanged.addListener(update);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(update);
+  }
+
+  void update() {
+    setState(() {});
   }
 
   //=== Nhập bàn phím ===
@@ -102,53 +113,51 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
 
   @override
   Widget build(BuildContext context) {
-    maxHeight = MediaQuery.of(context).size.height;
-    maxWidth = MediaQuery.of(context).size.width;
-    var isVertical = maxHeight > maxWidth;
+    final buttonHeight = orientation == Orientation.portrait ? maxHeight * 0.05 : maxHeight * 0.07;
+    final buttonWidth = orientation == Orientation.portrait ? maxWidth / 10.5 : maxWidth / 10.5 / 1.5;
 
-    final buttonHeight = isVertical ? maxHeight * 0.05 : maxHeight * 0.06;
-    final buttonWidth = isVertical ? maxWidth / 10.5 : maxWidth / 10.5 / 1.5;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if(widget.suggest.isNotEmpty)
-          Align(
-            alignment: Alignment.center,
-            child: WdgButton(
-                onTap: () {
-                  setState(() {
+    return FittedBox(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if(widget.suggest.isNotEmpty)
+            Align(
+              alignment: Alignment.topRight,
+              child: WdgButton(
+                  onTap: () {
                     setState(() {
-                      if (suggest) {
-                        suggest = false;
-                      } else {
-                        suggest = true;
-                        if (widget.suggest.isNotEmpty) {
-                          typedText =
-                              _compareStrings(widget.suggest, typedText);
-                          _suggest();
+                      setState(() {
+                        if (suggest) {
+                          suggest = false;
                         } else {
-                          keySuggest = '';
+                          suggest = true;
+                          if (widget.suggest.isNotEmpty) {
+                            typedText =
+                                _compareStrings(widget.suggest, typedText);
+                            _suggest();
+                          } else {
+                            keySuggest = '';
+                          }
                         }
-                      }
+                      });
                     });
-                  });
-                },
-                color: Colors.transparent,
-              child: Text(suggest ? 'Tắt gợi ý' : 'gợi ý',
-                style: const TextStyle(fontSize: 16, color: Colors.amber),
-              )
-          ),
-        ),
-        ...keyboardLayoutLower.map((row) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: row.map((key) => _itemKey(key, buttonWidth, buttonHeight)).toList(),
-          ),
-        )),
-      ],
+                  },
+                  color: Colors.transparent,
+                  child: Text(suggest ? 'Tắt gợi ý' : 'gợi ý',
+                    style: const TextStyle(fontSize: 16, color: Colors.amber),
+                  )
+              ),
+            ),
+          ...keyboardLayoutLower.map((row) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: row.map((key) => _itemKey(key, buttonWidth, buttonHeight)).toList(),
+            ),
+          )),
+        ],
+      ),
     );
   }
 
@@ -163,15 +172,16 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
           : width,
       padding: const EdgeInsets.symmetric(horizontal: 3.0),
       child: WdgButton(
-        color: keySuggest.toLowerCase() == key.toLowerCase() && suggest
-            ? Theme.of(context).primaryColor
-            : Colors.grey,
+        color: VipColors.onPrimary(context),
+        alpha: keySuggest.toLowerCase() == key.toLowerCase() && suggest
+            ? 100
+            : 10,
         borderRadius: BorderRadius.circular(12),
         buttonFit: ButtonFit.scaleDown,
         onTap: () => _onKeyPressed(key),
         child: Text(
           key == 'SPACE' ? ' ' : key,
-          style: const TextStyle(fontSize: 18, color: Colors.white),
+          style: const TextStyle(fontSize: 18),
         ),
       ),
     );

@@ -6,6 +6,8 @@ import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/flip_card_screen.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
 
@@ -60,7 +62,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
               titleStyle: GoogleFonts.pangolin(
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
-                color: Theme.of(context).primaryColor,
+                color: VipColors.text(context),
               ),
               height: 1,
               opacity: 1,
@@ -142,8 +144,9 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                       border: Border.all(
                         width: 2,
                           color: isLearned
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey)),
+                              ? VipColors.primary(context)
+                              : VipColors.onPrimary(context))
+                  ),
                   child: Image.network(
                     imageUrl,
                     fit: BoxFit.cover,
@@ -168,7 +171,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                 top: 0,
                 child: isLearned
                     ? Icon(Icons.check_circle_outline,
-                        color: Theme.of(context).primaryColor, size: 18)
+                        color: VipColors.primary(context), size: 18)
                     : const SizedBox.shrink(),
               ),
             ],
@@ -230,7 +233,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                   children: [
                     Text(
                       textW,
-                      style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                      style: TextStyle(fontSize: 20, color: VipColors.text(context)),
                     ),
                     Text(textMeaning),
                   ],
@@ -293,8 +296,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                   child: Opacity(
                     opacity: dialogAnimationController.value,
                     child: Container(
-                      height: MediaQuery.of(context).size.height * 0.66,
-                      width: 700,
+                      height: orientation == Orientation.portrait ? maxHeight * 0.66 : maxHeight * 0.8,
                       decoration: BoxDecoration(
                         color: Theme.of(context).dialogBackgroundColor,
                         borderRadius: BorderRadius.circular(4),
@@ -304,7 +306,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
 
                           /// Ảnh bìa giấy  -------------------------------------------
                           Image(
-                            width: MediaQuery.of(context).size.width,
+                            width: maxWidth,
                             repeat: ImageRepeat.repeat,
                             height: 30,
                             image: Assets.images.cover.headbock.provider(),
@@ -349,6 +351,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                               children: [
                                 if(T == MdlWord)
                                   WdgButton(
+                                    buttonFit: ButtonFit.scaleDown,
                                     color: Colors.transparent,
                                     onTap: () {
                                       Navigator.push( //-> Mở quizz
@@ -358,7 +361,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                                                 return FlipCardsScreen(words: datas as List<MdlWord>);
                                               }));
                                     },
-                                    child: Text('Thẻ ghi nhớ', style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                                    child: Text('Thẻ ghi nhớ', style: TextStyle(fontSize: 20, color: VipColors.primary(context)),
                                     ),
                                   ),
 
@@ -406,11 +409,11 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                                     children: [
                                       Text(
                                         isLearned ? 'Ôn tập' : 'Học bài mới',
-                                        style: TextStyle(fontSize: 20, color: Theme.of(context).primaryColor),
+                                        style: TextStyle(fontSize: 20, color: VipColors.primary(context)),
                                       ),
                                       Icon(
                                         Icons.keyboard_double_arrow_right,
-                                        color: Theme.of(context).primaryColor,
+                                        color: VipColors.primary(context),
                                       ),
                                     ],
                                   ),

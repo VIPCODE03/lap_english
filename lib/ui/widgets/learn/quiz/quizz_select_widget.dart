@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
 import 'package:lap_english/main.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import '../../other/button.dart';
 
@@ -60,7 +61,7 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
             ? _WdgButtonSelect(
                 key: testScreenKey,
                 datas: widget.quizz.answers,
-                height: orientation == Orientation.portrait ? maxHeight * 0.066 : maxHeight * 0.1,
+                height: orientation == Orientation.portrait ? maxHeight * 0.04 : maxHeight * 0.08,
                 offset: offset,
                 onSelectionChanged: (value) => {
                   if (value.isNotEmpty) {
@@ -107,27 +108,19 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
   late List<_ItemAB> items = [];
 
   int currentIndex = -1;
-  List<_ItemAB> selectedList = [];
+  final List<_ItemAB> selectedList = [];
 
-  double magin1 = 10;
-  double magin2 = 30;
-  final double spacing = 12;
-
-  double heightTotal = 0;
-  double widthTotal1 = 15;
-  double widthTotal2 = 30;
   int row1Index = 0;
-  int row2Index = 0;
+  final double spacing = 8;
+  final GlobalKey row1Key = GlobalKey();
 
-  bool nextRow1 = false;
-  bool nextRow2 = false;
-
-  bool changed = true;
   bool init = false;
-  
+
   @override
   void initState() {
     super.initState();
+
+    hasChanged.addListener(update);
 
     for (var text in widget.datas) {
       var keyBegin = GlobalKey();
@@ -136,13 +129,6 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       row2.add(_ItemLocation(keyBegin, text));
       items.add(_ItemAB(text, keyBegin, keyEnd));
     }
-
-    hasChanged.addListener(onChange);
-  }
-
-  void onChange() {
-    resetsLocation();
-    update();
   }
 
   @override
@@ -153,41 +139,50 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 
   @override
   Widget build(BuildContext context) {
-    if(orientation == Orientation.portrait) {
-      magin2 = maxWidth / 10;
-    }
-    widthTotal2 = magin2;
-
-    var newWidget = Stack(
+    var widgetNew = Stack(
       children: [
-        for (var item in row1)  //-> Hàng 1 ---
-          Positioned(
-            left: calculationLocation(true, _calculateTextWidth(context, item.text), maxWidth, item),
-            top: item.top,
-            child: _itemLocation(item),
-          ),
+        Container(
+            alignment: Alignment.topLeft,
+            margin: const EdgeInsets.all(12),
+            child: Wrap(
+              spacing: spacing,
+              runSpacing: spacing,
+              children: [...row1.map((e) => _itemLocation(e))],
+            )),
 
-        for (int i = 1; i < row1Index + ((orientation == Orientation.portrait || isTablet)? 3 : 2); i++) //-> Dòng kẻ ---
-          Positioned(
-            top: widget.height * i + (i - 1) * spacing + 1,
-            left: magin1,
-            right: magin1,
-            child: Container(
-              height: 2,
-              width: maxWidth,
-              decoration: BoxDecoration(
-                  color: Color.alphaBlend(Theme.of(context).primaryColor.withAlpha(25), Colors.grey),
-                  borderRadius: BorderRadius.circular(50)
-              ),
-            ),
+        Container(
+          alignment: Alignment.topLeft,
+          margin: const EdgeInsets.all(5),
+          child: Wrap(
+            spacing: widget.height + calculateTextHeightOrWidth('A', true)/2 + spacing - 2,
+            direction: Axis.vertical,
+            children: [
+              for (int i = 0; i < ((orientation == Orientation.portrait)
+                  ? row1.length > 6 ? 4 : 3
+                  : row2.length > 10 ? 3 : 2); i++)
+                Container(
+                  height: i == 0 ? 0 : 2,
+                  width: maxWidth,
+                  decoration: BoxDecoration(
+                    color: VipColors.onPrimary(context),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
+            ],
           ),
+        ),
 
-        for (var item in row2)  //-> Hàng 2 ---
-          Positioned(
-            left: calculationLocation(false, _calculateTextWidth(context, item.text), maxWidth, item),
-            bottom: item.bottom,
-            child: _itemLocation(item),
-          ),
+        Container(
+            alignment: Alignment.bottomCenter,
+            margin: const EdgeInsets.all(20),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              runAlignment: WrapAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [...row2.map((e) => _itemLocation(e))],
+            )),
 
         ...items.map((item) => _itemSelect(item)), //-> Item  ---
       ],
@@ -197,20 +192,20 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       init = true;
       update();
     }
-    return newWidget;
+    return widgetNew;
   }
 
   /// Item vị trí -------------------------------------------------------------
   Widget _itemLocation(_ItemLocation item) {
     return SizedBox(
-      height: widget.height,
-      width: _calculateTextWidth(context, item.text),
+      height: widget.height + calculateTextHeightOrWidth(item.text, true) * 0.5,
+      width: calculateTextHeightOrWidth(item.text, false) * 1.5,
       child: WdgButton(
         key: item.key,
-        buttonFit: ButtonFit.scaleDown,
         onTap: () {},
         borderRadius: BorderRadius.circular(12),
         color: Colors.transparent,
+        buttonFit: ButtonFit.scaleDown,
         child: Text(
             item.text,
             maxLines: 1,
@@ -227,18 +222,17 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       dy = widget.offset?.dy ?? 0;
     }
     return AnimatedPositioned(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOutQuint,
+        duration: const Duration(milliseconds: 333),
+        curve: Curves.easeInOutCubicEmphasized,
         top: item.isMoved ? (item.topEnd - dy) : (item.topBegin - dy),
         left: item.isMoved ? item.leftEnd : item.leftBegin,
         child: SizedBox(
-          height: widget.height,
-          width: _calculateTextWidth(context, item.text),
-          child: WdgButton(
-              buttonFit: ButtonFit.scaleDown,
+          height: widget.height + calculateTextHeightOrWidth(item.text, true)/2,
+            width: calculateTextHeightOrWidth(item.text, false) * 1.5,
+            child: WdgButton(
+            buttonFit: ButtonFit.scaleDown,
               onTap: () {
                 setState(() {
-                  resetsLocation();
 
                   if (item.isMoved) { //-> Nếu là chọn đáp án
                     int index = selectedList.indexOf(item);
@@ -271,71 +265,39 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
                 widget.onSelectionChanged?.call(selectedList.map((item)
                 => item.text).toList());
               },
-              borderRadius: BorderRadius.circular(12),
-              color: Theme.of(context).primaryColor.withAlpha(25),
+              borderRadius: BorderRadius.circular(15),
+              color: VipColors.onPrimary(context),
+              alpha: 10,
                 child: Text(item.text,
                     maxLines: 1, style: const TextStyle(fontSize: 18)),
               ))
     );
   }
 
-  //===   Hàm tính toán vị trí  ===
-  double? calculationLocation(bool answer, double width, double widthMax, _ItemLocation item) {
-      //--- 1  ---
-      if (answer) {
-        if (widthTotal1 + width > widthMax - magin1/2) {
-          row1Index++;
-          nextRow1 = true;
-          widthTotal1 = magin1;
-        }
-        item.top = row1Index * widget.height + row1Index * spacing;
-        double currentLeft = widthTotal1;
-        widthTotal1 += width + spacing;
-        return currentLeft;
-      }
+  //=== Tính chiều cao + rộng item  ===
+  double calculateTextHeightOrWidth(String text, bool heigh) {
+    TextSpan textSpan = TextSpan(
+      text: text,
+      style: const TextStyle(fontSize: 18),
+    );
 
-      //--- 2  ---
-      else {
-        if (widthTotal2 + width > widthMax - magin2/2) {
-          row2Index++;
-          nextRow2 = true;
-          widthTotal2 = magin2;
-        }
-        item.left = widthTotal2;
-        item.bottom = row2Index * widget.height + row2Index * spacing;
-        widthTotal2 += width + spacing;
-        return item.left;
-      }
-  }
-
-  //===   Tính độ rộng item ===
-  double _calculateTextWidth(BuildContext context, String text) {
-    final double baseFontSize = Theme.of(context).textTheme.titleLarge?.fontSize ?? 20;
-    final double textScaleFactor = MediaQuery.of(context).textScaler.textScaleFactor;
-    final double fontSize = baseFontSize * textScaleFactor;
-
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: TextStyle(fontSize: fontSize)),
-      maxLines: 1,
+    TextPainter textPainter = TextPainter(
+      text: textSpan,
       textDirection: TextDirection.ltr,
-    )..layout();
+      maxLines: 1,
+    );
 
-    double width = textPainter.size.width + 20;
-    if(text.length < 3) {
-      width *= 1.4;
+    textPainter.layout(maxWidth: maxWidth);
+
+    if(heigh) {
+      return textPainter.size.height;
     }
-
-    return width;
-  }
-
-  //===   Thiết lập lại vị trí  ===
-  void resetsLocation() {
-    widthTotal1 = magin1;
-    widthTotal2 = magin2;
-    row1Index = 0;
-    row2Index = 0;
-    nextRow1 = false;
-    nextRow2 = false;
+    else {
+      if(text == 'l' || text == 'i' || text == 'I') return textPainter.size.width * 5;
+      if(text.length == 1) return textPainter.size.width * 2.5;
+      if(text.length < 3) return textPainter.size.width * 1.5;
+      return textPainter.size.width;
+    }
   }
 
   //=== Cập nhật giao diện  ===
@@ -355,9 +317,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
         item.leftEnd = positionEnd.dx;
 
       }
-        setState(() {
-          resetsLocation();
-        });
+        setState(() {});
     });
   }
 }
@@ -366,9 +326,6 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 class _ItemLocation {
   final GlobalKey key;
   final String text;
-  double? bottom;
-  double? top;
-  double? left;
 
   _ItemLocation(this.key, this.text);
 }
