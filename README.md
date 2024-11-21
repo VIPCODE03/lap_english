@@ -1,6 +1,7 @@
 # lap_english
 
 Dự án thực tập ứng dụng học tiếng anh
+**hello word**
 
 ## Getting Started
 
