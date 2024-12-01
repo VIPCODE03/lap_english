@@ -22,7 +22,7 @@ class WordTable extends TableSchema<MdlWord> {
     if (column[data] != null) {
       return MdlWord.fromJson(jsonDecode(column[data]));
     }
-    return MdlWord(0, 'word', 'meaning', 'pronounceUK', 'pronounceUS', 'type', 'level', 'example', 0);
+    return MdlWord(0, 'word', 'meaning', 'pronounceUK', 'pronounceUS', 'type', 'level', 'example', 'imageUrl', 0);
   }
 
   @override

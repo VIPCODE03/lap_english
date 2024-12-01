@@ -10,7 +10,7 @@ abstract class QuizzWrite<T> extends Quizz<T> {
 
 class QuizzWriteVocabulary extends QuizzWrite<MdlWord> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlWord> datas) {
     List<QuizzWriteVocabulary> quizzes = [];
 
     for(var word in datas) {

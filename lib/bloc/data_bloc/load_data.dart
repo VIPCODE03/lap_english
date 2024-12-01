@@ -2,8 +2,9 @@ import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
 import 'package:lap_english/data/database/local/dao/user_dao.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
-import '../../database/local/dao/vocabulary_dao.dart';
-import '../../model/user/user.dart';
+
+import '../../data/database/local/dao/vocabulary_dao.dart';
+import '../../data/model/user/user.dart';
 
 mixin LoadDatas {
   final Map<Type, Future<List<dynamic>> Function(dynamic args)> load = {

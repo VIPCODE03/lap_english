@@ -1,9 +1,10 @@
 import 'dart:math';
 
-import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/task_and_reward/task.dart';
 import 'package:lap_english/data/model/user/user.dart';
+
+import '../bloc/data_bloc/data_bloc.dart';
 
 mixin TaskService {
   final DataBloc<User> _dataBloc = DataBloc<User>();

@@ -36,40 +36,52 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-        spacing: 10,
-        runSpacing: 10,
-        alignment: WrapAlignment.center,
-        direction: orientation == Orientation.portrait ? Axis.horizontal : Axis.vertical,
-        children: widget.quizz.answers.map((option) {
-          bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
-          if (isCorrect) widget.status.correctAnswer = option;
-          bool isSelected = option == selectedKey;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double itemHeight = isPortrait ? constraints.maxHeight / 4.5 : constraints.maxHeight;
+        double itemWidth = isPortrait ? constraints.maxWidth / 1.1 : constraints.maxWidth / 4.5;
 
-          return FittedBox(
-            child: SizedBox(
-              height: orientation == Orientation.portrait ? maxHeight / 8 : maxHeight * 2/3,
-              width: orientation == Orientation.portrait ? maxWidth - 20 : maxWidth / 4,
+        return Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          direction: isPortrait ? Axis.horizontal : Axis.vertical,
+          children: widget.quizz.answers.map((option) {
+            bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
+            if (isCorrect) widget.status.correctAnswer = option;
+            bool isSelected = option == selectedKey;
 
-              child: WdgButton(
-                onTap: () {
-                  setState(() {
-                    selectedKey = option;
-                    widget.status.isAnswered.value = true;
-                    widget.status.isCorrect = isCorrect;
-                  });
-                },
-                color: VipColors.onPrimary(context),
-                alpha: isSelected ? 100 : 10,
-                borderRadius: BorderRadius.circular(12),
-                child: Text(
-                  option,
-                  style: const TextStyle(fontSize: 20),
+            return FittedBox(
+              child: SizedBox(
+                height: itemHeight,
+                width: itemWidth,
+
+                child: WdgButton(
+                  onTap: () {
+                    setState(() {
+                      selectedKey = option;
+                      widget.status.isAnswered.value = true;
+                      widget.status.isCorrect = isCorrect;
+                    });
+                  },
+                  color: VipColors.onPrimary(context),
+                  alpha: isSelected ? 100 : 10,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    runAlignment: WrapAlignment.center,
+                    children: [
+                      Text(
+                        option,
+                        style: TextStyle(fontSize: isPortrait ? 18 : isTablet ? 20 : 16),
+                      ),
+                    ],
+                  )
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        );
+      }
     );
   }
 }

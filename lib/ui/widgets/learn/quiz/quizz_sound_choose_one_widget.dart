@@ -51,8 +51,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: Column(
+    return Center(child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         ///Hộp âm thanh --------------------------------------------------------

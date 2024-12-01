@@ -30,17 +30,23 @@ class DataService {
     String word = await gemini.ask(botGenerateWord(jsonSub1)) ?? 'a';
 
     try {
-      List<dynamic> jsonMain = jsonDecode(jsonString);
-      List<dynamic> jsonSub = jsonDecode(jsonSub1);
-      List<dynamic> jsonWord = jsonDecode(word);
+      var jsonMain = jsonString.replaceFirst("json", "").replaceAll("```", "").trim();
+      var jsonSub = jsonSub1.replaceFirst("json", "").replaceAll("```", "").trim();
+      var jsonWord = word.replaceFirst("json", "").replaceAll("```", "").trim();
 
-      jsonMain.forEach((json) async
+      List<dynamic> dataMain = jsonDecode(jsonMain);
+
+      List<dynamic> dataSub = jsonDecode(jsonSub);
+
+      List<dynamic> dataWord = jsonDecode(jsonWord);
+
+      dataMain.forEach((json) async
       => mainTopicVocabularyDao.insert(MdlMainVocabularyTopic.fromJson(json)));
 
-      jsonSub.forEach((json) async
+      dataSub.forEach((json) async
       => subTopicVocabularyDao.insert(MdlSubVocabularyTopic.fromJson(json)));
 
-      jsonWord.forEach((json) async
+      dataWord.forEach((json) async
       => wordDao.insert(MdlWord.fromJson(json)));
 
       generateMainVocabularyTopics().forEach((data) async
@@ -51,6 +57,7 @@ class DataService {
 
       generateWords().forEach((data) async
       => wordDao.insert(MdlWord.fromJson(data)));
+
     } catch(e) {
       throw Exception(e);
     }

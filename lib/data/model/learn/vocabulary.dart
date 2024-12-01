@@ -37,6 +37,7 @@ class MdlWord {
   final int id;
   String word;
   String meaning;
+  String imageUrl;
   String pronounceUK;
   String pronounceUS;
   String type;
@@ -44,8 +45,18 @@ class MdlWord {
   String example;
   int idSubTopic;
 
-  MdlWord(this.id, this.word, this.meaning, this.pronounceUK, this.pronounceUS,
-      this.type, this.level, this.example, this.idSubTopic);
+  MdlWord(
+    this.id,
+    this.word,
+    this.meaning,
+    this.pronounceUK,
+    this.pronounceUS,
+    this.type,
+    this.level,
+    this.example,
+    this.imageUrl,
+    this.idSubTopic,
+  );
 
   factory MdlWord.fromJson(Map<String, dynamic> json) => _$MdlWordFromJson(json);
 

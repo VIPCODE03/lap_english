@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
 
+import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../data/model/task_and_reward/daily_task.dart';
 import '../../other/button.dart';
 

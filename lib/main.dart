@@ -39,9 +39,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.didChangeDependencies();
     lightMode = MediaQuery.of(context).platformBrightness == Brightness.light;
     orientation = MediaQuery.of(context).orientation;
+    isPortrait = orientation == Orientation.portrait;
     maxHeight = MediaQuery.of(context).size.height;
     maxWidth = MediaQuery.of(context).size.width;
-    if(MediaQuery.of(context).size.shortestSide > 600) isTablet = true;
+    isTablet = MediaQuery.of(context).size.shortestSide > 600;
     hasChanged.value = !hasChanged.value;
   }
 
@@ -64,6 +65,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 late bool lightMode;
 
 late Orientation orientation;
+
+late bool isPortrait;
 
 late double maxHeight;
 

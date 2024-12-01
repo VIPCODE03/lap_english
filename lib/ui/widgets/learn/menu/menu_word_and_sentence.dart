@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lap_english/data/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
@@ -11,6 +10,7 @@ import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/flip_card_screen.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
 
+import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
 import '../../../screens/learn_screens/quizz_screen.dart';

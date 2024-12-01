@@ -18,7 +18,7 @@ abstract class QuizzChooseOne<T> extends Quizz<T> {
 
 class QuizzChooseOneVocabulary extends QuizzChooseOne<MdlWord> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlWord> datas) {
     List<QuizzChooseOne> quizzes = [];
 
     //--- Tạo đáp án cho mỗi từ ---
@@ -80,7 +80,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<MdlWord> {
 /*  Câu */
 class QuizzChooseOneSentence extends QuizzChooseOne<MdlSentence> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlSentence> datas) {
     List<QuizzChooseOneSentence> quizzes = [];
 
     for(var sentence in datas) {

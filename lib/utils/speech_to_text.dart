@@ -13,7 +13,7 @@ class SpeechToTextUtil {
   Future<void> startListening(Function(SpeechRecognitionResult) onResult) async {
     await _speechToText.listen(
       onResult: onResult,
-      localeId: 'en_AU',
+      localeId: 'en_UK',
     );
   }
 

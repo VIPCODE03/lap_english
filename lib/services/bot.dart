@@ -2,8 +2,6 @@
 import 'dart:convert';
 
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:lap_english/a_data_test/ai_tets.dart';
-import 'package:lap_english/a_data_test/data_sentence.dart';
 
 import '../data/model/learn/vocabulary.dart';
 
@@ -11,14 +9,14 @@ class GeminiAI {
   static const String flash = 'gemini-1.5-flash';
 
   String model;
-  String apiKey = 'AIzaSyD386QeiUTotjEz3KJETtFFuWFc1K3m78o';
+  String apiKey = 'AIzaSyBwQDMZO8sx4dYcEXMWuQad-eqf1CnEFQ8';
   GenerativeModel gemini;
 
   GeminiAI({required this.model})
       :
         gemini = GenerativeModel(
           model: model,
-          apiKey: 'AIzaSyBMoYs4Va_gfeRkLYosnJAdA7OYqM6HeL0',
+          apiKey: 'AIzaSyBwQDMZO8sx4dYcEXMWuQad-eqf1CnEFQ8',
       );
 
   Future<String?> ask(String question) async {
@@ -68,8 +66,8 @@ String botGenerateWord(String sub) {
       " json trong kết quả trả về)"
       "các từ "
       "vựng với id từ 1-50 và không giải thích gì thêm."
-      "  final int id;String word;String meaning;String pronounceUK;String pronounceUS;String type;String level;String example;int idSubTopic;"
-      "id: 1001,word: apple,meaning: quả táo, pronounceUK: ˈɪɡ.zæm.pl̩,pronounceUS: ɪɡˈzæm.pəl,type: noun,level: beginner,example: This is an example.,idSubTopic: 101"
+      "  final int id;String word;String meaning;String pronounceUK;String pronounceUS;String type;String level;String example;String imageUrl; int idSubTopic;"
+      "id: 1001,word: apple,meaning: quả táo, pronounceUK: ˈɪɡ.zæm.pl̩,pronounceUS: ɪɡˈzæm.pəl,type: noun,level: beginner,example: This is an example., imageUrl: (để rỗng),idSubTopic: 101"
       "\nDanh sách dữ liệu subTopic (Tạo mỗi chủ đề con 5 từ vựng): \n$sub";
 }
 
