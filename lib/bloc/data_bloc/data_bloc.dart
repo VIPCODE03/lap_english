@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lap_english/data/bloc/data_bloc/load_data.dart';
-import 'package:lap_english/data/bloc/data_bloc/update_data.dart';
+import 'package:lap_english/bloc/data_bloc/update_data.dart';
+
+import 'load_data.dart';
 
 abstract class DataEvent {}
 

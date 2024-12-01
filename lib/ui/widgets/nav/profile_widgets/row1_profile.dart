@@ -6,7 +6,7 @@ import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../data/bloc/data_bloc/data_bloc.dart';
+import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../data/caching/cache_manager.dart';
 import '../../../../data/model/user/user.dart';
 

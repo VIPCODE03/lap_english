@@ -7,7 +7,6 @@ import '../user/skill.dart';
 
 /*  Class quizz trừu tượng  */
 abstract class Quizz<T> {
-  late final List<T> datas;
   String question = "";
   List<String> answers = [];
   String answerCorrect = "";
@@ -15,7 +14,7 @@ abstract class Quizz<T> {
 
   SkillType get skillType;
 
-  List<Quizz> generate();
+  List<Quizz> generate(List<T> datas);
 }
 
 /*  Class khởi tạo các loại quizz   */
@@ -34,8 +33,7 @@ class Quizzes {
     }
 
     for(var quizz in quizzList) {
-      quizz.datas = words;
-      quizzes.addAll(quizz.generate());
+      quizzes.addAll(quizz.generate(words));
     }
     return quizzes;
   }
@@ -54,8 +52,7 @@ class Quizzes {
     }
 
     for(var quizz in quizzList) {
-      quizz.datas = sentences;
-      quizzes.addAll(quizz.generate());
+      quizzes.addAll(quizz.generate(sentences));
     }
     return quizzes;
   }
@@ -67,6 +64,8 @@ enum QuizzMode {
   custom
 }
 
+
+/*  Kết quả quiz  */
 class QuizzResult {
   bool isLearned;
   TypeQuizz type;

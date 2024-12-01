@@ -12,7 +12,7 @@ import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:lap_english/utils/player_audio.dart';
-import '../../../data/bloc/quizz_bloc.dart';
+import '../../../bloc/quizz_bloc.dart';
 import '../../../data/model/quizz/quizz.dart';
 import '../../../data/model/user/skill.dart';
 import '../../../main.dart';

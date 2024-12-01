@@ -12,7 +12,7 @@ abstract class QuizzSelect<T> extends Quizz<T> {
 
 class QuizzSelectSentence extends QuizzSelect<MdlSentence> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlSentence> datas) {
     List<QuizzSelectSentence> quizzes = [];
 
     for(var sentence in datas) {
@@ -36,7 +36,7 @@ class QuizzSelectSentence extends QuizzSelect<MdlSentence> {
 
 class QuizzSelectVocabulary extends QuizzSelect<MdlWord> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlWord> datas) {
     List<QuizzSelectVocabulary> quizzes = [];
 
     List<MdlWord> unusedWords = List.from(datas);  //-> Danh sách từ chưa sử dụng

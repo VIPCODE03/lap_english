@@ -1,4 +1,5 @@
 import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/quizz/quiz_image.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
 import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
@@ -17,6 +18,7 @@ class QuizzConstant {
     QuizzSoundChooseOneVocabulary(),
     QuizzSpeakVocabulary(),
     QuizzWriteVocabulary(),
+    MdlQuizImageVocabulary(),
   ];
 
   //===   Tạo quizz câu đơn giản  ===

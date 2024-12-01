@@ -1,4 +1,3 @@
-
 import 'package:lap_english/a_librarys/vip_sqflite/base_database_vip.dart';
 import 'package:lap_english/a_librarys/vip_sqflite/database_vip.dart';
 import 'package:lap_english/data/database/local/database.dart';
@@ -12,4 +11,5 @@ class UserDao extends BaseDatabase<User> {
   @override
   TableSchema<User> get table => UserTable();
 
+  deleteAll() => query("DELETE FROM ${table.tableName}");
 }

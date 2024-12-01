@@ -39,7 +39,7 @@ class WdgRow2 extends StatelessWidget {
         label: "Phát âm",
         openScreen: IPAScreen()
     ),
-    MenuItem(imagePath: Assets.images.menu.learnReview.path,
+/*    MenuItem(imagePath: Assets.images.menu.learnReview.path,
         label: "Ôn tập",
         openScreen: const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề")
     ),
@@ -50,7 +50,7 @@ class WdgRow2 extends StatelessWidget {
     MenuItem(imagePath: Assets.images.menu.learnListen.path,
         label: "Luyện nghe",
         openScreen: const LoginScreen()
-    ),
+    ),*/
   ];
 
   WdgRow2({super.key});

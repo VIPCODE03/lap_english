@@ -1,7 +1,9 @@
+import 'package:lap_english/data/model/quizz/quiz_image.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
 import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
 import 'package:lap_english/data/model/quizz/quizz_speak.dart';
 import 'package:lap_english/data/model/quizz/quizz_write.dart';
+import 'package:lap_english/ui/widgets/learn/quiz/quiz_image_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_write.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_speak.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/quizz_choose_one_widget.dart';
@@ -29,6 +31,8 @@ class WdgQuizzes {
     } else if (quizz is QuizzWrite) {
       return WdgQuizzWrite(quizz: quizz);
 
+    } else if(quizz is MdlQuizImage) {
+      return WdgQuizzImage(quizz: quizz);
     } else {
       throw ArgumentError('Unsupported quizz type');
     }

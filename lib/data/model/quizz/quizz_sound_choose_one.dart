@@ -14,7 +14,7 @@ abstract class QuizzSoundChooseOne<T> extends Quizz<T> {
 
 class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlWord> datas) {
     List<QuizzSoundChooseOneVocabulary> quizzes = [];
     //--- Tạo quizz cho mỗi từ  ---
     for(var word in datas) {

@@ -14,7 +14,7 @@ import 'bot.dart';
 class DataService {
 
   Future<void> loadDataServer() async {
-    _loadDataUser();
+    // _loadDataUser();
     await _loadDataVocabulary();
     _loadDataSentence();
   }
@@ -24,24 +24,30 @@ class DataService {
     var subTopicVocabularyDao = SubVocabularyTopicDao();
     var wordDao = WordDao();
 
-    var gemini = GeminiAI(model: GeminiAI.flash);
-    String jsonString = await gemini.ask(botGenerateMain()) ?? 'a';
-    String jsonSub1 = await gemini.ask(botGenerateSub(jsonString)) ?? 'a';
-    String word = await gemini.ask(botGenerateWord(jsonSub1)) ?? 'a';
+    // var gemini = GeminiAI(model: GeminiAI.flash);
+    // String jsonString = await gemini.ask(botGenerateMain()) ?? 'a';
+    // String jsonSub1 = await gemini.ask(botGenerateSub(jsonString)) ?? 'a';
+    // String word = await gemini.ask(botGenerateWord(jsonSub1)) ?? 'a';
 
     try {
-      List<dynamic> jsonMain = jsonDecode(jsonString);
-      List<dynamic> jsonSub = jsonDecode(jsonSub1);
-      List<dynamic> jsonWord = jsonDecode(word);
+      // var jsonMain = jsonString.replaceFirst("json", "").replaceAll("```", "").trim();
+      // var jsonSub = jsonSub1.replaceFirst("json", "").replaceAll("```", "").trim();
+      // var jsonWord = word.replaceFirst("json", "").replaceAll("```", "").trim();
+      //
+      // List<dynamic> dataMain = jsonDecode(jsonMain);
+      //
+      // List<dynamic> dataSub = jsonDecode(jsonSub);
+      //
+      // List<dynamic> dataWord = jsonDecode(jsonWord);
 
-      jsonMain.forEach((json) async
-      => mainTopicVocabularyDao.insert(MdlMainVocabularyTopic.fromJson(json)));
-
-      jsonSub.forEach((json) async
-      => subTopicVocabularyDao.insert(MdlSubVocabularyTopic.fromJson(json)));
-
-      jsonWord.forEach((json) async
-      => wordDao.insert(MdlWord.fromJson(json)));
+      // dataMain.forEach((json) async
+      // => mainTopicVocabularyDao.insert(MdlMainVocabularyTopic.fromJson(json)));
+      //
+      // dataSub.forEach((json) async
+      // => subTopicVocabularyDao.insert(MdlSubVocabularyTopic.fromJson(json)));
+      //
+      // dataWord.forEach((json) async
+      // => wordDao.insert(MdlWord.fromJson(json)));
 
       generateMainVocabularyTopics().forEach((data) async
       => mainTopicVocabularyDao.insert(MdlMainVocabularyTopic.fromJson(data)));
@@ -51,6 +57,7 @@ class DataService {
 
       generateWords().forEach((data) async
       => wordDao.insert(MdlWord.fromJson(data)));
+
     } catch(e) {
       throw Exception(e);
     }

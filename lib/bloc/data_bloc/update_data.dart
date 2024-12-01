@@ -3,7 +3,8 @@ import 'package:lap_english/data/database/local/dao/user_dao.dart';
 import 'package:lap_english/data/database/local/dao/vocabulary_dao.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
-import '../../model/user/user.dart';
+
+import '../../data/model/user/user.dart';
 
 mixin UpdateDatas {
   final Map<Type, Future<void> Function(List<dynamic>)> update = {
