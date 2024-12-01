@@ -1,55 +1,113 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:lap_english/bloc/authentication/auth_bloc.dart';
+import 'package:lap_english/bloc/authentication/auth_event.dart';
+import 'package:lap_english/bloc/authentication/auth_state.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/screens/splash_screen.dart';
+
+void main() async {
+  runApp(const LoginHome());
+}
+
+class LoginHome extends StatelessWidget {
+  const LoginHome({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: LoginScreen(),
+    );
+  }
+}
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  final AuthBloc _authBloc = AuthBloc();
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'openid', // Phạm vi để yêu cầu idToken
+      'profile', // Để lấy thông tin người dùng như tên và ảnh đại diện
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Image(
-                      image: NetworkImage(
-                          "https://anhngueie.com/wp-content/uploads/2022/07/2-1-1024x899-lg.png")),
-                ),
-                const Text(
-                  'Đăng nhập',
-                  style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          width: 60,
-                          child: Image(
-                            image: Assets.images.icon.google.provider(),
-                          ),
+      body: BlocProvider(
+          create: (context) => _authBloc,
+          child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            if (state is LoadingLoginState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if(state is ErrorLoginState){
+              return AlertDialog(
+                title: const Text("Đăng nhập thất bại"),
+                content: Text(state.message),
+                actions: [
+                  TextButton(
+                      onPressed: () async {
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(InitAuthEvent());
+                      },
+                      child: const Text("OK"))
+                ],
+              );
+            }else if(state is PendingLoginState) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Image(
+                            image: NetworkImage(
+                                "https://anhngueie.com/wp-content/uploads/2022/07/2-1-1024x899-lg.png")),
+                      ),
+                      const Text(
+                        'Đăng nhập',
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          _googleSignIn.signOut();
+                          BlocProvider.of<AuthBloc>(context)
+                              .add(LoginEvent(await _googleSignIn.signIn()));
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              width: 60,
+                              child: Image(
+                                image: Assets.images.icon.google.provider(),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              'Tiếp tục với Google',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 10),
-                        const Text(
-                          'Tiếp tục với Google',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              );
+            }else{
+              return SplashScreen();
+            }
+          })),
     );
   }
 }
