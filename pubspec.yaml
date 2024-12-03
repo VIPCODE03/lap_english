@@ -88,6 +88,7 @@ flutter:
     - assets/sounds/
     - assets/sounds/ipa/vowels/
     - assets/sounds/ipa/consonants/
+    - assets/trainbot/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

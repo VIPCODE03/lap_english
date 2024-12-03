@@ -7,24 +7,41 @@ import '../data/model/learn/vocabulary.dart';
 
 class GeminiAI {
   static const String flash = 'gemini-1.5-flash';
+  static const String flash_8b = 'gemini-1.5-flash-8b';
+  static const String pro = 'gemini-1.5-pro';
+  static const String aqa = 'aqa';
 
   String model;
   String apiKey = 'AIzaSyBwQDMZO8sx4dYcEXMWuQad-eqf1CnEFQ8';
   GenerativeModel gemini;
+  final List<Content> history = [];
+  ChatSession? conversation;
 
   GeminiAI({required this.model})
       :
         gemini = GenerativeModel(
           model: model,
-          apiKey: 'AIzaSyBwQDMZO8sx4dYcEXMWuQad-eqf1CnEFQ8',
+          apiKey: 'AIzaSyAH34wpY8AhiXS73lHRI43BPDOJ8y9nWhg',
       );
 
   Future<String?> ask(String question) async {
     final response = await gemini.generateContent([Content.text(question)]);
     return response.text;
   }
+
+  Future<String?> chat(String message) async {
+    conversation ??= gemini.startChat(history: history);
+    var response = await conversation?.sendMessage(Content.text(message));
+    return response?.text;
+  }
+
+  void train(String message) {
+    history.add(Content.text(message));
+    history.add(Content.model([TextPart('OK, tôi đã sẵn sàng trả lời người dùng!')]));
+  }
 }
 
+/*-------------------------------------------------*/
 void main() async {
   var gemini = GeminiAI(model: GeminiAI.flash);
   String jsonString = await gemini.ask(botGenerateMain()) ?? 'a';

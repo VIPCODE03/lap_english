@@ -53,6 +53,16 @@ class $AssetsSoundsGen {
   List<String> get values => [aaaa, correct, fbi, test, wrong];
 }
 
+class $AssetsTrainbotGen {
+  const $AssetsTrainbotGen();
+
+  /// File path: assets/trainbot/chat.txt
+  String get chat => 'assets/trainbot/chat.txt';
+
+  /// List of all assets
+  List<String> get values => [chat];
+}
+
 class $AssetsImagesCoverGen {
   const $AssetsImagesCoverGen();
 
@@ -157,6 +167,10 @@ class $AssetsImagesDinosaurGen {
 class $AssetsImagesIconGen {
   const $AssetsImagesIconGen();
 
+  /// File path: assets/images/icon/3_dot.gif
+  AssetGenImage get a3Dot =>
+      const AssetGenImage('assets/images/icon/3_dot.gif');
+
   /// File path: assets/images/icon/dimound.png
   AssetGenImage get dimound =>
       const AssetGenImage('assets/images/icon/dimound.png');
@@ -182,7 +196,7 @@ class $AssetsImagesIconGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [dimound, gold, google, loading, title, volumnGif];
+      [a3Dot, dimound, gold, google, loading, title, volumnGif];
 }
 
 class $AssetsImagesItemGen {
@@ -451,6 +465,7 @@ class Assets {
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsSoundsGen sounds = $AssetsSoundsGen();
+  static const $AssetsTrainbotGen trainbot = $AssetsTrainbotGen();
 }
 
 class AssetGenImage {

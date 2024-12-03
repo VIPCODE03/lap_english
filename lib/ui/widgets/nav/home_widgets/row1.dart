@@ -35,8 +35,7 @@ class WdgRow1 extends StatelessWidget {
               style: TextStyle(
                   fontSize: 24,
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Georgia'),
+                  fontWeight: FontWeight.bold),
             ),
           ),
 
@@ -58,24 +57,23 @@ class WdgRow1 extends StatelessWidget {
             child: Card(
               color: Colors.white10,
               child: Container(
-                width: 500,
                 padding: const EdgeInsets.all(20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ///COLUMN  1 --------------------------------------------
                     Expanded(
-                      child: _column('Số từ đã học', '100 từ'),
+                      child: _column('Từ mới hôm nay', '5'),
                     ),
 
                     ///COLUMN  2 --------------------------------------------
                     Expanded(
-                      child: _column('Chuỗi ngày', '5'),
+                      child: _column('Từ đã ôn tập', '5'),
                     ),
 
                     ///COLUMN  3 --------------------------------------------
                     Expanded(
-                      child: _column('Thời gian học', '23 ngày'),
+                      child: _column('Ngày đã học', '23'),
                     ),
                   ],
                 ),

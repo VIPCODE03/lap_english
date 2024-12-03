@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 
 import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../data/model/task_and_reward/daily_task.dart';
@@ -64,14 +65,11 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                                 dailyTask.task.progress = 0;
                                 dailyTask.reward.isRewardClaimed = false;
                                 dailyTask.task.completed = false;
-                                context
-                                    .read<DataBloc<User>>()
-                                    .add(DataEventUpdate(datas: [widget.user]));
+                                context.read<DataBloc<User>>().add(DataEventUpdate(datas: [widget.user]));
                               },
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.grey.withAlpha(50),
-
-                          child: const Text('Đã nhận'))
+                            child: const Text('Đã nhận'))
 
                           : WdgButton(
                               onTap: () {
@@ -82,16 +80,12 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                                     dailyTask.task.total) {
                                   dailyTask.task.progress++;
                                 }
-                                context
-                                    .read<DataBloc<User>>()
-                                    .add(DataEventUpdate(datas: [widget.user]));
+                                context.read<DataBloc<User>>().add(DataEventUpdate(datas: [widget.user]));
                               },
                               borderRadius: BorderRadius.circular(12),
                               color: dailyTask.task.progress < dailyTask.task.total
                                   ? Colors.grey.withAlpha(50)
-                                  : Theme.of(context)
-                                  .primaryColor
-                                  .withAlpha(90),
+                                  : VipColors.primary(context),
                               child: Text(
                                 dailyTask.task.progress < dailyTask.task.total
                                     ? '${dailyTask.task.progress}/${dailyTask.task.total}'
@@ -100,6 +94,7 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                       ),
                     ),
                   ),
+
                   Container(
                     height: 1,
                     color: Colors.grey.withAlpha(30),
