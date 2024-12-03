@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
-import 'package:lap_english/ui/screens/splash_screen.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'data/caching/cache_manager.dart';
@@ -56,7 +55,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           theme: themeProvider.vipTheme.light,
           darkTheme: themeProvider.vipTheme.dark,
           themeMode: ThemeMode.system,
-          home:  LoginScreen(),
+          home: LoginScreen(),
         );
       },
     );

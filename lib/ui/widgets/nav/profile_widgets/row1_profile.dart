@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,12 +29,6 @@ class WdgRow1Profile extends StatelessWidget {
           child: WdgButton(
             onTap: () {
               CacheManager().saveStatus(StatusFlag.dataLoaded, false);
-
-              user.name = "Anh Triệu đẹp trai vãi ò";
-              user.skills.listening = Random().nextDouble() * 10;
-              user.skills.speaking = Random().nextDouble() * 10;
-              user.skills.writing = Random().nextDouble() * 10;
-              user.skills.reading = Random().nextDouble() * 10;
               user.dailyTasks..clear()..addAll(MdlDailyTask.create());
               context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
             },
@@ -50,11 +45,11 @@ class WdgRow1Profile extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(2.5),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: VipColors.primary(context),
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: VipColors.primary(context),
                   radius: 50,
                   child: ClipOval(
                     child: Image.network(

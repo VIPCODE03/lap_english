@@ -1,53 +1,49 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:lap_english/gen/assets.gen.dart';
+import 'package:lap_english/data/model/chatbot/topic_chat.dart';
+import 'package:lap_english/ui/screens/learn_screens/chatbot_screen.dart';
+import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
-import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 
 class WdgRow3 extends StatelessWidget {
-  final List<String> data;
+  final List<MdlTopicChat> topicChats;
 
   const WdgRow3({
     super.key,
-    required this.data
+    required this.topicChats
   });
 
   @override
   Widget build(BuildContext context) {
     return WdgGroup(
-      title: 'Đang học',
+      title: 'Trò chuyện',
+      height: 15,
       child: SizedBox(
-        height: 200,
+        height: 225,
         child: GridView.count(
           scrollDirection: Axis.horizontal,
           crossAxisCount: 1,
-          children: data.map((dt) {
-            return _item(context, Assets.images.item.dongvat.provider(), dt, 3, data.length + Random().nextInt(5));
+          children: topicChats.map((dt) {
+            return _item(context, dt);
           }).toList(),
         ),
       )
     );
   }
 
-  Widget _item(BuildContext context, ImageProvider? file, String content, int done, int total) {
-    double value = (done / total);
-
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+  Widget _item(BuildContext context, MdlTopicChat topicChat) {
+    return SizedBox(
       child: Column(
         children: [
           ///ClipRRect hình ảnh  ------------------------------------------------
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: Container(
-              height: 100,
+              height: 125,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: file ?? Assets.images.item.itemTopic.provider(),
-                  fit: BoxFit.cover,
+                  image: NetworkImage(topicChat.imgUrl),
+                  fit: BoxFit.scaleDown,
                 ),
               ),
             ),
@@ -55,12 +51,11 @@ class WdgRow3 extends StatelessWidget {
 
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    content,
+                    topicChat.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -70,15 +65,16 @@ class WdgRow3 extends StatelessWidget {
                   ),
                 ),
 
-                Expanded(
-                  child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: WdgAnimatedProgressBar(
-                    value: value,
-                    label: 'Đã học $done/$total',
-                    duration: const Duration(milliseconds: 700),
-                  ),
-                ))
+                Align(
+                  alignment: Alignment.center,
+                  child: WdgButton(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ChatBotScreen(topicChat: topicChat))
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    child: const Text('Bắt đầu', style: TextStyle(fontSize: 16),),
+                )
+                )
               ],
             ),
           ),

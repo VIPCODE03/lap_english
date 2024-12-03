@@ -1,27 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lap_english/bloc/authentication/auth_bloc.dart';
-import 'package:lap_english/bloc/authentication/auth_event.dart';
-import 'package:lap_english/bloc/authentication/auth_state.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/splash_screen.dart';
 
-void main() async {
-  runApp(const LoginHome());
-}
-
-class LoginHome extends StatelessWidget {
-  const LoginHome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
-    );
-  }
-}
+import '../../bloc/login_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   final AuthBloc _authBloc = AuthBloc();
@@ -29,10 +12,12 @@ class LoginScreen extends StatelessWidget {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
-      'openid', // Phạm vi để yêu cầu idToken
-      'profile', // Để lấy thông tin người dùng như tên và ảnh đại diện
+      'openid',
+      'profile',
     ],
   );
+
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +29,7 @@ class LoginScreen extends StatelessWidget {
               return const Center(
                 child: CircularProgressIndicator(),
               );
+
             } else if(state is ErrorLoginState){
               return AlertDialog(
                 title: const Text("Đăng nhập thất bại"),
@@ -51,13 +37,13 @@ class LoginScreen extends StatelessWidget {
                 actions: [
                   TextButton(
                       onPressed: () async {
-                        BlocProvider.of<AuthBloc>(context)
-                            .add(InitAuthEvent());
+                        BlocProvider.of<AuthBloc>(context).add(InitAuthEvent());
                       },
                       child: const Text("OK"))
                 ],
               );
-            }else if(state is PendingLoginState) {
+
+            } else if(state is PendingLoginState) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
@@ -104,8 +90,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
               );
-            }else{
-              return SplashScreen();
+
+            } else {
+              return const SplashScreen();
             }
           })),
     );
