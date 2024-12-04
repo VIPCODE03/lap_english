@@ -48,3 +48,23 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
   }
 }
 
+class QuizSoundChooseOneCustom extends QuizzSoundChooseOne<CustomQuiz> {
+  @override
+  List<Quizz> generate(List<CustomQuiz> datas) {
+    List<QuizSoundChooseOneCustom> quizes = [];
+
+    for(var data in datas) {
+      var newQuiz = QuizSoundChooseOneCustom();
+      newQuiz.showSoundBox = Random().nextBool();
+      newQuiz.question = data.question;
+      newQuiz.answers = data.answers;
+      newQuiz.answerCorrect = data.answerCorrect;
+      newQuiz.answersCorrect = data.answersCorrect;
+
+      quizes.add(newQuiz);
+    }
+
+    return quizes;
+  }
+}
+

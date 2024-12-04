@@ -24,3 +24,20 @@ class QuizzWriteVocabulary extends QuizzWrite<MdlWord> {
   }
 
 }
+
+class QuizWriteCustom extends QuizzWrite<CustomQuiz> {
+  @override
+  List<Quizz> generate(List<CustomQuiz> datas) {
+    List<QuizWriteCustom> quizzes = [];
+
+    for(var data in datas) {
+      var newQuiz = QuizWriteCustom();
+      newQuiz.question = data.question;
+      newQuiz.answerCorrect = data.answerCorrect.toLowerCase().trim();
+
+      quizzes.add(newQuiz);
+    }
+
+    return quizzes;
+  }
+}

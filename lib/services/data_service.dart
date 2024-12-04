@@ -2,10 +2,12 @@
 import 'dart:convert';
 
 import 'package:lap_english/a_data_test/data_user_test.dart';
+import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
 import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
 import 'package:lap_english/data/database/local/dao/user_dao.dart';
 import 'package:lap_english/data/database/local/dao/vocabulary_dao.dart';
 
+import '../a_data_test/data_grammar_test.dart';
 import '../a_data_test/data_sentence1.dart';
 import '../a_data_test/datatest.dart';
 import '../data/model/learn/vocabulary.dart';
@@ -15,8 +17,9 @@ class DataService {
 
   Future<void> loadDataServer() async {
     // _loadDataUser();
-    await _loadDataVocabulary();
+    _loadDataVocabulary();
     _loadDataSentence();
+    _loadDataGrammar();
   }
 
   Future<void> _loadDataVocabulary() async {
@@ -79,8 +82,21 @@ class DataService {
 
   }
 
-  Future<void> _loadDataUser() async {
-    UserDao().insert(generateUser().first);
+  Future<void> _loadDataGrammar() async {
+    var typeGrammarDao = TypeGrammarDao();
+    var grammarDao = GrammarDao();
+    var sructureDao = GrammaticalStructureDao();
+
+    generateGrammarTypes().forEach((data) async
+    => typeGrammarDao.insert(data));
+
+    generateGrammars().forEach((data) async
+    => grammarDao.insert(data));
+
+    generateGrammaticalStructures().forEach((data) async
+    => sructureDao.insert(data));
+
   }
+
 }
 

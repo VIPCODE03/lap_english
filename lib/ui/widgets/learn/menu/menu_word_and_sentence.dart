@@ -433,7 +433,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
       },
     );
 
-    // Đóng hiệu ứng khi dialog bị đóng
+    //--- Đóng hiệu ứng khi dialog bị đóng  ---
     dialogAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
         dialogAnimationController.dispose();
