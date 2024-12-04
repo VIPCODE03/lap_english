@@ -35,11 +35,13 @@ class WdgRow3Profile extends StatelessWidget {
       width: orientation == Orientation.portrait ? maxWidth * 2/5 : maxWidth / 5,
       child: Column(
         children: [
-          Text(title, style: const TextStyle(fontSize: 20),),
+          Text(title, style: TextStyle(
+              fontSize: 20,
+              color: VipColors.text(context),
+            fontWeight: FontWeight.bold
+          )),
 
-          Text(desc, style:  TextStyle(fontSize: 16,
-              color: VipColors.text(context)
-          ),),
+          Text(desc, style:  const TextStyle(fontSize: 16)),
         ],
       ),
     );

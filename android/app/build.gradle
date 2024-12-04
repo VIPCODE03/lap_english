@@ -18,6 +18,14 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
     }
+    signingConfigs{
+        debug{
+            storeFile file('upload-keystore.jks')
+            storePassword '123456'
+            keyAlias 'lapenglishkey'
+            keyPassword '123456'
+        }
+    }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).

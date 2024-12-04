@@ -14,7 +14,7 @@ abstract class QuizzSoundChooseOne<T> extends Quizz<T> {
 
 class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
   @override
-  List<Quizz> generate() {
+  List<Quizz> generate(List<MdlWord> datas) {
     List<QuizzSoundChooseOneVocabulary> quizzes = [];
     //--- Tạo quizz cho mỗi từ  ---
     for(var word in datas) {
@@ -45,6 +45,26 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
       quizzes.add(quizzSound);
     }
     return quizzes;
+  }
+}
+
+class QuizSoundChooseOneCustom extends QuizzSoundChooseOne<CustomQuiz> {
+  @override
+  List<Quizz> generate(List<CustomQuiz> datas) {
+    List<QuizSoundChooseOneCustom> quizes = [];
+
+    for(var data in datas) {
+      var newQuiz = QuizSoundChooseOneCustom();
+      newQuiz.showSoundBox = Random().nextBool();
+      newQuiz.question = data.question;
+      newQuiz.answers = data.answers;
+      newQuiz.answerCorrect = data.answerCorrect;
+      newQuiz.answersCorrect = data.answersCorrect;
+
+      quizes.add(newQuiz);
+    }
+
+    return quizes;
   }
 }
 

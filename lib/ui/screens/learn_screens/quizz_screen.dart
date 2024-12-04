@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
@@ -12,7 +12,7 @@ import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:lap_english/utils/player_audio.dart';
-import '../../../data/bloc/quizz_bloc.dart';
+import '../../../bloc/quizz_bloc.dart';
 import '../../../data/model/quizz/quizz.dart';
 import '../../../data/model/user/skill.dart';
 import '../../../main.dart';
@@ -23,18 +23,28 @@ class QuizzScreen extends StatefulWidget {
   final List<Quizz> _quizzes;
   final TypeQuizz _typeQuizz;
   final bool _isLearned;
+  final bool _isCustom;
 
   QuizzScreen.vocabulary({super.key, required List<MdlWord> words, required bool isLearned})
     :
         _typeQuizz = TypeQuizz.quizzVocabulary,
         _isLearned = isLearned,
-        _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
+        _isCustom = false,
+      _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
 
   QuizzScreen.sentence({super.key, required List<MdlSentence> sentences, required bool isLearned})
       :
         _typeQuizz = TypeQuizz.quizzSentence,
         _isLearned = isLearned,
-        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
+        _isCustom = false,
+      _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
+
+  QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures})
+      :
+        _typeQuizz = TypeQuizz.quizGrammar,
+        _isLearned = false,
+        _isCustom = true,
+        _quizzes = Quizzes.generateQuizGrammar(structures: structures);
 
   @override
   State<StatefulWidget> createState() => _QuizzScreenState();
@@ -92,18 +102,19 @@ class _QuizzScreenState extends State<QuizzScreen> {
                     body: Column(
                       children: [
                         ///Text kĩ năng -------------------------------------------
-                        Container(
-                            height: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.05,
-                            margin: const EdgeInsets.all(3),
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(
-                              child: Text(
-                                Skill.skillName(currentQuizz.quizz.skillType),
-                                style: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w700),
-                              ),
-                            )
-                        ),
+                        if(!widget._isCustom)
+                          Container(
+                              height: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.05,
+                              margin: const EdgeInsets.all(3),
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(
+                                child: Text(
+                                  Skill.skillName(currentQuizz.quizz.skillType),
+                                  style: const TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.w700),
+                                ),
+                              )
+                          ),
 
                         ///Text câu hỏi -------------------------------------------
                         Container(

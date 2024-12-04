@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/ui/widgets/learn/menu/menu_grammar.dart';
 import 'package:lap_english/ui/widgets/learn/menu/menu_word_and_sentence.dart';
+import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
+import 'package:lap_english/ui/widgets/other/scaffold.dart';
 
-import '../../data/bloc/data_bloc/data_bloc.dart';
+import '../../bloc/data_bloc/data_bloc.dart';
 
 class MenuScreen<T> extends StatefulWidget {
   final String title;
@@ -37,20 +41,21 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: _isSearching
+    return WdgScaffold(
+      appBar: WdgAppBar(
+        title: !_isSearching ? (search.isEmpty ? widget.title : search) : null,
+        content: _isSearching
             ? TextField(
-                controller: _searchController,
-                maxLines: 1,
-                autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: 'Tìm kiếm...',
-                  border: InputBorder.none,
-                ),
-                onChanged: (_) => _onSearch(),
-              )
-            : Text(search.isEmpty ? widget.title : search),
+          controller: _searchController,
+          maxLines: 1,
+          autofocus: true,
+          decoration: const InputDecoration(
+            hintText: 'Tìm kiếm...',
+            border: InputBorder.none,
+          ),
+          onChanged: (_) => _onSearch(),
+        )
+            : null,
 
         actions: [
           WdgButton(
@@ -58,7 +63,6 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
             color: Colors.transparent,
             child: Icon(_isSearching ? Icons.close : Icons.search),
           ),
-
 
         ],
       ),
@@ -74,6 +78,9 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
 
                     } else if (state is DataStateLoaded<T>) {
                       datas = state.data;
+                      if(datas.isEmpty) {
+                        return const Center(child: Text('Không có dữ liệu'));
+                      }
                       return _buildMenu(_datas(), search); ///-> menu
 
                     } else if(state is DataStateError<T>) {
@@ -103,6 +110,18 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
       );
     }
 
+    /// Menu câu  ------------------------------------------------------
+    else if(T == MdlMainSentenceTopic) {
+      return WdgMenuVW<MdlMainSentenceTopic, MdlSubSentenceTopic, MdlSentence>
+        (mainTopics: datas as List<MdlMainSentenceTopic>
+      );
+    }
+
+    /// Menu ngữ pháp  ------------------------------------------------------
+    else if(T == TypeGrammar) {
+      return WdgMenuGrammar(typeGrammars: datas as List<TypeGrammar>);
+    }
+
     else {
       throw Exception('Không tìm thấy loại menu');
     }
@@ -119,6 +138,10 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
       return (datas as List<MdlMainVocabularyTopic>)
           .where((data) => data.name.toLowerCase().contains(search.toLowerCase()))
           .toList() as List<T>;
+    }
+
+    else if(datas is List<TypeGrammar>) {
+      return datas;
     }
 
     return <T>[];

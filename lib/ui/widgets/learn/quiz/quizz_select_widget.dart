@@ -55,13 +55,14 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
 
   @override
   Widget build(BuildContext context) {
+    double itemHeight = isPortrait ? maxHeight * 0.04 : maxHeight * 0.08;
     var newWidget = SizedBox(
         height: maxHeight,
         child: widget.status.isStarted.value == true
             ? _WdgButtonSelect(
                 key: testScreenKey,
                 datas: widget.quizz.answers,
-                height: orientation == Orientation.portrait ? maxHeight * 0.04 : maxHeight * 0.08,
+                height: itemHeight,
                 offset: offset,
                 onSelectionChanged: (value) => {
                   if (value.isNotEmpty) {
@@ -76,7 +77,7 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
               )
             : widget.status.isEnd.value == true
             ? null
-            : const _WdgButtonSelect(datas: [], height: 50)
+            : _WdgButtonSelect(datas: const [], height: itemHeight)
     );
 
     return newWidget;
@@ -141,6 +142,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
   Widget build(BuildContext context) {
     var widgetNew = Stack(
       children: [
+        /// Đáp án được chọn -----------------------------------------------------------
         Container(
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.all(12),
@@ -150,6 +152,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
               children: [...row1.map((e) => _itemLocation(e))],
             )),
 
+        /// Đáp án  -----------------------------------------------------------
         Container(
           alignment: Alignment.topLeft,
           margin: const EdgeInsets.all(5),
@@ -172,6 +175,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
           ),
         ),
 
+        /// Thanh ---------------------------------------------------------------
         Container(
             alignment: Alignment.bottomCenter,
             margin: const EdgeInsets.all(20),
@@ -184,7 +188,8 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
               children: [...row2.map((e) => _itemLocation(e))],
             )),
 
-        ...items.map((item) => _itemSelect(item)), //-> Item  ---
+        /// Item di chuyển  -------------------------------------------------------------
+        ...items.map((item) => _itemSelect(item)),
       ],
     );
 

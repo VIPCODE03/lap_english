@@ -8,18 +8,20 @@ class WdgAppBar extends StatelessWidget {
   final Widget? content;
   final Function? onBack;
   final String? title;
+  final List<Widget>? actions;
 
   const WdgAppBar({super.key,
     this.content,
-    this.onBack, this.title
+    this.onBack, this.title,
+    this.actions,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
           margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          height: (orientation == Orientation.portrait || isTablet)
-              ? maxHeight * 0.05
+          height: (isPortrait || isTablet)
+              ? maxHeight * 0.066
               : maxHeight * 0.1,
           width: maxWidth,
           child: Row(
@@ -42,7 +44,8 @@ class WdgAppBar extends StatelessWidget {
                 ),
               ),
 
-              Expanded(child: content ?? const SizedBox.shrink())
+              Expanded(child: content ?? const SizedBox.shrink()),
+              Row(children: actions ?? []),
             ],
         )
     );

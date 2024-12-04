@@ -29,4 +29,9 @@ class Skill {
   }
 }
 
-enum SkillType { reading, writing, listening, speaking }
+enum SkillType {
+  reading,
+  writing,
+  listening,
+  speaking
+}

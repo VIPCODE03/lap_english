@@ -1,21 +1,64 @@
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lap_english/data/model/quizz/quizz.dart';
 
-/*  Loại ngữ pháp   */
+part 'grammar.g.dart';
+
+/* Loại ngữ pháp */
+@JsonSerializable()
 class TypeGrammar {
-  int id;
-  String name;
-  List<Grammar> grammars;
+  final int id;
+  final String name;
 
-  TypeGrammar(this.id, this.name, this.grammars);
+  TypeGrammar(this.id, this.name);
+
+  factory TypeGrammar.fromJson(Map<String, dynamic> json) =>
+      _$TypeGrammarFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TypeGrammarToJson(this);
 }
 
-/*  Ngữ pháp  */
+/* Ngữ pháp */
+@JsonSerializable()
 class Grammar {
-  int id;
-  String name;
-  String grammaticalStructure;
-  String description;
-  List<String> examples;
+  final int id;
+  final String name;
+  final String description;
+  final int idTypeGrammar;
 
-  Grammar(this.id, this.name, this.grammaticalStructure, this.description, this.examples);
+  Grammar(this.id, this.name, this.description, this.idTypeGrammar);
+
+  factory Grammar.fromJson(Map<String, dynamic> json) =>
+      _$GrammarFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GrammarToJson(this);
 }
 
+/* Cấu trúc ngữ pháp */
+@JsonSerializable()
+class GrammaticalStructure {
+  final int id;
+  final String description;
+  final String structure;
+  final int idGrammar;
+
+  GrammaticalStructure(this.id, this.description, this.structure, this.idGrammar);
+
+  factory GrammaticalStructure.fromJson(Map<String, dynamic> json) =>
+      _$GrammaticalStructureFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GrammaticalStructureToJson(this);
+}
+
+/* Bài tập */
+@JsonSerializable()
+class ExerciseGrammar {
+  final int idGrammaticalStructure;
+  final CustomQuiz quiz;
+
+  ExerciseGrammar(this.idGrammaticalStructure, this.quiz);
+
+  factory ExerciseGrammar.fromJson(Map<String, dynamic> json) =>
+      _$ExerciseGrammarFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ExerciseGrammarToJson(this);
+}

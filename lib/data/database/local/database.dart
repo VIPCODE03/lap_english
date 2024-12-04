@@ -1,4 +1,5 @@
 
+import 'package:lap_english/data/database/local/table/grammar_table.dart';
 import 'package:lap_english/data/database/local/table/sentence_table.dart';
 import 'package:lap_english/data/database/local/table/user_table.dart';
 import 'package:lap_english/data/database/local/table/vocabulary_table.dart';
@@ -23,6 +24,12 @@ DatabaseApp initdatabase() {
         SentenceTable(),
         SubSentenceTopicTable(),
         MainSentenceTopicTable(),
+
+        //--- Ngữ pháp  ---
+        TypeGrammarTable(),
+        GrammarTable(),
+        GrammaticalStructureTable(),
+        ExerciseGrammarTable()
       ]
   );
 }

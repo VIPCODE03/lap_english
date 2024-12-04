@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/ipa_screen.dart';
-import 'package:lap_english/ui/screens/login_screen.dart';
+import 'package:lap_english/ui/screens/learn_screens/quizz_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
@@ -12,7 +13,7 @@ import 'package:lap_english/ui/widgets/other/group.dart';
 class MenuItem {
   final String imagePath;
   final String label;
-  final Widget openScreen;
+  final int openScreen;
 
   MenuItem({
     required this.imagePath,
@@ -22,34 +23,36 @@ class MenuItem {
 }
 
 class WdgRow2 extends StatelessWidget {
+  Widget _getMenu(int index) => [
+    const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng theo chủ đề"),
+
+    const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề"),
+
+    const MenuScreen<TypeGrammar>(title: "Ngữ pháp"),
+
+/*    QuizzScreen.grammar(structures: [
+      GrammaticalStructure(2, 'Thì hiện tại hoàn thành (Khẳng định)', '<S> + <have/has> + <V3> + <O>', 3),
+    ]),*/
+
+    IPAScreen()
+  ].elementAt(index);
+
   final List<MenuItem> _menuItems = [
     MenuItem(imagePath: Assets.images.menu.learnVocabulary.path,
         label: "Từ vựng",
-        openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng theo chủ đề")
+        openScreen: 0
     ),
     MenuItem(imagePath: Assets.images.menu.learnSentence.path,
         label: "Câu",
-        openScreen: const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề")
+        openScreen: 1
     ),
     MenuItem(imagePath: Assets.images.menu.learnGrammar.path,
         label: "Ngữ pháp",
-        openScreen: const MenuScreen<MdlMainVocabularyTopic>(title: "Câu theo chủ đề")
+        openScreen: 2
     ),
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Phát âm",
-        openScreen: IPAScreen()
-    ),
-    MenuItem(imagePath: Assets.images.menu.learnReview.path,
-        label: "Ôn tập",
-        openScreen: const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề")
-    ),
-    MenuItem(imagePath: Assets.images.menu.learnWrite.path,
-        label: "Luyện viết",
-        openScreen: const LoginScreen()
-    ),
-    MenuItem(imagePath: Assets.images.menu.learnListen.path,
-        label: "Luyện nghe",
-        openScreen: const LoginScreen()
+        openScreen: 3
     ),
   ];
 
@@ -72,7 +75,7 @@ class WdgRow2 extends StatelessWidget {
     return WdgButton(
         onTap: () => Navigator.push( //-> Chuyển giao diện
             context,
-            MaterialPageRoute(builder: (context) => item.openScreen)),
+            MaterialPageRoute(builder: (context) => _getMenu(item.openScreen))),
         color: Colors.transparent,
         child: Column(
           children: [
@@ -81,7 +84,7 @@ class WdgRow2 extends StatelessWidget {
               height: 66,
               width: 66,
               decoration: BoxDecoration(
-                border: Border.all(color: Theme.of(context).primaryColor),
+                border: Border.all(color: VipColors.primary(context)),
                   borderRadius: BorderRadius.circular(24)),
 
               ///ICON ------------------------------------------------------------

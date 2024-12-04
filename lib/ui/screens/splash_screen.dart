@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigateToMainScreen();
   }
 
-  //=== Khởi tạo bộ nhớ và chuyển tới màn hình chính  ===
+  //===  Khởi tạo bộ nhớ và chuyển tới màn hình chính  ===
   Future<void> _navigateToMainScreen() async {
     var cacheData = CacheManager();
 

@@ -45,6 +45,7 @@ dependencies:
   speech_to_text: ^7.0.0  # Chuyển giọng nói thành văn bản
   avatar_glow: ^2.0.1 # Hiệu ứng avatar
   audioplayers: ^6.1.0  # Phát âm thanh
+  google_sign_in: ^6.2.2 # Đăng nhập google
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -87,6 +88,7 @@ flutter:
     - assets/sounds/
     - assets/sounds/ipa/vowels/
     - assets/sounds/ipa/consonants/
+    - assets/trainbot/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
