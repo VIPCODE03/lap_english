@@ -99,6 +99,8 @@ class WdgQuizzResult extends StatelessWidget {
       TypeQuizz.quizzSentence => "Quiz câu",
 
       TypeQuizz.quizzCustom => throw UnimplementedError(),
+
+      TypeQuizz.quizGrammar => "Quiz ngữ pháp",
     };
   }
 }

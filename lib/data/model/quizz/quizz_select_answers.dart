@@ -77,5 +77,27 @@ class QuizzSelectVocabulary extends QuizzSelect<MdlWord> {
 
     return quizzes;
   }
+}
+
+class QuizSelectCustom extends QuizzSelect<CustomQuiz> {
+  @override
+  List<Quizz> generate(List<CustomQuiz> datas) {
+    List<QuizSelectCustom> quizzes = [];
+
+    for(var data in datas) {
+      var quizzSelect = QuizSelectCustom();
+      quizzSelect.question = data.question;
+      quizzSelect.answerCorrect = data.answerCorrect;
+      quizzSelect.answersCorrect = data.answersCorrect;
+      quizzSelect.answers = data.answers;
+      quizzSelect.answers.shuffle();
+      quizzes.add(quizzSelect);
+    }
+
+    return quizzes;
+  }
+}
+
+class SelectCustom {
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_write.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 
 import '../../../../main.dart';
@@ -36,8 +37,9 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: maxHeight,
+      color: Colors.green,
       child: Stack(
         children: [
           Container(
@@ -55,7 +57,7 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
                           userInput[index].isNotEmpty ? userInput[index] : '_',
                           style: TextStyle(
                               color: userInput[index].isEmpty
-                                  ? Theme.of(context).primaryColor
+                                  ? VipColors.primary(context)
                                   : null,
                               fontSize: 20),
                         ),

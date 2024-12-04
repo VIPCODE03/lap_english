@@ -104,3 +104,23 @@ class QuizzChooseOneSentence extends QuizzChooseOne<MdlSentence> {
     return quizzes;
   }
 }
+
+/*  Custom  */
+class QuizChooseOneCustom extends QuizzChooseOne<CustomQuiz> {
+  @override
+  List<Quizz> generate(List<CustomQuiz> datas) {
+    List<QuizChooseOneCustom> quizes = [];
+
+    for(var data in datas) {
+      var newQuiz = QuizChooseOneCustom();
+      newQuiz.question = data.question;
+      newQuiz.answers = data.answers..shuffle();
+      newQuiz.answerCorrect = data.answerCorrect;
+      newQuiz.answersCorrect = data.answersCorrect;
+
+      quizes.add(newQuiz);
+    }
+
+    return quizes;
+  }
+}

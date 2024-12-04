@@ -11,33 +11,30 @@ class WdgSpecialText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var texts = _parseStringToMap(text);
-    var parts = texts.keys.toList();
 
     return RichText(
       text: TextSpan(
-        children: parts.map((part) {
+        children: texts.map((part) {
 
           //--- Dạng đặc biệt  ---
-          if (texts[part] == true) {
+          if (part.isSpecial) {
             return TextSpan(
-              text: part,
-              style: GoogleFonts.pangolin(
-                  color: VipColors.primary(context),
+              text: part.text,
+                style: GoogleFonts.pangolin(
+                  color: VipColors.text(context),
                   fontSize: isTablet ? 30 : 20,
-                  fontWeight: FontWeight.bold,)
-
+              )
             );
           }
 
           //--- Dạng bình thường  ---
           else {
             return TextSpan(
-              text: part,
+              text: part.text,
               style: GoogleFonts.pangolin(
-                  color: VipColors.text(context),
-                  fontSize: isTablet ? 30 : 20,
-                  fontWeight: FontWeight.bold
-              ),
+                color: Theme.of(context).textTheme.bodyMedium?.color,
+                fontSize: isTablet ? 30 : 20,
+              )
             );
           }
         }).toList(),
@@ -46,23 +43,30 @@ class WdgSpecialText extends StatelessWidget {
   }
 
   //=== Chuyển đổi text thành map ===
-  Map<String, bool> _parseStringToMap(String input) {
-    Map<String, bool> result = {};
+  List<_TextSpecial> _parseStringToMap(String input) {
+    List<_TextSpecial> texts = [];
 
-    final regex = RegExp(r'<(.*?)>|(\S+)');
+    final regex = RegExp(r'<(.*?)>|(\S+)|(\s+)');
     Iterable<Match> matches = regex.allMatches(input);
 
     for (var match in matches) {
       String? matchedString = match.group(0);
       if (matchedString != null) {
         if (matchedString.startsWith('<') && matchedString.endsWith('>')) {
-          result["${matchedString.substring(1, matchedString.length - 1)} "] =
-          true;
-        } else {
-          result["$matchedString "] = false;
+          texts.add(_TextSpecial(matchedString.substring(1, matchedString.length - 1), true));
+        }
+        else {
+          texts.add(_TextSpecial(matchedString, false));
         }
       }
     }
-    return result;
+    return texts;
   }
+}
+
+class _TextSpecial {
+  final String text;
+  final bool isSpecial;
+
+  _TextSpecial(this.text, this.isSpecial);
 }
