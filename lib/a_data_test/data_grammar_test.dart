@@ -19,7 +19,51 @@ List<TypeGrammar> generateGrammarTypes() {
 List<Grammar> generateGrammars() {
   return [
     // Các thì (Tenses)
-    Grammar(1, 'Thì hiện tại đơn (Present Simple)', 'Diễn tả sự thật hiển nhiên, thói quen, sự việc xảy ra thường xuyên.', 1),
+    Grammar(1,
+        'Thì hiện tại đơn (Present Simple)',
+        '''
+  **Mô tả sơ lược**:  
+  Thì <hiện tại đơn> là thì cơ bản nhất trong tiếng Anh, được sử dụng để diễn tả những <sự kiện mang tính quy luật>, <thói quen hàng ngày>, hoặc <sự thật hiển nhiên>.  
+
+  Cách dùng 
+  -----------------------------------  
+  - <Diễn tả sự thật hiển nhiên>:  
+    Ví dụ: The sun <rises> in the east.  
+  - <Thói quen hoặc hành động lặp lại thường xuyên>:  
+    Ví dụ: She <drinks> coffee every morning.  
+  - <Lịch trình, thời gian biểu>:  
+    Ví dụ: The train <leaves> at 8 a.m.  
+
+  Cấu trúc
+  -----------------------------------  
+  - <Khẳng định>:  
+    S + V(s/es) + O  
+    Ví dụ: He <plays> football.  
+  - <Phủ định>:  
+    S + do/does + not + V-inf  
+    Ví dụ: She <does not> like tea.  
+  - <Nghi vấn>:  
+    Do/Does + S + V-inf?  
+    Ví dụ: <Does> he work here?  
+
+  Dấu hiệu nhận biết
+  -----------------------------------  
+  - Các trạng từ chỉ tần suất: <always>, <often>, <usually>, <sometimes>, <rarely>, <never>.  
+  - Các cụm từ chỉ thời gian: <every day>, <once a week>, <on Mondays>, <in the morning>.  
+
+  Lưu ý 
+  -----------------------------------  
+  - Khi chủ ngữ là ngôi thứ ba số ít (he, she, it), động từ thêm <s> hoặc <es>.  
+  - Không sử dụng động từ "to be" và trợ động từ cùng lúc trong câu khẳng định.  
+
+  Ví dụ bổ sung 
+  -----------------------------------  
+  - They <work> in an office.  
+  - She <does not go> to school on Sundays.  
+  - <Do> you <like> ice cream?  
+  ''',
+        1
+    ),
     Grammar(2, 'Thì hiện tại tiếp diễn (Present Continuous)', 'Diễn tả hành động đang xảy ra tại thời điểm nói hoặc tương lai gần.', 1),
     Grammar(3, 'Thì quá khứ đơn (Past Simple)', 'Diễn tả hành động đã xảy ra và kết thúc trong quá khứ.', 1),
     Grammar(4, 'Thì quá khứ tiếp diễn (Past Continuous)', 'Diễn tả hành động đang xảy ra tại một thời điểm xác định trong quá khứ.', 1),
