@@ -29,7 +29,7 @@ class VipColors {
   }
 
   static Color text(BuildContext context) {
-    return Color.alphaBlend(primary(context).withAlpha(lightMode ? 66 : 25),
+    return Color.alphaBlend(primary(context).withAlpha(lightMode ? 88 : 66),
         Colors.grey);
   }
 }
