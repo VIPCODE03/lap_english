@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lap_english/data/database/local/dao/user_dao.dart';
 import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
+import 'package:lap_english/data/model/user/accumulate.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 import 'package:lap_english/data/model/user/user.dart';
 
@@ -42,9 +43,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final UserDao _userDao = UserDao();
 
   AuthBloc() : super(AuthState()) {
+
     on<InitAuthEvent>((event, emit) async {
       await _init(emit);
     });
+
     on<LoginEvent>((event, emit) async {
       await _login(event, emit);
     });
@@ -75,10 +78,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           avatar: userAuthGoogle.photoUrl,
           name: userAuthGoogle.displayName!,
           email: userAuthGoogle.email,
-          skills: Skill(0, 0, 0, 0),
+          skills: Skill(1, 1, 1, 1),
           titles: [],
           dailyTasks: MdlDailyTask.create(),
-          cumulativePoint: CumulativePoint(0, 0, 0));
+          cumulativePoint: CumulativePoint(0, 0, 0),
+          accumulate: MdlAccumulate(0, 0, 0, 1)
+      );
       await _userDao.deleteAll();
       bool result = await _userDao.insert(user);
       if (result) {

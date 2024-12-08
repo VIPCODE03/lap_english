@@ -33,10 +33,9 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: widget.typeGrammars.length,
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (BuildContext contextList, int index) {
         return BlocProvider(
-            create: (context) => DataBloc<Grammar>()
-              ..add(DataEventLoad<Grammar>(args: widget.typeGrammars[index].id)),
+            create: (contextList) => DataBloc<Grammar>()..add(DataEventLoad<Grammar>(args: widget.typeGrammars[index].id)),
             child: Container(
                 margin: const EdgeInsets.all(10),
                 child: WdgDashedBorder(
@@ -57,23 +56,19 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                         setState(() {
                           status[index] = isExpanded;
                         });
-                        if (isExpanded) {
-                          context.read<DataBloc<Grammar>>().add(
-                              DataEventLoad<Grammar>(
-                                  args: widget.typeGrammars[index].id));
-                        }
                       },
                       children: [
                         BlocBuilder<DataBloc<Grammar>, DataState>(
                           builder: (context, grammarState) {
                             if (grammarState is DataStateLoading<Grammar>) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (grammarState
-                                is DataStateLoaded<Grammar>) {
+                              return const Center(child: CircularProgressIndicator());
+
+                            } else if (grammarState is DataStateLoaded<Grammar>) {
                               return Column(
                                 children: grammarState.data.map((grammar) {
                                   final GlobalKey key = GlobalKey();
+
+                                  /// Item grammar  ----------------------------------------------------------------
                                   return Padding(
                                       padding: const EdgeInsets.all(14),
                                       child: WdgButton(
@@ -82,27 +77,28 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                                             final RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
                                             final Offset position = renderBox.localToGlobal(Offset.zero);
 
+                                            //--- Chuyển sang chi tiết  ---
                                             Navigator.of(context)
-                                                .push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation) =>
-                                                  _DetailGrammar(position, grammar),
+                                                .push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation)
+                                            => _DetailGrammar(position, grammar),
                                               transitionDuration: Duration.zero,
-                                              reverseTransitionDuration:
-                                                  Duration.zero,
+                                              reverseTransitionDuration: Duration.zero,
                                             ));
                                           },
-                                          borderRadius:
-                                              BorderRadius.circular(12),
+                                          borderRadius: BorderRadius.circular(12),
+                                          color: VipColors.onPrimary(context),
                                           child: ListTile(
                                             title: Text(grammar.name),
-                                            trailing: const Icon(Icons
-                                                .keyboard_double_arrow_right),
-                                          )));
+                                            trailing: const Icon(Icons.keyboard_double_arrow_right),
+                                          ))
+                                  );
                                 }).toList(),
                               );
-                            } else if (grammarState
-                                is DataStateError<Grammar>) {
+
+                            } else if (grammarState is DataStateError<Grammar>) {
                               return Center(child: Text(grammarState.message));
                             }
+
                             return const SizedBox.shrink();
                           },
                         ),
@@ -116,6 +112,7 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
   }
 }
 
+/// Màn hình chi tiết ----------------------------------------------------------
 class _DetailGrammar extends StatefulWidget {
   final Offset offsetItem;
   final Grammar grammar;
@@ -146,6 +143,7 @@ class _DetailGrammarState extends State<_DetailGrammar> {
       appBar: const WdgAppBar(),
       body: Stack(
       children: [
+        /// Text ngữ pháp animation ------------------------------------------------------
         TweenAnimationBuilder<double>(
           tween: Tween<double>(begin: 14, end: 24),
           duration: const Duration(milliseconds: 333),
@@ -170,9 +168,9 @@ class _DetailGrammarState extends State<_DetailGrammar> {
           },
         ),
 
-
         Column(
             children: [
+              /// Text vị trí --------------------------------------------------
               Opacity(opacity: 0,
                   child: Container(
                       alignment: Alignment.center,
@@ -183,9 +181,9 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                       ))
               ),
 
+              /// Button luyện tập  --------------------------------------------
               BlocProvider(
-                create: (context) => DataBloc<GrammaticalStructure>()
-                  ..add(DataEventLoad<GrammaticalStructure>(args: widget.grammar.id)),
+                create: (context) => DataBloc<GrammaticalStructure>()..add(DataEventLoad<GrammaticalStructure>(args: widget.grammar.id)),
                 child: BlocBuilder<DataBloc<GrammaticalStructure>, DataState>(
                   builder: (context, state) {
                     if (state is DataStateLoaded<GrammaticalStructure>) {

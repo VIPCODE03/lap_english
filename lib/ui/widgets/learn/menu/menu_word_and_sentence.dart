@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +11,8 @@ import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/flip_card_screen.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
+import 'package:lap_english/utils/loaddata_link.dart';
+import 'package:lap_english/utils/player_audio.dart';
 
 import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../gen/assets.gen.dart';
@@ -194,12 +198,14 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
     String textW = "";
     String textMeaning = "";
     String textExpaned = "";
+    String soundUrl = "";
 
     switch(data) {
       case MdlWord _: {
         textW = data.word;
         textMeaning = data.meaning;
         textExpaned = "Loại: ${data.type}m \nUS: ${data.pronounceUS} \nUK: ${data.pronounceUK} \nVí dụ: ${data.example}";
+        soundUrl = (Random().nextBool() ? data.audioUsBlobName : data.audioUkBlobName) ?? "";
         break;
       }
 
@@ -219,11 +225,16 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
               WdgButton(
                 color: Colors.transparent,
                 onTap: () {
-                  textToSpeakUtil.speak(
-                    textW,
-                    TextToSpeakUtil.languageUK,
-                    TextToSpeakUtil.rateNormal,
-                  );
+                  if(soundUrl.isNotEmpty) {
+                    AudioPlayerUtil().playFromUrl(LoadDataUtil.loadSound(soundUrl));
+                  }
+                  else {
+                    textToSpeakUtil.speak(
+                      textW,
+                      TextToSpeakUtil.languageUK,
+                      TextToSpeakUtil.rateNormal,
+                    );
+                  }
                 },
                 child: const Icon(Icons.volume_up, size: 30),
               ),
@@ -251,7 +262,6 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
         )
       ],
     );
-
   }
 
   ///DIALOG hiển thị danh sách từ vựng hoặc câu ------------------------------------------

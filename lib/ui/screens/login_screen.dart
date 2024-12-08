@@ -54,8 +54,7 @@ class LoginScreen extends StatelessWidget {
                         width: 200,
                         height: 200,
                         child: Image(
-                            image: NetworkImage(
-                                "https://anhngueie.com/wp-content/uploads/2022/07/2-1-1024x899-lg.png")),
+                            image: NetworkImage("https://anhngueie.com/wp-content/uploads/2022/07/2-1-1024x899-lg.png")),
                       ),
                       const Text(
                         'Đăng nhập',
@@ -65,8 +64,7 @@ class LoginScreen extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           _googleSignIn.signOut();
-                          BlocProvider.of<AuthBloc>(context)
-                              .add(LoginEvent(await _googleSignIn.signIn()));
+                          BlocProvider.of<AuthBloc>(context).add(LoginEvent(await _googleSignIn.signIn()));
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

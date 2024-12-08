@@ -7,14 +7,14 @@ import 'package:lap_english/data/model/learn/vocabulary.dart';
 /*  Bảng từ vựng  */
 class WordTable extends TableSchema<MdlWord> {
   static const String id = "id";
-  static const String idSubtopic = "idSubtopic";
+  static const String subTopicId = "subTopicId";
   static const String data = "data";
 
   @override
   Columns columns(MdlWord obj) => columnBuild(addColumn: [
     column(name: id, value: obj.id),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idSubtopic, value: obj.idSubTopic),
+    column(name: subTopicId, value: obj.subTopicId),
   ]);
 
   @override
@@ -22,7 +22,7 @@ class WordTable extends TableSchema<MdlWord> {
     if (column[data] != null) {
       return MdlWord.fromJson(jsonDecode(column[data]));
     }
-    return MdlWord(0, 'word', 'meaning', 'pronounceUK', 'pronounceUS', 'type', 'level', 'example', 'imageUrl', 0);
+    return MdlWord(0, 'word', 'meaning', 'pronounceUK', 'pronounceUS', 'type', 'level', 'example', 1);
   }
 
   @override

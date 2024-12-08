@@ -1,3 +1,5 @@
+import 'package:lap_english/data/model/user/accumulate.dart';
+
 import '../data/model/task_and_reward/daily_task.dart';
 import '../data/model/user/cumulative_point.dart';
 import '../data/model/user/skill.dart';
@@ -26,7 +28,8 @@ List<User> generateUser() {
         // ),
       ],
       cumulativePoint: CumulativePoint(0, 0, 0),
-      dailyTasks: MdlDailyTask.create()
+      dailyTasks: MdlDailyTask.create(),
+      accumulate: MdlAccumulate(0, 0, 0, 1)
   );
   return [user];
 }

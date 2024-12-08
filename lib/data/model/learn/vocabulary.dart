@@ -35,15 +35,17 @@ class MdlSubVocabularyTopic {
 @JsonSerializable()
 class MdlWord {
   final int id;
-  String word;
-  String meaning;
-  String imageUrl;
-  String pronounceUK;
-  String pronounceUS;
-  String type;
-  String level;
-  String example;
-  int idSubTopic;
+  final String word;
+  final String meaning;
+  final String pronounceUK;
+  final String pronounceUS;
+  final String type;
+  final String level;
+  final String example;
+  final int subTopicId;
+  final String? imageBlobName;
+  final String? audioUkBlobName;
+  final String? audioUsBlobName;
 
   MdlWord(
     this.id,
@@ -54,8 +56,12 @@ class MdlWord {
     this.type,
     this.level,
     this.example,
-    this.imageUrl,
-    this.idSubTopic,
+    this.subTopicId,
+  {
+    this.imageBlobName,
+    this.audioUkBlobName,
+    this.audioUsBlobName
+  }
   );
 
   factory MdlWord.fromJson(Map<String, dynamic> json) => _$MdlWordFromJson(json);

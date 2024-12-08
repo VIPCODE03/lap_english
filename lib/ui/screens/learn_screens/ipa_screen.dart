@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/generate/generate_ipa.dart';
+import 'package:lap_english/data/provider/ipa_provider.dart';
 import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
@@ -34,7 +33,7 @@ class IPAScreen extends StatelessWidget {
                     runSpacing: 8,
                     spacing: 8,
                     children: [
-                  ...generateIPAVowels().map((element) => _itemIPA(context, element)),
+                  ...IPAProvider.ipaVowels().map((element) => _itemIPA(context, element)),
                 ])
             ),
 
@@ -47,7 +46,7 @@ class IPAScreen extends StatelessWidget {
                     runSpacing: 8,
                     spacing: 8,
                     children: [
-                  ...generateIPAConsonants().map((element) => _itemIPA(context, element)),
+                  ...IPAProvider.ipaConsonants().map((element) => _itemIPA(context, element)),
                 ])
             )
           ],

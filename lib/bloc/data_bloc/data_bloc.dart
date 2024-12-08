@@ -52,8 +52,15 @@ class DataBloc<T> extends Bloc<DataEvent, DataState> with UpdateDatas, LoadDatas
     //--- Update dữ liệu ---
     on<DataEventUpdate<T>>((event, emit) async {
       if (state is DataStateLoaded<T>) {
-        await update[T]!(event.datas);
-        emit(DataStateLoaded<T>((state as DataStateLoaded<T>).data));
+        try {
+          await update[T]!(event.datas);
+          emit(DataStateLoaded<T>((state as DataStateLoaded<T>).data));
+        } catch (e) {
+          emit(DataStateError<T>('Lỗi cập nhật dữ liệu'));
+          if(kDebugMode) {
+            rethrow;
+          }
+        }
       }
     });
   }

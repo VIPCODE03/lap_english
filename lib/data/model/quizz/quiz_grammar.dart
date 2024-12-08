@@ -5,12 +5,9 @@ import '../user/skill.dart';
 
 class MdlQuizGrammar extends Quizz<CustomQuiz> {
   final GrammaticalStructure structure;
-  final Quizz quiz;
+  late Quizz quiz;
 
-  MdlQuizGrammar(this.structure, this.quiz) {
-    question = quiz.question;
-    answerCorrect = quiz.answerCorrect;
-  }
+  MdlQuizGrammar(this.structure);
 
   @override
   SkillType get skillType => SkillType.reading;
@@ -18,6 +15,15 @@ class MdlQuizGrammar extends Quizz<CustomQuiz> {
   @override
   List<Quizz> generate(List<CustomQuiz> datas) {
     List<MdlQuizGrammar> quizzes = [];
+
+    for(var data in datas) {
+      var newQuiz = MdlQuizGrammar(structure);
+      newQuiz.question = data.question;
+      newQuiz.quiz = Quizzes.generateQuizCustom(customQuizs: [data]).first;
+
+      quizzes.add(newQuiz);
+    }
+
     return quizzes;
   }
 }

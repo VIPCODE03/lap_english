@@ -86,6 +86,7 @@ class DataService {
     var typeGrammarDao = TypeGrammarDao();
     var grammarDao = GrammarDao();
     var sructureDao = GrammaticalStructureDao();
+    var exerciseDao = ExerciseGrammarDao();
 
     generateGrammarTypes().forEach((data) async
     => typeGrammarDao.insert(data));
@@ -96,7 +97,8 @@ class DataService {
     generateGrammaticalStructures().forEach((data) async
     => sructureDao.insert(data));
 
+    generateExerciseGrammarForPresentSimple().forEach((data) async
+    => exerciseDao.insert(data));
   }
-
 }
 

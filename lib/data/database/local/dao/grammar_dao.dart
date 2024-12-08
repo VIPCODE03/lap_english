@@ -42,8 +42,8 @@ class ExerciseGrammarDao extends BaseDatabase<ExerciseGrammar> {
   @override
   TableSchema<ExerciseGrammar> get table => ExerciseGrammarTable();
 
-  getByIdGrammarStructure(int idGrammaticalStructure) => query(
-    'SELECT * FROM ${table.tableName} WHERE ${ExerciseGrammarTable.idGrammaticalStructure} = ? LIMIT 5',
+  Future<List<ExerciseGrammar>> getByIdGrammarStructure(int idGrammaticalStructure, int limit) => query(
+    'SELECT * FROM ${table.tableName} WHERE ${ExerciseGrammarTable.idGrammaticalStructure} = ? LIMIT $limit',
     [idGrammaticalStructure],
   );
 }

@@ -1,6 +1,7 @@
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
 import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
 import 'package:lap_english/data/database/local/dao/user_dao.dart';
+import 'package:lap_english/data/database/remote/service/vocabulary_service.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
@@ -48,8 +49,17 @@ mixin LoadDatas {
   }
 
   static Future<List<MdlWord>> _wordLoad(int idSubTopic) async {
-    WordDao wordDao = WordDao();
-    return wordDao.getWords(idSubTopic);
+    WordDao dao = WordDao();
+    var words = await dao.getWords(idSubTopic);
+    if(words.isEmpty) {
+       words = await VocabularyService().fetchWord(idSubTopic);
+       for(var word in words) {
+         dao.insert(word);
+       }
+       return words;
+    }
+
+    return words;
   }
 
   /*  Load câu  */
@@ -86,6 +96,6 @@ mixin LoadDatas {
 
   static Future<List<ExerciseGrammar>> _exerciseGrammarLoad(int idGrammaticalStructure) async {
     ExerciseGrammarDao dao = ExerciseGrammarDao();
-    return dao.getByIdGrammarStructure(idGrammaticalStructure);
+    return dao.getByIdGrammarStructure(idGrammaticalStructure, 5);
   }
 }
