@@ -84,6 +84,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           cumulativePoint: CumulativePoint(0, 0, 0),
           accumulate: MdlAccumulate(0, 0, 0, 1)
       );
+
       await _userDao.deleteAll();
       bool result = await _userDao.insert(user);
       if (result) {
