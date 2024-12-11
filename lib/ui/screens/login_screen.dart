@@ -30,18 +30,14 @@ class LoginScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
 
-            } else if(state is ErrorLoginState){
-              return AlertDialog(
-                title: const Text("Đăng nhập thất bại"),
-                content: Text(state.message),
-                actions: [
-                  TextButton(
-                      onPressed: () async {
-                        BlocProvider.of<AuthBloc>(context).add(InitAuthEvent());
-                      },
-                      child: const Text("OK"))
-                ],
-              );
+            } else if(state is ErrorLoginState) {
+              // showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return Text('data');
+              //     }
+              // );
+              return const SizedBox.shrink();
 
             } else if(state is PendingLoginState) {
               return Padding(
@@ -64,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           _googleSignIn.signOut();
-                          BlocProvider.of<AuthBloc>(context).add(LoginEvent(await _googleSignIn.signIn()));
+                          BlocProvider.of<AuthBloc>(context).add(LoginEvent(await _googleSignIn.signIn(), null));
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

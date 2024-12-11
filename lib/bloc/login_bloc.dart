@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lap_english/data/database/local/dao/user_dao.dart';
+import 'package:lap_english/data/database/remote/service/user_service.dart';
 import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/data/model/user/accumulate.dart';
 import 'package:lap_english/data/model/user/skill.dart';
@@ -14,9 +17,10 @@ abstract class AuthEvent {}
 class InitAuthEvent extends AuthEvent {}
 
 class LoginEvent extends AuthEvent {
-  GoogleSignInAccount? user;
+  GoogleSignInAccount? accountGG;
+  User? user;
 
-  LoginEvent(this.user);
+  LoginEvent(this.accountGG, this.user);
 }
 
 /*  Trạng thái  */
@@ -27,9 +31,13 @@ class PendingLoginState extends AuthState {}
 class LoadingLoginState extends AuthState {}
 
 class LoadedLoginState extends AuthState {
-  final List<User> users;
+  LoadedLoginState();
+}
 
-  LoadedLoginState(this.users);
+class LoginState extends AuthState {
+  final User user;
+
+  LoginState(this.user);
 }
 
 class ErrorLoginState extends AuthState {
@@ -51,17 +59,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginEvent>((event, emit) async {
       await _login(event, emit);
     });
+
     add(InitAuthEvent());
   }
 
   //=== Sự kiện khởi tạo  ===
   Future<void> _init(Emitter<AuthState> emit) async {
     emit(LoadingLoginState());
-    List<User> users = await _userDao.getData();
+    var users = await _userDao.getData();
     if (users.isEmpty) {
       emit(PendingLoginState());
     } else {
-      emit(LoadedLoginState(users));
+      add(LoginEvent(null, users.first));
     }
   }
 
@@ -69,29 +78,45 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _login(LoginEvent event, Emitter<AuthState> emit) async {
     emit(LoadingLoginState());
     try {
-      GoogleSignInAccount? userAuthGoogle = event.user;
-      if (userAuthGoogle == null) {
-        emit(PendingLoginState());
-        return;
-      }
-      User user = User(
-          avatar: userAuthGoogle.photoUrl,
-          name: userAuthGoogle.displayName!,
-          email: userAuthGoogle.email,
-          skills: Skill(1, 1, 1, 1),
-          titles: [],
-          dailyTasks: MdlDailyTask.create(),
-          cumulativePoint: CumulativePoint(0, 0, 0),
-          accumulate: MdlAccumulate(0, 0, 0, 1)
-      );
+      User? userCache = event.user;
+      GoogleSignInAccount? userAuthGoogle = event.accountGG;
 
-      await _userDao.deleteAll();
-      bool result = await _userDao.insert(user);
-      if (result) {
-        emit(LoadedLoginState([user]));
+      bool login = false;
+
+      if(userCache != null) {
+        login = await UserService(loggedIn: true).login(userCache);
+        if(!login) {
+          emit(LoadedLoginState());
+          return;
+        }
+      }
+
+      else {
+        if (userAuthGoogle == null) {
+          emit(ErrorLoginState('Lỗi đăng nhập'));
+          return;
+        }
+
+        User user = User(
+            avatar: userAuthGoogle.photoUrl,
+            name: userAuthGoogle.displayName!,
+            email: userAuthGoogle.email,
+            skills: Skill(1, 1, 1, 1),
+            titles: [],
+            dailyTasks: MdlDailyTask.create(),
+            cumulativePoint: CumulativePoint(0, Random().nextInt(100), 0),
+            accumulate: MdlAccumulate(0, 0, 0, 1)
+        );
+
+        login = await UserService(loggedIn: false).login(user);
+      }
+
+      if (login) {
+        emit(LoadedLoginState());
         return;
       }
-      emit(PendingLoginState());
+
+      emit(ErrorLoginState('Đăng nhập thất bại'));
 
     } catch (e) {
       emit(ErrorLoginState(e.toString()));

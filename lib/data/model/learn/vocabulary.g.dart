@@ -11,6 +11,7 @@ MdlMainVocabularyTopic _$MdlMainVocabularyTopicFromJson(
     MdlMainVocabularyTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
+          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MdlMainVocabularyTopicToJson(
@@ -18,6 +19,7 @@ Map<String, dynamic> _$MdlMainVocabularyTopicToJson(
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'status': instance.status,
     };
 
 MdlSubVocabularyTopic _$MdlSubVocabularyTopicFromJson(
@@ -26,7 +28,8 @@ MdlSubVocabularyTopic _$MdlSubVocabularyTopicFromJson(
       (json['id'] as num).toInt(),
       json['name'] as String,
       json['imageUrl'] as String,
-      (json['idMainTopic'] as num).toInt(),
+      (json['mainTopicId'] as num).toInt(),
+          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
       isLearned: json['isLearned'] as bool? ?? false,
     );
 
@@ -37,7 +40,8 @@ Map<String, dynamic> _$MdlSubVocabularyTopicToJson(
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'isLearned': instance.isLearned,
-      'idMainTopic': instance.idMainTopic,
+      'status': instance.status,
+      'mainTopicId': instance.mainTopicId,
     };
 
 MdlWord _$MdlWordFromJson(Map<String, dynamic> json) => MdlWord(

@@ -1,64 +1,36 @@
 // Function to generate a list of main topics
-List<Map<String, dynamic>> generateMainVocabularyTopics() {
-  return [
-    {
-      "id": 1,
-      "name": "Phổ biến"
-    },
-    {
-      "id": 2,
-      "name": "Trái cây"
-    },
-    {
-      "id": 3,
-      "name": "Anh triệu đẹp troai vl"
-    },
-    {
-      "id": 4,
-      "name": "Anh triệu vip vl"
-    },
-    {
-      "id": 5,
-      "name": "Động vật"
-    },
-    {
-      "id": 6,
-      "name": "Địa lý"
-    },
-    {
-      "id": 7,
-      "name": "Món ăn"
-    },
-    {
-      "id": 8,
-      "name": "Sự kiện lịch sử"
-    },
-    {
-      "id": 9,
-      "name": "Văn học"
-    },
-    {
-      "id": 10,
-      "name": "Khoa học"
-    },
-    {
-      "id": 11,
-      "name": "Con số"
-    },
-    {
-      "id": 12,
-      "name": "Môn học"
-    },
-    {
-      "id": 13,
-      "name": "Đời sống"
-    }
+import 'package:lap_english/data/model/learn/vocabulary.dart';
+
+import '../data/model/learn/status.dart';
+
+List<MdlMainVocabularyTopic> generateMainVocabularyTopics() {
+  final List<Map<String, dynamic>> data = [
+    {"id": 1, "name": "Phổ biến"},
+    {"id": 2, "name": "Trái cây"},
+    {"id": 3, "name": "Anh triệu đẹp troai vl"},
+    {"id": 4, "name": "Anh triệu vip vl"},
+    {"id": 5, "name": "Động vật"},
+    {"id": 6, "name": "Địa lý"},
+    {"id": 7, "name": "Món ăn"},
+    {"id": 8, "name": "Sự kiện lịch sử"},
+    {"id": 9, "name": "Văn học"},
+    {"id": 10, "name": "Khoa học"},
+    {"id": 11, "name": "Con số"},
+    {"id": 12, "name": "Môn học"},
+    {"id": 13, "name": "Đời sống"}
   ];
+
+  return data.map((item) {
+    return MdlMainVocabularyTopic(
+      item['id'],
+      item['name'],
+      MdlUnlockStatusManager(diamond: 0, gold: 0, locked: true),
+    );
+  }).toList();
 }
 
-// Function to generate a list of sub-topics
-List<Map<String, dynamic>> generateSubVocabularyTopics() {
-  return [
+List<MdlSubVocabularyTopic> generateSubVocabularyTopics() {
+  final List<Map<String, dynamic>> data = [
     // Chủ đề con của "Phổ biến"
     {
       "id": 1,
@@ -104,143 +76,20 @@ List<Map<String, dynamic>> generateSubVocabularyTopics() {
       "isLearned": false,
       "idMainTopic": 2
     },
-
-    // Chủ đề con của "Anh triệu đẹp troai vl"
-    {
-      "id": 7,
-      "name": "Phong cách",
-      "imageUrl": "https://i.pinimg.com/236x/48/ce/91/48ce9180a30c3d797b3fc6de2eec60ed.jpg",
-      "isLearned": false,
-      "idMainTopic": 3
-    },
-    {
-      "id": 8,
-      "name": "Thời trang",
-      "imageUrl": "https://i.pinimg.com/236x/48/ce/91/48ce9180a30c3d797b3fc6de2eec60ed.jpg",
-      "isLearned": false,
-      "idMainTopic": 3
-    },
-
-    // Chủ đề con của "Anh triệu vip vl"
-    {
-      "id": 10,
-      "name": "Siêu xe",
-      "imageUrl": "https://png.pngtree.com/png-vector/20201223/ourlarge/pngtree-cute-cartoon-girl-material-png-image_2604322.jpg",
-      "isLearned": false,
-      "idMainTopic": 4
-    },
-    {
-      "id": 11,
-      "name": "Du lịch",
-      "imageUrl": "https://png.pngtree.com/png-vector/20201223/ourlarge/pngtree-cute-cartoon-girl-material-png-image_2604322.jpg",
-      "isLearned": false,
-      "idMainTopic": 4
-    },
-    {
-      "id": 12,
-      "name": "Kinh doanh",
-      "imageUrl": "https://i.pinimg.com/236x/48/ce/91/48ce9180a30c3d797b3fc6de2eec60ed.jpg",
-      "isLearned": false,
-      "idMainTopic": 4
-    },
-
-    // Chủ đề con của "Động vật"
-    {
-      "id": 13,
-      "name": "Chó",
-      "imageUrl": "https://png.pngtree.com/png-vector/20201223/ourlarge/pngtree-cute-cartoon-girl-material-png-image_2604322.jpg",
-      "isLearned": false,
-      "idMainTopic": 5
-    },
-    {
-      "id": 14,
-      "name": "Mèo",
-      "imageUrl": "https://png.pngtree.com/png-vector/20201223/ourlarge/pngtree-cute-cartoon-girl-material-png-image_2604322.jpg",
-      "isLearned": false,
-      "idMainTopic": 5
-    },
-
-    // Chủ đề con của "Địa lý"
-    {
-      "id": 15,
-      "name": "Quốc gia",
-      "imageUrl": "https://i.pinimg.com/236x/48/ce/91/48ce9180a30c3d797b3fc6de2eec60ed.jpg",
-      "isLearned": false,
-      "idMainTopic": 6
-    },
-    {
-      "id": 16,
-      "name": "Thành phố",
-      "imageUrl": "https://png.pngtree.com/png-vector/20201223/ourlarge/pngtree-cute-cartoon-girl-material-png-image_2604322.jpg",
-      "isLearned": false,
-      "idMainTopic": 6
-    },
-
-    // Chủ đề con của "Món ăn"
-    {
-      "id": 116,
-      "name": "Bánh mì",
-      "imageUrl": "https://example.com/bread.jpg",
-      "isLearned": false,
-      "idMainTopic": 7
-    },
-    {
-      "id": 117,
-      "name": "Phở",
-      "imageUrl": "https://example.com/pho.jpg",
-      "isLearned": false,
-      "idMainTopic": 7
-    },
-
-    // Chủ đề con của "Sự kiện lịch sử"
-    {
-      "id": 118,
-      "name": "Chiến tranh thế giới",
-      "imageUrl": "https://example.com/worldwar.jpg",
-      "isLearned": false,
-      "idMainTopic": 8
-    },
-    {
-      "id": 119,
-      "name": "Cách mạng",
-      "imageUrl": "https://example.com/revolution.jpg",
-      "isLearned": false,
-      "idMainTopic": 8
-    },
-
-    // Chủ đề con của "Văn học"
-    {
-      "id": 120,
-      "name": "Tiểu thuyết",
-      "imageUrl": "https://example.com/novel.jpg",
-      "isLearned": false,
-      "idMainTopic": 9
-    },
-    {
-      "id": 121,
-      "name": "Thơ",
-      "imageUrl": "https://example.com/poem.jpg",
-      "isLearned": false,
-      "idMainTopic": 9
-    },
-
-    // Chủ đề con của "Khoa học"
-    {
-      "id": 122,
-      "name": "Vật lý",
-      "imageUrl": "https://example.com/physics.jpg",
-      "isLearned": false,
-      "idMainTopic": 10
-    },
-    {
-      "id": 123,
-      "name": "Hóa học",
-      "imageUrl": "https://example.com/chemistry.jpg",
-      "isLearned": false,
-      "idMainTopic": 10
-    }
   ];
+
+  return data.map((item) {
+    return MdlSubVocabularyTopic(
+      item['id'],
+      item['name'],
+      item['imageUrl'],
+      item['idMainTopic'],
+      MdlUnlockStatusManager(diamond: 0, gold: 0, locked: true),
+      isLearned: item['isLearned'] ?? false,
+    );
+  }).toList();
 }
+
 
 // Function to generate a list of words
 List<Map<String, dynamic>> generateWords() {

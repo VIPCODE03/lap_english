@@ -1,41 +1,28 @@
+import 'dart:convert';
+
+import 'package:lap_english/data/model/learn/status.dart';
+
 import '../data/model/learn/sentence.dart';
 
 List<MdlMainSentenceTopic> generateMainSentenceTopics() {
   return [
-    MdlMainSentenceTopic(1, 'Chủ đề chính 1'),
-    MdlMainSentenceTopic(2, 'Chủ đề chính 2'),
-    MdlMainSentenceTopic(3, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(4, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(5, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(6, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(7, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(8, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(9, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(10, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(11, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(12, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(13, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(14, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(15, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(16, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(17, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(18, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(19, 'Chủ đề chính 3'),
-    MdlMainSentenceTopic(20, 'Chủ đề chính 3'),
+    MdlMainSentenceTopic(1, 'Chủ đề chính 1', MdlUnlockStatusManager(diamond: 50, gold: 200, locked: false)),
+    MdlMainSentenceTopic(1, 'Chủ đề chính 2', MdlUnlockStatusManager(diamond: 50, gold: 200, locked: false)),
+    MdlMainSentenceTopic(1, 'Chủ đề chính 3', MdlUnlockStatusManager(diamond: 50, gold: 200, locked: false)),
   ];
 }
 
 List<MdlSubSentenceTopic> generateSubSentenceTopics() {
   return [
-    MdlSubSentenceTopic(101, 'Gọi món ăn', 'https://example.com/image1.jpg', 1, isLearned: false),
-    MdlSubSentenceTopic(102, 'Các món ăn', 'https://example.com/image2.jpg', 1, isLearned: false),
-    MdlSubSentenceTopic(103, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, isLearned: false),
-    MdlSubSentenceTopic(104, 'Phương tiện đường thủy', 'https://example.com/image3.jpg', 2, isLearned: false),
-    MdlSubSentenceTopic(105, 'Chạy', 'https://example.com/image3.jpg', 2, isLearned: false),
-    MdlSubSentenceTopic(106, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, isLearned: false),
-    MdlSubSentenceTopic(107, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, isLearned: false),
-    MdlSubSentenceTopic(108, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, isLearned: false),
-    MdlSubSentenceTopic(109, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, isLearned: false),
+    MdlSubSentenceTopic(101, 'Gọi món ăn', 'https://example.com/image1.jpg', 1, MdlUnlockStatusManager(diamond: 0, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(102, 'Các món ăn', 'https://example.com/image2.jpg', 1, MdlUnlockStatusManager(diamond: 0, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(103, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(104, 'Phương tiện đường thủy', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(105, 'Chạy', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(106, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(107, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(108, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
+    MdlSubSentenceTopic(109, 'Phương tiện đường bộ', 'https://example.com/image3.jpg', 2, MdlUnlockStatusManager(diamond: 5, gold: 50, locked: true), isLearned: false),
   ];
 }
 
@@ -65,3 +52,10 @@ List<MdlSentence> generateSentences() {
   ];
 }
 
+void main() {
+  // Chuyển đối tượng thành chuỗi JSON
+  String jsonString = jsonEncode(generateSubSentenceTopics().first.toJson());
+
+  // In chuỗi JSON ra màn hình
+  print(jsonString);
+}

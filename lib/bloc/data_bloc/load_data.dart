@@ -1,12 +1,13 @@
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
 import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
 import 'package:lap_english/data/database/local/dao/user_dao.dart';
+import 'package:lap_english/data/database/remote/service/subtopic_service.dart';
+import 'package:lap_english/data/database/remote/service/user_service.dart';
 import 'package:lap_english/data/database/remote/service/vocabulary_service.dart';
+import 'package:lap_english/data/database/remote/service/word_and_sentence_service.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
-
-import '../../data/database/local/dao/vocabulary_dao.dart';
 import '../../data/model/user/user.dart';
 
 mixin LoadDatas {
@@ -33,23 +34,34 @@ mixin LoadDatas {
 
   /*  Load người dùng */
   static Future<List<User>> _userLoad() async {
-    UserDao dao = UserDao();
-    return dao.getData();
+    UserDao userDao = UserDao();
+    UserService service = UserService(loggedIn: true);
+    var users = await userDao.getData();
+    await service.login(users.first);
+    return userDao.getData();
   }
 
   /*  Load từ vựng  */
   static Future<List<MdlMainVocabularyTopic>> _mainVocabularyTopicLoad() async {
-    MainVocabularyTopicDao mainDao = MainVocabularyTopicDao();
-    return mainDao.getData(firstToLast: true);
+    MainTopicVocabularyService service = MainTopicVocabularyService();
+    List<MdlMainVocabularyTopic>? mains = await service.fetchAll();
+    if(mains != null) {
+      return mains;
+    }
+    return [];
   }
 
   static Future<List<MdlSubVocabularyTopic>> _subVocabularyTopicLoad(int idMainTopic) async {
-    SubVocabularyTopicDao subDao = SubVocabularyTopicDao();
-    return subDao.getSubVocabularyTopics(idMainTopic);
+    SubTopicVocabularyService service = SubTopicVocabularyService();
+    List<MdlSubVocabularyTopic>? mains = await service.fetchPage(idMainTopic, 0, 100);
+    if(mains != null) {
+      return mains;
+    }
+    return [];
   }
 
   static Future<List<MdlWord>> _wordLoad(int idSubTopic) async {
-    WordDao dao = WordDao();
+/*    WordDao dao = WordDao();
     var words = await dao.getWords(idSubTopic);
     if(words.isEmpty) {
        words = await VocabularyService().fetchWord(idSubTopic);
@@ -59,13 +71,19 @@ mixin LoadDatas {
        return words;
     }
 
-    return words;
+    return words;*/
+    WordService service = WordService();
+    return service.fetchByIdSubTopic(idSubTopic);
   }
 
   /*  Load câu  */
   static Future<List<MdlMainSentenceTopic>> _mainSentenceTopicLoad() async {
-    MainSentenceTopicDao mainDao = MainSentenceTopicDao();
-    return mainDao.getData(firstToLast: true);
+    MainTopicSentenceService service = MainTopicSentenceService();
+    List<MdlMainSentenceTopic>? mains = await service.fetchAll();
+    if(mains != null) {
+      return mains;
+    }
+    return [];
   }
 
   static Future<List<MdlSubSentenceTopic>> _subSentenceTopicLoad(int idMainTopic) async {

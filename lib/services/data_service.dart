@@ -53,10 +53,10 @@ class DataService {
       // => wordDao.insert(MdlWord.fromJson(json)));
 
       generateMainVocabularyTopics().forEach((data) async
-      => mainTopicVocabularyDao.insert(MdlMainVocabularyTopic.fromJson(data)));
+      => mainTopicVocabularyDao.insert(data));
 
       generateSubVocabularyTopics().forEach((data) async
-      => subTopicVocabularyDao.insert(MdlSubVocabularyTopic.fromJson(data)));
+      => subTopicVocabularyDao.insert(data));
 
       generateWords().forEach((data) async
       => wordDao.insert(MdlWord.fromJson(data)));

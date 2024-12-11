@@ -5,6 +5,7 @@ import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/dialogs/dialog_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
@@ -416,26 +417,28 @@ class _QuizzScreenState extends State<QuizzScreen> {
   /// Show dialog xác nhận thoát  ----------------------------------------------
   void _showExitConfirmationDialog(BuildContext parentContext) {
     showDialog(
-      context: parentContext,
-      builder: (context) => AlertDialog(
-        title: const Text('Xác nhận thoát'),
-        content: const Text('Bạn sẽ mất tiến trình'),
-        actions: [
-          WdgButton(
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pop(parentContext);
-            },
-            color: Colors.transparent,
-            child: const Text('Thoát', style: TextStyle(color: Colors.red)),
-          ),
-          WdgButton(
-            onTap: () => Navigator.pop(context),
-            color: Colors.transparent,
-            child: const Text('Tiếp tục học', style: TextStyle(color: Colors.green)),
-          ),
-        ],
-      ),
+        context: parentContext,
+        builder: (BuildContext context) {
+          return WdgDialog(
+              title: const Text('Xác nhận thoát'),
+              content: const Text('Bạn sẽ mất tiến trình'),
+              actions: [
+                WdgButton(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(parentContext);
+                  },
+                  color: Colors.transparent,
+                  child: const Text('Thoát', style: TextStyle(color: Colors.red)),
+                ),
+                WdgButton(
+                  onTap: () => Navigator.pop(context),
+                  color: Colors.transparent,
+                  child: const Text('Tiếp tục học', style: TextStyle(color: Colors.green)),
+                ),
+              ]
+          );
+        },
     );
   }
 
