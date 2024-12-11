@@ -11,6 +11,7 @@ MdlMainVocabularyTopic _$MdlMainVocabularyTopicFromJson(
     MdlMainVocabularyTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
+          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MdlMainVocabularyTopicToJson(
@@ -18,6 +19,7 @@ Map<String, dynamic> _$MdlMainVocabularyTopicToJson(
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'status': instance.status,
     };
 
 MdlSubVocabularyTopic _$MdlSubVocabularyTopicFromJson(
@@ -26,7 +28,8 @@ MdlSubVocabularyTopic _$MdlSubVocabularyTopicFromJson(
       (json['id'] as num).toInt(),
       json['name'] as String,
       json['imageUrl'] as String,
-      (json['idMainTopic'] as num).toInt(),
+      (json['mainTopicId'] as num).toInt(),
+          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
       isLearned: json['isLearned'] as bool? ?? false,
     );
 
@@ -37,7 +40,8 @@ Map<String, dynamic> _$MdlSubVocabularyTopicToJson(
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'isLearned': instance.isLearned,
-      'idMainTopic': instance.idMainTopic,
+      'status': instance.status,
+      'mainTopicId': instance.mainTopicId,
     };
 
 MdlWord _$MdlWordFromJson(Map<String, dynamic> json) => MdlWord(
@@ -49,19 +53,23 @@ MdlWord _$MdlWordFromJson(Map<String, dynamic> json) => MdlWord(
       json['type'] as String,
       json['level'] as String,
       json['example'] as String,
-      json['imageUrl'] as String,
-      (json['idSubTopic'] as num).toInt(),
+      (json['subTopicId'] as num).toInt(),
+      imageBlobName: json['imageBlobName'] as String?,
+      audioUkBlobName: json['audioUkBlobName'] as String?,
+      audioUsBlobName: json['audioUsBlobName'] as String?,
     );
 
 Map<String, dynamic> _$MdlWordToJson(MdlWord instance) => <String, dynamic>{
       'id': instance.id,
       'word': instance.word,
       'meaning': instance.meaning,
-      'imageUrl': instance.imageUrl,
       'pronounceUK': instance.pronounceUK,
       'pronounceUS': instance.pronounceUS,
       'type': instance.type,
       'level': instance.level,
       'example': instance.example,
-      'idSubTopic': instance.idSubTopic,
+      'subTopicId': instance.subTopicId,
+      'imageBlobName': instance.imageBlobName,
+      'audioUkBlobName': instance.audioUkBlobName,
+      'audioUsBlobName': instance.audioUsBlobName,
     };

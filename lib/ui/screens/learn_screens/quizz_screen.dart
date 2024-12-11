@@ -5,6 +5,7 @@ import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/dialogs/dialog_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
@@ -20,14 +21,21 @@ import '../../widgets/learn/quiz/z_quizz_result.dart';
 import '../../widgets/other/button.dart';
 
 class QuizzScreen extends StatefulWidget {
-  final List<Quizz> _quizzes;
+  final Future<List<Quizz>> _quizzes;
   final TypeQuizz _typeQuizz;
   final bool _isLearned;
   final bool _isCustom;
 
+  final int _totalWord;
+  final int _totalSentence;
+  final int _totalGrammar;
+
   QuizzScreen.vocabulary({super.key, required List<MdlWord> words, required bool isLearned})
     :
         _typeQuizz = TypeQuizz.quizzVocabulary,
+        _totalWord = words.length,
+        _totalSentence = 0,
+        _totalGrammar = 0,
         _isLearned = isLearned,
         _isCustom = false,
       _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
@@ -35,6 +43,9 @@ class QuizzScreen extends StatefulWidget {
   QuizzScreen.sentence({super.key, required List<MdlSentence> sentences, required bool isLearned})
       :
         _typeQuizz = TypeQuizz.quizzSentence,
+        _totalWord = 0,
+        _totalSentence = sentences.length,
+        _totalGrammar = 0,
         _isLearned = isLearned,
         _isCustom = false,
       _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
@@ -42,6 +53,9 @@ class QuizzScreen extends StatefulWidget {
   QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures})
       :
         _typeQuizz = TypeQuizz.quizGrammar,
+        _totalWord = 0,
+        _totalSentence = 0,
+        _totalGrammar = structures.length,
         _isLearned = false,
         _isCustom = true,
         _quizzes = Quizzes.generateQuizGrammar(structures: structures);
@@ -51,110 +65,169 @@ class QuizzScreen extends StatefulWidget {
 }
 
 class _QuizzScreenState extends State<QuizzScreen> {
+  List<Quizz>? _quizzes;
+  late QuizzBloc _quizzBloc;
+
   final AudioPlayerUtil _audio = AudioPlayerUtil();
   bool _noAudio = false;
 
   bool showQuizz = false;
   bool next = false;
   bool isNext = true;
+  bool init = false;
   late WdgQuizz currentQuizz;
-  double progress = 0;
 
-  int a = 0;
+  double progress = 0;
 
   @override
   void initState() {
     super.initState();
-    widget._quizzes.shuffle();
 
-    Future.delayed(const Duration(seconds: 2), () {
+    widget._quizzes.then((quizzes) {
+      //--- Cập nhật sau khi bắt đầu  ---
+      Future.delayed(const Duration(seconds: 2), () {
+        if (!showQuizz) {
+          setState(() {
+            showQuizz = true;
+          });
+        }
+      });
+
       setState(() {
-        showQuizz = true;
+        _quizzes = quizzes;
+        _quizzBloc = QuizzBloc(
+            quizzes..shuffle(),
+            widget._typeQuizz, widget._isLearned, widget._totalWord, widget._totalSentence, widget._totalGrammar)
+          ..add(QuizzInit());
+      });
+    }).catchError((error) {
+      setState(() {
+        _quizzes = null;
       });
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-            create: (context) => QuizzBloc(widget._quizzes, widget._typeQuizz, widget._isLearned)..add(QuizzInit()),
-            child: BlocBuilder<QuizzBloc, QuizzState>(
-              builder: (context, state) {
-                if (state is QuizzInProgress) {
-                  if(isNext) {
-                    currentQuizz = WdgQuizzes.generate(state.currentQuizz);
-                    progress = state.progress;
-                    isNext = false;
-                  }
+  Widget build(BuildContext quizContext) {
+    //--- Đang tải hoặc lỗi ---
+    if (_quizzes == null) {
+      return const WdgScaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
-                  return  WdgScaffold(
-                      appBar: WdgAppBar(
-                        onBack: () {
-                          _noAudio = true;
-                          showExitConfirmationDialog(context);
-                        },
-                        content: SizedBox(
-                            height: isTablet
-                                ? orientation == Orientation.portrait ? maxHeight * 0.04 : 30
-                                : orientation == Orientation.portrait ? maxHeight * 0.03 : 20 ,
-                            child: WdgAnimatedProgressBar(value: state.progress)),
-                      ),
+    //--- Không có dữ liệu  ---
+    if (_quizzes!.isEmpty) {
+      if(!showQuizz) {
+        return const WdgScaffold(
+          body: Center(child: Text('Không có dữ liệu')),
+        );
+      }
+    }
+
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (isTrue, dynamic) async {
+          if (ModalRoute.of(quizContext)?.isCurrent == true) {
+            _showExitConfirmationDialog(quizContext);
+          }},
+
+        child: BlocProvider.value(
+          value: _quizzBloc,
+          child: BlocBuilder<QuizzBloc, QuizzState>(
+            builder: (context, state) {
+              if (state is QuizzInProgress) {
+                if (isNext) {
+                  currentQuizz = WdgQuizzes.generate(state.currentQuizz);
+                  progress = state.progress;
+                  isNext = false;
+                }
+
+                return WdgScaffold(
+                    appBar: WdgAppBar(
+                      onBack: () {
+                        _noAudio = true;
+                        _showExitConfirmationDialog(quizContext);
+                      },
+                      content: SizedBox(
+                          height: isTablet
+                              ? orientation == Orientation.portrait
+                                  ? maxHeight * 0.04
+                                  : 30
+                              : orientation == Orientation.portrait
+                                  ? maxHeight * 0.03
+                                  : 20,
+                          child: WdgAnimatedProgressBar(value: state.progress)),
+                    ),
                     body: Column(
                       children: [
                         ///Text kĩ năng -------------------------------------------
-                        if(!widget._isCustom)
+                        if (!widget._isCustom)
                           Container(
-                              height: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.05,
+                              height: orientation == Orientation.portrait
+                                  ? maxHeight * 0.03
+                                  : maxHeight * 0.05,
                               margin: const EdgeInsets.all(3),
                               alignment: Alignment.centerLeft,
                               child: FittedBox(
                                 child: Text(
                                   Skill.skillName(currentQuizz.quizz.skillType),
                                   style: const TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.w700),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700),
                                 ),
-                              )
-                          ),
+                              )),
 
                         ///Text câu hỏi -------------------------------------------
                         Container(
-                          constraints: BoxConstraints(minHeight: maxHeight * 0.03),
+                          constraints:
+                              BoxConstraints(minHeight: maxHeight * 0.03),
                           margin: const EdgeInsets.all(3),
                           alignment: Alignment.centerLeft,
-                          child: WdgSpecialText(text: currentQuizz.quizz.question),
+                          child:
+                              WdgSpecialText(text: currentQuizz.quizz.question),
                         ),
 
                         ///Slide quizz  ----------------------------------------------
-                        Expanded(child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 666),
-                          transitionBuilder: (Widget child, Animation<double> animation) {
-                            var right = const Offset(0.5, 0.0);
-                            var left = const Offset(-10.0, 0.0);
-                            const center = Offset.zero;
-                            next = !next;
+                        Expanded(
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 666),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                var right = const Offset(0.5, 0.0);
+                                var left = const Offset(-10.0, 0.0);
+                                const center = Offset.zero;
+                                next = !next;
 
-                            var tween = Tween(begin: next ? right : left, end: center)
-                                .chain(CurveTween(curve: Curves.easeInOutCubic));
+                                var tween = Tween(begin: next ? right : left, end: center)
+                                    .chain(CurveTween(curve: Curves.easeInOutCubic));
 
-                            animation.addStatusListener((status) {
-                              if (status == AnimationStatus.completed) {
-                                if(showQuizz) currentQuizz.status.isStarted.value = true;
-                              }
-                            });
+                                animation.addStatusListener((status) {
+                                  if (status == AnimationStatus.completed) {
+                                    if (showQuizz) {
+                                      currentQuizz.status.isStarted.value = true;
+                                    }
+                                  }
+                                });
 
-                            return SlideTransition(
-                              position: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                          child: Container(
-                            key: showQuizz ? currentQuizz.keyID : UniqueKey(),
-                            child: showQuizz ? currentQuizz : const Center(child: Text('Bắt đầu'),),
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: child,
+                                );
+                              },
+                              child: Container(
+                                key: showQuizz ? currentQuizz.keyID : UniqueKey(),
+                                child: showQuizz
+                                    ? currentQuizz
+                                    : const Center(
+                                        child: Text('Start',
+                                            style: TextStyle(fontSize: 30)),
+                                      ),
                           ),
                         )),
 
                         /// Button skip quizz nói hoặc nghe ----------------------------------
-                        if (currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening)
+                        if ((currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening) && showQuizz)
                           FittedBox(
                             child: SizedBox(
                                 height: orientation == Orientation.portrait
@@ -169,7 +242,8 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                     context.read<QuizzBloc>().add(QuizzSkip());
                                   },
                                   child: Text(
-                                    currentQuizz.quizz.skillType == SkillType.speaking
+                                    currentQuizz.quizz.skillType ==
+                                            SkillType.speaking
                                         ? 'Hiện tại không nói được'
                                         : 'Hiện tại không nghe được',
                                     style: TextStyle(
@@ -181,9 +255,15 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
                         ///Button kiểm tra  ------------------------------------------
                         Container(
-                            height: orientation == Orientation.portrait ? maxHeight * 0.07 : maxHeight * 0.1,
+                            height: orientation == Orientation.portrait
+                                ? maxHeight * 0.07
+                                : maxHeight * 0.1,
                             width: maxWidth * 0.85,
-                            margin: EdgeInsets.only(bottom: 15, top: orientation == Orientation.portrait ? maxHeight * 0.03 : maxHeight * 0.01),
+                            margin: EdgeInsets.only(
+                                bottom: 15,
+                                top: orientation == Orientation.portrait
+                                    ? maxHeight * 0.03
+                                    : maxHeight * 0.01),
                             child: ValueListenableBuilder<bool>(
                               valueListenable: currentQuizz.status.isAnswered,
                               builder: (context, value, child) {
@@ -191,21 +271,25 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                     buttonFit: ButtonFit.scaleDown,
                                     onTap: () {
                                       if (value) {
-                                        isNext = false;
                                         //--- Lấy kết quả ---
-                                        currentQuizz.status.isChecked.value = true;
-                                        var isCorrect = currentQuizz.status.isCorrect!;
+                                        currentQuizz.status.isChecked.value =
+                                            true;
+                                        var isCorrect =
+                                            currentQuizz.status.isCorrect!;
                                         String title = isCorrect
-                                            ? state.accolades[state.accoladesIndex]
-                                            : state.encouragements[state.encouragementsIndex];
+                                            ? state
+                                                .accolades[state.accoladesIndex]
+                                            : state.encouragements[
+                                                state.encouragementsIndex];
 
                                         //--- Âm thanh đúng/sai ---
-                                        if(!_noAudio) {
-                                          if(isCorrect) {
-                                            _audio.playFromAsset(Assets.sounds.correct);
-                                          }
-                                          else {
-                                            _audio.playFromAsset(Assets.sounds.wrong);
+                                        if (!_noAudio) {
+                                          if (isCorrect) {
+                                            _audio.playFromAsset(
+                                                Assets.sounds.correct);
+                                          } else {
+                                            _audio.playFromAsset(
+                                                Assets.sounds.wrong);
                                           }
                                         }
 
@@ -226,26 +310,24 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                       child: Text(
                                         'Kiểm tra',
                                         style: TextStyle(
-                                          fontSize: 20,),
+                                          fontSize: 20,
+                                        ),
                                       ),
-                                    )
-                                );
+                                    ));
                               },
-                            )
-                        ),
+                            )),
                       ],
-                    )
-                  );
+                    ));
+              } else if (state is QuizzCompleted) {
+                return WdgQuizzResult(quizzResult: state.quizzResult);
+              }
 
-                } else if (state is QuizzCompleted) {
-                  return WdgQuizzResult(quizzResult: state.quizzResult);
-                }
-                return const Center(child: CircularProgressIndicator());
-              },
-            ),
-    );
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        ));
   }
-  
+
   ///Dialog kết quả ------------------------------------------------------------
   void _buildBottomDialogResult(BuildContext parentContext, String title, String? answerCorrect, bool isCorrect) {
     showModalBottomSheet(
@@ -332,24 +414,32 @@ class _QuizzScreenState extends State<QuizzScreen> {
     );
   }
 
-  void showExitConfirmationDialog(BuildContext parentContext)  {
+  /// Show dialog xác nhận thoát  ----------------------------------------------
+  void _showExitConfirmationDialog(BuildContext parentContext) {
     showDialog(
-      context: parentContext,
-      builder: (context) =>
-          AlertDialog(
-            title: Text('Xác nhận'),
-            content: Text('Bạn có chắc chắn muốn thoát?'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Không'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(parentContext),
-                child: Text('Có'),
-              ),
-            ],
-          ),
+        context: parentContext,
+        builder: (BuildContext context) {
+          return WdgDialog(
+              title: const Text('Xác nhận thoát'),
+              content: const Text('Bạn sẽ mất tiến trình'),
+              actions: [
+                WdgButton(
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(parentContext);
+                  },
+                  color: Colors.transparent,
+                  child: const Text('Thoát', style: TextStyle(color: Colors.red)),
+                ),
+                WdgButton(
+                  onTap: () => Navigator.pop(context),
+                  color: Colors.transparent,
+                  child: const Text('Tiếp tục học', style: TextStyle(color: Colors.green)),
+                ),
+              ]
+          );
+        },
     );
   }
+
 }

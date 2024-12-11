@@ -7,6 +7,7 @@ import 'package:lap_english/data/model/user/skill.dart';
 
 abstract class QuizzSoundChooseOne<T> extends Quizz<T> {
   bool showSoundBox = false;
+  Map<String, String?> sounds = {};
 
   @override
   SkillType get skillType => SkillType.listening;
@@ -24,6 +25,7 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
       //--- Tạo câu hỏi ---
       if(quizzSound.showSoundBox) {
         quizzSound.question = "Bạn nghe được từ gì?";
+        quizzSound.sounds[word.word] = Random().nextBool() ? word.audioUkBlobName : word.audioUsBlobName;
       }
       else {
         quizzSound.question = "Phát âm: <${word.word}>";
@@ -39,6 +41,7 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
       for(var w in answers) {
         quizzSound.answers.add(w.word);
         quizzSound.answersCorrect[w.word] = w == word;
+        quizzSound.sounds[w.word] = Random().nextBool() ? w.audioUkBlobName : w.audioUsBlobName;
       }
       quizzSound.answerCorrect = word.word;
 

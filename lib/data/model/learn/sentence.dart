@@ -1,5 +1,5 @@
-
 import 'package:json_annotation/json_annotation.dart';
+import 'package:lap_english/data/model/learn/status.dart';
 
 part 'sentence.g.dart';
 
@@ -8,8 +8,9 @@ part 'sentence.g.dart';
 class MdlMainSentenceTopic {
   final int id;
   String name;
+  MdlUnlockStatusManager status;
 
-  MdlMainSentenceTopic(this.id, this.name, );
+  MdlMainSentenceTopic(this.id, this.name, this.status);
 
   factory MdlMainSentenceTopic.fromJson(Map<String, dynamic> json) => _$MdlMainSentenceTopicFromJson(json);
   Map<String, dynamic> toJson() => _$MdlMainSentenceTopicToJson(this);
@@ -22,9 +23,10 @@ class MdlSubSentenceTopic {
   String name;
   String imageUrl;
   bool isLearned;
+  MdlUnlockStatusManager status;
   int idMainTopic;
 
-  MdlSubSentenceTopic(this.id, this.name, this.imageUrl, this.idMainTopic, {this.isLearned = false});
+  MdlSubSentenceTopic(this.id, this.name, this.imageUrl, this.idMainTopic, this.status, {this.isLearned = false});
 
   factory MdlSubSentenceTopic.fromJson(Map<String, dynamic> json) => _$MdlSubSentenceTopicFromJson(json);
   Map<String, dynamic> toJson() => _$MdlSubSentenceTopicToJson(this);

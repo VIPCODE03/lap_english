@@ -19,6 +19,8 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
           .toList(),
       cumulativePoint: CumulativePoint.fromJson(
           json['cumulativePoint'] as Map<String, dynamic>),
+      accumulate:
+          MdlAccumulate.fromJson(json['accumulate'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -29,4 +31,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'titles': instance.titles.map((e) => e.toJson()).toList(),
       'dailyTasks': instance.dailyTasks.map((e) => e.toJson()).toList(),
       'cumulativePoint': instance.cumulativePoint.toJson(),
+      'accumulate': instance.accumulate.toJson(),
     };

@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/chatbot/topic_chat.dart';
 import 'package:lap_english/ui/screens/learn_screens/chatbot_screen.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
+
+import '../../../../data/model/learn/chat.dart';
 
 class WdgRow3 extends StatelessWidget {
   final List<MdlTopicChat> topicChats;

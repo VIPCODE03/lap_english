@@ -4,6 +4,8 @@ import 'package:lap_english/data/model/quizz/quiz_image.dart';
 import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
+import 'package:lap_english/ui/widgets/other/dashed_border.dart';
+import 'package:lap_english/utils/loaddata_link.dart';
 import '../../other/button.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */
@@ -42,21 +44,30 @@ class _WdgQuizzImageState extends WdgQuizzState<MdlQuizImage, WdgQuizzImage> {
     return LayoutBuilder(
         builder: (context, constraints) {
           double itemHeight = isPortrait ? constraints.maxHeight / 2.5 : constraints.maxHeight;
-          double itemWidth = isPortrait ? constraints.maxWidth / 2.5 : constraints.maxWidth / 4.5;
+          double itemWidth = isPortrait ? constraints.maxWidth / 2.25 : constraints.maxWidth / 4.5;
 
           return Wrap(
+            runAlignment: WrapAlignment.center,
+            alignment: WrapAlignment.center,
             spacing: 10,
             runSpacing: 10,
             direction: isPortrait ? Axis.horizontal : Axis.vertical,
             children: [
               if(isImgQuestion)
-                SizedBox(
-                  height: isPortrait ? constraints.maxHeight / 3.5 : maxHeight,
-                  width: isPortrait ? constraints.maxWidth : constraints.maxWidth / 3.5,
-                  child: Image.network(widget.quizz.imgQuestion),
+                Center(child: WdgDashedBorder(
+                  dashWidth: 10,
+                  child: Container(
+                    padding: const EdgeInsets.all(25),
+                    height: 300,
+                    width: isPortrait ? null : constraints.maxWidth / 3.5,
+                    child: Image.network(LoadDataUtil.loadImage(widget.quizz.imgQuestion)),
+                  ))
                 ),
 
-              ...widget.quizz.answers.map((option) {
+            if(isPortrait && isImgQuestion)
+              const SizedBox(height: 50),
+
+            ...widget.quizz.answers.map((option) {
                 bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
                 if (isCorrect) widget.status.correctAnswer = option;
                 bool isSelected = option == selectedKey;
@@ -81,13 +92,15 @@ class _WdgQuizzImageState extends WdgQuizzState<MdlQuizImage, WdgQuizzImage> {
                           alignment: WrapAlignment.center,
                           runAlignment: WrapAlignment.center,
                           children: [
+                            /// Hỉnh ảnh đáp án ------------------------------------------
                             if(!isImgQuestion)
                               SizedBox(
                                 height: itemHeight / 2,
                                 width: itemWidth,
-                                child: Image.network(widget.quizz.imgAnswer[option]!),
+                                child: Image.network(LoadDataUtil.loadImage(widget.quizz.imgAnswer[option]!)),
                               ),
 
+                            /// Text đáp án ---------------------------------------------
                             SizedBox(
                               width: isImgQuestion
                                   ? isPortrait ? constraints.maxWidth : (constraints.maxWidth - constraints.maxWidth / 3.5) - 50

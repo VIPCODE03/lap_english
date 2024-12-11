@@ -1,8 +1,8 @@
-
 import 'dart:convert';
 
 import 'package:lap_english/a_librarys/vip_sqflite/database_vip.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
+import 'package:lap_english/data/provider/model_provider.dart';
 
 /*  Bảng câu  */
 class SentenceTable extends TableSchema<MdlSentence> {
@@ -51,7 +51,7 @@ class SubSentenceTopicTable extends TableSchema<MdlSubSentenceTopic> {
     if (column[data] != null) {
       return MdlSubSentenceTopic.fromJson(jsonDecode(column[data]));
     }
-    return MdlSubSentenceTopic(0, "name", "imageUrl", 0);
+    return ModelEmptyProvider.subSentenceTopic();
   }
 
   @override
@@ -78,7 +78,7 @@ class MainSentenceTopicTable extends TableSchema<MdlMainSentenceTopic> {
     if (column[data] != null) {
       return MdlMainSentenceTopic.fromJson(jsonDecode(column[data]));
     }
-    return MdlMainSentenceTopic(0, 'name');
+    return ModelEmptyProvider.mainSentenceTopic();
   }
 
   @override

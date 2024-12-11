@@ -7,10 +7,24 @@ import 'package:lap_english/ui/widgets/other/scaffold.dart';
 
 import '../../other/button.dart';
 
-class WdgQuizzResult extends StatelessWidget {
+class WdgQuizzResult extends StatefulWidget {
   final QuizzResult quizzResult;
 
   const WdgQuizzResult({super.key, required this.quizzResult});
+
+  @override
+  State<StatefulWidget> createState() => _WdgQuizzResultState();
+}
+
+class _WdgQuizzResultState extends State<WdgQuizzResult> {
+  late QuizzResult quizzResult;
+  List<bool> statusItemBonus = [true, true];
+
+  @override
+  void initState() {
+    super.initState();
+    quizzResult = widget.quizzResult;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,23 +33,27 @@ class WdgQuizzResult extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).padding.top + 25),
+                if(isPortrait)
+                  const SizedBox(height: 50),
+
+                /// Text name quiz  ---------------------------------------------
                 Text(
-                  _getNameQuiz(quizzResult.type),
+                  quizzResult.nameQuiz,
                   style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
                       color: VipColors.text(context)
                   ),
                 ),
-                Expanded(child: Column(
+
+                Expanded(child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  alignment: WrapAlignment.center,
                   children: [
-                    Text(
-                      'Đúng liên tiếp: ${quizzResult.correctConsecutive}',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w500),
-                    ),
                     const SizedBox(height: 16),
+
+                    /// Item skill  ---------------------------------------------------
                     _buildSkillResult('Reading', quizzResult.totalRead,
                         quizzResult.correctRead),
                     _buildSkillResult('Writing', quizzResult.totalWrite,
@@ -44,10 +62,28 @@ class WdgQuizzResult extends StatelessWidget {
                         quizzResult.correctListen),
                     _buildSkillResult('Speaking', quizzResult.totalSpeak,
                         quizzResult.correctSpeak),
+
+                    SizedBox(
+                        height: 30,
+                      width: isPortrait ? 1 : maxWidth,
+                    ),
+
+                    /// Item bonus  -----------------------------------------------------
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildItemBonus(context, 'KN', '+ ${quizzResult.pointRank}', 0),
+
+                        _buildItemBonus(context, 'Vàng', '+ ${quizzResult.bonus}', 1),
+                      ],
+                    ),
                   ],
                 )),
+
                 Container(
-                    height: maxHeight * 0.07,
+                    height: isPortrait ? maxHeight * 0.07 : maxHeight * 0.1,
                     width: maxWidth - 50,
                     margin: const EdgeInsets.only(bottom: 15),
                     child: WdgButton(
@@ -71,36 +107,62 @@ class WdgQuizzResult extends StatelessWidget {
     double progress = total > 0 ? correct / total : 0;
     return total > 0
         ? Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                skill,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              skill,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20,
+              width: isPortrait ? maxWidth : maxWidth / 2.5,
+              child: WdgAnimatedProgressBar(
+                value: progress,
+                label: '${(progress * 100).toStringAsFixed(0)}%',
               ),
-              SizedBox(
-                height: 20,
-                child: WdgAnimatedProgressBar(
-                  value: progress,
-                  label: '${(progress * 100).toStringAsFixed(0)}%',
-                ),
-              ),
-              const SizedBox(height: 8),
-            ],
-          )
+            ),
+            const SizedBox(height: 8),
+          ],
+        )
         : const SizedBox.shrink();
   }
 
-  //=== Lấy tên quiz  ===
-  String _getNameQuiz(TypeQuizz typeQuiz) {
-    return switch(typeQuiz) {
-      TypeQuizz.quizzVocabulary => "Quiz từ vựng",
-
-      TypeQuizz.quizzSentence => "Quiz câu",
-
-      TypeQuizz.quizzCustom => throw UnimplementedError(),
-
-      TypeQuizz.quizGrammar => "Quiz ngữ pháp",
-    };
+  /// Item bonus  ------------------------------------------------------------
+  Widget _buildItemBonus(BuildContext context, String title, String point, int index) {
+    Future.delayed(Duration(milliseconds: 666 * index), () {
+      if(context.mounted) {
+        setState(() {
+          statusItemBonus[index] = false;
+        });
+      }
+    });
+    return AnimatedScale(
+        duration: const Duration(milliseconds: 666),
+        curve: Curves.bounceIn,
+        scale: statusItemBonus[index] ? 0 : 1,
+        child: Card(
+            child: Container(
+                width: isPortrait ? maxWidth / 4 : maxWidth / 8,
+                padding: const EdgeInsets.all(6),
+                child: Column(
+                  children: [
+                    Text(
+                    title.toUpperCase(),
+                    style: TextStyle(
+                        fontSize: isPortrait ? maxWidth / 20 : maxWidth / 40,
+                        color: VipColors.text(context),
+                        fontWeight: FontWeight.bold),
+                    ),
+                    Text(point,
+                      style: TextStyle(
+                          fontSize: isPortrait ? maxWidth / 20 : maxWidth / 40,
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold)
+                    )
+                ],
+              ),
+            )
+        )
+    );
   }
 }

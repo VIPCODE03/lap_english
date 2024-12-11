@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:lap_english/data/model/learn/status.dart';
 
 part 'vocabulary.g.dart';
 
@@ -7,8 +8,9 @@ part 'vocabulary.g.dart';
 class MdlMainVocabularyTopic {
   final int id;
   String name;
+  MdlUnlockStatusManager status;
 
-  MdlMainVocabularyTopic(this.id, this.name);
+  MdlMainVocabularyTopic(this.id, this.name, this.status);
 
   factory MdlMainVocabularyTopic.fromJson(Map<String, dynamic> json) => _$MdlMainVocabularyTopicFromJson(json);
 
@@ -20,11 +22,12 @@ class MdlMainVocabularyTopic {
 class MdlSubVocabularyTopic {
   final int id;
   String name;
-  String imageUrl;
+  String? imageUrl;
   bool isLearned;
-  int idMainTopic;
+  MdlUnlockStatusManager status;
+  int mainTopicId;
 
-  MdlSubVocabularyTopic(this.id, this.name, this.imageUrl, this.idMainTopic, {this.isLearned = false});
+  MdlSubVocabularyTopic(this.id, this.name, this.imageUrl, this.mainTopicId, this.status ,{this.isLearned = false});
 
   factory MdlSubVocabularyTopic.fromJson(Map<String, dynamic> json) => _$MdlSubVocabularyTopicFromJson(json);
 
@@ -35,15 +38,17 @@ class MdlSubVocabularyTopic {
 @JsonSerializable()
 class MdlWord {
   final int id;
-  String word;
-  String meaning;
-  String imageUrl;
-  String pronounceUK;
-  String pronounceUS;
-  String type;
-  String level;
-  String example;
-  int idSubTopic;
+  final String word;
+  final String meaning;
+  final String pronounceUK;
+  final String pronounceUS;
+  final String type;
+  final String level;
+  final String example;
+  final int subTopicId;
+  final String? imageBlobName;
+  final String? audioUkBlobName;
+  final String? audioUsBlobName;
 
   MdlWord(
     this.id,
@@ -54,8 +59,12 @@ class MdlWord {
     this.type,
     this.level,
     this.example,
-    this.imageUrl,
-    this.idSubTopic,
+    this.subTopicId,
+  {
+    this.imageBlobName,
+    this.audioUkBlobName,
+    this.audioUsBlobName
+  }
   );
 
   factory MdlWord.fromJson(Map<String, dynamic> json) => _$MdlWordFromJson(json);

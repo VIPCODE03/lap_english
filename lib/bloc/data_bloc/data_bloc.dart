@@ -13,7 +13,8 @@ class DataEventLoad<T> extends DataEvent {
 
 class DataEventUpdate<T> extends DataEvent {
   final List<T> datas;
-  DataEventUpdate({required this.datas});
+  final Map<String, dynamic>? headers;
+  DataEventUpdate({required this.datas, this.headers});
 }
 
 abstract class DataState {}
@@ -35,6 +36,7 @@ class DataStateError<T> extends DataState {
 class DataBloc<T> extends Bloc<DataEvent, DataState> with UpdateDatas, LoadDatas {
 
   DataBloc() : super(DataStateInitial<T>()) {
+
     //--- Load dữ liệu ---
     on<DataEventLoad<T>>((event, emit) async {
       emit(DataStateLoading<T>());
@@ -51,9 +53,16 @@ class DataBloc<T> extends Bloc<DataEvent, DataState> with UpdateDatas, LoadDatas
 
     //--- Update dữ liệu ---
     on<DataEventUpdate<T>>((event, emit) async {
-      if (state is DataStateLoaded<T>) {
-        await update[T]!(event.datas);
-        emit(DataStateLoaded<T>((state as DataStateLoaded<T>).data));
+      try {
+        await update[T]!(event.datas, event.headers ?? {});
+        if (state is DataStateLoaded<T>) {
+          emit(DataStateLoaded<T>((state as DataStateLoaded<T>).data));
+        }
+      } catch (e) {
+        emit(DataStateError<T>('Lỗi cập nhật dữ liệu'));
+        if (kDebugMode) {
+          rethrow;
+        }
       }
     });
   }

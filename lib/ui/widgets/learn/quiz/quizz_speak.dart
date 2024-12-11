@@ -1,4 +1,3 @@
-
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_speak.dart';
@@ -19,27 +18,37 @@ class WdgQuizzSpeak extends WdgQuizz<QuizzSpeak> {
 
 class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
   final SpeechToTextUtil _speechUtil = SpeechToTextUtil();
-  double maxHeight = 0;
-  double maxWidth = 0;
 
   @override
   void initState() {
     super.initState();
     _initSpeech();
-    widget.status.isChecked.addListener(() {
-      _stopListening();
-    });
+    widget.status.isChecked.addListener(_stopListening);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _speechUtil.dispose();
+    _speechUtil.cancel();
+    widget.status.isChecked.removeListener(_stopListening);
+    SpeechToTextUtil.status.removeListener(onStatusListening);
   }
 
   void _initSpeech() async {
     await _speechUtil.init();
+    SpeechToTextUtil.status.addListener(onStatusListening);
     setState(() {});
+  }
+
+  void onStatusListening() {
+    if(SpeechToTextUtil.status.value == 'notListening') {
+      if(_speechUtil.lastWords.isEmpty) {
+        _startListening();
+      }
+      else {
+        _stopListening();
+      }
+    }
   }
 
   void _startListening() async {
@@ -52,11 +61,11 @@ class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
     setState(() {});
   }
 
+  //=== Kết quả nói ===
   void _onSpeechResult(SpeechRecognitionResult result) {
     setState(() {
       _speechUtil.updateLastWords(result);
       if (_speechUtil.lastWords != "") {
-        _stopListening();
         widget.status.isCorrect = widget.quizz.answerCorrect.trim().toLowerCase() == _speechUtil.lastWords.trim().toLowerCase();
         widget.status.isAnswered.value = true;
         widget.status.correctAnswer = _speechUtil.lastWords;
@@ -66,12 +75,8 @@ class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
 
   @override
   Widget build(BuildContext context) {
-    maxHeight = MediaQuery.of(context).size.height;
-    maxWidth = MediaQuery.of(context).size.width;
-    var isVertical = maxHeight > maxWidth;
-
     return Container(
-      height: isVertical ? maxHeight : maxHeight - 10,
+      height: isPortrait ? maxHeight : maxHeight - 10,
       width: maxWidth,
       margin: const EdgeInsets.only(bottom: 10),
       child: Column(
@@ -87,7 +92,9 @@ class _WdgQuizzSpeakState extends WdgQuizzState<QuizzSpeak, WdgQuizzSpeak> {
                 Text(
                   _speechUtil.lastWords.isNotEmpty
                       ? _speechUtil.lastWords
-                      : 'Nhấn vào mic để nói',
+                      : _speechUtil.isNotListening
+                      ? 'Nhấn vào mic để nói'
+                      : 'Đang nghe...',
                   style: const TextStyle(fontSize: 20),
                 ),
 

@@ -2,7 +2,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
-import 'package:lap_english/services/task_service.dart';
+import 'package:lap_english/services/data_manager.dart';
 
 /*  EVENTS  */
 abstract class QuizzEvent {}
@@ -73,7 +73,7 @@ class QuizzCompleted extends QuizzState {
 }
 
 /*  BLOC  */
-class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with TaskService {
+class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with DataManager {
   late final QuizzResult quizzResult;
   final List<Quizz> quizzes;
   int total = 0;
@@ -81,14 +81,18 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with TaskService {
   late TypeQuizz typeQuizz;
   late bool isLearned;
 
-  QuizzBloc(this.quizzes, this.typeQuizz, this.isLearned) : super(QuizzInitial()) {
+  int totalWord = 0;
+  int totalSentence = 0;
+  int totalGrammar = 0;
+
+  QuizzBloc(this.quizzes, this.typeQuizz, this.isLearned, this.totalWord, this.totalSentence, this.totalGrammar) : super(QuizzInitial()) {
     total = quizzes.length;
     var totalWrite = quizzes.where((quizz) => quizz.skillType == SkillType.writing).length;
     var totalListen = quizzes.where((quizz) => quizz.skillType == SkillType.listening).length;
     var totalRead = quizzes.where((quizz) => quizz.skillType == SkillType.reading).length;
     var totalSpeak = quizzes.where((quizz) => quizz.skillType == SkillType.speaking).length;
 
-    quizzResult = QuizzResult(total, totalWrite, totalListen, totalRead, totalSpeak, isLearned, typeQuizz);
+    quizzResult = QuizzResult(total, totalWrite, totalListen, totalRead, totalSpeak, isLearned, typeQuizz, totalWord, totalSentence, totalGrammar);
 
     //---   Khởi tạo  ---
     on<QuizzInit>((event, emit) {
@@ -105,7 +109,10 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with TaskService {
               encouragementsIndex: currentState.encouragementsIndex)
           );
         } else {  //->  Đã hoàn thành
-          updateTaskQuizz(quizzResult);
+          double coefficient = quizzResult.correct / quizzResult.total;
+          quizzResult.bonus = (quizzResult.bonus * coefficient).toInt();
+          quizzResult.pointRank += (10 * coefficient).toInt();
+          updateUserQuiz(quizzResult);
           emit(QuizzCompleted(quizzResult));
         }
       }

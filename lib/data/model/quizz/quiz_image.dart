@@ -20,7 +20,7 @@ class MdlQuizImageVocabulary extends MdlQuizImage<MdlWord> {
     List<MdlQuizImageVocabulary> quizes = [];
 
     //--- Lấy danh sách các từ có ảnh ---
-    List<MdlWord> wordshasImage = datas.where((word) => word.imageUrl.isNotEmpty).toList();
+    List<MdlWord> wordshasImage = datas.where((word) => word.imageBlobName != null).toList();
     if(wordshasImage.length < 4) {
       return quizes;
     }
@@ -36,7 +36,7 @@ class MdlQuizImageVocabulary extends MdlQuizImage<MdlWord> {
       //--- Ảnh ở câu hỏi  ---
       if(Random().nextBool()) {
         newQuizImg.question = "Chọn từ tương ứng";
-        newQuizImg.imgQuestion = word.imageUrl;
+        newQuizImg.imgQuestion = word.imageBlobName!;
 
         wordAnswers.addAll(copy.take(2).toList());
       }
@@ -47,7 +47,7 @@ class MdlQuizImageVocabulary extends MdlQuizImage<MdlWord> {
 
         wordAnswers.addAll(copy.take(3).toList());
         for(var answer in wordAnswers) {
-          newQuizImg.imgAnswer[answer.word] = answer.imageUrl;
+          newQuizImg.imgAnswer[answer.word] = answer.imageBlobName!;
         }
       }
 
@@ -57,6 +57,7 @@ class MdlQuizImageVocabulary extends MdlQuizImage<MdlWord> {
       }
 
       newQuizImg.answers = answers.toList();
+      newQuizImg.answers.shuffle();
 
       //--- Thêm quizz vào danh sách  ---
       quizes.add(newQuizImg);
