@@ -3,6 +3,8 @@ import 'package:lap_english/data/model/quizz/quizz_sound_choose_one.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
+import 'package:lap_english/utils/loaddata_link.dart';
+import 'package:lap_english/utils/player_audio.dart';
 import '../../../../../utils/text_to_speak.dart';
 import '../../../../main.dart';
 
@@ -16,6 +18,7 @@ class WdgQuizzSoundChooseOne extends WdgQuizz<QuizzSoundChooseOne> {
 
 class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, WdgQuizzSoundChooseOne> {
   final TextToSpeakUtil _textToSpeakUtil = TextToSpeakUtil();
+  final AudioPlayerUtil _audioPlayerUtil = AudioPlayerUtil();
   String? selectedKey; //-> Biến lưu item được chọn
 
   @override
@@ -46,7 +49,13 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
 
   //=== Speak ===
   Future<void> _speak(String text) async {
-    _textToSpeakUtil.speak(text, TextToSpeakUtil.languageAU, TextToSpeakUtil.rateNormal);
+    String soundUrl = widget.quizz.sounds[text] ?? "";
+    if(soundUrl.isEmpty) {
+      _textToSpeakUtil.speak(text, TextToSpeakUtil.languageAU, TextToSpeakUtil.rateNormal);
+    }
+    else {
+      _audioPlayerUtil.playFromUrl(LoadDataUtil.loadSound(soundUrl));
+    }
   }
 
   @override

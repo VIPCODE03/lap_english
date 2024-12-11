@@ -13,8 +13,8 @@ class WordDao extends BaseDatabase<MdlWord> {
   @override
   TableSchema<MdlWord> get table => WordTable();
 
-  getWords(int idSubTopic)
-  => query('SELECT * FROM ${table.tableName} WHERE ${WordTable.idSubtopic} = ?', [idSubTopic]);
+  Future<List<MdlWord>> getWords(int subTopicId)
+  => query('SELECT * FROM ${table.tableName} WHERE ${WordTable.subTopicId} = ?', [subTopicId]);
 }
 
 class SubVocabularyTopicDao extends BaseDatabase<MdlSubVocabularyTopic> {

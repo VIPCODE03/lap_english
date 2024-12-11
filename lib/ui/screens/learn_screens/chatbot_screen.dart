@@ -2,8 +2,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/chatbot/model_chat.dart';
-import 'package:lap_english/data/model/chatbot/topic_chat.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/main.dart';
 import 'package:lap_english/services/bot.dart';
@@ -12,6 +10,8 @@ import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:flutter/services.dart' show rootBundle;
+
+import '../../../data/model/learn/chat.dart';
 
 class ChatBotScreen extends StatefulWidget {
   final MdlTopicChat topicChat;

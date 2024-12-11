@@ -37,9 +37,8 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: maxHeight,
-      color: Colors.green,
       child: Stack(
         children: [
           Container(

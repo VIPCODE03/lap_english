@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
 
                   /// ROW3  --------------------------------------------------------------
                   WdgGroup(
-                    title: 'Thống kê',
+                    title: 'Tích lũy',
                     opacity: 0.1,
                     height: 15,
                     alignment: Alignment.center,

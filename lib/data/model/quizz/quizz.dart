@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lap_english/constant/quizz_constant.dart';
+import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/learn/sentence.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
@@ -47,10 +48,8 @@ class CustomQuiz {
       }
   );
 
-  /// Phương thức chuyển đổi từ JSON sang đối tượng Dart
   factory CustomQuiz.fromJson(Map<String, dynamic> json) => _$CustomQuizFromJson(json);
 
-  /// Phương thức chuyển đổi từ đối tượng Dart sang JSON
   Map<String, dynamic> toJson() => _$CustomQuizToJson(this);
 }
 
@@ -64,7 +63,8 @@ enum TypeQuiz{
 
 /*  Class khởi tạo các loại quizz   */
 class Quizzes {
-  static List<Quizz> generateQuizzVocabulary({required QuizzMode mode, required List<MdlWord> words}) {
+
+  static Future<List<Quizz>> generateQuizzVocabulary({required QuizzMode mode, required List<MdlWord> words}) async {
     List<Quizz> quizzes = [];
     List<Quizz<MdlWord>> quizzList;
 
@@ -83,7 +83,7 @@ class Quizzes {
     return quizzes;
   }
 
-  static List<Quizz> generateQuizzSentence({required QuizzMode mode, required List<MdlSentence> sentences}) {
+  static Future<List<Quizz>> generateQuizzSentence({required QuizzMode mode, required List<MdlSentence> sentences}) async {
     List<Quizz> quizzes = [];
     List<Quizz<MdlSentence>> quizzList;
 
@@ -102,52 +102,19 @@ class Quizzes {
     return quizzes;
   }
 
-  static List<Quizz> generateQuizGrammar({required List<GrammaticalStructure> structures}) {
+  static Future<List<Quizz>> generateQuizGrammar({required List<GrammaticalStructure> structures}) async {
     List<Quizz> quizzes = [];
-    
-    List<CustomQuiz> customQuizs = [
-      CustomQuiz("Chọn từ  <I ... d>",
-          ["eat", "aet", "tea"],
-          "eat",
-          {"eat": true, "aet": false, "tea": false},
-          TypeQuiz.chooseOne),
+    ExerciseGrammarDao dao = ExerciseGrammarDao();
 
-      CustomQuiz("Hoàn thành câu: <Tôi đã ăn sáng rồi>",
-          ["I", "have", "eaten", "breakfast", "already"],
-          "I have eaten breakfast already",
-          {"I": true, "have": true, "eaten": true, "breakfast": true, "already": true},
-          TypeQuiz.select),
+    for (var structure in structures) {
+      List<ExerciseGrammar> exercises = await dao.getByIdGrammarStructure(structure.id, 5);
 
-      CustomQuiz("Hoàn thành câu: <Cô ấy chưa hoàn thành bài tập về nhà>",
-          ["She", "has", "not", "finished", "her", "homework"],
-          "She has not finished her homework",
-          {"She": true, "has": true, "not": true, "finished": true, "her": true, "homework": true},
-          TypeQuiz.select),
-
-      CustomQuiz("Hoàn thành câu: <Chúng tôi đã sống ở đây 5 năm>",
-          ["We", "have", "lived", "here", "for", "five", "years"],
-          "We have lived here for five years",
-          {"We": true, "have": true, "lived": true, "here": true, "for": true, "five": true, "years": true},
-          TypeQuiz.select),
-
-      CustomQuiz("Hoàn thành câu: <Anh ấy đã đến Paris một lần>",
-          ["He", "has", "been", "to", "Paris", "once"],
-          "He has been to Paris once",
-          {"He": true, "has": true, "been": true, "to": true, "Paris": true, "once": true},
-          TypeQuiz.select),
-
-      CustomQuiz("Hoàn thành câu: <Họ chưa bao giờ đến Nhật Bản>",
-          ["They", "have", "never", "been", "to", "Japan"],
-          "They have never been to Japan",
-          {"They": true, "have": true, "never": true, "been": true, "to": true, "Japan": true},
-          TypeQuiz.select),
-
-    ];
-
-    for(var structure in structures) {
-      for(var customQuiz in customQuizs) {
-        quizzes.add(MdlQuizGrammar(structure, generateQuizCustom(customQuizs: [customQuiz]).first));
+      List<CustomQuiz> customQuizzes = [];
+      for (var exercise in exercises) {
+        customQuizzes.add(exercise.quiz);
       }
+
+      quizzes.addAll(MdlQuizGrammar(structure).generate(customQuizzes));
     }
 
     return quizzes;
@@ -199,7 +166,26 @@ class QuizzResult {
   int correctRead = 0;
   int correctConsecutive = 0;
 
-  QuizzResult(this.total, this.totalWrite, this.totalListen, this.totalRead, this.totalSpeak, this.isLearned, this.type);
+  int bonus = 5;
+  int pointRank = 0;
+
+  int totalWord;
+  int totalSentence;
+  int totalGrammar;
+
+  QuizzResult(
+      this.total,
+      this.totalWrite,
+      this.totalListen,
+      this.totalRead,
+      this.totalSpeak,
+      this.isLearned,
+      this.type,
+
+      this.totalWord,
+      this.totalSentence,
+      this.totalGrammar
+      );
 
   //=== Cập nhật kết quả  ===
   void update(bool isCorrect, SkillType skill, int newCorrectConsecutive) {
@@ -219,6 +205,17 @@ class QuizzResult {
       }
     }
   }
+
+  //=== Lấy tên quiz  ===
+  String get nameQuiz => switch(type) {
+      TypeQuizz.quizzVocabulary => "Quiz từ vựng",
+
+      TypeQuizz.quizzSentence => "Quiz câu",
+
+      TypeQuizz.quizzCustom => throw UnimplementedError(),
+
+      TypeQuizz.quizGrammar => "Quiz ngữ pháp",
+    };
 }
 
 enum TypeQuizz {

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/gen/assets.gen.dart';
@@ -84,14 +82,14 @@ class WdgRow1Profile extends StatelessWidget {
               Expanded(
                 child: _item(
                   Assets.images.icon.title.path,
-                  "Danh hiệu",
-                  user.titles.length,
+                  "Điểm hạng",
+                  user.cumulativePoint.rankPoints,
                 ),
               ),
               Container(
                 height: 50,
-                width: 0.5,
-                color: Theme.of(context).primaryColor,
+                width: 1,
+                color: VipColors.onPrimary(context),
               ),
               /// Kim cương ------------------------------------------------
               Expanded(
@@ -103,8 +101,8 @@ class WdgRow1Profile extends StatelessWidget {
               ),
               Container(
                 height: 50,
-                width: 0.5,
-                color: Theme.of(context).primaryColor,
+                width: 1,
+                color: VipColors.onPrimary(context),
               ),
               /// Vàng -----------------------------------------------------
               Expanded(

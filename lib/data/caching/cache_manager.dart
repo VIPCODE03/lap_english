@@ -1,11 +1,27 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/auth/token.dart';
+
 class CacheManager {
   static late final SharedPreferences _caching;
 
   //===   Khởi tạo  ===
   static Future<void> init() async {
     _caching = await SharedPreferences.getInstance();
+  }
+
+  Future<void> saveToken(MdlToken token) async {
+    _caching.setString('accessToken', token.accessToken);
+    _caching.setString('refreshToken', token.refreshToken);
+    _caching.setInt('userId', token.userId);
+  }
+
+  MdlToken getToken() {
+    return MdlToken(
+        _caching.getString('accessToken') ?? '',
+        _caching.getString('refreshToken') ?? '',
+        _caching.getInt('userId') ?? 0
+    );
   }
 
   Future<void> saveTheme(int indexTheme) async {

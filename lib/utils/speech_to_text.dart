@@ -1,19 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class SpeechToTextUtil {
   final SpeechToText _speechToText = SpeechToText();
-  bool _speechEnabled = false;
   String _lastWords = '';
+  static final ValueNotifier<String> status = ValueNotifier('');
 
   Future<void> init() async {
-    _speechEnabled = await _speechToText.initialize();
+    await _speechToText.initialize(
+      onStatus: (newStatus) => status.value = newStatus,
+    );
   }
 
   Future<void> startListening(Function(SpeechRecognitionResult) onResult) async {
+    _lastWords = '';
     await _speechToText.listen(
       onResult: onResult,
-      localeId: 'en_UK',
+      localeId: 'en',
     );
   }
 
@@ -29,8 +33,8 @@ class SpeechToTextUtil {
     _lastWords = result.recognizedWords;
   }
 
-  void dispose() {
-    _speechToText.cancel();
+  Future<void> cancel() async {
+    await _speechToText.cancel();
   }
 
 }

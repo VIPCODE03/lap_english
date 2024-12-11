@@ -11,6 +11,7 @@ MdlMainSentenceTopic _$MdlMainSentenceTopicFromJson(
     MdlMainSentenceTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
+          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MdlMainSentenceTopicToJson(
@@ -18,6 +19,7 @@ Map<String, dynamic> _$MdlMainSentenceTopicToJson(
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'status': instance.status,
     };
 
 MdlSubSentenceTopic _$MdlSubSentenceTopicFromJson(Map<String, dynamic> json) =>
@@ -26,6 +28,7 @@ MdlSubSentenceTopic _$MdlSubSentenceTopicFromJson(Map<String, dynamic> json) =>
       json['name'] as String,
       json['imageUrl'] as String,
       (json['idMainTopic'] as num).toInt(),
+          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
       isLearned: json['isLearned'] as bool? ?? false,
     );
 
@@ -36,6 +39,7 @@ Map<String, dynamic> _$MdlSubSentenceTopicToJson(
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'isLearned': instance.isLearned,
+      'status': instance.status,
       'idMainTopic': instance.idMainTopic,
     };
 

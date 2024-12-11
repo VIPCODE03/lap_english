@@ -1,4 +1,5 @@
 import '../data/model/learn/grammar.dart';
+import '../data/model/quizz/quizz.dart';
 
 List<TypeGrammar> generateGrammarTypes() {
   return [
@@ -108,46 +109,218 @@ List<Grammar> generateGrammars() {
 List<GrammaticalStructure> generateGrammaticalStructures() {
   return [
     // Các cấu trúc của "Thì hiện tại đơn"
-    GrammaticalStructure(1, 'Khẳng định', 'S + V (hiện tại đơn)', 1),
-    GrammaticalStructure(2, 'Phủ định', 'S + do/does + not + V (nguyên thể)', 1),
-    GrammaticalStructure(3, 'Câu hỏi Yes/No', 'Do/Does + S + V (nguyên thể)?', 1),
-    GrammaticalStructure(4, 'Câu hỏi Wh-', 'Wh- + do/does + S + V (nguyên thể)?', 1),
+    GrammaticalStructure(1, 'Khẳng định \n Dùng để diễn tả thói quen, sự thật hiển nhiên, hoặc hành động lặp lại.', '<S> + <V> (hiện tại đơn)', 1),
+    GrammaticalStructure(2, 'Phủ định \n Dùng để phủ định hành động trong hiện tại, thói quen hoặc sự thật.', '<S> + <do/does> + <not> + <V> (nguyên thể)', 1),
+    GrammaticalStructure(3, 'Câu hỏi Yes/No \n Dùng để hỏi về hành động có thật hoặc thói quen trong hiện tại.', 'Do/Does + S + V (nguyên thể)?', 1),
+    GrammaticalStructure(4, 'Câu hỏi Wh- \n Dùng để hỏi thông tin chi tiết về hành động trong hiện tại.', 'Wh- + do/does + S + V (nguyên thể)?', 1),
 
     // Các cấu trúc của "Thì hiện tại tiếp diễn"
-    GrammaticalStructure(5, 'Khẳng định', 'S + am/are/is + V-ing', 2),
-    GrammaticalStructure(6, 'Phủ định', 'S + am/are/is + not + V-ing', 2),
-    GrammaticalStructure(7, 'Câu hỏi Yes/No', 'Am/Are/Is + S + V-ing?', 2),
-    GrammaticalStructure(8, 'Câu hỏi Wh-', 'Wh- + am/are/is + S + V-ing?', 2),
+    GrammaticalStructure(5, 'Khẳng định \n Dùng để diễn tả hành động đang xảy ra ở hiện tại hoặc xu hướng đang diễn ra.', 'S + am/are/is + V-ing', 2),
+    GrammaticalStructure(6, 'Phủ định \n Dùng để phủ định hành động đang xảy ra ở hiện tại.', 'S + am/are/is + not + V-ing', 2),
+    GrammaticalStructure(7, 'Câu hỏi Yes/No \n Dùng để hỏi về hành động đang diễn ra tại thời điểm nói.', 'Am/Are/Is + S + V-ing?', 2),
+    GrammaticalStructure(8, 'Câu hỏi Wh- \n Dùng để hỏi chi tiết về hành động đang diễn ra trong hiện tại.', 'Wh- + am/are/is + S + V-ing?', 2),
 
     // Các cấu trúc của "Thì quá khứ đơn"
-    GrammaticalStructure(9, 'Khẳng định', 'S + V (quá khứ đơn)', 3),
-    GrammaticalStructure(10, 'Phủ định', 'S + did + not + V (nguyên thể)', 3),
-    GrammaticalStructure(11, 'Câu hỏi Yes/No', 'Did + S + V (nguyên thể)?', 3),
-    GrammaticalStructure(12, 'Câu hỏi Wh-', 'Wh- + did + S + V (nguyên thể)?', 3),
+    GrammaticalStructure(9, 'Khẳng định \n Dùng để diễn tả hành động đã xảy ra và kết thúc trong quá khứ.', 'S + V (quá khứ đơn)', 3),
+    GrammaticalStructure(10, 'Phủ định \n Dùng để phủ định hành động đã xảy ra trong quá khứ.', 'S + did + not + V (nguyên thể)', 3),
+    GrammaticalStructure(11, 'Câu hỏi Yes/No \n Dùng để hỏi về hành động đã xảy ra trong quá khứ.', 'Did + S + V (nguyên thể)?', 3),
+    GrammaticalStructure(12, 'Câu hỏi Wh- \n Dùng để hỏi thông tin chi tiết về hành động đã xảy ra trong quá khứ.', 'Wh- + did + S + V (nguyên thể)?', 3),
 
     // Các cấu trúc của "Thì quá khứ tiếp diễn"
-    GrammaticalStructure(13, 'Khẳng định', 'S + was/were + V-ing', 4),
-    GrammaticalStructure(14, 'Phủ định', 'S + was/were + not + V-ing', 4),
-    GrammaticalStructure(15, 'Câu hỏi Yes/No', 'Was/Were + S + V-ing?', 4),
-    GrammaticalStructure(16, 'Câu hỏi Wh-', 'Wh- + was/were + S + V-ing?', 4),
+    GrammaticalStructure(13, 'Khẳng định \n Dùng để diễn tả hành động đang xảy ra tại một thời điểm trong quá khứ.', 'S + was/were + V-ing', 4),
+    GrammaticalStructure(14, 'Phủ định \n Dùng để phủ định hành động đang xảy ra tại một thời điểm trong quá khứ.', 'S + was/were + not + V-ing', 4),
+    GrammaticalStructure(15, 'Câu hỏi Yes/No \n Dùng để hỏi về hành động đang diễn ra trong quá khứ.', 'Was/Were + S + V-ing?', 4),
+    GrammaticalStructure(16, 'Câu hỏi Wh- \n Dùng để hỏi chi tiết về hành động đang diễn ra trong quá khứ.', 'Wh- + was/were + S + V-ing?', 4),
 
     // Các cấu trúc của "Câu điều kiện loại 1"
-    GrammaticalStructure(17, 'Khẳng định', 'If + S + V (hiện tại đơn), S + will + V (nguyên thể)', 5),
-    GrammaticalStructure(18, 'Phủ định', 'If + S + V (hiện tại đơn), S + will not + V (nguyên thể)', 5),
-    GrammaticalStructure(19, 'Câu hỏi Yes/No', 'If + S + V (hiện tại đơn), Will + S + V (nguyên thể)?', 5),
-    GrammaticalStructure(20, 'Câu hỏi Wh-', 'If + S + V (hiện tại đơn), Wh- + will + S + V (nguyên thể)?', 5),
+    GrammaticalStructure(17, 'Khẳng định \n Dùng để diễn tả điều kiện có thể xảy ra trong tương lai, nếu điều kiện hiện tại được thỏa mãn.', 'If + S + V (hiện tại đơn), S + will + V (nguyên thể)', 5),
+    GrammaticalStructure(18, 'Phủ định \n Dùng để phủ định điều kiện trong câu điều kiện loại 1.', 'If + S + V (hiện tại đơn), S + will not + V (nguyên thể)', 5),
+    GrammaticalStructure(19, 'Câu hỏi Yes/No \n Dùng để hỏi về điều kiện có thể xảy ra trong tương lai.', 'If + S + V (hiện tại đơn), Will + S + V (nguyên thể)?', 5),
+    GrammaticalStructure(20, 'Câu hỏi Wh- \n Dùng để hỏi chi tiết về điều kiện và kết quả trong câu điều kiện loại 1.', 'If + S + V (hiện tại đơn), Wh- + will + S + V (nguyên thể)?', 5),
 
     // Các cấu trúc của "Câu điều kiện loại 2"
-    GrammaticalStructure(21, 'Khẳng định', 'If + S + V (quá khứ đơn), S + would + V (nguyên thể)', 6),
-    GrammaticalStructure(22, 'Phủ định', 'If + S + V (quá khứ đơn), S + would not + V (nguyên thể)', 6),
-    GrammaticalStructure(23, 'Câu hỏi Yes/No', 'If + S + V (quá khứ đơn), Would + S + V (nguyên thể)?', 6),
-    GrammaticalStructure(24, 'Câu hỏi Wh-', 'If + S + V (quá khứ đơn), Wh- + would + S + V (nguyên thể)?', 6),
+    GrammaticalStructure(21, 'Khẳng định \n Dùng để diễn tả điều kiện không có thật trong hiện tại hoặc tương lai.', 'If + S + V (quá khứ đơn), S + would + V (nguyên thể)', 6),
+    GrammaticalStructure(22, 'Phủ định \n Dùng để phủ định điều kiện không có thật trong hiện tại hoặc tương lai.', 'If + S + V (quá khứ đơn), S + would not + V (nguyên thể)', 6),
+    GrammaticalStructure(23, 'Câu hỏi Yes/No \n Dùng để hỏi về điều kiện không có thật trong hiện tại hoặc tương lai.', 'If + S + V (quá khứ đơn), Would + S + V (nguyên thể)?', 6),
+    GrammaticalStructure(24, 'Câu hỏi Wh- \n Dùng để hỏi chi tiết về điều kiện không có thật trong hiện tại hoặc tương lai.', 'If + S + V (quá khứ đơn), Wh- + would + S + V (nguyên thể)?', 6),
 
     // Các cấu trúc của "Câu bị động"
-    GrammaticalStructure(25, 'Khẳng định', 'S + am/are/is + V3 (quá khứ phân từ)', 7),
-    GrammaticalStructure(26, 'Phủ định', 'S + am/are/is + not + V3 (quá khứ phân từ)', 7),
-    GrammaticalStructure(27, 'Câu hỏi Yes/No', 'Am/Are/Is + S + V3 (quá khứ phân từ)?', 7),
-    GrammaticalStructure(28, 'Câu hỏi Wh-', 'Wh- + am/are/is + S + V3 (quá khứ phân từ)?', 7),
+    GrammaticalStructure(25, 'Khẳng định \n Dùng để diễn tả hành động được thực hiện bởi một tác nhân không xác định.', 'S + am/are/is + V3 (quá khứ phân từ)', 7),
+    GrammaticalStructure(26, 'Phủ định \n Dùng để phủ định hành động bị động trong hiện tại.', 'S + am/are/is + not + V3 (quá khứ phân từ)', 7),
+    GrammaticalStructure(27, 'Câu hỏi Yes/No \n Dùng để hỏi về hành động bị động trong hiện tại.', 'Am/Are/Is + S + V3 (quá khứ phân từ)?', 7),
+    GrammaticalStructure(28, 'Câu hỏi Wh- \n Dùng để hỏi chi tiết về hành động bị động trong hiện tại.', 'Wh- + am/are/is + S + V3 (quá khứ phân từ)?', 7),
   ];
 }
+
+List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
+  return [
+    // Khẳng định: Chọn từ đúng
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Chọn từ đúng: <I / eat / eats> breakfast every day.",
+        ["eat", "eats"],
+        "eat",
+        {"eat": true, "eats": false},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Chọn từ đúng: <I / eat / eats> breakfast every day.",
+        ["eat", "eats"],
+        "eat",
+        {"eat": true, "eats": false},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+
+    // Khẳng định: Chọn từ đúng
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Chọn từ đúng: <She / play / plays> tennis on weekends.",
+        ["play", "plays"],
+        "plays",
+        {"play": false, "plays": true},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+
+    // Khẳng định: Hoàn thành câu
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Hoàn thành câu: <He / study / studies> English every day.",
+        ["He", "study", "studies", "English", "every", "day"],
+        "He studies English every day.",
+        {"He": true, "study": false, "studies": true, "English": true, "every": true, "day": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Khẳng định: Chọn từ đúng
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Chọn từ đúng: <We / go / goes> to the gym in the evening.",
+        ["go", "goes"],
+        "go",
+        {"go": true, "goes": false},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+
+    // Khẳng định: Hoàn thành câu
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Hoàn thành câu: <They / not / like> spicy food.",
+        ["They", "do", "not", "like", "spicy", "food"],
+        "They do not like spicy food.",
+        {"They": true, "do": true, "not": true, "like": true, "spicy": true, "food": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Khẳng định: Chọn từ đúng
+    ExerciseGrammar(
+      1, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Chọn từ đúng: <John / work / works> at a software company.",
+        ["work", "works"],
+        "works",
+        {"work": false, "works": true},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+
+    // Phủ định: Hoàn thành câu
+    ExerciseGrammar(
+      2, // ID của cấu trúc "Phủ định"
+      CustomQuiz(
+        "Hoàn thành câu: <I / not / like> coffee.",
+        ["I", "do", "not", "like", "coffee"],
+        "I do not like coffee.",
+        {"I": true, "do": true, "not": true, "like": true, "coffee": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Câu hỏi Yes/No: Chọn từ đúng
+    ExerciseGrammar(
+      3, // ID của cấu trúc "Câu hỏi Yes/No"
+      CustomQuiz(
+        "Chọn từ đúng: <Do / Does> she play tennis?",
+        ["Do", "Does"],
+        "Does",
+        {"Do": false, "Does": true},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+
+    // Câu hỏi Wh-: Hoàn thành câu
+    ExerciseGrammar(
+      4, // ID của cấu trúc "Câu hỏi Wh-"
+      CustomQuiz(
+        "Hoàn thành câu: <Where / do / you / live>?",
+        ["Where", "do", "you", "live"],
+        "Where do you live?",
+        {"Where": true, "do": true, "you": true, "live": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Khẳng định: Hoàn thành câu
+    ExerciseGrammar(
+      5, // ID của cấu trúc "Khẳng định"
+      CustomQuiz(
+        "Hoàn thành câu: <She / work / at a bank>.",
+        ["She", "works", "at", "a", "bank"],
+        "She works at a bank.",
+        {"She": true, "works": true, "at": true, "a": true, "bank": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Phủ định: Chọn từ đúng
+    ExerciseGrammar(
+      6, // ID của cấu trúc "Phủ định"
+      CustomQuiz(
+        "Chọn từ đúng: <I / not / drink / tea> in the morning.",
+        ["do", "not", "drink", "tea"],
+        "I do not drink tea in the morning.",
+        {"do": true, "not": true, "drink": true, "tea": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Câu hỏi Yes/No: Hoàn thành câu
+    ExerciseGrammar(
+      7, // ID của cấu trúc "Câu hỏi Yes/No"
+      CustomQuiz(
+        "Hoàn thành câu: <Do / you / like / this song>?",
+        ["Do", "you", "like", "this", "song"],
+        "Do you like this song?",
+        {"Do": true, "you": true, "like": true, "this": true, "song": true},
+        TypeQuiz.select,
+      ),
+    ),
+
+    // Câu hỏi Wh-: Chọn từ đúng
+    ExerciseGrammar(
+      8, // ID của cấu trúc "Câu hỏi Wh-"
+      CustomQuiz(
+        "Chọn từ đúng: <Where / do / you / go> on weekends?",
+        ["Where", "do", "you", "go"],
+        "Where do you go",
+        {"Where": true, "do": true, "you": true, "go": true},
+        TypeQuiz.chooseOne,
+      ),
+    ),
+  ];
+}
+
 

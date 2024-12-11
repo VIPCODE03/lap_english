@@ -48,7 +48,9 @@ class _WdgButtonState extends State<WdgButton> {
         setState(() => _isPressed = true);
         widget.onTap();
         Future.delayed(const Duration(milliseconds: 10), () {
-          setState(() => _isPressed = false);
+          if(context.mounted) {
+            setState(() => _isPressed = false);
+          }
         });
       },
       child: Container(
@@ -56,7 +58,7 @@ class _WdgButtonState extends State<WdgButton> {
         decoration: BoxDecoration(
           color: widget.color != Colors.transparent
               ? Color.alphaBlend(Colors.transparent,
-              widget.color ?? VipColors.primary(context)).withAlpha(widget.alpha ?? 100)
+              widget.color ?? VipColors.primary(context)).withAlpha(widget.alpha ?? 70)
               : Colors.transparent,
           borderRadius: widget.borderRadius,
           border: Border(
@@ -83,10 +85,12 @@ class _WdgButtonState extends State<WdgButton> {
             null => Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [widget.child]),
             ButtonFit.none => Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [widget.child]),
             ButtonFit.scaleDown => FittedBox(
                 fit: BoxFit.none,

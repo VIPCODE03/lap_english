@@ -52,8 +52,8 @@ class QuizzSelectVocabulary extends QuizzSelect<MdlWord> {
 
       bool isWord = Random().nextBool();
       //--- Tạo câu hỏi ---
-      var wordList = selectedWords.map((w) => isWord ? w.word : w.meaning).join(", ");
-      quizzSelect.question = "Chọn các từ: <$wordList>";
+      var wordList = selectedWords.map((w) => isWord ? '<${w.word}>' : '<${w.meaning}>').join(" | ");
+      quizzSelect.question = "Chọn các từ: $wordList";
 
       //--- Tạo đáp án đúng ---
       for (var word in selectedWords) {

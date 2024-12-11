@@ -3,18 +3,19 @@ import 'dart:convert';
 
 import 'package:lap_english/a_librarys/vip_sqflite/database_vip.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/provider/model_provider.dart';
 
 /*  Bảng từ vựng  */
 class WordTable extends TableSchema<MdlWord> {
   static const String id = "id";
-  static const String idSubtopic = "idSubtopic";
+  static const String subTopicId = "subTopicId";
   static const String data = "data";
 
   @override
   Columns columns(MdlWord obj) => columnBuild(addColumn: [
     column(name: id, value: obj.id),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idSubtopic, value: obj.idSubTopic),
+    column(name: subTopicId, value: obj.subTopicId),
   ]);
 
   @override
@@ -22,7 +23,7 @@ class WordTable extends TableSchema<MdlWord> {
     if (column[data] != null) {
       return MdlWord.fromJson(jsonDecode(column[data]));
     }
-    return MdlWord(0, 'word', 'meaning', 'pronounceUK', 'pronounceUS', 'type', 'level', 'example', 'imageUrl', 0);
+    return ModelEmptyProvider.word();
   }
 
   @override
@@ -43,7 +44,7 @@ class SubVocabularyTopicTable extends TableSchema<MdlSubVocabularyTopic> {
   Columns columns(MdlSubVocabularyTopic obj) => columnBuild(addColumn: [
     column(name: id, value: obj.id),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idMainTopic, value: obj.idMainTopic),
+    column(name: idMainTopic, value: obj.mainTopicId),
   ]);
 
   @override
@@ -51,7 +52,7 @@ class SubVocabularyTopicTable extends TableSchema<MdlSubVocabularyTopic> {
     if (column[data] != null) {
       return MdlSubVocabularyTopic.fromJson(jsonDecode(column[data]));
     }
-    return MdlSubVocabularyTopic(0, "name", "imageUrl", 0);
+    return ModelEmptyProvider.subVocabularyTopic();
   }
 
   @override
@@ -78,7 +79,7 @@ class MainVocabularyTopicTable extends TableSchema<MdlMainVocabularyTopic> {
     if (column[data] != null) {
       return MdlMainVocabularyTopic.fromJson(jsonDecode(column[data]));
     }
-    return MdlMainVocabularyTopic(0, 'name');
+    return ModelEmptyProvider.mainVocabularyTopic();
   }
 
   @override

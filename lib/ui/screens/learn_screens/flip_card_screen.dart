@@ -15,17 +15,13 @@ class FlipCardsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = maxHeight * 0.66;
-    double width = maxWidth * 0.9;
+    double width = maxWidth * 0.9 - 15;
     return WdgScaffold(
       appBar: const WdgAppBar(title: 'Thẻ ghi nhớ'),
-      body: Center(
-        child: SizedBox(
-          height: maxHeight * 0.75,
-          child: _StackedList(children: [
-            ...words.map((word) => item(context, word, height, width)),
-          ]),
-        ),
-      )
+      body: Padding(padding: const EdgeInsets.only(left: 15, top: 30),
+        child: _StackedList(children: [
+          ...words.map((word) => item(context, word, height, width)),
+        ]))
     );
   }
 
@@ -44,7 +40,7 @@ class FlipCardsScreen extends StatelessWidget {
               onTap: () {
                 _textToSpeakUtil.speak(word.word, TextToSpeakUtil.languageUS, TextToSpeakUtil.rateNormal);
               },
-              child: const Icon(Icons.volume_up_outlined, size: 48,)),
+              child: const Icon(Icons.volume_up_outlined, size: 48)),
           Text(word.word, style: const TextStyle(fontSize: 48)),
           Text(word.meaning, style: const TextStyle(fontSize: 48)),
         ],
@@ -124,19 +120,16 @@ class _StackedList extends StatefulWidget {
 class _StackedListState extends State<_StackedList> {
   @override
   Widget build(BuildContext context) {
-    double topValue = MediaQuery.of(context).size.height * 0.01;
-    double leftValue = MediaQuery.of(context).size.width * 0.01;
     return Stack(
-        alignment: Alignment.center,
         children: widget.children
             .map((element) {
               final index = widget.children.indexOf(element);
               return AnimatedPositioned(
-                duration: const Duration(milliseconds: 200),
-                top: index * topValue,
-                left: index * leftValue,
+                duration: const Duration(milliseconds: 333),
+                top: index * 11,
+                left: index * 7,
                 child: AnimatedScale(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 333),
                   scale: index <= 3 ? 1 - (index / 50) : 0,
                   child: Dismissible(
                       key: UniqueKey(),

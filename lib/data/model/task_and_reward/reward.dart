@@ -1,8 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lap_english/data/model/user/user.dart';
 
-import '../../../gen/assets.gen.dart';
-
 part 'reward.g.dart';
 
 @JsonSerializable()
@@ -31,9 +29,9 @@ class Reward {
   String get icon {
     switch(rewardType) {
       case RewardType.diamond:
-        return Assets.images.icon.dimound.path;
+        return 'assets/images/icon/dimound.png';
       case RewardType.gold:
-        return Assets.images.icon.gold.path;
+        return 'assets/images/icon/gold.png';
       default:
         throw ArgumentError('Invalid reward type');
     }
