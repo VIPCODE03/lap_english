@@ -3,7 +3,7 @@ import 'package:lap_english/data/model/quizz/quizz_write.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 
-import '../../../../main.dart';
+import '../../../themes/size.dart';
 import '../../other/key_broad.dart';
 
 class WdgQuizzWrite extends WdgQuizz<QuizzWrite> {

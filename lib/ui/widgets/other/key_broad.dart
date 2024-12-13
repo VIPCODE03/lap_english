@@ -1,8 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
+
+import '../../themes/size.dart';
 
 class WdgKeyBroad extends StatefulWidget {
   final ValueChanged<String> onValueChanged;

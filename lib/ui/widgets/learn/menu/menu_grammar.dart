@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/quizz_screen.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
@@ -10,6 +9,8 @@ import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/dashed_border.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
+
+import '../../../themes/size.dart';
 
 class WdgMenuGrammar extends StatefulWidget {
   final List<TypeGrammar> typeGrammars;
@@ -78,8 +79,7 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                                             final Offset position = renderBox.localToGlobal(Offset.zero);
 
                                             //--- Chuyển sang chi tiết  ---
-                                            Navigator.of(context)
-                                                .push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation)
+                                            Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation)
                                             => _DetailGrammar(position, grammar),
                                               transitionDuration: Duration.zero,
                                               reverseTransitionDuration: Duration.zero,
@@ -145,7 +145,7 @@ class _DetailGrammarState extends State<_DetailGrammar> {
       children: [
         /// Text ngữ pháp animation ------------------------------------------------------
         TweenAnimationBuilder<double>(
-          tween: Tween<double>(begin: 14, end: 24),
+          tween: Tween<double>(begin: textSize.medium, end: textSize.title),
           duration: const Duration(milliseconds: 333),
           builder: (context, fontSize, child) {
             return AnimatedPositioned(
@@ -177,54 +177,55 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                       width: maxWidth,
                       child: Text(
                         widget.grammar.name,
-                        style: const TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: textSize.title),
                       ))
               ),
 
-              /// Button luyện tập  --------------------------------------------
-              BlocProvider(
-                create: (context) => DataBloc<GrammaticalStructure>()..add(DataEventLoad<GrammaticalStructure>(args: widget.grammar.id)),
-                child: BlocBuilder<DataBloc<GrammaticalStructure>, DataState>(
-                  builder: (context, state) {
-                    if (state is DataStateLoaded<GrammaticalStructure>) {
-                      return WdgButton(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => QuizzScreen.grammar(structures: state.data),
-                            ),
+            Expanded(child: AnimatedScale(
+              duration: const Duration(milliseconds: 333),
+              scale: isStarted ? 1 : 0,
+              child: Column(
+                children: [
+                  /// Button luyện tập  --------------------------------------------
+                  BlocProvider(
+                    create: (context) => DataBloc<GrammaticalStructure>()..add(DataEventLoad<GrammaticalStructure>(args: widget.grammar.id)),
+                    child: BlocBuilder<DataBloc<GrammaticalStructure>, DataState>(
+                      builder: (context, state) {
+                        if (state is DataStateLoaded<GrammaticalStructure>) {
+                          return WdgButton(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => QuizzScreen.grammar(structures: state.data),
+                                ),
+                              );
+                            },
+                            child: const Text('Luyện tập', style: TextStyle(fontSize: 20)),
                           );
-                        },
-                        child: const Text('Luyện tập', style: TextStyle(fontSize: 20)),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
+                  ),
+
+                  Expanded(child: Container(
+                      padding: const EdgeInsets.all(6),
+                      width: maxWidth,
+                      child: WdgDashedBorder(
+                          child: SingleChildScrollView(
+                              child: Padding(padding: const EdgeInsets.all(6),
+                                  child: WdgSpecialText(text: widget.grammar.description)
+                              )
+                          )
+                      )
+                  ))
+                ],
               ),
-
-
-              Expanded(
-                child: AnimatedScale(
-                    duration: const Duration(milliseconds: 333),
-                    scale: isStarted ? 1 : 0,
-                    child: Container(
-                        padding: const EdgeInsets.all(6),
-                        width: maxWidth,
-                        child: WdgDashedBorder(
-                            child: SingleChildScrollView(
-                                child: Padding(
-                                    padding: const EdgeInsets.all(6),
-                                    child: WdgSpecialText(text: widget.grammar.description))
-                            )
-                        )
-                    )
-                ),
-              )
-            ],
-          ),
-      ])
+            ))
+          ]),
+        ]
+      )
     );
   }
 }

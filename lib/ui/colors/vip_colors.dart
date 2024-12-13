@@ -1,8 +1,7 @@
-
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:lap_english/main.dart';
+
+import '../themes/size.dart';
 
 class VipColors {
   static Color getRandomColor(BuildContext context, int alpha) {

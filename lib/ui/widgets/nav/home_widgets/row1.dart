@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/constant/theme_constant.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/themes/theme.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:provider/provider.dart';
+
+import '../../../themes/size.dart';
 
 class WdgRow1 extends StatelessWidget {
   const WdgRow1({super.key});
@@ -27,13 +28,13 @@ class WdgRow1 extends StatelessWidget {
           ),
 
           ///TEXT họ tên ------------------------------------------------------
-          const Positioned(
+          Positioned(
             top: 10,
             left: 10,
             child: Text(
               "Đào Như Triệu",
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: textSize.title,
                   color: Colors.white,
                   fontWeight: FontWeight.bold),
             ),
@@ -91,18 +92,18 @@ class WdgRow1 extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 16
+              fontSize: textSize.normal
           ),
         ),
         const SizedBox(height: 8),
         Text(
           content,
-          style: const TextStyle(
+          style: TextStyle(
               color: Colors.white,
-              fontSize: 24,
+              fontSize: textSize.medium,
               fontWeight: FontWeight.bold
           ),
         ),

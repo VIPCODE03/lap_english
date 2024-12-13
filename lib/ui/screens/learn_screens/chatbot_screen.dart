@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/services/bot.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
@@ -12,6 +11,7 @@ import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../../../data/model/learn/chat.dart';
+import '../../themes/size.dart';
 
 class ChatBotScreen extends StatefulWidget {
   final MdlTopicChat topicChat;

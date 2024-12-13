@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 
-import '../../../main.dart';
+import '../../themes/size.dart';
 
 class WdgAppBar extends StatelessWidget {
   final Widget? content;
@@ -29,10 +29,14 @@ class WdgAppBar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               FittedBox(
+                alignment: Alignment.center,
                 child: WdgButton(
                     onTap: onBack ?? () => Navigator.pop(context),
                     color: Colors.transparent,
-                    child: Row(children: [
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
                       Icon(Icons.design_services, size: (orientation == Orientation.portrait || isTablet)
                           ? maxHeight * 0.03
                           : maxHeight * 0.07),

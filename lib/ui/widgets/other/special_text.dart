@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+
+import '../../themes/size.dart';
 
 class WdgSpecialText extends StatelessWidget {
   final String text;
@@ -22,7 +23,7 @@ class WdgSpecialText extends StatelessWidget {
               text: part.text,
                 style: GoogleFonts.pangolin(
                   color: VipColors.text(context),
-                  fontSize: isTablet ? 30 : 20,
+                  fontSize: textSize.specical,
               )
             );
           }
@@ -33,7 +34,7 @@ class WdgSpecialText extends StatelessWidget {
               text: part.text,
               style: GoogleFonts.pangolin(
                 color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontSize: isTablet ? 30 : 20,
+                fontSize: textSize.specical,
               )
             );
           }
