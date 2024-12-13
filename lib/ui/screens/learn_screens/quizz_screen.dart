@@ -16,7 +16,7 @@ import 'package:lap_english/utils/player_audio.dart';
 import '../../../bloc/quizz_bloc.dart';
 import '../../../data/model/quizz/quizz.dart';
 import '../../../data/model/user/skill.dart';
-import '../../../main.dart';
+import '../../themes/size.dart';
 import '../../widgets/learn/quiz/z_quizz_result.dart';
 import '../../widgets/other/button.dart';
 
@@ -74,7 +74,6 @@ class _QuizzScreenState extends State<QuizzScreen> {
   bool showQuizz = false;
   bool next = false;
   bool isNext = true;
-  bool init = false;
   late WdgQuizz currentQuizz;
 
   double progress = 0;
@@ -137,10 +136,12 @@ class _QuizzScreenState extends State<QuizzScreen> {
           child: BlocBuilder<QuizzBloc, QuizzState>(
             builder: (context, state) {
               if (state is QuizzInProgress) {
+                bool isNextQuiz = false;
                 if (isNext) {
                   currentQuizz = WdgQuizzes.generate(state.currentQuizz);
                   progress = state.progress;
                   isNext = false;
+                  isNextQuiz = true;
                 }
 
                 return WdgScaffold(
@@ -151,10 +152,10 @@ class _QuizzScreenState extends State<QuizzScreen> {
                       },
                       content: SizedBox(
                           height: isTablet
-                              ? orientation == Orientation.portrait
+                              ? isPortrait
                                   ? maxHeight * 0.04
                                   : 30
-                              : orientation == Orientation.portrait
+                              : isPortrait
                                   ? maxHeight * 0.03
                                   : 20,
                           child: WdgAnimatedProgressBar(value: state.progress)),
@@ -162,42 +163,37 @@ class _QuizzScreenState extends State<QuizzScreen> {
                     body: Column(
                       children: [
                         ///Text kĩ năng -------------------------------------------
-                        if (!widget._isCustom)
                           Container(
-                              height: orientation == Orientation.portrait
-                                  ? maxHeight * 0.03
-                                  : maxHeight * 0.05,
                               margin: const EdgeInsets.all(3),
                               alignment: Alignment.centerLeft,
                               child: FittedBox(
                                 child: Text(
                                   Skill.skillName(currentQuizz.quizz.skillType),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700),
+                                  style: TextStyle(
+                                      fontSize: textSize.normal,
+                                      fontWeight: FontWeight.bold
+                                  ),
                                 ),
                               )),
 
                         ///Text câu hỏi -------------------------------------------
                         Container(
-                          constraints:
-                              BoxConstraints(minHeight: maxHeight * 0.03),
                           margin: const EdgeInsets.all(3),
                           alignment: Alignment.centerLeft,
-                          child:
-                              WdgSpecialText(text: currentQuizz.quizz.question),
+                          child: WdgSpecialText(text: currentQuizz.quizz.question),
                         ),
 
                         ///Slide quizz  ----------------------------------------------
                         Expanded(
                             child: AnimatedSwitcher(
                               duration: const Duration(milliseconds: 666),
-                              transitionBuilder:
-                                  (Widget child, Animation<double> animation) {
+                              transitionBuilder: (Widget child, Animation<double> animation) {
                                 var right = const Offset(0.5, 0.0);
                                 var left = const Offset(-10.0, 0.0);
                                 const center = Offset.zero;
-                                next = !next;
+                                if(isNextQuiz) {
+                                  next = !next;
+                                }
 
                                 var tween = Tween(begin: next ? right : left, end: center)
                                     .chain(CurveTween(curve: Curves.easeInOutCubic));
@@ -205,6 +201,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                 animation.addStatusListener((status) {
                                   if (status == AnimationStatus.completed) {
                                     if (showQuizz) {
+                                      isNextQuiz = false;
                                       currentQuizz.status.isStarted.value = true;
                                     }
                                   }
@@ -215,7 +212,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                     child: child,
                                 );
                               },
-                              child: Container(
+                              child: SizedBox(
                                 key: showQuizz ? currentQuizz.keyID : UniqueKey(),
                                 child: showQuizz
                                     ? currentQuizz
@@ -255,20 +252,15 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
                         ///Button kiểm tra  ------------------------------------------
                         Container(
-                            height: orientation == Orientation.portrait
-                                ? maxHeight * 0.07
-                                : maxHeight * 0.1,
-                            width: maxWidth * 0.85,
-                            margin: EdgeInsets.only(
-                                bottom: 15,
-                                top: orientation == Orientation.portrait
-                                    ? maxHeight * 0.03
-                                    : maxHeight * 0.01),
+                          constraints: BoxConstraints(
+                            minHeight: textSize.specical * 2
+                          ),
+                            width: (isTablet || !isPortrait) ? (maxWidth / 1.66) : maxWidth * 0.66,
+                            margin: const EdgeInsets.symmetric(vertical: 15),
                             child: ValueListenableBuilder<bool>(
                               valueListenable: currentQuizz.status.isAnswered,
                               builder: (context, value, child) {
                                 return WdgButton(
-                                    buttonFit: ButtonFit.scaleDown,
                                     onTap: () {
                                       if (value) {
                                         //--- Lấy kết quả ---
@@ -301,19 +293,18 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                             isCorrect);
                                       }
                                     },
-                                    borderRadius: BorderRadius.circular(15),
+                                    borderRadius: BorderRadius.circular(12),
                                     color: value
                                         ? VipColors.primary(context)
                                         : Colors.grey,
                                     alpha: 75,
-                                    child: const FittedBox(
-                                      child: Text(
+                                    child: Text(
                                         'Kiểm tra',
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: textSize.specical,
                                         ),
                                       ),
-                                    ));
+                                    );
                               },
                             )),
                       ],
@@ -333,14 +324,14 @@ class _QuizzScreenState extends State<QuizzScreen> {
     showModalBottomSheet(
       isDismissible: false,
       enableDrag: false,
-      isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxWidth: (isTablet || !isPortrait) ? maxWidth / 1.66 : maxWidth,
+      ),
       context: parentContext,
       builder: (context) {
         return PopScope(
           canPop: false,
           child: SizedBox(
-            width: maxWidth,
-            height: 222,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -359,8 +350,6 @@ class _QuizzScreenState extends State<QuizzScreen> {
                 /// Nội dung  --------------------------------------------------------
                 Container(
                   alignment: Alignment.bottomCenter,
-                  width: maxWidth,
-                  height: maxHeight,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -380,26 +369,26 @@ class _QuizzScreenState extends State<QuizzScreen> {
                         answerCorrect != null ? 'Đáp án đúng: $answerCorrect' : '',
                         style: const TextStyle(fontSize: 18),
                       ),
-                      const SizedBox(height: 20),
 
                       /// Button chuyển tiếp  --------------------------------------
                       Container(
-                          height: orientation == Orientation.portrait ? maxHeight * 0.07 : maxHeight * 0.1,
-                          width: maxWidth - 70,
-                          margin: const EdgeInsets.only(bottom: 15),
+                          constraints: BoxConstraints(
+                              minHeight: textSize.specical * 2
+                          ),
+                          width: maxWidth * 0.66,
+                          margin: const EdgeInsets.symmetric(vertical: 15),
                           child: WdgButton(
-                            buttonFit: ButtonFit.scaleDown,
                             onTap: () {
                               isNext = true;
                               currentQuizz.status.isEnd.value = true;
                               parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));  //-> Check
                               Navigator.pop(context); //->  Đóng BottomSheet
                             },
-                            borderRadius: BorderRadius.circular(15),
+                            borderRadius: BorderRadius.circular(12),
                             color: isCorrect ? Colors.green : Colors.red,
-                            child: const Text(
+                            child: Text(
                               'Tiếp tục',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: textSize.specical),
                             ),
                           )
                       ),
@@ -420,8 +409,9 @@ class _QuizzScreenState extends State<QuizzScreen> {
         context: parentContext,
         builder: (BuildContext context) {
           return WdgDialog(
-              title: const Text('Xác nhận thoát'),
-              content: const Text('Bạn sẽ mất tiến trình'),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              title: const Text('Xác nhận thoát', style: TextStyle(fontSize: 24)),
+              content: const Text('Bạn sẽ mất tiến trình', style: TextStyle(fontSize: 18)),
               actions: [
                 WdgButton(
                   onTap: () {
@@ -429,12 +419,12 @@ class _QuizzScreenState extends State<QuizzScreen> {
                     Navigator.pop(parentContext);
                   },
                   color: Colors.transparent,
-                  child: const Text('Thoát', style: TextStyle(color: Colors.red)),
+                  child: const Text('Thoát', style: TextStyle(color: Colors.red, fontSize: 20)),
                 ),
                 WdgButton(
                   onTap: () => Navigator.pop(context),
                   color: Colors.transparent,
-                  child: const Text('Tiếp tục học', style: TextStyle(color: Colors.green)),
+                  child: const Text('Tiếp tục học', style: TextStyle(color: Colors.green, fontSize: 20)),
                 ),
               ]
           );

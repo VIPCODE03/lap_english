@@ -4,10 +4,11 @@ import 'package:lap_english/bloc/data_bloc/data_bloc.dart';
 import 'package:lap_english/data/model/learn/status.dart';
 import 'package:lap_english/data/model/user/user.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/dialogs/dialog_widget.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
+
+import '../../../themes/size.dart';
 
 class WdgStatusLock<T> extends StatefulWidget {
   final T item;

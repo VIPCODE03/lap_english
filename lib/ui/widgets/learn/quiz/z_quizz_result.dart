@@ -5,6 +5,7 @@ import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 
+import '../../../themes/size.dart';
 import '../../other/button.dart';
 
 class WdgQuizzResult extends StatefulWidget {
@@ -83,23 +84,24 @@ class _WdgQuizzResultState extends State<WdgQuizzResult> {
                 )),
 
                 Container(
-                    height: isPortrait ? maxHeight * 0.07 : maxHeight * 0.1,
-                    width: maxWidth - 50,
-                    margin: const EdgeInsets.only(bottom: 15),
+                    height: textSize.specical * 2.66,
+                    width: (isTablet || !isPortrait) ? (maxWidth / 1.5) : maxWidth * 0.66,
+                    margin: const EdgeInsets.symmetric(vertical: 15),
                     child: WdgButton(
-                      buttonFit: ButtonFit.scaleDown,
                       onTap: () {
                         Navigator.pop(context, quizzResult);
                       },
                       borderRadius: BorderRadius.circular(12),
                       color: VipColors.primary(context),
-                      child: const Text(
+                      child: Text(
                         'Hoàn thành',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: textSize.specical),
                       ),
                     )),
               ],
-            )));
+            )
+        )
+    );
   }
 
   /// Item skill  ------------------------------------------------------------

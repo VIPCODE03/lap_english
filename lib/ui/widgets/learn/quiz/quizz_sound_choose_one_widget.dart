@@ -7,6 +7,7 @@ import 'package:lap_english/utils/loaddata_link.dart';
 import 'package:lap_english/utils/player_audio.dart';
 import '../../../../../utils/text_to_speak.dart';
 import '../../../../main.dart';
+import '../../../themes/size.dart';
 
 class WdgQuizzSoundChooseOne extends WdgQuizz<QuizzSoundChooseOne> {
   WdgQuizzSoundChooseOne({super.key, required super.quizz});
@@ -89,10 +90,10 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
             children: widget.quizz.answers.map((key) {
               final bool isSelected = key == selectedKey;
               return SizedBox(
-                height: orientation == Orientation.portrait
+                height: isPortrait
                     ? maxHeight / 5
                     : maxHeight * 2 / 3,
-                width: orientation == Orientation.portrait
+                width: isPortrait
                     ? maxWidth / 2 - 30
                     : maxWidth / 5,
                 child: WdgButton(

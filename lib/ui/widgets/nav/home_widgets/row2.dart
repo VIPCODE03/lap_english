@@ -7,6 +7,7 @@ import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/ipa_screen.dart';
 import 'package:lap_english/ui/screens/learn_screens/quizz_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
+import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
 
@@ -103,7 +104,7 @@ class WdgRow2 extends StatelessWidget {
             ),
 
             ///TEXT --------------------------------------------------------------
-            Text(item.label, maxLines: 1, style: const TextStyle(fontSize: 16))
+            Text(item.label, maxLines: 1, style: TextStyle(fontSize: textSize.medium))
           ],
         )
     );

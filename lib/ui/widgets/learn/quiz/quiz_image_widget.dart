@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quiz_image.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/dashed_border.dart';
 import 'package:lap_english/utils/loaddata_link.dart';
+import '../../../themes/size.dart';
 import '../../other/button.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */

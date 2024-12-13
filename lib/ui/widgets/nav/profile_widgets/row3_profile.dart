@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/user/user.dart';
-import 'package:lap_english/main.dart';
 
 import '../../../colors/vip_colors.dart';
+import '../../../themes/size.dart';
 
 class WdgRow3Profile extends StatelessWidget {
   final User user;
@@ -36,7 +36,7 @@ class WdgRow3Profile extends StatelessWidget {
             color: Colors.grey,
           )
         ),
-        width: orientation == Orientation.portrait ? maxWidth * 2/5 : maxWidth / 5,
+        width: isPortrait ? maxWidth * 2/5 : maxWidth / 5,
         child: Column(
           children: [
             Text(title, style: TextStyle(

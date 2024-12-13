@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/learn/vocabulary.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/utils/text_to_speak.dart';
+
+import '../../themes/size.dart';
 
 class FlipCardsScreen extends StatelessWidget {
   final TextToSpeakUtil _textToSpeakUtil = TextToSpeakUtil();

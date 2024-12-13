@@ -1,12 +1,12 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_speak.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import '../../../../utils/speech_to_text.dart';
+import '../../../themes/size.dart';
 
 class WdgQuizzSpeak extends WdgQuizz<QuizzSpeak> {
   WdgQuizzSpeak({super.key, required super.quizz});

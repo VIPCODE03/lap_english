@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
+import '../../../themes/size.dart';
 import '../../other/button.dart';
 
 /*  Quizz trắc nghiệm 2-4 đáp án  */
@@ -38,8 +38,8 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double itemHeight = isPortrait ? constraints.maxHeight / 4.5 : constraints.maxHeight;
-        double itemWidth = isPortrait ? constraints.maxWidth / 1.1 : constraints.maxWidth / 4.5;
+        double itemHeight = isPortrait ? constraints.maxHeight / 5 : constraints.maxHeight / 2.5;
+        double itemWidth = isPortrait ? constraints.maxWidth / 1.1 : constraints.maxWidth / 2.5;
 
         return Wrap(
           spacing: 10,
@@ -50,8 +50,7 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
             if (isCorrect) widget.status.correctAnswer = option;
             bool isSelected = option == selectedKey;
 
-            return FittedBox(
-              child: SizedBox(
+            return SizedBox(
                 height: itemHeight,
                 width: itemWidth,
 
@@ -66,18 +65,12 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
                   color: VipColors.onPrimary(context),
                   alpha: isSelected ? 100 : 10,
                   borderRadius: BorderRadius.circular(12),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    runAlignment: WrapAlignment.center,
-                    children: [
-                      Text(
+                  child: Text(
                         option,
-                        style: TextStyle(fontSize: isPortrait ? 18 : isTablet ? 20 : 16),
+                        textAlign: TextAlign.start,
+                        style: TextStyle(fontSize: textSize.specical),
                       ),
-                    ],
-                  )
                 ),
-              ),
             );
           }).toList(),
         );

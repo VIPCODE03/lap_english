@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/provider/ipa_provider.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
@@ -10,6 +9,7 @@ import 'package:lap_english/utils/player_audio.dart';
 import 'package:lap_english/utils/text_to_speak.dart';
 
 import '../../../data/model/learn/ipa.dart';
+import '../../themes/size.dart';
 
 class IPAScreen extends StatelessWidget {
   final AudioPlayerUtil audio = AudioPlayerUtil();

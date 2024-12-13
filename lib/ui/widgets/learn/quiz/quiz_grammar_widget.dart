@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quiz_grammar.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 
+import '../../../themes/size.dart';
 import '../../other/dashed_border.dart';
 
 class WdgQuizGrammar extends WdgQuizz<MdlQuizGrammar> {
@@ -18,6 +18,7 @@ class WdgQuizGrammar extends WdgQuizz<MdlQuizGrammar> {
 
 class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>  {
   late WdgQuizz wdgQuiz;
+  late List<Widget> quizGrammar;
   bool _isAtTop = false;
 
   @override
@@ -29,7 +30,21 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
         _isAtTop = true;
       });
     });
+
+    hasChanged.addListener(updateScreen);
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(updateScreen);
+  }
+
+  void updateScreen() {
+    setState(() {});
+  }
+
+
 
   void initQuiz() {
     wdgQuiz = WdgQuizzes.generate(widget.quizz.quiz);
@@ -43,39 +58,59 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(
+      fit: StackFit.loose,
       children: [
         AnimatedPositioned(
             duration: const Duration(milliseconds: 333),
-            top: _isAtTop ? 0 : maxHeight / 3,
-            left: 0,
+            top: _isAtTop ? 0 : maxHeight / 6,
+            left: _isAtTop ? (isPortrait || isTablet) ? 0 : maxWidth / 1.66 : 0,
             right: 0,
             child: _item()
         ),
 
         Column(
           children: [
-            Opacity(
-                opacity: 0,
-                child: _item()
-            ),
+            if(isPortrait || isTablet)
+              Opacity(
+                  opacity: 0,
+                  child: SizedBox(
+                    width: maxWidth,
+                    child: _item(),
+                  )
+              ),
 
             Expanded(
-              child: AnimatedOpacity(
-                opacity: _isAtTop ? 1 : 0,
-                duration: const Duration(milliseconds: 666),
-                child: AnimatedScale(
-                  duration: const Duration(milliseconds: 333),
-                  onEnd: () => wdgQuiz.status.isStarted.value = true,
-                  scale: _isAtTop ? 1 : 0,
-                  child: wdgQuiz,
-                ),
-              ),
+              child: Row(
+                children: [
+                  Expanded(child:AnimatedOpacity(
+                    opacity: _isAtTop ? 1 : 0,
+                    duration: const Duration(milliseconds: 666),
+                    child: AnimatedScale(
+                      duration: const Duration(milliseconds: 333),
+                      onEnd: () => wdgQuiz.status.isStarted.value = true,
+                      scale: _isAtTop ? 1 : 0,
+                      child: Align(alignment: Alignment.center, child: wdgQuiz),
+                    ),
+                  )),
+
+                  if(!isPortrait && !isTablet)
+                    Opacity(
+                      opacity: 0,
+                      child: SizedBox(
+                        width: maxWidth - maxWidth / 1.66,
+                        child: _item(),
+                      )
+                  ),
+                ],
+              )
             ),
           ],
-        ),
+        )
       ],
     );
   }
@@ -92,14 +127,19 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
         ),
         padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.all(10),
-        child: Column(
+        child:
+        Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               widget.quizz.structure.description,
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: textSize.specical),
             ),
 
-            const SizedBox(height: 10),
+             SizedBox(
+               height: 10,
+               width: isPortrait ? null : maxWidth,
+            ),
 
             WdgDashedBorder(
                 color: VipColors.primary(context),

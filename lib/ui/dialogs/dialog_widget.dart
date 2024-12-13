@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/main.dart';
+
+import '../themes/size.dart';
 
 class WdgDialog extends StatefulWidget {
   final Widget? title;

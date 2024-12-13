@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/ui/screens/learn_screens/chatbot_screen.dart';
+import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
 
@@ -58,8 +59,8 @@ class WdgRow3 extends StatelessWidget {
                     topicChat.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 18,
+                    style: TextStyle(
+                      fontSize: textSize.medium,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -72,7 +73,7 @@ class WdgRow3 extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => ChatBotScreen(topicChat: topicChat))
                     ),
                     borderRadius: BorderRadius.circular(12),
-                    child: const Text('Bắt đầu', style: TextStyle(fontSize: 16),),
+                    child: Text('Bắt đầu', style: TextStyle(fontSize: textSize.medium),),
                 )
                 )
               ],
