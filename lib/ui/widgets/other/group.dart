@@ -24,7 +24,6 @@ class WdgGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var maxWidth = MediaQuery.of(context).size.width;
     return Wrap(
       direction: Axis.horizontal,
       children: [
@@ -35,7 +34,7 @@ class WdgGroup extends StatelessWidget {
           child: Container(
             height: height,
             width: maxWidth,
-            color: Color.alphaBlend(Theme.of(context).primaryColor.withAlpha(50), Colors.grey),
+            color: VipColors.onPrimary(context),
           ),
         ),
 

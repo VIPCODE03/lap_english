@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/database/remote/service/task_reward_service.dart';
 import 'package:lap_english/data/model/user/user.dart';
+import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/themes/size.dart';
 
 import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../data/model/task_and_reward/daily_task.dart';
@@ -39,48 +42,47 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                   ListTile(
                     title: Text(
                       dailyTask.task.description,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: textSize.medium
+                      ),
                     ),
                     subtitle: Row(
                       children: [
                         Image.asset(
-                          dailyTask.reward.icon,
+                          Assets.images.icon.gold.path,
                           height: 20,
                           width: 20,
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          '${dailyTask.reward.quantity}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.amber),
+                          '${dailyTask.reward.gold}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber,
+                              fontSize: textSize.medium,
+                          ),
                         ),
                       ],
                     ),
                     trailing: SizedBox(
-                      height: 35,
-                      width: 100,
+                      width: textSize.normal * 8,
                       child: dailyTask.reward.isRewardClaimed
                           ? WdgButton(
-                              onTap: () {
-                                dailyTask.task.progress = 0;
-                                dailyTask.reward.isRewardClaimed = false;
-                                dailyTask.task.completed = false;
-                                context.read<DataBloc<User>>().add(DataEventUpdate(datas: [widget.user]));
-                              },
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.grey.withAlpha(50),
-                            child: const Text('Đã nhận'))
+                              onTap: () {},
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.grey.withAlpha(50),
+                              child: Text('Đã nhận',
+                                  style: TextStyle(
+                                  fontSize: textSize.normal,
+                                  fontWeight: FontWeight.bold,
+                              ),
+                            ))
 
                           : WdgButton(
                               onTap: () {
-                                if (dailyTask.task.progress >= dailyTask.task.total &&
-                                    !dailyTask.reward.isRewardClaimed) {
-                                  dailyTask.reward.claimReward(widget.user);
-                                } else if (dailyTask.task.progress <
-                                    dailyTask.task.total) {
-                                  dailyTask.task.progress++;
+                                if (dailyTask.task.progress >= dailyTask.task.total && !dailyTask.reward.isRewardClaimed) {
+                                  RewardService().getReward(dailyTask.id);
                                 }
-                                context.read<DataBloc<User>>().add(DataEventUpdate(datas: [widget.user]));
                               },
                               borderRadius: BorderRadius.circular(12),
                               color: dailyTask.task.progress < dailyTask.task.total
@@ -90,6 +92,10 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                                 dailyTask.task.progress < dailyTask.task.total
                                     ? '${dailyTask.task.progress}/${dailyTask.task.total}'
                                     : 'Nhận thưởng',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: textSize.normal,
+                                ),
                               ),
                       ),
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/themes/size.dart';
 
 class WdgButton extends StatefulWidget {
   final Function onTap;
@@ -54,7 +55,7 @@ class _WdgButtonState extends State<WdgButton> {
         });
       },
       child: Container(
-        margin: _isPressed ? const EdgeInsets.only(top: 5) : const EdgeInsets.only(top: 0),
+        margin: _isPressed ? const EdgeInsets.only(top: 5) : const EdgeInsets.only(top: 1),
         decoration: BoxDecoration(
           color: widget.color != Colors.transparent
               ? Color.alphaBlend(Colors.transparent,
@@ -80,7 +81,7 @@ class _WdgButtonState extends State<WdgButton> {
             ),
           ),
         ),
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          padding: const EdgeInsets.all(4.5),
           child: switch (widget.buttonFit) {
             null => Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

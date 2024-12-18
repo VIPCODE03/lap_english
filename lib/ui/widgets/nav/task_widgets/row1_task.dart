@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/ui/themes/size.dart';
 
 import '../../../../gen/assets.gen.dart';
 
@@ -14,23 +15,24 @@ class WdgRow1Task extends StatelessWidget {
       child: Stack(
         children: [
           /// Text  ------------------------------------------------------------
-          const Positioned(
+          Positioned(
             bottom: 30,
             left: 20,
+            right: maxWidth / 2.5,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Chào mừng bạn trở lại',
-                  style: TextStyle(fontSize: 24,
+                  style: TextStyle(fontSize: textSize.title,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   'Hãy nhớ quay lại đây để nhận thưởng nhé <3',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: textSize.normal,
                   ),
                 ),
               ],

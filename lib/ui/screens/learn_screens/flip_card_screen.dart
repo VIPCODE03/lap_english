@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
@@ -10,7 +10,7 @@ import '../../themes/size.dart';
 
 class FlipCardsScreen extends StatelessWidget {
   final TextToSpeakUtil _textToSpeakUtil = TextToSpeakUtil();
-  final List<MdlWord> words;
+  final List<Word> words;
   FlipCardsScreen({super.key, required this.words});
 
   @override
@@ -26,7 +26,7 @@ class FlipCardsScreen extends StatelessWidget {
     );
   }
 
-  Widget item(BuildContext context, MdlWord word, double height, double width) {
+  Widget item(BuildContext context, Word word, double height, double width) {
     return _WdgFlipCard(
       height: height,
       width: width,

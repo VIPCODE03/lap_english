@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
-import 'package:lap_english/data/model/learn/sentence.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/ipa_screen.dart';
-import 'package:lap_english/ui/screens/learn_screens/quizz_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
 import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
@@ -24,16 +22,13 @@ class MenuItem {
 }
 
 class WdgRow2 extends StatelessWidget {
-  Widget _getMenu(int index) => [
-    const MenuScreen<MdlMainVocabularyTopic>(title: "Từ vựng theo chủ đề"),
 
-    const MenuScreen<MdlMainSentenceTopic>(title: "Câu theo chủ đề"),
+  Widget _getMenu(int index) => [
+    const MenuScreen<MainTopic>(title: "Từ vựng theo chủ đề", args: Word),
+
+    const MenuScreen<MainTopic>(title: "Câu theo chủ đề", args: Sentence),
 
     const MenuScreen<TypeGrammar>(title: "Ngữ pháp"),
-
-/*    QuizzScreen.grammar(structures: [
-      GrammaticalStructure(2, 'Thì hiện tại hoàn thành (Khẳng định)', '<S> + <have/has> + <V3> + <O>', 3),
-    ]),*/
 
     IPAScreen()
   ].elementAt(index);
@@ -104,7 +99,7 @@ class WdgRow2 extends StatelessWidget {
             ),
 
             ///TEXT --------------------------------------------------------------
-            Text(item.label, maxLines: 1, style: TextStyle(fontSize: textSize.medium))
+            Text(item.label, maxLines: 1, style: TextStyle(fontSize: textSize.normal))
           ],
         )
     );

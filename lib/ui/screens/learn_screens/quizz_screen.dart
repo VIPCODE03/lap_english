@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
-import 'package:lap_english/data/model/learn/sentence.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/dialogs/dialog_widget.dart';
@@ -22,42 +21,38 @@ import '../../widgets/other/button.dart';
 
 class QuizzScreen extends StatefulWidget {
   final Future<List<Quizz>> _quizzes;
+  final int _idObject;
   final TypeQuizz _typeQuizz;
-  final bool _isLearned;
-  final bool _isCustom;
 
   final int _totalWord;
   final int _totalSentence;
   final int _totalGrammar;
 
-  QuizzScreen.vocabulary({super.key, required List<MdlWord> words, required bool isLearned})
+  QuizzScreen.vocabulary({super.key, required List<Word> words, required int subTopicId})
     :
+        _idObject = subTopicId,
         _typeQuizz = TypeQuizz.quizzVocabulary,
         _totalWord = words.length,
         _totalSentence = 0,
         _totalGrammar = 0,
-        _isLearned = isLearned,
-        _isCustom = false,
       _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
 
-  QuizzScreen.sentence({super.key, required List<MdlSentence> sentences, required bool isLearned})
+  QuizzScreen.sentence({super.key, required List<Sentence> sentences, required int subTopicId})
       :
-        _typeQuizz = TypeQuizz.quizzSentence,
+        _idObject = subTopicId,
+      _typeQuizz = TypeQuizz.quizzSentence,
         _totalWord = 0,
         _totalSentence = sentences.length,
         _totalGrammar = 0,
-        _isLearned = isLearned,
-        _isCustom = false,
       _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
 
-  QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures})
+  QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures, required int grammarId})
       :
-        _typeQuizz = TypeQuizz.quizGrammar,
+        _idObject = grammarId,
+      _typeQuizz = TypeQuizz.quizGrammar,
         _totalWord = 0,
         _totalSentence = 0,
         _totalGrammar = structures.length,
-        _isLearned = false,
-        _isCustom = true,
         _quizzes = Quizzes.generateQuizGrammar(structures: structures);
 
   @override
@@ -96,8 +91,12 @@ class _QuizzScreenState extends State<QuizzScreen> {
         _quizzes = quizzes;
         _quizzBloc = QuizzBloc(
             quizzes..shuffle(),
-            widget._typeQuizz, widget._isLearned, widget._totalWord, widget._totalSentence, widget._totalGrammar)
-          ..add(QuizzInit());
+            widget._typeQuizz,
+            widget._totalWord,
+            widget._totalSentence,
+            widget._totalGrammar,
+            idObject: widget._idObject
+        )..add(QuizzInit());
       });
     }).catchError((error) {
       setState(() {
@@ -108,15 +107,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
   @override
   Widget build(BuildContext quizContext) {
-    //--- Đang tải hoặc lỗi ---
-    if (_quizzes == null) {
-      return const WdgScaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    //--- Không có dữ liệu  ---
-    if (_quizzes!.isEmpty) {
+    if (_quizzes == null || _quizzes!.isEmpty) {
       if(!showQuizz) {
         return const WdgScaffold(
           body: Center(child: Text('Không có dữ liệu')),
@@ -131,8 +122,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
             _showExitConfirmationDialog(quizContext);
           }},
 
-        child: BlocProvider.value(
-          value: _quizzBloc,
+        child: BlocProvider.value(value: _quizzBloc,
           child: BlocBuilder<QuizzBloc, QuizzState>(
             builder: (context, state) {
               if (state is QuizzInProgress) {
@@ -151,36 +141,16 @@ class _QuizzScreenState extends State<QuizzScreen> {
                         _showExitConfirmationDialog(quizContext);
                       },
                       content: SizedBox(
-                          height: isTablet
-                              ? isPortrait
-                                  ? maxHeight * 0.04
-                                  : 30
-                              : isPortrait
-                                  ? maxHeight * 0.03
-                                  : 20,
+                          height: textSize.title / 1.25,
                           child: WdgAnimatedProgressBar(value: state.progress)),
                     ),
                     body: Column(
                       children: [
-                        ///Text kĩ năng -------------------------------------------
-                          Container(
-                              margin: const EdgeInsets.all(3),
-                              alignment: Alignment.centerLeft,
-                              child: FittedBox(
-                                child: Text(
-                                  Skill.skillName(currentQuizz.quizz.skillType),
-                                  style: TextStyle(
-                                      fontSize: textSize.normal,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              )),
-
                         ///Text câu hỏi -------------------------------------------
                         Container(
-                          margin: const EdgeInsets.all(3),
+                          margin: const EdgeInsets.all(5),
                           alignment: Alignment.centerLeft,
-                          child: WdgSpecialText(text: currentQuizz.quizz.question),
+                          child: WdgSpecialText(text: currentQuizz.quizz.question, size: textSize.medium),
                         ),
 
                         ///Slide quizz  ----------------------------------------------
@@ -225,38 +195,32 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
                         /// Button skip quizz nói hoặc nghe ----------------------------------
                         if ((currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening) && showQuizz)
-                          FittedBox(
-                            child: SizedBox(
-                                height: orientation == Orientation.portrait
-                                    ? maxHeight * 0.03
-                                    : maxHeight * 0.07,
-                                width: maxWidth,
-                                child: WdgButton(
-                                  buttonFit: ButtonFit.scaleDown,
-                                  color: Colors.transparent,
-                                  onTap: () {
-                                    isNext = true;
-                                    context.read<QuizzBloc>().add(QuizzSkip());
-                                  },
-                                  child: Text(
-                                    currentQuizz.quizz.skillType ==
-                                            SkillType.speaking
-                                        ? 'Hiện tại không nói được'
-                                        : 'Hiện tại không nghe được',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.grey.withAlpha(70)),
-                                  ),
-                                )),
+                          SizedBox(
+                              width: maxWidth,
+                              child: WdgButton(
+                                color: Colors.transparent,
+                                onTap: () {
+                                  isNext = true;
+                                  context.read<QuizzBloc>().add(QuizzSkip());
+                                },
+                                child: Text(
+                                  currentQuizz.quizz.skillType == SkillType.speaking
+                                      ? 'Hiện tại không nói được'
+                                      : 'Hiện tại không nghe được',
+                                  style: TextStyle(
+                                      fontSize: textSize.normal,
+                                      color: Colors.grey.withAlpha(70)),
+                                ),
+                              )
                           ),
 
                         ///Button kiểm tra  ------------------------------------------
                         Container(
-                          constraints: BoxConstraints(
-                            minHeight: textSize.specical * 2
-                          ),
+                            constraints: BoxConstraints(
+                              minHeight: (isTablet || isPortrait) ? textSize.special * 3 : textSize.special * 1.5
+                            ),
                             width: (isTablet || !isPortrait) ? (maxWidth / 1.66) : maxWidth * 0.66,
-                            margin: const EdgeInsets.symmetric(vertical: 15),
+                            margin: const EdgeInsets.symmetric(vertical: 12),
                             child: ValueListenableBuilder<bool>(
                               valueListenable: currentQuizz.status.isAnswered,
                               builder: (context, value, child) {
@@ -276,21 +240,13 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
                                         //--- Âm thanh đúng/sai ---
                                         if (!_noAudio) {
-                                          if (isCorrect) {
-                                            _audio.playFromAsset(
-                                                Assets.sounds.correct);
-                                          } else {
-                                            _audio.playFromAsset(
-                                                Assets.sounds.wrong);
-                                          }
+                                          isCorrect
+                                              ? _audio.playFromAsset(Assets.sounds.correct)
+                                              : _audio.playFromAsset(Assets.sounds.wrong);
                                         }
 
                                         //--- Mở dialog ---
-                                        _buildBottomDialogResult(
-                                            context,
-                                            title,
-                                            currentQuizz.status.correctAnswer,
-                                            isCorrect);
+                                        _buildBottomDialogResult(context, title, currentQuizz.status.correctAnswer, isCorrect);
                                       }
                                     },
                                     borderRadius: BorderRadius.circular(12),
@@ -298,13 +254,10 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                         ? VipColors.primary(context)
                                         : Colors.grey,
                                     alpha: 75,
-                                    child: Text(
-                                        'Kiểm tra',
-                                        style: TextStyle(
-                                          fontSize: textSize.specical,
-                                        ),
-                                      ),
-                                    );
+                                    child: Text('Kiểm tra',
+                                        style: TextStyle(fontSize: textSize.special,),
+                                    ),
+                                );
                               },
                             )),
                       ],
@@ -324,77 +277,82 @@ class _QuizzScreenState extends State<QuizzScreen> {
     showModalBottomSheet(
       isDismissible: false,
       enableDrag: false,
-      constraints: BoxConstraints(
-        maxWidth: (isTablet || !isPortrait) ? maxWidth / 1.66 : maxWidth,
-      ),
       context: parentContext,
+      useSafeArea: true,
+      sheetAnimationStyle: AnimationStyle(duration: const Duration(milliseconds: 200)),
+      constraints: BoxConstraints(
+        minWidth: maxWidth,
+      ),
       builder: (context) {
         return PopScope(
           canPop: false,
-          child: SizedBox(
-            child: Stack(
-              clipBehavior: Clip.none,
+          child: IntrinsicHeight(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                /// Ảnh ------------------------------------------------------------
-                Positioned(
-                  top: -66,
-                  right: 0,
-                  child: Image.asset(
-                    isCorrect
-                        ? Assets.images.dinosaur.dinosaurOk.path
-                        : Assets.images.dinosaur.dinosaurQuestion.path,
-                    height: 150,
-                  ),
+                /// Ảnh  ----------------------------------
+                /*Positioned(
+                top: -66,
+                right: 0,
+                child: Image.asset(
+                  isCorrect
+                      ? Assets.images.dinosaur.dinosaurOk.path
+                      : Assets.images.dinosaur.dinosaurQuestion.path,
+                  height: 150,
                 ),
+              ),*/
 
-                /// Nội dung  --------------------------------------------------------
-                Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
+                /// Nội dung ----------------------------------------------------
+                Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      /// Text tiêu đề  --------------------------------------------
+                      /// Tiêu đề -------------------------------------------------
                       Text(
                         title,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 24,
+                          fontSize: textSize.title,
                           color: isCorrect ? Colors.green : Colors.red,
                         ),
+                        textAlign: TextAlign.center,
                       ),
+
                       const SizedBox(height: 10),
 
-                      /// Text đáp án ---------------------------------------------
-                      Text(
-                        answerCorrect != null ? 'Đáp án đúng: $answerCorrect' : '',
-                        style: const TextStyle(fontSize: 18),
-                      ),
+                      /// Đáp án đúng ---------------------------------------------
+                      if (answerCorrect != null && answerCorrect.isNotEmpty)
+                        Text(
+                          answerCorrect,
+                          style: TextStyle(fontSize: textSize.normal, color: Colors.grey),
+                          textAlign: TextAlign.center,
+                        ),
 
-                      /// Button chuyển tiếp  --------------------------------------
+                      const SizedBox(height: 15),
+
+                      /// Nút bấm tiếp tục ----------------------------------------
                       Container(
-                          constraints: BoxConstraints(
-                              minHeight: textSize.specical * 2
+                        constraints: BoxConstraints(
+                            minHeight: (isTablet || isPortrait) ? textSize.special * 3 : textSize.special * 1.5
+                        ),
+                        width: (isTablet || !isPortrait) ? (maxWidth / 1.66) : maxWidth * 0.66,
+                        margin: const EdgeInsets.symmetric(vertical: 12),
+                        child: WdgButton(
+                          onTap: () {
+                            isNext = true;
+                            currentQuizz.status.isEnd.value = true;
+                            parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));
+                            Navigator.pop(context);
+                          },
+                          borderRadius: BorderRadius.circular(12),
+                          color: isCorrect ? Colors.green : Colors.red,
+                          child: Text(
+                            'Tiếp tục',
+                            style: TextStyle(fontSize: textSize.special),
                           ),
-                          width: maxWidth * 0.66,
-                          margin: const EdgeInsets.symmetric(vertical: 15),
-                          child: WdgButton(
-                            onTap: () {
-                              isNext = true;
-                              currentQuizz.status.isEnd.value = true;
-                              parentContext.read<QuizzBloc>().add(QuizzCheck(isCorrect));  //-> Check
-                              Navigator.pop(context); //->  Đóng BottomSheet
-                            },
-                            borderRadius: BorderRadius.circular(12),
-                            color: isCorrect ? Colors.green : Colors.red,
-                            child: Text(
-                              'Tiếp tục',
-                              style: TextStyle(fontSize: textSize.specical),
-                            ),
-                          )
+                        ),
                       ),
                     ],
                   ),
-                ),
               ],
             ),
           ),
@@ -410,8 +368,8 @@ class _QuizzScreenState extends State<QuizzScreen> {
         builder: (BuildContext context) {
           return WdgDialog(
               crossAxisAlignment: CrossAxisAlignment.center,
-              title: const Text('Xác nhận thoát', style: TextStyle(fontSize: 24)),
-              content: const Text('Bạn sẽ mất tiến trình', style: TextStyle(fontSize: 18)),
+              title: Text('Xác nhận thoát', style: TextStyle(fontSize: textSize.title)),
+              content: Text('Bạn sẽ mất tiến trình', style: TextStyle(fontSize: textSize.normal)),
               actions: [
                 WdgButton(
                   onTap: () {
@@ -419,12 +377,12 @@ class _QuizzScreenState extends State<QuizzScreen> {
                     Navigator.pop(parentContext);
                   },
                   color: Colors.transparent,
-                  child: const Text('Thoát', style: TextStyle(color: Colors.red, fontSize: 20)),
+                  child: Text('Thoát', style: TextStyle(color: Colors.red, fontSize: textSize.medium)),
                 ),
                 WdgButton(
                   onTap: () => Navigator.pop(context),
                   color: Colors.transparent,
-                  child: const Text('Tiếp tục học', style: TextStyle(color: Colors.green, fontSize: 20)),
+                  child: Text('Tiếp tục học', style: TextStyle(color: Colors.green, fontSize: textSize.medium)),
                 ),
               ]
           );

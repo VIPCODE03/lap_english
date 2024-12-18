@@ -12,9 +12,9 @@ part 'user.g.dart';
 class User {
   final String email;
   String name;
-  String? avatar;
+  String avatar;
 
-  final Skill skills;
+  final Skills skills;
   final List<MdlTitle> titles;
   final List<MdlDailyTask> dailyTasks;
   final CumulativePoint cumulativePoint;
@@ -23,7 +23,7 @@ class User {
   User({
     required this.name,
     required this.email,
-    this.avatar,
+    required this.avatar,
     required this.skills,
     required this.titles,
     required this.dailyTasks,

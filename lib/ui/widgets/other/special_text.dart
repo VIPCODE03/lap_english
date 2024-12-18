@@ -6,8 +6,9 @@ import '../../themes/size.dart';
 
 class WdgSpecialText extends StatelessWidget {
   final String text;
+  final double? size;
 
-  const WdgSpecialText({super.key, required this.text});
+  const WdgSpecialText({super.key, required this.text, this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class WdgSpecialText extends StatelessWidget {
               text: part.text,
                 style: GoogleFonts.pangolin(
                   color: VipColors.text(context),
-                  fontSize: textSize.specical,
+                  fontSize: size ?? textSize.special,
               )
             );
           }
@@ -34,7 +35,7 @@ class WdgSpecialText extends StatelessWidget {
               text: part.text,
               style: GoogleFonts.pangolin(
                 color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontSize: textSize.specical,
+                fontSize: size ?? textSize.special,
               )
             );
           }

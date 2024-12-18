@@ -136,7 +136,7 @@ class _ChatBotState extends State<ChatBotScreen> {
           child: Column(
             children: [
               /// Text chủ đề ---------------------------------------------------
-              Text(widget.topicChat.name, style: TextStyle(fontSize: 20, color: VipColors.text(context))),
+              Text(widget.topicChat.name, style: TextStyle(fontSize: textSize.medium, color: VipColors.text(context))),
 
               /// Danh sách tin nhắn  --------------------------------------------
               Expanded(child: Stack(
@@ -180,19 +180,15 @@ class _ChatBotState extends State<ChatBotScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(chats[index].message,
-                                                  style: const TextStyle(
-                                                      fontSize: 16)),
+                                                  style: TextStyle(fontSize: textSize.normal)),
                                               if (!roleUser &&
-                                                  chats[index]
-                                                      .translate
-                                                      .isNotEmpty && isBilingual)
-                                                Text(
-                                                    '---\n ${chats[index].translate}'),
-                                            ],
-                                          )
+                                                  chats[index].translate.isNotEmpty && isBilingual)
+                                                Text('---\n ${chats[index].translate}'                                                                                 ),
+                                            ])
+
                                       : SizedBox(
-                                              height: 25,
-                                              child: Image(image: Assets.images.icon.a3Dot.provider()),
+                                          height: textSize.medium * 1.4,
+                                          child: Image(image: Assets.images.icon.a3Dot.provider()),
                                     )
                               ),
                             );
@@ -201,11 +197,12 @@ class _ChatBotState extends State<ChatBotScreen> {
                       
                       Container(
                         color: VipColors.onPrimary(context),
-                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        margin: const EdgeInsets.symmetric(vertical: 3),
                         height: 2,
                         width: maxWidth * 0.66,
                       ),
 
+                      /// Gợi ý --------------------------------------------------
                       if(suggests.isNotEmpty)
                         Wrap(
                           spacing: 10,
@@ -217,8 +214,10 @@ class _ChatBotState extends State<ChatBotScreen> {
                                   _controller.text = suggest.group(1)!.trim();
                                 });
                               },
-                              buttonFit: ButtonFit.scaleDown,
-                              child: Text('${suggest.group(1)!.trim()} \n ${isBilingual ? suggest.group(2)!.trim() : ''}'.trim()),
+                              child: Text(
+                                  '${suggest.group(1)!.trim()} \n ${isBilingual ? suggest.group(2)!.trim() : ''}'.trim(),
+                                style: TextStyle(fontSize: textSize.normal),
+                              ),
                             ))
                           ],
                         )
@@ -229,7 +228,7 @@ class _ChatBotState extends State<ChatBotScreen> {
 
               /// Ô nhập và gửi tin nhắn  --------------------------------------------
               Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(6),
                 child: Row(
                   children: [
                     Expanded(child: Container(
@@ -241,6 +240,7 @@ class _ChatBotState extends State<ChatBotScreen> {
                           hintText: 'Nhập tin nhắn',
                           border: InputBorder.none,
                         ),
+                        style: TextStyle(fontSize: textSize.normal),
                         keyboardType: TextInputType.multiline,
                       ),
                     )),

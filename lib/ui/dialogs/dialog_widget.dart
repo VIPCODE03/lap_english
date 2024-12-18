@@ -41,11 +41,16 @@ class _WdgDialogState extends State<WdgDialog> {
         });
       }
     });
+    hasChanged.addListener(updateScreen);
+  }
 
+  void updateScreen() {
+    setState(() {});
   }
 
   //=== Scale thu nhỏ trước khi pop ===
   Future<void> closeDialog() async {
+    hasChanged.removeListener(updateScreen);
     setState(() {
       show = false;
     });
@@ -57,13 +62,18 @@ class _WdgDialogState extends State<WdgDialog> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.of(context).pop();
+          if(widget.barrierDismissible) {
+            Navigator.of(context).pop();
+          }
         },
         child: Scaffold(
             backgroundColor: Colors.transparent,
             body: PopScope(
+                canPop: widget.barrierDismissible,
                 onPopInvokedWithResult: (a, c) async {
-                  await closeDialog();
+                  if(widget.barrierDismissible) {
+                    await closeDialog();
+                  }
                 },
                 child: AnimatedScale(
                   scale: show ? 1 : 0.3,

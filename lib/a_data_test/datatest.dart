@@ -1,15 +1,15 @@
 // Function to generate a list of main topics
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 
 import '../data/model/learn/status.dart';
 
-List<MdlMainVocabularyTopic> generateMainVocabularyTopics() {
+List<MainTopic> generateMainVocabularyTopics() {
   final List<Map<String, dynamic>> data = [
     {"id": 1, "name": "Phổ biến"},
     {"id": 2, "name": "Trái cây"},
     {"id": 3, "name": "Anh triệu đẹp troai vl"},
-    {"id": 4, "name": "Anh triệu vip vl"},
-    {"id": 5, "name": "Động vật"},
+    {"id": 4, "name": "Anh triệu vip vl",},
+    {"id": 5, "name": "Động vật",},
     {"id": 6, "name": "Địa lý"},
     {"id": 7, "name": "Món ăn"},
     {"id": 8, "name": "Sự kiện lịch sử"},
@@ -21,7 +21,7 @@ List<MdlMainVocabularyTopic> generateMainVocabularyTopics() {
   ];
 
   return data.map((item) {
-    return MdlMainVocabularyTopic(
+    return MainTopic(
       item['id'],
       item['name'],
       MdlUnlockStatusManager(diamond: 0, gold: 0, locked: true),
@@ -29,7 +29,7 @@ List<MdlMainVocabularyTopic> generateMainVocabularyTopics() {
   }).toList();
 }
 
-List<MdlSubVocabularyTopic> generateSubVocabularyTopics() {
+List<SubTopic> generateSubVocabularyTopics() {
   final List<Map<String, dynamic>> data = [
     // Chủ đề con của "Phổ biến"
     {
@@ -79,7 +79,7 @@ List<MdlSubVocabularyTopic> generateSubVocabularyTopics() {
   ];
 
   return data.map((item) {
-    return MdlSubVocabularyTopic(
+    return SubTopic(
       item['id'],
       item['name'],
       item['imageUrl'],

@@ -114,13 +114,12 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonHeight = orientation == Orientation.portrait ? maxHeight * 0.05 : maxHeight * 0.07;
-    final buttonWidth = orientation == Orientation.portrait ? maxWidth / 10.5 : maxWidth / 10.5 / 1.5;
-
-    return FittedBox(
-      child: Column(
+    final buttonWidth = isPortrait ? maxWidth / 10.25 : maxWidth / 10.5 / 1.2;
+    final buttonHeight = isPortrait ? maxHeight / 17 : maxHeight / 14;
+    return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          /// Button gợi ý  ----------------------------------------------------
           if(widget.suggest.isNotEmpty)
             Align(
               alignment: Alignment.topRight,
@@ -145,12 +144,14 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
                   },
                   color: Colors.transparent,
                   child: Text(suggest ? 'Tắt gợi ý' : 'gợi ý',
-                    style: const TextStyle(fontSize: 16, color: Colors.amber),
+                    style: TextStyle(fontSize: textSize.special, color: Colors.amber),
                   )
               ),
             ),
+
+          /// bàn phím  -------------------------------------------------------
           ...keyboardLayoutLower.map((row) => Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            padding: const EdgeInsets.symmetric(vertical: 3.0),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -158,8 +159,7 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
             ),
           )),
         ],
-      ),
-    );
+      );
   }
 
   /// Item bàn phím -------------------------------------------------
@@ -174,15 +174,15 @@ class _WdgKeyBroadState extends State<WdgKeyBroad> {
       padding: const EdgeInsets.symmetric(horizontal: 3.0),
       child: WdgButton(
         color: VipColors.onPrimary(context),
+        buttonFit: ButtonFit.scaleDown,
         alpha: keySuggest.toLowerCase() == key.toLowerCase() && suggest
             ? 100
             : 10,
         borderRadius: BorderRadius.circular(12),
-        buttonFit: ButtonFit.scaleDown,
         onTap: () => _onKeyPressed(key),
         child: Text(
           key == 'SPACE' ? ' ' : key,
-          style: const TextStyle(fontSize: 18),
+          style: TextStyle(fontSize: textSize.special),
         ),
       ),
     );

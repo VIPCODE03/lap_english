@@ -106,13 +106,8 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 
   int currentIndex = -1;
   final List<_ItemAB> selectedList = [];
-
-  int row1Index = 0;
-  final double spacing = 8;
-  final GlobalKey row1Key = GlobalKey();
-
+  final double spacing = 6;
   bool init = false;
-
   double itemHeight = 1;
 
   @override
@@ -139,58 +134,60 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
   @override
   Widget build(BuildContext context) {
     _getHeight();
-    var widgetNew = Stack(
-      children: [
-        /// Đáp án được chọn -----------------------------------------------------------
-        Container(
+    var widgetNew = LayoutBuilder(builder: (context, contranins) {
+      return Stack(
+        children: [
+          /// Đáp án được chọn -----------------------------------------------------------
+          Container(
+              alignment: Alignment.topLeft,
+              margin: const EdgeInsets.symmetric(horizontal: 6),
+              child: Wrap(
+                spacing: spacing,
+                runSpacing: spacing,
+                children: [...row1.map((e) => _itemLocation(e))],
+              )
+          ),
+
+          /// Thanh  -----------------------------------------------------------
+          Container(
             alignment: Alignment.topLeft,
-            margin: const EdgeInsets.all(12),
-            child: Wrap(
-              spacing: spacing,
-              runSpacing: spacing,
-              children: [...row1.map((e) => _itemLocation(e))],
-            )),
-
-        /// Thanh  -----------------------------------------------------------
-        Container(
-          alignment: Alignment.topLeft,
-          margin: const EdgeInsets.all(5.5),
-          child: LayoutBuilder(builder: (context, contranins) {
-            return Wrap(
-              spacing: itemHeight + spacing - 4 + 2,
-              direction: Axis.vertical,
-              children: [
-                for (int i = 0; i < _calculateLines(contranins.maxWidth); i++)
-                  Container(
-                    height: i == 4 ? 0 : 2,
-                    width: contranins.maxWidth,
-                    decoration: BoxDecoration(
-                      color: i == 0 ? Colors.transparent : VipColors.onPrimary(context),
-                      borderRadius: BorderRadius.circular(50),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (int i = 0; i < _calculateLines(contranins.maxWidth); i++)
+                    Container(
+                      margin: EdgeInsets.only(bottom: itemHeight + (i == 0 ? spacing / 3.5 : spacing) - 2),
+                      height: 2,
+                      width: contranins.maxWidth,
+                      decoration: BoxDecoration(
+                        color: i == 0 ? Colors.transparent : VipColors.onPrimary(context),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
                     ),
-                  ),
-              ],
-            );
-          }),
-        ),
+                ],
+              )
+          ),
 
-        /// Đáp án ---------------------------------------------------------------
-        Container(
-            alignment: Alignment.bottomCenter,
-            margin: EdgeInsets.symmetric(horizontal: 25, vertical: (isPortrait || isTablet) ? maxHeight / 15 : 0),
-            child: Wrap(
-              alignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              runAlignment: WrapAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
-              children: [...row2.map((e) => _itemLocation(e))],
-            )),
+          /// Đáp án ---------------------------------------------------------------
+          Container(
+              alignment: Alignment.bottomCenter,
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: ((isPortrait && _calculateLines(contranins.maxWidth) <= 3) || isTablet) ? maxHeight / textSize.special : 0),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runAlignment: WrapAlignment.center,
+                spacing: spacing,
+                runSpacing: spacing,
+                children: [...row2.map((e) => _itemLocation(e))],
+              )
+          ),
 
-        /// Item di chuyển  -------------------------------------------------------------
-        ...items.map((item) => _itemSelect(item)),
-      ],
-    );
+          /// Item di chuyển  -------------------------------------------------------------
+          ...items.map((item) => _itemSelect(item)),
+        ],
+      );
+
+    });
 
     if(!init) {
       init = true;
@@ -201,18 +198,17 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
 
   /// Item vị trí -------------------------------------------------------------
   Widget _itemLocation(_ItemLocation item) {
-    return SizedBox(
+    return Container(
+        constraints: BoxConstraints(minWidth: maxWidth / (isPortrait || isTablet ? 10 : 20)),
       child: WdgButton(
         key: item.key,
         onTap: () {},
         borderRadius: BorderRadius.circular(12),
         color: Colors.transparent,
-        child: Text(
-            item.text,
+        child: Text(item.text,
             maxLines: 1,
-            style: TextStyle(fontSize: textSize.specical, color: Colors.transparent)
-        ),
-      ),
+            style: TextStyle(fontSize: textSize.special, color: Colors.transparent)),
+      )
     );
   }
 
@@ -227,7 +223,8 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
         curve: Curves.easeInOutCubicEmphasized,
         top: item.isMoved ? (item.topEnd - dy) : (item.topBegin - dy),
         left: item.isMoved ? item.leftEnd : item.leftBegin,
-        child: SizedBox(
+        child: Container(
+            constraints: BoxConstraints(minWidth: maxWidth / (isPortrait || isTablet ? 10 : 20)),
             child: WdgButton(
               onTap: () {
                 setState(() {
@@ -267,7 +264,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
               alpha: 10,
                 child: Text(item.text,
                     maxLines: 1,
-                    style: TextStyle(fontSize: textSize.specical)
+                    style: TextStyle(fontSize: textSize.special)
                 ),
               ))
     );
@@ -279,7 +276,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
     for(var text in widget.datas) {
       TextSpan textSpan = TextSpan(
           text: text,
-          style: TextStyle(fontSize: textSize.specical)
+          style: TextStyle(fontSize: textSize.special)
       );
 
       TextPainter textPainter = TextPainter(
@@ -289,7 +286,7 @@ class _WdgButtonSelectState extends State<_WdgButtonSelect> {
       );
 
       textPainter.layout(maxWidth: maxWidth);
-      totalWidthText += textPainter.size.width * 1.66 + spacing;
+      totalWidthText += textPainter.size.width + 16 + spacing;
     }
 
     return ((totalWidthText / maxWidth).toInt() + 2);

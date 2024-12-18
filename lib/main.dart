@@ -51,7 +51,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             return MediaQuery(
                 data: MediaQuery.of(context).copyWith(
                     textScaler: const TextScaler.linear(1.0),
-                    devicePixelRatio: 1.0
                 ),
                 child: child!,
             );
@@ -59,8 +58,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: false,
           theme: themeProvider.vipTheme.light,
           darkTheme: themeProvider.vipTheme.dark,
-          themeMode: ThemeMode.system,
-          home: SplashScreen()
+          themeMode: themeProvider.vipTheme.themeMode,
+          home: LoginScreen()
         );
       },
     );

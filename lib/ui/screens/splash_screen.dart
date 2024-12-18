@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/services/data_service.dart';
 import 'package:lap_english/ui/screens/main_screen.dart';
+import 'package:lap_english/ui/widgets/other/loading.dart';
 
 import '../../data/caching/cache_manager.dart';
 
@@ -43,13 +43,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: 250,
-          child: Image(image: Assets.images.icon.loading.provider())
-          ),
-        ),
+    return const Scaffold(
+      body: WdgLoading()
     );
   }
 }

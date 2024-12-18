@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/bloc/data_bloc/data_bloc.dart';
@@ -11,6 +13,7 @@ import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
 
 import '../../../themes/size.dart';
+import '../../other/loading_item.dart';
 
 class WdgMenuGrammar extends StatefulWidget {
   final List<TypeGrammar> typeGrammars;
@@ -22,90 +25,145 @@ class WdgMenuGrammar extends StatefulWidget {
 }
 
 class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
-  late List<bool> status;
+  GlobalKey? _currentSelectKey;
+  late List<GlobalKey> keys;
+  late List<ExpansionTileController> _controllers;
+  final ValueNotifier<bool> onLoading = ValueNotifier(true);
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    status = List.generate(widget.typeGrammars.length, (index) => false);
+    _scrollController = ScrollController();
+    keys = List.generate(widget.typeGrammars.length, (index) => GlobalKey());
+    _controllers = List.generate(widget.typeGrammars.length, (index) => ExpansionTileController());
+
+    Future.delayed(Duration(milliseconds: Random().nextInt(2000).clamp(666, 2000)), () {
+      setState(() {
+        onLoading.value = false;
+      });
+    });
+  }
+
+  void _scrollToIndex(int index) {
+    final key = keys[index];
+    final context = key.currentContext;
+    if (context != null) {
+      final RenderBox renderBox = context.findRenderObject() as RenderBox;
+      final double itemPosition = renderBox.localToGlobal(Offset.zero).dy;
+      final double screenPosition = MediaQuery.of(context).padding.top;
+
+      final double currentScrollPosition = _scrollController.offset;
+      final double offsetToScroll = currentScrollPosition + itemPosition - screenPosition;
+
+      _scrollController.animateTo(
+        offsetToScroll,
+        duration: const Duration(milliseconds: 333),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: widget.typeGrammars.length,
+      controller: _scrollController,
       itemBuilder: (BuildContext contextList, int index) {
-        return BlocProvider(
-            create: (contextList) => DataBloc<Grammar>()..add(DataEventLoad<Grammar>(args: widget.typeGrammars[index].id)),
-            child: Container(
-                margin: const EdgeInsets.all(10),
-                child: WdgDashedBorder(
-                    color: VipColors.primary(context),
-                    child: ExpansionTile(
-                      title: Text(widget.typeGrammars[index].name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20
-                        ),
-                      ),
-                      trailing: AnimatedRotation(
-                        duration: const Duration(milliseconds: 200),
-                        turns: status[index] ? 0.25 : 0,
-                        child: const Icon(Icons.keyboard_arrow_right_sharp),
-                      ),
-                      onExpansionChanged: (isExpanded) {
-                        setState(() {
-                          status[index] = isExpanded;
-                        });
-                      },
-                      children: [
-                        BlocBuilder<DataBloc<Grammar>, DataState>(
-                          builder: (context, grammarState) {
-                            if (grammarState is DataStateLoading<Grammar>) {
-                              return const Center(child: CircularProgressIndicator());
-
-                            } else if (grammarState is DataStateLoaded<Grammar>) {
-                              return Column(
-                                children: grammarState.data.map((grammar) {
-                                  final GlobalKey key = GlobalKey();
-
-                                  /// Item grammar  ----------------------------------------------------------------
-                                  return Padding(
-                                      padding: const EdgeInsets.all(14),
-                                      child: WdgButton(
-                                          key: key,
-                                          onTap: () {
-                                            final RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
-                                            final Offset position = renderBox.localToGlobal(Offset.zero);
-
-                                            //--- Chuyển sang chi tiết  ---
-                                            Navigator.of(context).push(PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation)
-                                            => _DetailGrammar(position, grammar),
-                                              transitionDuration: Duration.zero,
-                                              reverseTransitionDuration: Duration.zero,
-                                            ));
-                                          },
-                                          borderRadius: BorderRadius.circular(12),
-                                          color: VipColors.onPrimary(context),
-                                          child: ListTile(
-                                            title: Text(grammar.name),
-                                            trailing: const Icon(Icons.keyboard_double_arrow_right),
-                                          ))
-                                  );
-                                }).toList(),
-                              );
-
-                            } else if (grammarState is DataStateError<Grammar>) {
-                              return Center(child: Text(grammarState.message));
+       return Container(
+                    key: keys[index],
+                    margin: const EdgeInsets.all(10),
+                    child: WdgDashedBorder(
+                        color: VipColors.primary(context),
+                        child: ExpansionTile(
+                          controller: _controllers[index],
+                          expansionAnimationStyle: AnimationStyle(
+                              curve: Curves.fastOutSlowIn,
+                              duration: const Duration(milliseconds: 666)
+                          ),
+                          title: Text(
+                            widget.typeGrammars[index].name,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: textSize.title),
+                          ),
+                          trailing: AnimatedRotation(
+                            duration: const Duration(milliseconds: 200),
+                            turns: keys[index] == _currentSelectKey ? 0.25 : 0,
+                            child: const Icon(Icons.keyboard_arrow_right_sharp),
+                          ),
+                          onExpansionChanged: (isExpanded) {
+                            if(_currentSelectKey == keys[index]) {
+                              _currentSelectKey = null;
+                              Future.delayed(const Duration(milliseconds: 666), () {
+                                setState(() {});
+                              });
                             }
-
-                            return const SizedBox.shrink();
+                            else {
+                              if(_currentSelectKey != null) {
+                                _controllers[keys.indexOf(_currentSelectKey!)].collapse();
+                              }
+                              setState(() {
+                                _currentSelectKey = keys[index];
+                              });
+                              Future.delayed(const Duration(milliseconds: 222), () {
+                                _scrollToIndex(index - 1);
+                              });
+                            }
                           },
-                        ),
-                      ],
+                          children: [
+                            if (keys[index] == _currentSelectKey)
+                              BlocProvider(
+                                create: (context) => DataBloc<Grammar>()..add(DataEventLoad<Grammar>(args: widget.typeGrammars[index].id)),
+                                child: BlocBuilder<DataBloc<Grammar>, DataState>(
+                                  builder: (context, grammarState) {
+                                    if (grammarState is DataStateLoading<Grammar>) {
+                                      return Column(
+                                        children: [
+                                          ...List.generate(3, (index) => WdgItemLoading(child: Container(margin: const EdgeInsets.all(10), height: 40)))
+                                        ],
+                                      );
+
+                                    } else if (grammarState is DataStateLoaded<Grammar>) {
+                                      return Column(
+                                        children: grammarState.data.map((grammar) {
+                                          final GlobalKey key = GlobalKey();
+
+                                          /// Item grammar  ----------------------------------------------------------------
+                                          return Padding(
+                                            padding: const EdgeInsets.all(14),
+                                            child: WdgButton(
+                                              key: key,
+                                              onTap: () {
+                                                final RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
+                                                final Offset position = renderBox.localToGlobal(Offset.zero);
+
+                                                //--- Chuyển sang chi tiết  ---
+                                                Navigator.of(context).push(PageRouteBuilder(
+                                                  pageBuilder: (context, animation, secondaryAnimation) => _DetailGrammar(position, grammar),
+                                                  transitionDuration: Duration.zero,
+                                                  reverseTransitionDuration: Duration.zero,
+                                                ));
+                                              },
+                                              borderRadius: BorderRadius.circular(12),
+                                              color: VipColors.onPrimary(context),
+                                              child: ListTile(
+                                                title: Text(grammar.name, style: TextStyle(fontSize: textSize.medium)),
+                                                trailing: const Icon(Icons.keyboard_double_arrow_right),
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      );
+                                    }
+
+                                    return const Center(child: Text('Không có dữ liệu'));
+                                  },
+                                ),
+                              )
+                          ],
+                        )
                     )
-                )
-            )
         );
       },
     );
@@ -196,11 +254,11 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => QuizzScreen.grammar(structures: state.data),
+                                  builder: (context) => QuizzScreen.grammar(structures: state.data, grammarId: widget.grammar.id),
                                 ),
                               );
                             },
-                            child: const Text('Luyện tập', style: TextStyle(fontSize: 20)),
+                            child: Text('Luyện tập', style: TextStyle(fontSize: textSize.title)),
                           );
                         } else {
                           return const SizedBox.shrink();
@@ -215,7 +273,7 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                       child: WdgDashedBorder(
                           child: SingleChildScrollView(
                               child: Padding(padding: const EdgeInsets.all(6),
-                                  child: WdgSpecialText(text: widget.grammar.description)
+                                  child: WdgSpecialText(text: widget.grammar.description, size: textSize.medium)
                               )
                           )
                       )

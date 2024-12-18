@@ -4,8 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../colors/vip_color.dart';
 
 class VipTheme {
-  String  imagePath;
-  VipColor  color;
+  String imagePath;
+  VipColor color;
+  ThemeMode themeMode = ThemeMode.system;
 
   VipTheme({
     required this.imagePath,

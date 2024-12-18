@@ -1,5 +1,4 @@
-
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 
@@ -8,9 +7,9 @@ abstract class QuizzWrite<T> extends Quizz<T> {
   SkillType get skillType => SkillType.writing;
 }
 
-class QuizzWriteVocabulary extends QuizzWrite<MdlWord> {
+class QuizzWriteVocabulary extends QuizzWrite<Word> {
   @override
-  List<Quizz> generate(List<MdlWord> datas) {
+  List<Quizz> generate(List<Word> datas) {
     List<QuizzWriteVocabulary> quizzes = [];
 
     for(var word in datas) {

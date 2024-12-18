@@ -1,7 +1,6 @@
-
 import 'dart:math';
 
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 
@@ -13,9 +12,9 @@ abstract class QuizzSoundChooseOne<T> extends Quizz<T> {
   SkillType get skillType => SkillType.listening;
 }
 
-class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
+class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<Word> {
   @override
-  List<Quizz> generate(List<MdlWord> datas) {
+  List<Quizz> generate(List<Word> datas) {
     List<QuizzSoundChooseOneVocabulary> quizzes = [];
     //--- Tạo quizz cho mỗi từ  ---
     for(var word in datas) {
@@ -32,8 +31,8 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<MdlWord> {
       }
 
       //--- Tạo đáp án ---
-      List<MdlWord> answers = [word];
-      List<MdlWord> copy = List.from(datas)..remove(word);
+      List<Word> answers = [word];
+      List<Word> copy = List.from(datas)..remove(word);
       copy.shuffle();
       answers.addAll(copy.take(Random().nextBool() ? 1 : 3).toList());
       answers.shuffle();

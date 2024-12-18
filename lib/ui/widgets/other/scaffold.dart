@@ -16,7 +16,6 @@ class WdgScaffold extends StatelessWidget {
       body: Column(
         children: [
           appBar ?? const SizedBox.shrink(),
-          const SizedBox(height: 5),
           Expanded(child: body),
         ],
       ),

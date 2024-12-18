@@ -27,9 +27,7 @@ class WdgRow3Profile extends StatelessWidget {
   Widget _item(BuildContext context, String title, String desc) {
     return Card(
       child: Container(
-        constraints: const BoxConstraints(
-          minHeight: 66
-        ),
+        padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
@@ -40,12 +38,12 @@ class WdgRow3Profile extends StatelessWidget {
         child: Column(
           children: [
             Text(title, style: TextStyle(
-                fontSize: 20,
+                fontSize: textSize.medium,
                 color: VipColors.text(context),
-              fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold
             )),
 
-            Text(desc, style:  const TextStyle(fontSize: 16)),
+            Text(desc, style: TextStyle(fontSize: textSize.normal, color: Colors.grey)),
           ],
       ))
     );

@@ -38,7 +38,6 @@ class WdgRow3 extends StatelessWidget {
         children: [
           ///ClipRRect hình ảnh  ------------------------------------------------
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
             child: Container(
               height: 125,
               decoration: BoxDecoration(
@@ -61,7 +60,6 @@ class WdgRow3 extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: textSize.medium,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -73,7 +71,7 @@ class WdgRow3 extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => ChatBotScreen(topicChat: topicChat))
                     ),
                     borderRadius: BorderRadius.circular(12),
-                    child: Text('Bắt đầu', style: TextStyle(fontSize: textSize.medium),),
+                    child: Text('Bắt đầu', style: TextStyle(fontSize: textSize.normal, fontWeight: FontWeight.bold)),
                 )
                 )
               ],
@@ -83,5 +81,4 @@ class WdgRow3 extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lap_english/data/database/remote/service/data_service.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 
-class SubTopicVocabularyService extends ApiService<List<MdlSubVocabularyTopic>> {
+class SubTopicService extends ApiService {
+  late _TypeSubRequest _type;
 
-  Future<List<MdlSubVocabularyTopic>?> fetchPage(int mainTopicId, int page, int size) async {
+  Future<List<SubTopic>?> fetchPage(int mainTopicId, int page, int size) async {
+    _type = _TypeSubRequest.fetchPage;
     return await request(
       api: '/api/v1/sub-topic/main-topic/$mainTopicId',
       datas: {
@@ -16,46 +18,77 @@ class SubTopicVocabularyService extends ApiService<List<MdlSubVocabularyTopic>> 
     );
   }
 
-  Future<bool> unlock(MdlSubVocabularyTopic subTopic) async {
+  //=== Lấy dữ liệu theo id ===
+  Future<SubTopic?> fetchById(int subTopicId) async {
+    _type = _TypeSubRequest.fetchById;
     var postRequest = await request(
+      api: '/api/v1/sub-topic/$subTopicId',
+      requestType: RequestType.get,
+    );
+    if (postRequest is List<SubTopic>?) {
+      return postRequest?.first;
+    }
+    return null;
+  }
+
+  //=== Mở khóa chủ đề ===
+  Future<bool> unlock(SubTopic subTopic) async {
+    _type = _TypeSubRequest.unlock;
+    var newRequest = await request(
       api: '/api/v1/sub-topic/unlock/${subTopic.id}',
       requestType: RequestType.put,
     );
-    if (postRequest != null) {
-      return true;
+    if(newRequest != null) {
+      return newRequest;
     }
     return false;
   }
 
-  Future<bool> completed(MdlSubVocabularyTopic subTopic) async {
+  //=== Hoàn thành chủ đề ===
+  Future<bool?> completed(SubTopic subTopic) async {
+    _type = _TypeSubRequest.completed;
     var postRequest = await request(
       api: '/api/v1/sub-topic/${subTopic.id}/complete',
       requestType: RequestType.put,
     );
-    if (postRequest != null) {
-      return true;
+    if (postRequest is List<SubTopic>?) {
+      return postRequest?.first.isLearned;
     }
     return false;
   }
 
   @override
-  Future<List<MdlSubVocabularyTopic>?> success200(Response response) async {
+  Future<dynamic> success200(Response response) async {
     try {
-      List<MdlSubVocabularyTopic> mainTopics = [];
-      List<dynamic> items = response.data['data']['items'] ?? [];
-      mainTopics = items.map((item) {
-        item['imageUrl'] = item['blobName'];
-        item['isLearned'] = item['learned'];
-        return MdlSubVocabularyTopic.fromJson(item);
-      }).toList();
+      switch(_type) {
+        case _TypeSubRequest.fetchPage:
+          List<SubTopic> mainTopics = [];
+          List<dynamic> items = response.data['data']['items'] ?? [];
+          mainTopics = items.map((item) {
+            item['imageUrl'] = item['blobName'];
+            item['isLearned'] = item['learned'];
+            return SubTopic.fromJson(item);
+          }).toList();
+          return mainTopics;
 
-      return mainTopics;
+        case _TypeSubRequest.unlock:
+          return response.data['data'];
+
+        case _TypeSubRequest.completed:
+          return null;
+
+        case _TypeSubRequest.fetchById:
+          Map<String, dynamic> data = response.data['data'];
+          return [SubTopic.fromJson(data)];
+      }
     }
     catch(e) {
-      if (kDebugMode) {
-        print('Error success200 MdlSubVocabularyTopic: $e');
-      }
+      debugPrint('Error success200 SubTopicService: $e');
       return null;
     }
   }
+}
+
+enum _TypeSubRequest {
+  fetchPage, unlock, completed, fetchById
 }

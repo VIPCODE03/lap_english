@@ -74,59 +74,85 @@ class _WdgStatusLockState<T> extends State<WdgStatusLock> {
   }
 
   void _unLockDialog(BuildContext parentContext) {
+    bool barrierDismissible = true;
     showDialog(
         context: parentContext,
         builder: (BuildContext context) {
           return WdgDialog(
+              barrierDismissible: barrierDismissible,
               crossAxisAlignment: CrossAxisAlignment.center,
-              title: const Text('Mở khóa', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              title: Text('Mở khóa', style: TextStyle(fontSize: textSize.title, fontWeight: FontWeight.bold)),
               content: const Center(child: Icon(Icons.lock_open, size: 50)),
-              width: isPortrait ? maxWidth - 50 : maxWidth - 100,
+              width: isPortrait ? maxWidth - 50 : maxWidth / 2,
               actions: [
                 MultiBlocProvider(
-                    providers: [
-                      BlocProvider(create: (context) => DataBloc<User>()..add(DataEventLoad<User>())),
-                      BlocProvider(create: (context) => DataBloc<T>())
-                    ],
-                    child: BlocBuilder<DataBloc<User>, DataState>(
-                        builder: (context, state) {
-                          if (state is DataStateLoaded<User>) {
-                            var user = state.data.first;
-
-                            return Column(
-                              children: [
-                                WdgSpecialText(text: 'Bạn đang có <${user.cumulativePoint.gold}> vàng và <${user.cumulativePoint.diamond}> kim cương'),
-
-                                SizedBox(
-                                    width: 200,
-                                    child: WdgButton(
-                                        onTap: () {
-                                          if(status.unlock(user)) {
-                                            setState(() {
-                                              context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
-                                              context.read<DataBloc<T>>().add(DataEventUpdate<T>(datas: [widget.item], headers: {'unlock' : true}));
-                                            });
-                                          }
-                                          Navigator.of(context).pop();
-                                        },
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Wrap(
-                                          spacing: 5,
-                                          children: [
-                                            if(status.gold > 0)
-                                              _itemPrice(context, Assets.images.icon.gold.path, '${status.gold}', user.cumulativePoint.gold >= status.gold),
-
-                                            if(status.diamond > 0)
-                                              _itemPrice(context, Assets.images.icon.dimound.path, '${status.diamond}', user.cumulativePoint.diamond >= status.diamond),
-                                          ],
-                                        )
-                                    ))
-                              ],
-                            );
+                  providers: [
+                    BlocProvider(create: (context) => DataBloc<User>()..add(DataEventLoad<User>())),
+                    BlocProvider(create: (context) => DataBloc<T>()),
+                  ],
+                  child: BlocListener<DataBloc<T>, DataState>(
+                    listener: (context, state) {
+                      if (state is DataStateUpdateResult) {
+                        try {
+                          if(state.result as bool) {
+                            setState(() {});
                           }
+                        } catch(e) {
+                          debugPrint('Kết quả trả về update là ${state.result.runtimeType} trong khi yêu cầu là bool}');
+                        }
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: BlocBuilder<DataBloc<User>, DataState>(
+                      builder: (context, state) {
+                        if (state is DataStateLoaded<User>) {
+                          var user = state.data.first;
 
-                          return const SizedBox.shrink();
-                        })
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 7),
+                                child: WdgSpecialText(
+                                    text: 'Bạn đang có <${user.cumulativePoint.gold}> vàng và <${user.cumulativePoint.diamond}> kim cương',
+                                    size: textSize.normal,
+                                ),
+                              ),
+
+                              SizedBox(
+                                width: 150,
+                                child: WdgButton(
+                                  onTap: () {
+                                    if (status.checkUnlock(user)) {
+                                      setState(() {
+                                        barrierDismissible = false;
+                                      });
+                                      context.read<DataBloc<T>>().add(DataEventUpdate<T>(datas: [widget.item], headers: {'unlock': true}));
+                                    }
+                                    else {
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Wrap(
+                                    spacing: 5,
+                                    children: [
+                                      if (status.gold > 0)
+                                        _itemPrice(context, Assets.images.icon.gold.path, '${status.gold}', user.cumulativePoint.gold >= status.gold),
+
+                                      if (status.diamond > 0)
+                                        _itemPrice(context, Assets.images.icon.dimound.path, '${status.diamond}', user.cumulativePoint.diamond >= status.diamond),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        }
+
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ),
                 )
               ]
           );
@@ -144,7 +170,7 @@ class _WdgStatusLockState<T> extends State<WdgStatusLock> {
 
       Text(price,
           style: TextStyle(
-              fontSize: 20,
+              fontSize: textSize.medium,
               fontWeight: FontWeight.bold,
               color: enough ? Colors.green : Colors.red
           ))

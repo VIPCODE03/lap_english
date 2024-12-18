@@ -2,19 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lap_english/data/model/learn/sentence.dart';
-import 'package:lap_english/data/model/learn/status.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
-import 'package:lap_english/data/model/quizz/quizz.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/dialogs/dialog_widget.dart';
 import 'package:lap_english/ui/screens/learn_screens/flip_card_screen.dart';
 import 'package:lap_english/ui/widgets/other/group.dart';
 import 'package:lap_english/ui/widgets/learn/other/status_widget.dart';
+import 'package:lap_english/ui/widgets/other/loading.dart';
+import 'package:lap_english/ui/widgets/other/loading_item.dart';
 import 'package:lap_english/utils/loaddata_link.dart';
 import 'package:lap_english/utils/player_audio.dart';
-
 import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../gen/assets.gen.dart';
 import '../../../../utils/text_to_speak.dart';
@@ -23,123 +20,91 @@ import '../../../themes/size.dart';
 import '../../other/button.dart';
 import '../../other/expandable_view.dart';
 
-class WdgMenuVW<M, S, T> extends StatelessWidget {
-  final List<M> _mainTopicList;
-  final textToSpeakUtil = TextToSpeakUtil();
+class WdgMenuVW<T> extends StatefulWidget {
+  final List<MainTopic> mainTopicList;
 
-  WdgMenuVW({super.key, required List<M> mainTopics})
-      : _mainTopicList = mainTopics;
+  const WdgMenuVW({super.key, required this.mainTopicList});
+
+  @override
+  State<StatefulWidget> createState() => _WdgMenuVWState<T>();
+}
+
+class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
+  final textToSpeakUtil = TextToSpeakUtil();
+  final Map<int, List<SubTopic>> subTopicList = {};
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: _mainTopicList.length,
+        itemCount: widget.mainTopicList.length,
         itemBuilder: (context, index) {
-          return _buildItemMain(context, _mainTopicList[index]);
+          return _buildItemMain(context, widget.mainTopicList[index], index);
         }
     );
   }
 
   ///ITEM chủ đề chính  --------------------------------------------------------
-  Widget _buildItemMain(BuildContext context, M mainTopic) {
-    int idMainTopic = 0;
-    String nameTopic = "";
-    late MdlUnlockStatusManager status;
-
-    switch (mainTopic) {
-      case MdlMainVocabularyTopic _: {
-        idMainTopic = mainTopic.id;
-        nameTopic = mainTopic.name;
-        status = mainTopic.status;
-        break;
-      }
-
-      case MdlMainSentenceTopic _: {
-        idMainTopic = mainTopic.id;
-        nameTopic = mainTopic.name;
-        status = mainTopic.status;
-        break;
-      }
-    }
-
-    return WdgStatusLock<M>(
+  Widget _buildItemMain(BuildContext context, MainTopic mainTopic, int index) {
+    return WdgStatusLock<MainTopic>(
         item: mainTopic,
-        status: status,
-        child: BlocProvider(create: (context) => DataBloc<S>()..add(DataEventLoad<S>(args: idMainTopic)),
-            child: Builder(builder: (context) {
-              return WdgGroup(
-                  title: nameTopic,
-                  titleStyle: GoogleFonts.pangolin(fontWeight: FontWeight.w900, fontSize: 20, color: VipColors.text(context),),
-                  height: 1,
-                  opacity: 1,
-                  child: SizedBox(
-                    height: 150,
-                    child: BlocBuilder<DataBloc<S>, DataState>(
-                      builder: (context, state) {
-                        if (state is DataStateLoading) {//-> Đang tải dữ liệu
-                          return const Center(child: CircularProgressIndicator());
+        status: mainTopic.status,
+        child: WdgGroup(
+          title: mainTopic.name,
+          height: 1,
+          opacity: 1,
+          child: SizedBox(
+            height: 150,
+            child: subTopicList.containsKey(mainTopic.id)
+                ? _buildListItemSub(subTopicList[mainTopic.id]!)
+                : BlocProvider(
+                create: (context) => DataBloc<SubTopic>()..add(DataEventLoad<SubTopic>(args: mainTopic.id)),
+                child: Builder(builder: (context) {
+                  return BlocBuilder<DataBloc<SubTopic>, DataState>(
+                    builder: (context, state) {
+                      if (state is DataStateLoading) {//-> Đang tải dữ liệu
+                        return _itemLoadingSub();
 
-                        } else if (state is DataStateLoaded<S>) {//-> Đã tải xong dữ liệu
-                          var subTopics = state.data;
-                          _sortSubTopics(subTopics);
+                      } else if (state is DataStateLoaded<SubTopic>) {//-> Đã tải xong dữ liệu
+                        var subTopics = state.data;
+                        _sortSubTopics(subTopics);
+                        subTopicList[mainTopic.id] = subTopics;
+                        return _buildListItemSub(subTopics);
+                      }
 
-                          return GridView.builder(
-                            key: UniqueKey(),
-                            scrollDirection: Axis.horizontal,
-                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1,
-                              childAspectRatio: 1,
-                            ),
-                            itemCount: subTopics.length,
-                            itemBuilder: (context, index) {
-                              return Align(
-                                  alignment: Alignment.topCenter,
-                                  child: _buildItemSub(context, subTopics[index]));
-                            },
-                          );
+                      return const Center(child: Text('Không có dữ liệu'));
+                    },
+                  );
+                },
+                )
+            )
+          )
+        )
+    );
+  }
 
-                        } else if (state is DataStateError) {//-> Lỗi tải dữ liệu
-                          return const Center(
-                              child: Text('Error loading subtopics'));
-                        }
-
-                        return const SizedBox();
-                      },
-                    ),
-                  ));
-            },
-            ))
+  ///ITEM danh sách chủ đề con  ----------------------------------------------------------
+  Widget _buildListItemSub(List<SubTopic> subTopicList) {
+    return GridView.builder(
+      key: UniqueKey(),
+      scrollDirection: Axis.horizontal,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        childAspectRatio: 1,
+      ),
+      itemCount: subTopicList.length,
+      itemBuilder: (context, index) {
+        return Align(
+            alignment: Alignment.topCenter,
+            child: _buildItemSub(context, subTopicList[index]));
+      },
     );
   }
 
   ///ITEM chủ đề con  ----------------------------------------------------------
-  Widget _buildItemSub(BuildContext context, S subTopic) {
-    String imageUrl = "";
-    bool isLearned = false;
-    String name = "";
-    late MdlUnlockStatusManager status;
-
-    switch(subTopic) {
-      case MdlSubVocabularyTopic _: {
-        imageUrl = subTopic.imageUrl ?? "";
-        isLearned = subTopic.isLearned;
-        name = subTopic.name;
-        status = subTopic.status;
-        break;
-      }
-
-      case MdlSubSentenceTopic _: {
-        imageUrl = subTopic.imageUrl;
-        isLearned = subTopic.isLearned;
-        name = subTopic.name;
-        status = subTopic.status;
-        break;
-      }
-    }
-
-    return WdgStatusLock<S>(
+  Widget _buildItemSub(BuildContext context, SubTopic subTopic) {
+    return WdgStatusLock<SubTopic>(
       item: subTopic,
-      status: status,
+      status: subTopic.status,
       child: WdgButton(
           color: Colors.transparent,
           onTap: () => _showDialogWordList(context, subTopic),
@@ -155,12 +120,12 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                           color: Colors.white,
                           border: Border.all(
                               width: 2,
-                              color: isLearned
+                              color: subTopic.isLearned
                                   ? VipColors.primary(context)
                                   : VipColors.onPrimary(context))
                       ),
                       child: Image.network(
-                        LoadDataUtil.loadImage(imageUrl),
+                        LoadDataUtil.loadImage(subTopic.imageUrl ?? ''),
                         fit: BoxFit.cover,
                         width: 60,
                         height: 60,
@@ -181,7 +146,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                   Positioned(
                     right: 0,
                     top: 0,
-                    child: isLearned
+                    child: subTopic.isLearned
                         ? Icon(Icons.check_circle_outline, color: VipColors.primary(context), size: 18)
                         : const SizedBox.shrink(),
                   ),
@@ -191,12 +156,40 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
               const SizedBox(width: 10),
 
               ///TEXT tên chủ đề con ----------------------------------------------------------
-              Text(name,
-                  style: const TextStyle(fontSize: 16),
+              Text(subTopic.name,
+                  style: TextStyle(fontSize: textSize.normal),
                   maxLines: 2,
                   textAlign: TextAlign.center),
             ],
-          )),
+          )
+      ),
+    );
+  }
+
+  /// ITEM loading subtopic ----------------------------------------------------------
+  Widget _itemLoadingSub() {
+    return GridView.builder(
+      scrollDirection: Axis.horizontal,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 1,
+        childAspectRatio: 1,
+      ),
+      itemCount: 10,
+      itemBuilder: (context, index) {
+        return const Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                WdgItemLoading(
+                  child: SizedBox(height: 60, width: 60),
+                ),
+
+                WdgItemLoading(
+                  child: Text('loading...'),
+                )
+              ],
+            ));
+      },
     );
   }
 
@@ -208,7 +201,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
     String soundUrl = "";
 
     switch(data) {
-      case MdlWord _: {
+      case Word _: {
         textW = data.word;
         textMeaning = data.meaning;
         textExpaned = "Loại: ${data.type}m \nUS: ${data.pronounceUS} \nUK: ${data.pronounceUK} \nVí dụ: ${data.example}";
@@ -216,7 +209,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
         break;
       }
 
-      case MdlSentence _: {
+      case Sentence _: {
         textW = data.sentence;
         textMeaning = data.translation;
         break;
@@ -272,24 +265,8 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
   }
 
   ///DIALOG hiển thị danh sách từ vựng hoặc câu ------------------------------------------
-  void _showDialogWordList(BuildContext parentContext, S subTopic) {
-    int idSubTopic = 0;
-    bool isLearned = false;
+  void _showDialogWordList(BuildContext parentContext, SubTopic subTopic) {
     List<T> datas = [];
-
-    switch(subTopic) {
-      case MdlSubSentenceTopic _: {
-        idSubTopic = subTopic.id;
-        isLearned = subTopic.isLearned;
-        break;
-      }
-      case MdlSubVocabularyTopic _: {
-        idSubTopic = subTopic.id;
-        isLearned = subTopic.isLearned;
-        break;
-      }
-    }
-
     showDialog(
       context: parentContext,
       builder: (BuildContext context) {
@@ -297,12 +274,13 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
             color: Colors.transparent,
             title: null,
             content: BlocProvider<DataBloc<T>>(
-                create: (context) => DataBloc<T>()..add(DataEventLoad<T>(args: idSubTopic)),
+                create: (context) => DataBloc<T>()..add(DataEventLoad<T>(args: subTopic.id)),
                 child: Container(
                   height: isPortrait ? maxHeight * 0.66 : maxHeight * 0.8,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).cardColor),
+                      color: Theme.of(context).cardColor
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -319,11 +297,10 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                         child: BlocBuilder<DataBloc<T>, DataState>(
                           builder: (context, state) {
                             if (state is DataStateLoading<T>) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
+                              return const WdgLoading();
+
                             } else if (state is DataStateLoaded<T>) {//-> Trạng thái tải xong dữ liệu
                               datas = state.data;
-
                               return ListView.builder(
                                 itemCount: datas.length,
                                 itemBuilder: (context, index) {
@@ -334,12 +311,9 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                                   );
                                 },
                               );
-                            } else if (state is DataStateError) {
-                              return const Center(
-                                  child: Text('Error loading words'));
                             }
 
-                            return const SizedBox.shrink();
+                            return const Center(child: Text('Không có dữ liệu'));
                           },
                         ),
                       ),
@@ -350,7 +324,7 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (T == MdlWord)
+                            if (T == Word)
                               WdgButton(
                                 buttonFit: ButtonFit.scaleDown,
                                 color: Colors.transparent,
@@ -358,14 +332,12 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                                   Navigator.push(//-> Mở quizz
                                       context,
                                       MaterialPageRoute(builder: (context) {
-                                    return FlipCardsScreen(
-                                        words: datas as List<MdlWord>);
-                                  }));
+                                        return FlipCardsScreen(words: datas as List<Word>);
+                                      }));
                                 },
-                                child: Text(
-                                  'Thẻ ghi nhớ',
+                                child: Text('Thẻ ghi nhớ',
                                   style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: textSize.medium,
                                       color: VipColors.primary(context)),
                                 ),
                               ),
@@ -374,43 +346,19 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                               onTap: () async {
                                 if (datas.isNotEmpty) {
                                   Navigator.pop(context); //-> Đóng dialog
-                                  final result = await Navigator.push(//-> Mở quizz
+                                  Navigator.push(//-> Mở quizz
                                     context,
                                     MaterialPageRoute(builder: (context) {
                                       switch (datas) {
-                                        case List<MdlWord> _:
-                                          return QuizzScreen.vocabulary(
-                                              isLearned: isLearned,
-                                              words: (datas as List<MdlWord>));
-                                        case List<MdlSentence> _:
-                                          return QuizzScreen.sentence(
-                                              isLearned: isLearned,
-                                              sentences:
-                                                  (datas as List<MdlSentence>));
+                                        case List<Word> _:
+                                          return QuizzScreen.vocabulary(words: (datas as List<Word>), subTopicId: subTopic.id);
+                                        case List<Sentence> _:
+                                          return QuizzScreen.sentence(sentences: (datas as List<Sentence>), subTopicId: subTopic.id);
                                         default:
-                                          return const Center(
-                                              child: Text(
-                                                  'No data available or unsupported type.'));
+                                          return const Center(child: Text('No data available or unsupported type.'));
                                       }
                                     }),
                                   );
-
-                                  //--- Cập nhật là đã học  ---
-                                  if (parentContext.mounted && result is QuizzResult) {
-                                    switch (subTopic) {
-                                      case MdlSubSentenceTopic _:
-                                        {
-                                          subTopic.isLearned = true;
-                                          break;
-                                        }
-                                      case MdlSubVocabularyTopic _:
-                                        {
-                                          subTopic.isLearned = true;
-                                          break;
-                                        }
-                                    }
-                                    parentContext.read<DataBloc<S>>().add(DataEventUpdate<S>(datas: [subTopic], headers: {'completed' : true}));
-                                  }
                                 }
                               },
                               color: Colors.transparent,
@@ -418,11 +366,8 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Text(
-                                    isLearned ? 'Ôn tập' : 'Học bài mới',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color:
-                                            VipColors.primary(context)),
+                                    subTopic.isLearned ? 'Ôn tập' : 'Học bài mới',
+                                    style: TextStyle(fontSize: textSize.medium, color: VipColors.primary(context)),
                                   ),
                                   Icon(
                                     Icons.keyboard_double_arrow_right,
@@ -436,32 +381,22 @@ class WdgMenuVW<M, S, T> extends StatelessWidget {
                       )
                     ],
                   ),
-                )));
+                )
+            )
+        );
       },
     );
   }
 
   //=== Sắp xếp danh sách chủ đề con  ===
-  void _sortSubTopics(List<S> subList) {
-    switch(subList) {
-      case List<MdlSubSentenceTopic> _: {
-        (subList as List<MdlSubSentenceTopic>).sort((a, b) {
-          int aPriority = (!a.isLearned && !a.status.isLocked) ? 0 : a.isLearned ? 2 : 1;
-          int bPriority = (!b.isLearned && !b.status.isLocked) ? 0 : b.isLearned ? 2 : 1;
-
-          return aPriority.compareTo(bPriority);
-        });
-
-      }
-
-      case List<MdlSubVocabularyTopic> _: {
-        (subList as List<MdlSubVocabularyTopic>).sort((a, b) {
-          int aPriority = (!a.isLearned && !a.status.isLocked) ? 0 : a.isLearned ? 2 : 1;
-          int bPriority = (!b.isLearned && !b.status.isLocked) ? 0 : b.isLearned ? 2 : 1;
-
-          return aPriority.compareTo(bPriority);
-        });
-      }
-    }
+  void _sortSubTopics(List<SubTopic> subList) {
+    subList.sort((a, b) {
+      int aPriority = (!a.isLearned && !a.status.isLocked)
+          ? 0 : a.isLearned ? 2 : 1;
+      int bPriority = (!b.isLearned && !b.status.isLocked)
+          ? 0 : b.isLearned ? 2 : 1;
+      return aPriority.compareTo(bPriority);
+    });
   }
+
 }

@@ -1,15 +1,16 @@
+import 'dart:math';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lap_english/constant/quizz_constant.dart';
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
-import 'package:lap_english/data/model/learn/sentence.dart';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
 import 'package:lap_english/data/model/quizz/quiz_grammar.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
 import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
 import 'package:lap_english/data/model/quizz/quizz_sound_choose_one.dart';
 import 'package:lap_english/data/model/quizz/quizz_write.dart';
 
+import '../learn/word_sentence.dart';
 import '../user/skill.dart';
 part 'quizz.g.dart';
 
@@ -64,9 +65,9 @@ enum TypeQuiz{
 /*  Class khởi tạo các loại quizz   */
 class Quizzes {
 
-  static Future<List<Quizz>> generateQuizzVocabulary({required QuizzMode mode, required List<MdlWord> words}) async {
+  static Future<List<Quizz>> generateQuizzVocabulary({required QuizzMode mode, required List<Word> words}) async {
     List<Quizz> quizzes = [];
-    List<Quizz<MdlWord>> quizzList;
+    List<Quizz<Word>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -83,9 +84,9 @@ class Quizzes {
     return quizzes;
   }
 
-  static Future<List<Quizz>> generateQuizzSentence({required QuizzMode mode, required List<MdlSentence> sentences}) async {
+  static Future<List<Quizz>> generateQuizzSentence({required QuizzMode mode, required List<Sentence> sentences}) async {
     List<Quizz> quizzes = [];
-    List<Quizz<MdlSentence>> quizzList;
+    List<Quizz<Sentence>> quizzList;
 
     switch(mode) {
       case QuizzMode.basic:
@@ -150,7 +151,8 @@ enum QuizzMode {
 
 /*  Kết quả quiz  */
 class QuizzResult {
-  bool isLearned;
+  bool isLearned = Random().nextBool();
+  int idObject = 0;
   TypeQuizz type;
 
   int total;
@@ -174,14 +176,13 @@ class QuizzResult {
   int totalGrammar;
 
   QuizzResult(
+      this.idObject,
       this.total,
       this.totalWrite,
       this.totalListen,
       this.totalRead,
       this.totalSpeak,
-      this.isLearned,
       this.type,
-
       this.totalWord,
       this.totalSentence,
       this.totalGrammar
@@ -215,7 +216,31 @@ class QuizzResult {
       TypeQuizz.quizzCustom => throw UnimplementedError(),
 
       TypeQuizz.quizGrammar => "Quiz ngữ pháp",
+  };
+
+  Map<String, dynamic> toMap() {
+    return {
+      'isLearned': isLearned,
+      'idObject': idObject,
+      'type': type.toString(),
+      'total': total,
+      'totalSpeak': totalSpeak,
+      'totalListen': totalListen,
+      'totalRead': totalRead,
+      'totalWrite': totalWrite,
+      'correct': correct,
+      'correctSpeak': correctSpeak,
+      'correctListen': correctListen,
+      'correctWrite': correctWrite,
+      'correctRead': correctRead,
+      'correctConsecutive': correctConsecutive,
+      'bonus': bonus,
+      'pointRank': pointRank,
+      'totalWord': totalWord,
+      'totalSentence': totalSentence,
+      'totalGrammar': totalGrammar,
     };
+  }
 }
 
 enum TypeQuizz {

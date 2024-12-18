@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/auth/token.dart';
@@ -10,6 +11,7 @@ class CacheManager {
     _caching = await SharedPreferences.getInstance();
   }
 
+  //=== Token ===
   Future<void> saveToken(MdlToken token) async {
     _caching.setString('accessToken', token.accessToken);
     _caching.setString('refreshToken', token.refreshToken);
@@ -24,12 +26,33 @@ class CacheManager {
     );
   }
 
+  //=== Scale ===
+  Future<void> saveScale(double scale) async {
+    _caching.setDouble('scale', scale);
+  }
+
+  double getScale() {
+    return _caching.getDouble('scale') ?? 1.15;
+  }
+
+  //=== Theme ===
   Future<void> saveTheme(int indexTheme) async {
     _caching.setInt("theme", indexTheme);
   }
 
   int? getTheme() {
     return _caching.getInt("theme");
+  }
+
+  Future<void> saveThemeMode(ThemeMode themeMode) async {
+    _caching.setString("thememode", themeMode.toString());
+  }
+
+  ThemeMode getThemeMode() {
+    return ThemeMode.values.firstWhere(
+          (e) => e.toString() == _caching.getString("thememode"),
+      orElse: () => ThemeMode.system,
+    );
   }
 
   Future<void> saveStatus(StatusFlag flag, bool state) async => _caching.setBool(_getKeyStatus(flag), state);

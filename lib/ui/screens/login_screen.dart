@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/screens/splash_screen.dart';
+import 'package:lap_english/ui/themes/size.dart';
+import 'package:lap_english/ui/widgets/other/loading.dart';
 
 import '../../bloc/login_bloc.dart';
 
@@ -26,9 +28,7 @@ class LoginScreen extends StatelessWidget {
           create: (context) => _authBloc,
           child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
             if (state is LoadingLoginState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const WdgLoading();
 
             } else if(state is ErrorLoginState) {
               // showDialog(
@@ -52,10 +52,9 @@ class LoginScreen extends StatelessWidget {
                         child: Image(
                             image: NetworkImage("https://anhngueie.com/wp-content/uploads/2022/07/2-1-1024x899-lg.png")),
                       ),
-                      const Text(
+                      Text(
                         'Đăng nhập',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: textSize.title, fontWeight: FontWeight.bold),
                       ),
                       ElevatedButton(
                         onPressed: () async {
@@ -73,9 +72,9 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            const Text(
+                            Text(
                               'Tiếp tục với Google',
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(fontSize: textSize.medium),
                             ),
                           ],
                         ),

@@ -58,16 +58,13 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Stack(
-      fit: StackFit.loose,
       children: [
         AnimatedPositioned(
             duration: const Duration(milliseconds: 333),
-            top: _isAtTop ? 0 : maxHeight / 6,
+            top: _isAtTop ? 0 : (isPortrait || isTablet) ? maxHeight / 5 : maxHeight / 10,
             left: _isAtTop ? (isPortrait || isTablet) ? 0 : maxWidth / 1.66 : 0,
             right: 0,
             child: _item()
@@ -105,7 +102,7 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
                         width: maxWidth - maxWidth / 1.66,
                         child: _item(),
                       )
-                  ),
+                    ),
                 ],
               )
             ),
@@ -127,18 +124,12 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
         ),
         padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.all(10),
-        child:
-        Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               widget.quizz.structure.description,
-              style: TextStyle(fontSize: textSize.specical),
-            ),
-
-             SizedBox(
-               height: 10,
-               width: isPortrait ? null : maxWidth,
+              style: TextStyle(fontSize: textSize.special),
             ),
 
             WdgDashedBorder(
@@ -146,7 +137,7 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
                 child: Container(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(5),
-                  child: WdgSpecialText(text: widget.quizz.structure.structure),
+                  child: WdgSpecialText(text: widget.quizz.structure.structure, size: textSize.special),
                 )
             )
           ],
