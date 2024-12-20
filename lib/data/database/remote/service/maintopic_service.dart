@@ -39,13 +39,15 @@ class MainTopicService extends ApiService {
   }
 
   @override
-  Future<List<MainTopic>?> success200(Response response) async {
+  Future<dynamic> success200(Response response) async {
     try {
       switch(_type) {
         case _TypeMainRequest.update:
           return null;
+
         case _TypeMainRequest.unlock:
-          return null;
+          return response.data['data'];
+
         case _TypeMainRequest.fetchAll:
           var items = response.data['data'] as List;
           List<MainTopic> mainTopics = items.map((mainTopic) => MainTopic.fromJson(mainTopic)).toList();
@@ -59,9 +61,7 @@ class MainTopicService extends ApiService {
       }
     }
     catch(e) {
-      if (kDebugMode) {
-        print('Error success200 mainTopic: $e');
-      }
+      debugPrint('Error success200 mainTopic: $e');
       return null;
     }
   }

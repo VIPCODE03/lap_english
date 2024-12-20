@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/learn/word_sentence.dart';
+import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/dialogs/dialog_widget.dart';
 import 'package:lap_english/ui/screens/learn_screens/flip_card_screen.dart';
@@ -236,7 +237,7 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
                     );
                   }
                 },
-                child: const Icon(Icons.volume_up, size: 30),
+                child: const Icon(Icons.volume_up, size: 30, color: Colors.grey),
               ),
               Flexible(
                 child: Column(
@@ -244,16 +245,16 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
                   children: [
                     Text(
                       textW,
-                      style: TextStyle(fontSize: 20, color: VipColors.text(context)),
+                      style: TextStyle(fontSize: textSize.medium, color: VipColors.text(context)),
                     ),
-                    Text(textMeaning),
+                    Text(textMeaning, style: TextStyle(color: Colors.grey, fontSize: textSize.normal)),
                   ],
                 ),
               ),
             ],
           ),
           subtitle: expanded //-> Trạng thái mở rộng
-              ? Text(textExpaned)
+              ? Text(textExpaned, style: TextStyle(color: Colors.grey, fontSize: textSize.normal))
               : null,
         ),
         Container(
@@ -273,10 +274,11 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
         return WdgDialog(
             color: Colors.transparent,
             title: null,
-            content: BlocProvider<DataBloc<T>>(
+            content: BlocProvider(
                 create: (context) => DataBloc<T>()..add(DataEventLoad<T>(args: subTopic.id)),
                 child: Container(
                   height: isPortrait ? maxHeight * 0.66 : maxHeight * 0.8,
+                  width: maxWidth / 1.2,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: Theme.of(context).cardColor
@@ -329,36 +331,42 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
                                 buttonFit: ButtonFit.scaleDown,
                                 color: Colors.transparent,
                                 onTap: () {
-                                  Navigator.push(//-> Mở quizz
-                                      context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return FlipCardsScreen(words: datas as List<Word>);
-                                      }));
+                                  if(datas.isNotEmpty) {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                      return FlipCardsScreen(words: datas as List<Word>);
+                                    }));
+                                  }
                                 },
                                 child: Text('Thẻ ghi nhớ',
                                   style: TextStyle(
                                       fontSize: textSize.medium,
-                                      color: VipColors.primary(context)),
+                                      color: VipColors.primary(context)
+                                  ),
                                 ),
                               ),
+
                             WdgButton(
                               buttonFit: ButtonFit.scaleDown,
                               onTap: () async {
                                 if (datas.isNotEmpty) {
                                   Navigator.pop(context); //-> Đóng dialog
-                                  Navigator.push(//-> Mở quizz
+                                  var result = await Navigator.push(//-> Mở quizz
                                     context,
                                     MaterialPageRoute(builder: (context) {
                                       switch (datas) {
                                         case List<Word> _:
-                                          return QuizzScreen.vocabulary(words: (datas as List<Word>), subTopicId: subTopic.id);
+                                          return QuizzScreen.vocabulary(words: (datas as List<Word>), subTopic: subTopic);
                                         case List<Sentence> _:
-                                          return QuizzScreen.sentence(sentences: (datas as List<Sentence>), subTopicId: subTopic.id);
+                                          return QuizzScreen.sentence(sentences: (datas as List<Sentence>), subTopic: subTopic);
                                         default:
                                           return const Center(child: Text('No data available or unsupported type.'));
                                       }
                                     }),
                                   );
+
+                                  if(result is QuizzResult) {
+                                    setState(() {});
+                                  }
                                 }
                               },
                               color: Colors.transparent,
@@ -367,7 +375,10 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
                                 children: [
                                   Text(
                                     subTopic.isLearned ? 'Ôn tập' : 'Học bài mới',
-                                    style: TextStyle(fontSize: textSize.medium, color: VipColors.primary(context)),
+                                    style: TextStyle(
+                                        fontSize: textSize.medium,
+                                        color: VipColors.primary(context)
+                                    ),
                                   ),
                                   Icon(
                                     Icons.keyboard_double_arrow_right,

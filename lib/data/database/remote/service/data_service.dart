@@ -1,5 +1,7 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:lap_english/data/caching/cache_manager.dart';
+import 'package:lap_english/services/network_observer.dart';
 import '../api/api.dart';
 import 'package:dio/dio.dart';
 
@@ -124,9 +126,9 @@ abstract class ApiService {
       else {
         throw Exception('Error in GET request ad: ${response.statusCode}');
       }
-    } catch (error) {
-      debugPrint('Error in GET request: $error');
-      return null;
+    } catch (e) {
+      debugPrint('Error ApiService: $e');
+      checkInternet();
     }
   }
 }

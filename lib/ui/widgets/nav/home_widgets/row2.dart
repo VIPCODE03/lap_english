@@ -60,7 +60,8 @@ class WdgRow2 extends StatelessWidget {
         title: "Góc học tập",
         alignment: Alignment.center,
         child: Wrap(
-          spacing: 10,
+          spacing: 6,
+          runSpacing: 6,
           children: _menuItems.map((item) => buildMenuItem(context, item)).toList(),
         )
     );
@@ -77,26 +78,20 @@ class WdgRow2 extends StatelessWidget {
           children: [
             ///CONTAINER cover  --------------------------------------------------
             Container(
-              height: 66,
-              width: 66,
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                border: Border.all(color: VipColors.primary(context)),
-                  borderRadius: BorderRadius.circular(24)),
+                  color: VipColors.onPrimary(context),
+                  border: Border.all(color: VipColors.primary(context), width: 1.5, strokeAlign: 2),
+                  borderRadius: BorderRadius.circular(33)
+              ),
 
               ///ICON ------------------------------------------------------------
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  color: VipColors.onPrimary(context),
-                  child: Image.asset(
-                    item.imagePath,
-                    width: 33,
-                    height: 33,
-                  ),
+              child: Image.asset(
+                  item.imagePath,
+                  width: 33,
+                  height: 33,
                 ),
               ),
-            ),
 
             ///TEXT --------------------------------------------------------------
             Text(item.label, maxLines: 1, style: TextStyle(fontSize: textSize.normal))

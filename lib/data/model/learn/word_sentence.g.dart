@@ -70,12 +70,12 @@ Sentence _$SentenceFromJson(Map<String, dynamic> json) => Sentence(
       (json['id'] as num).toInt(),
       json['sentence'] as String,
       json['translation'] as String,
-      (json['idSubTopic'] as num).toInt(),
+      (json['subTopicId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SentenceToJson(Sentence instance) => <String, dynamic>{
       'id': instance.id,
       'sentence': instance.sentence,
       'translation': instance.translation,
-      'idSubTopic': instance.idSubTopic,
+      'subTopicId': instance.subTopicId,
     };

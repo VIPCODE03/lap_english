@@ -76,9 +76,9 @@ class Sentence {
   final int id;
   String sentence;
   String translation;
-  int idSubTopic;
+  int subTopicId;
 
-  Sentence(this.id, this.sentence, this.translation, this.idSubTopic);
+  Sentence(this.id, this.sentence, this.translation, this.subTopicId);
 
   factory Sentence.fromJson(Map<String, dynamic> json) => _$SentenceFromJson(json);
   Map<String, dynamic> toJson() => _$SentenceToJson(this);

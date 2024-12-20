@@ -14,9 +14,9 @@ class DataEventLoad<T> extends DataEvent {
 }
 
 class DataEventUpdate<T> extends DataEvent {
-  final List<T> datas;
+  final T data;
   final Map<String, dynamic>? headers;
-  DataEventUpdate({required this.datas, this.headers});
+  DataEventUpdate({required this.data, this.headers});
 }
 
 abstract class DataState {}
@@ -49,7 +49,7 @@ class DataBloc<T> extends Bloc<DataEvent, DataState> with UpdateDatas, LoadDatas
       emit(DataStateLoading<T>());
       try {
         final data = await (load[T]!(event.args) as Future<List<T>>);
-        await Future.delayed(const Duration(milliseconds: 1000));
+        await Future.delayed(const Duration(milliseconds: 666));
         emit(DataStateLoaded<T>(data));
       } catch (e) {
         emit(DataStateError<T>('Lỗi tải dữ liệu'));
@@ -62,7 +62,7 @@ class DataBloc<T> extends Bloc<DataEvent, DataState> with UpdateDatas, LoadDatas
     on<DataEventUpdate<T>>((event, emit) async {
       try {
         await Future.delayed(Duration(milliseconds: Random().nextInt(150)));
-        var result = await update[T]!(event.datas, event.headers ?? {});
+        var result = await update[T]!(event.data, event.headers ?? {});
         emit(DataStateUpdateResult(result));
       } catch (e) {
         emit(DataStateError<T>('Lỗi cập nhật dữ liệu'));

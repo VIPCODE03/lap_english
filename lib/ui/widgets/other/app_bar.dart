@@ -32,7 +32,7 @@ class WdgAppBar extends StatelessWidget {
                    mainAxisAlignment: MainAxisAlignment.center,
                    crossAxisAlignment: CrossAxisAlignment.center,
                    children: [
-                     Icon(Icons.design_services, size: textSize.title),
+                     Icon(Icons.design_services, size: isPortrait ? maxHeight / 35 : maxWidth / 35),
                      const SizedBox(width: 5),
                      Text(title ?? '', style: GoogleFonts.pangolin(
                        fontSize: textSize.title,

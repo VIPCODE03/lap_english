@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 
 import '../themes/size.dart';
 
@@ -11,6 +12,8 @@ class WdgDialog extends StatefulWidget {
   final CrossAxisAlignment? crossAxisAlignment;
   final double? height;
   final double? width;
+  final bool? shadow;
+  final bool? border;
 
   const WdgDialog({
     super.key,
@@ -21,7 +24,9 @@ class WdgDialog extends StatefulWidget {
     this.color,
     this.crossAxisAlignment,
     this.height,
-    this.width
+    this.width,
+    this.shadow,
+    this.border
   });
 
   @override
@@ -45,7 +50,9 @@ class _WdgDialogState extends State<WdgDialog> {
   }
 
   void updateScreen() {
-    setState(() {});
+    if(context.mounted) {
+      setState(() {});
+    }
   }
 
   //=== Scale thu nhỏ trước khi pop ===
@@ -91,7 +98,28 @@ class _WdgDialogState extends State<WdgDialog> {
                         ),
                         decoration: BoxDecoration(
                           color: widget.color ?? Theme.of(context).cardColor,
+                          border: (widget.border != null && widget.border!)
+                              ? Border.all(color: VipColors.onPrimary(context), width: 1.6)
+                              : null,
                           borderRadius: BorderRadius.circular(12),
+                          boxShadow: (widget.shadow != null && widget.shadow!)
+                              ?
+                                [
+                                  BoxShadow(
+                                    color: VipColors.onPrimary(context),
+                                    offset: const Offset(0.66, 0.66),
+                                    blurRadius: 6,
+                                    spreadRadius: 0.6,
+                                  ),
+
+                                  BoxShadow(
+                                    color: VipColors.onPrimary(context),
+                                    offset: const Offset(-0.66, -0.66),
+                                    blurRadius: 6,
+                                    spreadRadius: 0.6,
+                                  ),
+                                ]
+                              : null
                         ),
                         padding: const EdgeInsets.all(16),
                         child: Column(

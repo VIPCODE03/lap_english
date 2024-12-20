@@ -22,7 +22,7 @@ class CacheManager {
     return MdlToken(
         _caching.getString('accessToken') ?? '',
         _caching.getString('refreshToken') ?? '',
-        _caching.getInt('userId') ?? 0
+        _caching.getInt('userId') ?? -1
     );
   }
 

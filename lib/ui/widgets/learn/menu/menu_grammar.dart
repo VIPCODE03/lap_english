@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/bloc/data_bloc/data_bloc.dart';
@@ -28,7 +26,6 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
   GlobalKey? _currentSelectKey;
   late List<GlobalKey> keys;
   late List<ExpansionTileController> _controllers;
-  final ValueNotifier<bool> onLoading = ValueNotifier(true);
   late ScrollController _scrollController;
 
   @override
@@ -37,14 +34,9 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
     _scrollController = ScrollController();
     keys = List.generate(widget.typeGrammars.length, (index) => GlobalKey());
     _controllers = List.generate(widget.typeGrammars.length, (index) => ExpansionTileController());
-
-    Future.delayed(Duration(milliseconds: Random().nextInt(2000).clamp(666, 2000)), () {
-      setState(() {
-        onLoading.value = false;
-      });
-    });
   }
 
+  //=== Trượt item lên trên đầu ===
   void _scrollToIndex(int index) {
     final key = keys[index];
     final context = key.currentContext;
@@ -59,7 +51,7 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
       _scrollController.animateTo(
         offsetToScroll,
         duration: const Duration(milliseconds: 333),
-        curve: Curves.easeInOut,
+        curve: Curves.decelerate,
       );
     }
   }
@@ -72,14 +64,14 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
       itemBuilder: (BuildContext contextList, int index) {
        return Container(
                     key: keys[index],
-                    margin: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(12),
                     child: WdgDashedBorder(
                         color: VipColors.primary(context),
                         child: ExpansionTile(
                           controller: _controllers[index],
                           expansionAnimationStyle: AnimationStyle(
-                              curve: Curves.fastOutSlowIn,
-                              duration: const Duration(milliseconds: 666)
+                              curve: Curves.decelerate,
+                              duration: const Duration(milliseconds: 333)
                           ),
                           title: Text(
                             widget.typeGrammars[index].name,
@@ -88,14 +80,14 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                                 fontSize: textSize.title),
                           ),
                           trailing: AnimatedRotation(
-                            duration: const Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 222),
                             turns: keys[index] == _currentSelectKey ? 0.25 : 0,
                             child: const Icon(Icons.keyboard_arrow_right_sharp),
                           ),
                           onExpansionChanged: (isExpanded) {
                             if(_currentSelectKey == keys[index]) {
                               _currentSelectKey = null;
-                              Future.delayed(const Duration(milliseconds: 666), () {
+                              Future.delayed(const Duration(milliseconds: 333), () {
                                 setState(() {});
                               });
                             }
@@ -120,7 +112,7 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                                     if (grammarState is DataStateLoading<Grammar>) {
                                       return Column(
                                         children: [
-                                          ...List.generate(3, (index) => WdgItemLoading(child: Container(margin: const EdgeInsets.all(10), height: 40)))
+                                          ...List.generate(3, (index) => WdgItemLoading(child: Container(margin: const EdgeInsets.all(10), height: 50)))
                                         ],
                                       );
 
@@ -131,9 +123,8 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
 
                                           /// Item grammar  ----------------------------------------------------------------
                                           return Padding(
-                                            padding: const EdgeInsets.all(14),
+                                            padding: const EdgeInsets.all(6),
                                             child: WdgButton(
-                                              key: key,
                                               onTap: () {
                                                 final RenderBox renderBox = key.currentContext!.findRenderObject() as RenderBox;
                                                 final Offset position = renderBox.localToGlobal(Offset.zero);
@@ -148,7 +139,11 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                                               borderRadius: BorderRadius.circular(12),
                                               color: VipColors.onPrimary(context),
                                               child: ListTile(
-                                                title: Text(grammar.name, style: TextStyle(fontSize: textSize.medium)),
+                                                title: Text(
+                                                    key: key,
+                                                    grammar.name,
+                                                    style: TextStyle(fontSize: textSize.medium)
+                                                ),
                                                 trailing: const Icon(Icons.keyboard_double_arrow_right),
                                               ),
                                             ),
@@ -188,7 +183,7 @@ class _DetailGrammarState extends State<_DetailGrammar> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 10), () {
+    Future.delayed(const Duration(milliseconds: 100), () {
       setState(() {
         isStart = false;
       });
@@ -200,10 +195,11 @@ class _DetailGrammarState extends State<_DetailGrammar> {
     return WdgScaffold(
       appBar: const WdgAppBar(),
       body: Stack(
+        fit: StackFit.loose,
       children: [
         /// Text ngữ pháp animation ------------------------------------------------------
         TweenAnimationBuilder<double>(
-          tween: Tween<double>(begin: textSize.medium, end: textSize.title),
+          tween: Tween<double>(begin: textSize.medium, end: textSize.title * 1.2),
           duration: const Duration(milliseconds: 333),
           builder: (context, fontSize, child) {
             return AnimatedPositioned(
@@ -216,11 +212,11 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                 });
               },
               child: Container(
-                alignment: Alignment.center,
-                width: maxWidth,
-                child: Text(
-                widget.grammar.name,
-                style: TextStyle(fontSize: fontSize),
+                  alignment: Alignment.topLeft,
+                  width: maxWidth,
+                  child: Text(
+                  widget.grammar.name,
+                  style: TextStyle(fontSize: fontSize),
               ))
             );
           },
@@ -228,57 +224,75 @@ class _DetailGrammarState extends State<_DetailGrammar> {
 
         Column(
             children: [
-              /// Text vị trí --------------------------------------------------
-              Opacity(opacity: 0,
-                  child: Container(
-                      alignment: Alignment.center,
-                      width: maxWidth,
-                      child: Text(
-                        widget.grammar.name,
-                        style: TextStyle(fontSize: textSize.title),
-                      ))
-              ),
+            /// Text vị trí --------------------------------------------------
+            Opacity(
+                opacity: 0,
+                child: Container(
+                    alignment: Alignment.topLeft,
+                    width: maxWidth,
+                    child: Text(
+                      widget.grammar.name,
+                      style: TextStyle(fontSize: textSize.title * 1.2),
+                    )
+                )
+            ),
 
-            Expanded(child: AnimatedScale(
-              duration: const Duration(milliseconds: 333),
-              scale: isStarted ? 1 : 0,
-              child: Column(
-                children: [
-                  /// Button luyện tập  --------------------------------------------
-                  BlocProvider(
-                    create: (context) => DataBloc<GrammaticalStructure>()..add(DataEventLoad<GrammaticalStructure>(args: widget.grammar.id)),
-                    child: BlocBuilder<DataBloc<GrammaticalStructure>, DataState>(
-                      builder: (context, state) {
-                        if (state is DataStateLoaded<GrammaticalStructure>) {
-                          return WdgButton(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => QuizzScreen.grammar(structures: state.data, grammarId: widget.grammar.id),
-                                ),
-                              );
-                            },
-                            child: Text('Luyện tập', style: TextStyle(fontSize: textSize.title)),
-                          );
-                        } else {
-                          return const SizedBox.shrink();
-                        }
-                      },
-                    ),
-                  ),
+            Expanded(
+                child: AnimatedScale(
+                  duration: const Duration(milliseconds: 333),
+                  scale: isStarted ? 1 : 0,
+                  child: Column(
+                  children: [
+                      /// Button luyện tập  --------------------------------------------
+                      BlocProvider(
+                        create: (context) => DataBloc<GrammaticalStructure>()..add(DataEventLoad<GrammaticalStructure>(args: widget.grammar.id)),
+                        child: BlocBuilder<DataBloc<GrammaticalStructure>, DataState>(
+                          builder: (context, state) {
+                            if (state is DataStateLoaded<GrammaticalStructure>) {
+                              if(state.data.isNotEmpty) {
+                                return WdgButton(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            QuizzScreen.grammar(
+                                                structures: state.data,
+                                                grammar: widget.grammar),
+                                      ),
+                                    );
+                                  },
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Text('Luyện tập',
+                                      style: TextStyle(fontSize: textSize.medium)
+                                  ),
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ),
 
-                  Expanded(child: Container(
-                      padding: const EdgeInsets.all(6),
-                      width: maxWidth,
-                      child: WdgDashedBorder(
-                          child: SingleChildScrollView(
-                              child: Padding(padding: const EdgeInsets.all(6),
-                                  child: WdgSpecialText(text: widget.grammar.description, size: textSize.medium)
+                      /// Mô tả ngữ pháp  ----------------------------------------
+                      Expanded(
+                          child: Container(
+                              padding: const EdgeInsets.all(6),
+                              width: maxWidth,
+                              child: WdgDashedBorder(
+                                  child: SingleChildScrollView(
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(6),
+                                          child: WdgSpecialText(
+                                              text: widget.grammar.description,
+                                              size: textSize.medium
+                                          )
+                                      )
+                                  )
                               )
                           )
                       )
-                  ))
-                ],
+                    ],
               ),
             ))
           ]),

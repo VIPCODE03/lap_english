@@ -11,7 +11,7 @@ class RewardService extends ApiService {
         api: '/api/v1/daily-task/claim-reward/$dailyTaskId',
         requestType: RequestType.post
     );
-    if(newRequest is bool) return newRequest;
+    if(newRequest != null) return true;
     return false;
   }
 

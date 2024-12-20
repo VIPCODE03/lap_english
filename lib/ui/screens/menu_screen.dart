@@ -27,8 +27,24 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
   String search = "";
   bool _isSearching = false;
   late List<T> datas = [];
+  late final TextEditingController _searchController;
 
-  final TextEditingController _searchController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    hasChanged.addListener(_updateScreen);
+    _searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    hasChanged.removeListener(_updateScreen);
+  }
+
+  _updateScreen() {
+    setState(() {});
+  }
 
   void _toggleSearch() {
     setState(() {

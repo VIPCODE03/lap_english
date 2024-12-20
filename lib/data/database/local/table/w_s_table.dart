@@ -13,7 +13,7 @@ class SentenceTable extends TableSchema<Sentence> {
   Columns columns(Sentence obj) => columnBuild(addColumn: [
     column(name: id, value: obj.id),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idSubTopic, value: obj.idSubTopic),
+    column(name: idSubTopic, value: obj.subTopicId),
   ]);
 
   @override

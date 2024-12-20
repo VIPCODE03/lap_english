@@ -8,6 +8,7 @@ import 'package:lap_english/ui/dialogs/dialog_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizz_widget.dart';
 import 'package:lap_english/ui/widgets/learn/quiz/a_quizzes_widget.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
+import 'package:lap_english/ui/widgets/other/loading.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 import 'package:lap_english/ui/widgets/other/special_text.dart';
@@ -21,35 +22,35 @@ import '../../widgets/other/button.dart';
 
 class QuizzScreen extends StatefulWidget {
   final Future<List<Quizz>> _quizzes;
-  final int _idObject;
+  final dynamic _object;
   final TypeQuizz _typeQuizz;
 
   final int _totalWord;
   final int _totalSentence;
   final int _totalGrammar;
 
-  QuizzScreen.vocabulary({super.key, required List<Word> words, required int subTopicId})
+  QuizzScreen.vocabulary({super.key, required List<Word> words, required SubTopic subTopic})
     :
-        _idObject = subTopicId,
+        _object = subTopic,
         _typeQuizz = TypeQuizz.quizzVocabulary,
         _totalWord = words.length,
         _totalSentence = 0,
         _totalGrammar = 0,
-      _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
+        _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
 
-  QuizzScreen.sentence({super.key, required List<Sentence> sentences, required int subTopicId})
+  QuizzScreen.sentence({super.key, required List<Sentence> sentences, required SubTopic subTopic})
       :
-        _idObject = subTopicId,
-      _typeQuizz = TypeQuizz.quizzSentence,
+        _object = subTopic,
+        _typeQuizz = TypeQuizz.quizzSentence,
         _totalWord = 0,
         _totalSentence = sentences.length,
         _totalGrammar = 0,
-      _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
+        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
 
-  QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures, required int grammarId})
+  QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures, required Grammar grammar})
       :
-        _idObject = grammarId,
-      _typeQuizz = TypeQuizz.quizGrammar,
+        _object = grammar,
+        _typeQuizz = TypeQuizz.quizGrammar,
         _totalWord = 0,
         _totalSentence = 0,
         _totalGrammar = structures.length,
@@ -79,7 +80,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
     widget._quizzes.then((quizzes) {
       //--- Cập nhật sau khi bắt đầu  ---
-      Future.delayed(const Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 1), () {
         if (!showQuizz) {
           setState(() {
             showQuizz = true;
@@ -95,7 +96,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
             widget._totalWord,
             widget._totalSentence,
             widget._totalGrammar,
-            idObject: widget._idObject
+            object: widget._object
         )..add(QuizzInit());
       });
     }).catchError((error) {
@@ -110,6 +111,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
     if (_quizzes == null || _quizzes!.isEmpty) {
       if(!showQuizz) {
         return const WdgScaffold(
+          appBar: WdgAppBar(),
           body: Center(child: Text('Không có dữ liệu')),
         );
       }
@@ -266,7 +268,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                 return WdgQuizzResult(quizzResult: state.quizzResult);
               }
 
-              return const Center(child: CircularProgressIndicator());
+              return const WdgLoading();
             },
           ),
         ));
@@ -367,6 +369,8 @@ class _QuizzScreenState extends State<QuizzScreen> {
         context: parentContext,
         builder: (BuildContext context) {
           return WdgDialog(
+              border: true,
+              shadow: true,
               crossAxisAlignment: CrossAxisAlignment.center,
               title: Text('Xác nhận thoát', style: TextStyle(fontSize: textSize.title)),
               content: Text('Bạn sẽ mất tiến trình', style: TextStyle(fontSize: textSize.normal)),

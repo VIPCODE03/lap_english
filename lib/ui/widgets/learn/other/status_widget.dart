@@ -73,12 +73,15 @@ class _WdgStatusLockState<T> extends State<WdgStatusLock> {
     });
   }
 
+  /// Dialog show unlock  -----------------------------------------------------
   void _unLockDialog(BuildContext parentContext) {
     bool barrierDismissible = true;
     showDialog(
         context: parentContext,
         builder: (BuildContext context) {
           return WdgDialog(
+              shadow: true,
+              border: true,
               barrierDismissible: barrierDismissible,
               crossAxisAlignment: CrossAxisAlignment.center,
               title: Text('Mở khóa', style: TextStyle(fontSize: textSize.title, fontWeight: FontWeight.bold)),
@@ -93,12 +96,8 @@ class _WdgStatusLockState<T> extends State<WdgStatusLock> {
                   child: BlocListener<DataBloc<T>, DataState>(
                     listener: (context, state) {
                       if (state is DataStateUpdateResult) {
-                        try {
-                          if(state.result as bool) {
-                            setState(() {});
-                          }
-                        } catch(e) {
-                          debugPrint('Kết quả trả về update là ${state.result.runtimeType} trong khi yêu cầu là bool}');
+                        if(state.result) {
+                          setState(() {});
                         }
                         Navigator.of(context).pop();
                       }
@@ -126,7 +125,7 @@ class _WdgStatusLockState<T> extends State<WdgStatusLock> {
                                       setState(() {
                                         barrierDismissible = false;
                                       });
-                                      context.read<DataBloc<T>>().add(DataEventUpdate<T>(datas: [widget.item], headers: {'unlock': true}));
+                                      context.read<DataBloc<T>>().add(DataEventUpdate<T>(data: widget.item, headers: {'unlock': true}));
                                     }
                                     else {
                                       Navigator.of(context).pop();
@@ -160,6 +159,7 @@ class _WdgStatusLockState<T> extends State<WdgStatusLock> {
     );
   }
 
+  /// ITEM giá -------------------------------------------------------------
   Widget _itemPrice(BuildContext context, String imgUrl, String price, bool enough) {
     return Wrap(spacing: 3, children: [
       Image.asset(

@@ -1,6 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/database/remote/service/quiz_service.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 import 'package:lap_english/services/data_manager.dart';
@@ -75,6 +76,7 @@ class QuizzCompleted extends QuizzState {
 
 /*  BLOC  */
 class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
+  final dynamic object;
   late final QuizzResult quizzResult;
   final List<Quizz> quizzes;
   int total = 0;
@@ -91,15 +93,16 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
       this.totalWord,
       this.totalSentence,
       this.totalGrammar,
-      {required int idObject}
-      ) : super(QuizzInitial()) {
+      {required this.object}
+      )
+      : super(QuizzInitial()) {
     total = quizzes.length;
     var totalWrite = quizzes.where((quizz) => quizz.skillType == SkillType.writing).length;
     var totalListen = quizzes.where((quizz) => quizz.skillType == SkillType.listening).length;
     var totalRead = quizzes.where((quizz) => quizz.skillType == SkillType.reading).length;
     var totalSpeak = quizzes.where((quizz) => quizz.skillType == SkillType.speaking).length;
 
-    quizzResult = QuizzResult(idObject, total, totalWrite, totalListen, totalRead, totalSpeak, typeQuizz, totalWord, totalSentence, totalGrammar);
+    quizzResult = QuizzResult(object: object, total, totalWrite, totalListen, totalRead, totalSpeak, typeQuizz, totalWord, totalSentence, totalGrammar);
 
     //---   Khởi tạo  ---
     on<QuizzInit>((event, emit) {
@@ -122,6 +125,9 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
           quizzResult.pointRank += (10 * coefficient).toInt();
           QuizService().completedQuiz(quizzResult);
           emit(QuizzCompleted(quizzResult));
+          if(object is SubTopic) {
+            (object as SubTopic).isLearned = true;
+          }
         }
       }
     });

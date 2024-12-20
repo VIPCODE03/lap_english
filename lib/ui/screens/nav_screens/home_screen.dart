@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/learn/status.dart';
-import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/nav/home_widgets/row1.dart';
 import 'package:lap_english/ui/widgets/nav/home_widgets/row2.dart';
 import 'package:lap_english/ui/widgets/nav/home_widgets/row3.dart';
@@ -16,9 +15,9 @@ class HomeScreen extends StatelessWidget {
     return ListView(
         children: [
           ///ROW1  --------------------------------------------------------------
-          SizedBox(
-            height: maxHeight / (isPortrait ? 2.5 : 1.5),
-            child: const WdgRow1(),
+          const SizedBox(
+            height: 300,
+            child: WdgRow1(),
           ),
 
           ///ROW2  --------------------------------------------------------------

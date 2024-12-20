@@ -1,4 +1,5 @@
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
+import 'package:lap_english/data/database/local/dao/w_s_dao.dart';
 import 'package:lap_english/data/database/remote/service/subtopic_service.dart';
 import 'package:lap_english/data/database/remote/service/user_service.dart';
 import 'package:lap_english/data/database/remote/service/maintopic_service.dart';
@@ -32,7 +33,7 @@ mixin LoadDatas {
     return [];
   }
 
-  /*  Load từ vựng  */
+  /*  Load từ vựng và câu  */
   static Future<List<MainTopic>> _mainTopicLoad(Type type) async {
     MainTopicService service = MainTopicService();
     List<MainTopic>? mains = await service.fetchAll(type);
@@ -52,19 +53,27 @@ mixin LoadDatas {
   }
 
   static Future<List<Word>> _wordLoad(int idSubTopic) async {
-    WordService service = WordService();
-    List<Word>? words = await service.fetchByIdSubTopic(idSubTopic);
-    if(words != null) {
-      return words;
+    WordDao dao = WordDao();
+    List<Word> words = await dao.getWords(idSubTopic);
+    if(words.isEmpty) {
+      words = await WordService().fetchByIdSubTopic(idSubTopic) ?? [];
+      for(var word in words) {
+        dao.insert(word);
+      }
     }
-    return [];
+    return words;
   }
 
   static Future<List<Sentence>> _sentenceLoad(int subTopicId) async {
-    SentenceService service = SentenceService();
-    var sentences = await service.fetchByIdSubTopic(subTopicId);
-    if(sentences != null) return sentences;
-    return[];
+    SentenceDao dao = SentenceDao();
+    List<Sentence> sentences = await dao.getSentencesByIdSub(subTopicId);
+    if(sentences.isEmpty) {
+      sentences = await SentenceService().fetchByIdSubTopic(subTopicId) ?? [];
+      for(var sentence in sentences) {
+        dao.insert(sentence);
+      }
+    }
+    return sentences;
   }
 
   /*  Load ngữ pháp */

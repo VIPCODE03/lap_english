@@ -36,7 +36,7 @@ class SentenceService extends ApiService {
   Future<List<Sentence>?> fetchByIdSubTopic(int subTopicId) async {
     _type = _TypeRequest.fetchByIdSubTopic;
     return await request(
-        api: '/api/v1/word?word=subTopic.id:$subTopicId',
+        api: '/api/v1/sentence/sub-topic/$subTopicId',
         requestType: RequestType.get
     );
   }
@@ -46,6 +46,7 @@ class SentenceService extends ApiService {
     try {
       switch(_type) {
         case _TypeRequest.fetchByIdSubTopic:
+          print(response.data['data']['items']);
           var items = response.data['data']['items'] as List;
           return items.map((item) => Sentence.fromJson(item)).toList();
       }

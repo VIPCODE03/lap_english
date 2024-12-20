@@ -18,9 +18,7 @@ class WdgRow1 extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(Provider.of<Themes>(context, listen: true)
-                  .vipTheme
-                  .imagePath),
+              image: AssetImage(Provider.of<Themes>(context, listen: true).vipTheme.imagePath),
               fit: BoxFit.fill,
             ),
           ),

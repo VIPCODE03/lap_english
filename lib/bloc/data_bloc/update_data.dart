@@ -9,28 +9,26 @@ import '../../data/model/learn/word_sentence.dart';
 import '../../data/model/user/user.dart';
 
 mixin UpdateDatas {
-  final Map<Type, Future<dynamic> Function(List<dynamic> datas, Map<String, dynamic> headers)> update = {
-    User: (datas, headers) => _updateUser(datas as List<User>),
+  final Map<Type, Future<dynamic> Function(dynamic data, Map<String, dynamic> headers)> update = {
+    User: (data, headers) => _updateUser(data as User),
 
     //--- Từ vựng ---
-    MainTopic: (datas, headers) => _updateMainTopic(datas as List<MainTopic>, headers),
-    SubTopic: (datas, headers) => _updateSubTopic(datas as List<SubTopic>, headers),
-    Word: (datas, headers) => _updateWord(datas as List<Word>),
-    Sentence: (datas, headers) => _updateSentence(datas as List<Sentence>),
+    MainTopic: (data, headers) => _updateMainTopic(data as MainTopic, headers),
+    SubTopic: (data, headers) => _updateSubTopic(data as SubTopic, headers),
+    Word: (data, headers) => _updateWord(data as Word),
+    Sentence: (data, headers) => _updateSentence(data as Sentence),
 
     //--- Ngữ pháp  ---
-    TypeGrammar: (datas, headers) => _updateTypeGrammar(datas as List<TypeGrammar>),
-    Grammar: (datas, headers) => _updateGrammar(datas as List<Grammar>),
-    GrammaticalStructure: (datas, headers) => _updateGrammaticalStructure(datas as List<GrammaticalStructure>),
-    ExerciseGrammar: (datas, headers) => _updateExerciseGrammar(datas as List<ExerciseGrammar>),
+    TypeGrammar: (datas, headers) => _updateTypeGrammar(datas as TypeGrammar),
+    Grammar: (datas, headers) => _updateGrammar(datas as Grammar),
+    GrammaticalStructure: (datas, headers) => _updateGrammaticalStructure(datas as GrammaticalStructure),
+    ExerciseGrammar: (datas, headers) => _updateExerciseGrammar(datas as ExerciseGrammar),
   };
 
-  static Future<bool> _updateUser(List<User> datas) async {
+  static Future<bool> _updateUser(User data) async {
     try {
       UserService userService = UserService();
-      for (var data in datas) {
-        await userService.update(data);
-      }
+      await userService.update(data);
       return true;
     }
     catch(e) {
@@ -39,36 +37,39 @@ mixin UpdateDatas {
   }
 
   /*  Cập nhật từ vựng  */
-  static Future<bool> _updateMainTopic(List<MainTopic> datas, Map<String, dynamic> headers) async {
+  static Future<bool> _updateMainTopic(MainTopic data, Map<String, dynamic> headers) async {
     try {
       MainTopicService service = MainTopicService();
       if(headers['unlock']) {
-        service.unlock(datas.first);
+        if(await service.unlock(data)) {
+          data.status.locked = false;
+          return true;
+        }
+        return false;
       }
       else {
         debugPrint('Không tìm thấy header');
         return false;
       }
-      return true;
     }
     catch(e) {
       return false;
     }
   }
 
-  static Future<bool> _updateSubTopic(List<SubTopic> datas, Map<String, dynamic> headers) async {
+  static Future<bool> _updateSubTopic(SubTopic data, Map<String, dynamic> headers) async {
     try {
       SubTopicService service = SubTopicService();
         if (headers['unlock'] != null) {
-          if (await service.unlock(datas.first)) {
-            datas.first.status.locked = false;
+          if (await service.unlock(data)) {
+            data.status.locked = false;
             return true;
           }
           return false;
         }
 
         else if (headers['completed'] != null) {
-          service.completed(datas.first);
+          service.completed(data);
           return true;
         }
         else {
@@ -81,46 +82,34 @@ mixin UpdateDatas {
     }
   }
 
-  static Future<void> _updateWord(List<Word> datas) async {
+  static Future<void> _updateWord(Word data) async {
     WordDao dao = WordDao();
-    for (var data in datas) {
-      await dao.update(data);
-    }
+    dao.update(data);
   }
 
-  static Future<void> _updateSentence(List<Sentence> datas) async {
+  static Future<void> _updateSentence(Sentence data) async {
     SentenceDao dao = SentenceDao();
-    for (var data in datas) {
-      await dao.update(data);
-    }
+    dao.update(data);
   }
 
   /*  Cập nhật ngữ pháp */
-  static Future<void> _updateTypeGrammar(List<TypeGrammar> datas) async {
+  static Future<void> _updateTypeGrammar(TypeGrammar data) async {
     TypeGrammarDao dao = TypeGrammarDao();
-    for (var data in datas) {
-      await dao.update(data);
-    }
+    dao.update(data);
   }
 
-  static Future<void> _updateGrammar(List<Grammar> datas) async {
+  static Future<void> _updateGrammar(Grammar data) async {
     GrammarDao dao = GrammarDao();
-    for (var data in datas) {
-      await dao.update(data);
-    }
+    dao.update(data);
   }
 
-  static Future<void> _updateGrammaticalStructure(List<GrammaticalStructure> datas) async {
+  static Future<void> _updateGrammaticalStructure(GrammaticalStructure data) async {
     GrammaticalStructureDao dao = GrammaticalStructureDao();
-    for (var data in datas) {
-      await dao.update(data);
-    }
+    dao.update(data);
   }
 
-  static Future<void> _updateExerciseGrammar(List<ExerciseGrammar> datas) async {
+  static Future<void> _updateExerciseGrammar(ExerciseGrammar data) async {
     ExerciseGrammarDao dao = ExerciseGrammarDao();
-    for (var data in datas) {
-      await dao.update(data);
-    }
+    dao.update(data);
   }
 }

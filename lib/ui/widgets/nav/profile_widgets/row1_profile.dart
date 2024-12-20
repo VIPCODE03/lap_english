@@ -27,7 +27,7 @@ class WdgRow1Profile extends StatelessWidget {
           child: WdgButton(
             onTap: () {
               CacheManager().saveStatus(StatusFlag.dataLoaded, false);
-              context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
+              context.read<DataBloc<User>>().add(DataEventUpdate<User>(data: user));
             },
             color: Colors.transparent,
             child: const Icon(Icons.edit_note, size: 30),

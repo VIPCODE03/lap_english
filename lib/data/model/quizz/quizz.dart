@@ -176,7 +176,6 @@ class QuizzResult {
   int totalGrammar;
 
   QuizzResult(
-      this.idObject,
       this.total,
       this.totalWrite,
       this.totalListen,
@@ -185,8 +184,21 @@ class QuizzResult {
       this.type,
       this.totalWord,
       this.totalSentence,
-      this.totalGrammar
-      );
+      this.totalGrammar,
+      {required dynamic object}) {
+
+    if(object is SubTopic) {
+      idObject = object.id;
+    }
+
+    else if(object is Grammar) {
+      idObject = object.id;
+    }
+
+    else {
+      idObject = 0;
+    }
+  }
 
   //=== Cập nhật kết quả  ===
   void update(bool isCorrect, SkillType skill, int newCorrectConsecutive) {
