@@ -13,21 +13,18 @@ class WdgRow1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-        children: [
-          ///CONTAINER làm nền hình ảnh  ---------------------------
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(Provider
-                    .of<Themes>(context, listen: true)
-                    .vipTheme.imagePath
-                ),
-                fit: BoxFit.cover ,
-              ),
+      children: [
+        ///CONTAINER làm nền hình ảnh  ---------------------------
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(Provider.of<Themes>(context, listen: true).vipTheme.imagePath),
+              fit: BoxFit.fill,
             ),
           ),
+        ),
 
-          ///TEXT họ tên ------------------------------------------------------
+        ///TEXT họ tên ------------------------------------------------------
           Positioned(
             top: 10,
             left: 10,
@@ -44,7 +41,7 @@ class WdgRow1 extends StatelessWidget {
           Positioned(
             right: 10,
             child: WdgButton(
-              onTap: () {showImagePickerBottomSheet(context, ThemeConstant.themes);},
+              onTap: () {_showThemes(context, ThemeConstant.themes);},
               color: Colors.transparent,
               child: const Icon(Icons.ac_unit, color: Colors.white),
             ),
@@ -57,67 +54,76 @@ class WdgRow1 extends StatelessWidget {
             left: 10,
             child: Card(
               color: Colors.white10,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Padding(
+                  padding: const EdgeInsets.all(7),
+                child: Table(
                   children: [
-                    ///COLUMN  1 --------------------------------------------
-                    Expanded(
-                      child: _column('Từ mới hôm nay', '5'),
+                    TableRow(
+                      children: [
+                        Center(
+                          child: FittedBox(child: Text('Hôm nay',
+                              style: TextStyle(fontSize: textSize.title, color: Colors.white, fontWeight: FontWeight.bold)),
+                        )),
+                        Center(
+                          child: Text('Từ vựng',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                        ),
+                        Center(
+                          child: Text('Câu',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                        ),
+                      ],
                     ),
 
-                    ///COLUMN  2 --------------------------------------------
-                    Expanded(
-                      child: _column('Từ đã ôn tập', '5'),
+                    TableRow(
+                      children: [
+                        Center(
+                          child: Text('Mới',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                        ),
+                        Center(
+                          child: Text('2',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                        Center(
+                          child: Text('5',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                      ],
                     ),
 
-                    ///COLUMN  3 --------------------------------------------
-                    Expanded(
-                      child: _column('Ngày đã học', '23'),
+                    TableRow(
+                      children: [
+                        Center(
+                          child: Text('Ôn tập',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                        ),
+                        Center(
+                          child: Text('2',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                        Center(
+                          child: Text('5',
+                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ),
+              )
             ),
           )
         ],
     );
   }
 
-  ///Item thông tin -------------------------------------------------------
-  Widget _column(String title, String content) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: textSize.normal
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          content,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: textSize.medium,
-              fontWeight: FontWeight.bold
-          ),
-        ),
-      ],
-    );
-  }
-
-  void showImagePickerBottomSheet(BuildContext context, List<VipTheme> themes) {
+  /// Dialog chọn theme --------------------------------------------------------
+  void _showThemes(BuildContext context, List<VipTheme> themes) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
-          padding: const EdgeInsets.all(8.0),
-          height: maxHeight/2,
+          padding: const EdgeInsets.all(12.0),
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,

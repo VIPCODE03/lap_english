@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/model/user/user.dart';
+import 'package:lap_english/ui/widgets/other/loading.dart';
 import '../../../bloc/data_bloc/data_bloc.dart';
 import '../../widgets/nav/task_widgets/row1_task.dart';
 import '../../widgets/nav/task_widgets/row3_task.dart';
@@ -22,7 +23,7 @@ class _TaskScreenState extends State<TaskScreen> {
         body: BlocBuilder<DataBloc<User>, DataState>(
           builder: (context, state) {
             if (state is DataStateLoading<User>) {
-              return const Center(child: CircularProgressIndicator());
+              return const WdgLoading();
 
             } else if (state is DataStateLoaded<User>) {
               final user = state.data.first;
@@ -50,7 +51,7 @@ class _TaskScreenState extends State<TaskScreen> {
               );
             }
 
-            return const Center(child: Text('Error loading user'));
+            return const Center(child: Text('Lỗi tải dữ liệu'));
           },
         ),
       ),

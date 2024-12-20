@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/themes/size.dart';
 import 'package:radar_chart/radar_chart.dart';
 
 class WdgRow2Profile extends StatelessWidget {
-  final Skill skill;
+  final Skills skill;
 
   const WdgRow2Profile({
     super.key,
@@ -21,7 +22,7 @@ class WdgRow2Profile extends StatelessWidget {
     return Row(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 50, right: 50),
+              padding: const EdgeInsets.symmetric(horizontal: 25),
               child: RadarChart(
                 length: 4,
                 radius: 50,
@@ -60,15 +61,15 @@ class WdgRow2Profile extends StatelessWidget {
       children: [
         Container(
           margin: const EdgeInsets.all(6),
-          width: 15,
-          height: 15,
+          width: textSize.normal,
+          height: textSize.normal,
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(50)
           ),
         ),
 
-        Text("Kĩ năng $nameSkill")
+        Text("Kĩ năng $nameSkill", style: TextStyle(fontSize: textSize.normal))
       ],
     );
   }

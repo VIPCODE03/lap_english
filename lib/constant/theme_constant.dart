@@ -14,7 +14,6 @@ class ThemeConstant {
     VipTheme(imagePath: Assets.images.cover.cover7.path, color: VipOrangeColor()),
     VipTheme(imagePath: Assets.images.cover.cover8.path, color: VipBlueColor()),
     VipTheme(imagePath: Assets.images.cover.cover9.path, color: VipPuperBrownColor()),
-
   ];
 }
 

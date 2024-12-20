@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/bloc/data_bloc/update_data.dart';
@@ -12,9 +14,9 @@ class DataEventLoad<T> extends DataEvent {
 }
 
 class DataEventUpdate<T> extends DataEvent {
-  final List<T> datas;
+  final T data;
   final Map<String, dynamic>? headers;
-  DataEventUpdate({required this.datas, this.headers});
+  DataEventUpdate({required this.data, this.headers});
 }
 
 abstract class DataState {}
@@ -26,6 +28,11 @@ class DataStateLoading<T> extends DataState {}
 class DataStateLoaded<T> extends DataState {
   final List<T> data;
   DataStateLoaded(this.data);
+}
+
+class DataStateUpdateResult extends DataState {
+  final dynamic result;
+  DataStateUpdateResult(this.result);
 }
 
 class DataStateError<T> extends DataState {
@@ -42,27 +49,25 @@ class DataBloc<T> extends Bloc<DataEvent, DataState> with UpdateDatas, LoadDatas
       emit(DataStateLoading<T>());
       try {
         final data = await (load[T]!(event.args) as Future<List<T>>);
+        await Future.delayed(const Duration(milliseconds: 666));
         emit(DataStateLoaded<T>(data));
       } catch (e) {
         emit(DataStateError<T>('Lỗi tải dữ liệu'));
-        if(kDebugMode) {
-          rethrow;
-        }
+        debugPrint('Error load: $e');
+        rethrow;
       }
     });
 
     //--- Update dữ liệu ---
     on<DataEventUpdate<T>>((event, emit) async {
       try {
-        await update[T]!(event.datas, event.headers ?? {});
-        if (state is DataStateLoaded<T>) {
-          emit(DataStateLoaded<T>((state as DataStateLoaded<T>).data));
-        }
+        await Future.delayed(Duration(milliseconds: Random().nextInt(150)));
+        var result = await update[T]!(event.data, event.headers ?? {});
+        emit(DataStateUpdateResult(result));
       } catch (e) {
         emit(DataStateError<T>('Lỗi cập nhật dữ liệu'));
-        if (kDebugMode) {
-          rethrow;
-        }
+        debugPrint('Error update: $e');
+        rethrow;
       }
     });
   }

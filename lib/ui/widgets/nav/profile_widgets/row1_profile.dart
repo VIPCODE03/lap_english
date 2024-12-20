@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,8 +27,7 @@ class WdgRow1Profile extends StatelessWidget {
           child: WdgButton(
             onTap: () {
               CacheManager().saveStatus(StatusFlag.dataLoaded, false);
-              user.dailyTasks..clear()..addAll(MdlDailyTask.create());
-              context.read<DataBloc<User>>().add(DataEventUpdate<User>(datas: [user]));
+              context.read<DataBloc<User>>().add(DataEventUpdate<User>(data: user));
             },
             color: Colors.transparent,
             child: const Icon(Icons.edit_note, size: 30),
@@ -63,8 +62,8 @@ class WdgRow1Profile extends StatelessWidget {
               /// Text họ tên --------------------------------------------------
               Text(
                 user.name,
-                style: const TextStyle(
-                  fontSize: 20,
+                style: TextStyle(
+                  fontSize: textSize.title,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -81,6 +80,7 @@ class WdgRow1Profile extends StatelessWidget {
               /// Danh hiệu -------------------------------------------------
               Expanded(
                 child: _item(
+                  context,
                   Assets.images.icon.title.path,
                   "Điểm hạng",
                   user.cumulativePoint.rankPoints,
@@ -88,12 +88,13 @@ class WdgRow1Profile extends StatelessWidget {
               ),
               Container(
                 height: 50,
-                width: 1,
+                width: 2,
                 color: VipColors.onPrimary(context),
               ),
               /// Kim cương ------------------------------------------------
               Expanded(
                 child: _item(
+                  context,
                   Assets.images.icon.dimound.path,
                   "Kim cương",
                   user.cumulativePoint.diamond,
@@ -101,12 +102,13 @@ class WdgRow1Profile extends StatelessWidget {
               ),
               Container(
                 height: 50,
-                width: 1,
+                width: 2,
                 color: VipColors.onPrimary(context),
               ),
               /// Vàng -----------------------------------------------------
               Expanded(
                 child: _item(
+                  context,
                   Assets.images.icon.gold.path,
                   "Vàng",
                   user.cumulativePoint.gold,
@@ -120,7 +122,7 @@ class WdgRow1Profile extends StatelessWidget {
   }
 
   ///Item thông tin ----------------------------------------------------------
-  Widget _item(String imagePath, String text, int quantity) {
+  Widget _item(BuildContext context, String imagePath, String text, int quantity) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -129,18 +131,22 @@ class WdgRow1Profile extends StatelessWidget {
           children: [
             Image.asset(
               imagePath,
-              width: 25,
+              width: 20,
               height: 25,
             ),
-            const SizedBox(width: 5),
-            Text(text),
+
+            FittedBox(child: Text(text, style: TextStyle(fontSize: textSize.normal)),
+            )
           ],
         ),
 
         const SizedBox(height: 8),
         Text(
           "$quantity",
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: textSize.medium,
+              fontWeight: FontWeight.bold
+          ),
         ),
       ],
     );

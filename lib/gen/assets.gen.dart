@@ -186,6 +186,10 @@ class $AssetsImagesIconGen {
   AssetGenImage get loading =>
       const AssetGenImage('assets/images/icon/loading.gif');
 
+  /// File path: assets/images/icon/price_free.png
+  AssetGenImage get priceFree =>
+      const AssetGenImage('assets/images/icon/price_free.png');
+
   /// File path: assets/images/icon/title.png
   AssetGenImage get title =>
       const AssetGenImage('assets/images/icon/title.png');
@@ -196,7 +200,7 @@ class $AssetsImagesIconGen {
 
   /// List of all assets
   List<AssetGenImage> get values =>
-      [a3Dot, dimound, gold, google, loading, title, volumnGif];
+      [a3Dot, dimound, gold, google, loading, priceFree, title, volumnGif];
 }
 
 class $AssetsImagesItemGen {

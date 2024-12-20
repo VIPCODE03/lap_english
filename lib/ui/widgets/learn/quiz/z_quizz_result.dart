@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
-import 'package:lap_english/main.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
@@ -65,7 +64,7 @@ class _WdgQuizzResultState extends State<WdgQuizzResult> {
                         quizzResult.correctSpeak),
 
                     SizedBox(
-                        height: 30,
+                      height: (isPortrait || isTablet) ? 30 : 5,
                       width: isPortrait ? 1 : maxWidth,
                     ),
 
@@ -84,9 +83,11 @@ class _WdgQuizzResultState extends State<WdgQuizzResult> {
                 )),
 
                 Container(
-                    height: textSize.specical * 2.66,
-                    width: (isTablet || !isPortrait) ? (maxWidth / 1.5) : maxWidth * 0.66,
-                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    constraints: BoxConstraints(
+                        minHeight: (isTablet || isPortrait) ? textSize.special * 3 : textSize.special * 1.5
+                    ),
+                    width: (isTablet || !isPortrait) ? (maxWidth / 1.66) : maxWidth * 0.66,
+                    margin: const EdgeInsets.symmetric(vertical: 12),
                     child: WdgButton(
                       onTap: () {
                         Navigator.pop(context, quizzResult);
@@ -95,7 +96,7 @@ class _WdgQuizzResultState extends State<WdgQuizzResult> {
                       color: VipColors.primary(context),
                       child: Text(
                         'Hoàn thành',
-                        style: TextStyle(fontSize: textSize.specical),
+                        style: TextStyle(fontSize: textSize.special),
                       ),
                     )),
               ],

@@ -1,9 +1,11 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:lap_english/data/caching/cache_manager.dart';
+import 'package:lap_english/services/network_observer.dart';
 import '../api/api.dart';
 import 'package:dio/dio.dart';
 
-abstract class ApiService<T> {
+abstract class ApiService {
   final cacheManager = CacheManager();
   final dio = Dio(
     BaseOptions(
@@ -13,40 +15,41 @@ abstract class ApiService<T> {
     ),
   );
 
-  Future<T?> success200(Response response);
+  Future<dynamic> success200(Response response);
+
   Future<dynamic> fail400(Response response) async {
     if (kDebugMode) {
       print('Error 400: ${response.data}');
     }
-    return response.data;
+    return null;
   }
 
   Future<dynamic> fail403(Response response) async {
     if (kDebugMode) {
       print('Error 403: ${response.data}');
     }
-    return response.data;
+    return null;
   }
 
   Future<dynamic> fail404(Response response) async {
     if (kDebugMode) {
       print('Error 404: ${response.data}');
     }
-    return response.data;
+    return null;
   }
 
   Future<dynamic> fail409(Response response) async {
     if (kDebugMode) {
       print('Error 409: ${response.data}');
     }
-    return response.data;
+    return null;
   }
 
   Future<dynamic> fail500(Response response) async {
     if (kDebugMode) {
       print('Error 500: ${response.data}');
     }
-    return response.data;
+    return null;
   }
 
   Future<dynamic> request({required String api, Map<String, dynamic>? datas, required RequestType requestType}) async {
@@ -123,11 +126,9 @@ abstract class ApiService<T> {
       else {
         throw Exception('Error in GET request ad: ${response.statusCode}');
       }
-    } catch (error) {
-      if (kDebugMode) {
-        print('Error in GET request: $error');
-      }
-      return null;
+    } catch (e) {
+      debugPrint('Error ApiService: $e');
+      checkInternet();
     }
   }
 }

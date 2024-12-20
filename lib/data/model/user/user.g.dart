@@ -9,8 +9,8 @@ part of 'user.dart';
 User _$UserFromJson(Map<String, dynamic> json) => User(
       name: json['name'] as String,
       email: json['email'] as String,
-      avatar: json['avatar'] as String?,
-      skills: Skill.fromJson(json['skills'] as Map<String, dynamic>),
+      avatar: json['avatar'] as String,
+      skills: Skills.fromJson(json['skills'] as Map<String, dynamic>),
       titles: (json['titles'] as List<dynamic>)
           .map((e) => MdlTitle.fromJson(e as Map<String, dynamic>))
           .toList(),

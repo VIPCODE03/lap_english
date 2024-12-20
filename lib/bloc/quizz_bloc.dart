@@ -1,5 +1,7 @@
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/database/remote/service/quiz_service.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 import 'package:lap_english/services/data_manager.dart';
@@ -73,26 +75,34 @@ class QuizzCompleted extends QuizzState {
 }
 
 /*  BLOC  */
-class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with DataManager {
+class QuizzBloc extends Bloc<QuizzEvent, QuizzState> {
+  final dynamic object;
   late final QuizzResult quizzResult;
   final List<Quizz> quizzes;
   int total = 0;
   int newCorrectConsecutive = 0;
   late TypeQuizz typeQuizz;
-  late bool isLearned;
 
   int totalWord = 0;
   int totalSentence = 0;
   int totalGrammar = 0;
 
-  QuizzBloc(this.quizzes, this.typeQuizz, this.isLearned, this.totalWord, this.totalSentence, this.totalGrammar) : super(QuizzInitial()) {
+  QuizzBloc(
+      this.quizzes,
+      this.typeQuizz,
+      this.totalWord,
+      this.totalSentence,
+      this.totalGrammar,
+      {required this.object}
+      )
+      : super(QuizzInitial()) {
     total = quizzes.length;
     var totalWrite = quizzes.where((quizz) => quizz.skillType == SkillType.writing).length;
     var totalListen = quizzes.where((quizz) => quizz.skillType == SkillType.listening).length;
     var totalRead = quizzes.where((quizz) => quizz.skillType == SkillType.reading).length;
     var totalSpeak = quizzes.where((quizz) => quizz.skillType == SkillType.speaking).length;
 
-    quizzResult = QuizzResult(total, totalWrite, totalListen, totalRead, totalSpeak, isLearned, typeQuizz, totalWord, totalSentence, totalGrammar);
+    quizzResult = QuizzResult(object: object, total, totalWrite, totalListen, totalRead, totalSpeak, typeQuizz, totalWord, totalSentence, totalGrammar);
 
     //---   Khởi tạo  ---
     on<QuizzInit>((event, emit) {
@@ -108,12 +118,16 @@ class QuizzBloc extends Bloc<QuizzEvent, QuizzState> with DataManager {
               accoladesIndex: currentState.accoladesIndex,
               encouragementsIndex: currentState.encouragementsIndex)
           );
+
         } else {  //->  Đã hoàn thành
-          double coefficient = quizzResult.correct / quizzResult.total;
+          double coefficient = (quizzResult.correct / quizzResult.total) * (total / 10).clamp(1, 2) ;
           quizzResult.bonus = (quizzResult.bonus * coefficient).toInt();
           quizzResult.pointRank += (10 * coefficient).toInt();
-          updateUserQuiz(quizzResult);
+          QuizService().completedQuiz(quizzResult);
           emit(QuizzCompleted(quizzResult));
+          if(object is SubTopic) {
+            (object as SubTopic).isLearned = true;
+          }
         }
       }
     });

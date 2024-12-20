@@ -1,17 +1,10 @@
-
-import 'dart:convert';
-
-import 'package:lap_english/a_data_test/data_user_test.dart';
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
-import 'package:lap_english/data/database/local/dao/sentence_dao.dart';
-import 'package:lap_english/data/database/local/dao/user_dao.dart';
-import 'package:lap_english/data/database/local/dao/vocabulary_dao.dart';
+import 'package:lap_english/data/database/local/dao/w_s_dao.dart';
 
 import '../a_data_test/data_grammar_test.dart';
 import '../a_data_test/data_sentence1.dart';
 import '../a_data_test/datatest.dart';
-import '../data/model/learn/vocabulary.dart';
-import 'bot.dart';
+import '../data/model/learn/word_sentence.dart';
 
 class DataService {
 
@@ -23,8 +16,8 @@ class DataService {
   }
 
   Future<void> _loadDataVocabulary() async {
-    var mainTopicVocabularyDao = MainVocabularyTopicDao();
-    var subTopicVocabularyDao = SubVocabularyTopicDao();
+    var mainTopicDao = MainTopicDao();
+    var subTopicDao = SubTopicDao();
     var wordDao = WordDao();
 
     // var gemini = GeminiAI(model: GeminiAI.flash);
@@ -53,13 +46,13 @@ class DataService {
       // => wordDao.insert(MdlWord.fromJson(json)));
 
       generateMainVocabularyTopics().forEach((data) async
-      => mainTopicVocabularyDao.insert(data));
+      => mainTopicDao.insert(data));
 
       generateSubVocabularyTopics().forEach((data) async
-      => subTopicVocabularyDao.insert(data));
+      => subTopicDao.insert(data));
 
       generateWords().forEach((data) async
-      => wordDao.insert(MdlWord.fromJson(data)));
+      => wordDao.insert(Word.fromJson(data)));
 
     } catch(e) {
       throw Exception(e);
@@ -67,8 +60,8 @@ class DataService {
   }
 
   Future<void> _loadDataSentence() async {
-    var mainDao = MainSentenceTopicDao();
-    var subDao = SubSentenceTopicDao();
+    var mainDao = MainTopicDao();
+    var subDao = SubTopicDao();
     var sentenceDao = SentenceDao();
 
     generateMainSentenceTopics().forEach((data) async

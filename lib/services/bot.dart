@@ -2,8 +2,7 @@
 import 'dart:convert';
 
 import 'package:google_generative_ai/google_generative_ai.dart';
-
-import '../data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 
 class GeminiAI {
   static const String flash = 'gemini-1.5-flash';
@@ -50,8 +49,8 @@ void main() async {
 
   print(word);
   List<dynamic> jsonList = jsonDecode(word);
-  List<MdlWord> topics = jsonList
-      .map((item) => MdlWord.fromJson(item))
+  List<Word> topics = jsonList
+      .map((item) => Word.fromJson(item))
       .toList();
 
   // In ra các đối tượng

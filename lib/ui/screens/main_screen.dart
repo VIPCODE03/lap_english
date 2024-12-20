@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
-import 'screens.dart';
+import 'package:lap_english/ui/screens/nav_screens/home_screen.dart';
+import 'package:lap_english/ui/screens/nav_screens/profile_screen.dart';
+import 'package:lap_english/ui/screens/nav_screens/settings_screen.dart';
+import 'package:lap_english/ui/screens/nav_screens/task_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -13,7 +16,18 @@ class MainScreen extends StatelessWidget {
         child: Scaffold(
           body: BlocBuilder<_NavController, int>(
             builder: (context, state) {
-              return Screens.navs[state]; //-> Chuyển màn hình nav
+              switch (state) {
+                case 0:
+                  return const HomeScreen();
+                case 1:
+                  return const ProfileScreen();
+                case 2:
+                  return const TaskScreen();
+                case 3:
+                  return const NavSettings();
+                default:
+                  return const HomeScreen();
+              }
             },
           ),
           bottomNavigationBar: BlocBuilder<_NavController, int>(
@@ -40,7 +54,7 @@ class MainScreen extends StatelessWidget {
 
                   ///NAV TASK --------------------------------------------------------
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.add_chart_outlined),
+                    icon: Icon(Icons.task),
                     label: '',
                   ),
 

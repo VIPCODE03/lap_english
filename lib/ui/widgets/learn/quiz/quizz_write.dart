@@ -37,35 +37,30 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: maxHeight,
-      child: Stack(
+    return Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            alignment: (isTablet || orientation == Orientation.portrait)
-                ? Alignment.center
-                : Alignment.topCenter,
-              ///Row hàng text đáp án --------------------------------------
-              child: Wrap(
-                children: List.generate(widget.quizz.answerCorrect.length, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: Column(
-                      children: [
-                        Text(
-                          userInput[index].isNotEmpty ? userInput[index] : '_',
-                          style: TextStyle(
-                              color: userInput[index].isEmpty
-                                  ? VipColors.primary(context)
-                                  : null,
-                              fontSize: 20),
-                        ),
-                      ],
+          ///Row hàng text đáp án --------------------------------------
+          Expanded(child: Align(
+            alignment: Alignment.center,
+            child: Wrap(
+              children: List.generate(widget.quizz.answerCorrect.length, (index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    userInput[index].isNotEmpty ? userInput[index] : '_',
+                    style: TextStyle(
+                        color: userInput[index].isEmpty
+                            ? VipColors.primary(context)
+                            : null,
+                        fontSize: textSize.medium
                     ),
-                  );
-                }),
-              ),
+                  ),
+                );
+              }),
             ),
+          )),
+
 
           /// Bàn phím ảo -------------------------------------------------
           Container(
@@ -78,7 +73,6 @@ class _WdgQuizzWriteWordState extends WdgQuizzState<QuizzWrite, WdgQuizzWrite> {
                 }),
           )
         ],
-      ),
     );
   }
 

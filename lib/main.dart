@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/services/network_observer.dart';
 import 'package:lap_english/ui/screens/login_screen.dart';
 import 'package:lap_english/ui/screens/splash_screen.dart';
 import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/themes/themes.dart';
 import 'package:provider/provider.dart';
 import 'data/caching/cache_manager.dart';
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +31,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    initConnectivity();
   }
 
   @override
@@ -47,11 +51,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return Consumer<Themes>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
-          builder: (context, child) {
+            navigatorKey: navigatorKey,
+            builder: (context, child) {
             return MediaQuery(
                 data: MediaQuery.of(context).copyWith(
                     textScaler: const TextScaler.linear(1.0),
-                    devicePixelRatio: 1.0
                 ),
                 child: child!,
             );
@@ -59,8 +63,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: false,
           theme: themeProvider.vipTheme.light,
           darkTheme: themeProvider.vipTheme.dark,
-          themeMode: ThemeMode.system,
-          home: SplashScreen()
+          themeMode: themeProvider.vipTheme.themeMode,
+          home: CacheManager().getToken().userId != -1
+              ? const SplashScreen()
+              : LoginScreen()
         );
       },
     );

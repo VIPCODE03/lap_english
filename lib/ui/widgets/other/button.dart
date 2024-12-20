@@ -8,6 +8,7 @@ class WdgButton extends StatefulWidget {
   final BorderRadius? borderRadius;
   final ButtonFit? buttonFit;
   final Widget child;
+  final double? bulging;
 
   const WdgButton({
     super.key,
@@ -17,6 +18,7 @@ class WdgButton extends StatefulWidget {
     required this.child,
     this.buttonFit,
     this.alpha,
+    this.bulging,
   });
 
   @override
@@ -54,7 +56,7 @@ class _WdgButtonState extends State<WdgButton> {
         });
       },
       child: Container(
-        margin: _isPressed ? const EdgeInsets.only(top: 5) : const EdgeInsets.only(top: 0),
+        margin: _isPressed ? EdgeInsets.only(top: widget.bulging ?? 5) : const EdgeInsets.only(top: 1),
         decoration: BoxDecoration(
           color: widget.color != Colors.transparent
               ? Color.alphaBlend(Colors.transparent,
@@ -63,24 +65,20 @@ class _WdgButtonState extends State<WdgButton> {
           borderRadius: widget.borderRadius,
           border: Border(
             bottom: BorderSide(
-              width: _isPressed ? 0.1 : 4,
+              width: _isPressed ? 0.1 : widget.bulging ?? 5,
               color: widget.color != Colors.transparent
-                  ? Color.alphaBlend(
-                    Colors.grey.withAlpha(50),
-                    widget.color ?? Colors.transparent,)
+                  ? Color.alphaBlend(Colors.grey.withAlpha(66), widget.color ?? Colors.transparent,)
                   : Colors.transparent,
             ),
             right: BorderSide(
               width: _isPressed ? 0.1 : 1,
               color: widget.color != Colors.transparent
-                  ? Color.alphaBlend(
-                      Colors.grey.withAlpha(50),
-                      widget.color ?? Colors.transparent,)
+                  ? Color.alphaBlend(Colors.grey.withAlpha(66), widget.color ?? Colors.transparent,)
                   : Colors.transparent,
             ),
           ),
         ),
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          padding: const EdgeInsets.all(4.5),
           child: switch (widget.buttonFit) {
             null => Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

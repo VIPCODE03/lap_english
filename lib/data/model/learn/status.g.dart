@@ -6,14 +6,18 @@ part of 'status.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MdlUnlockStatusManager _$MdlStatusFromJson(Map<String, dynamic> json) => MdlUnlockStatusManager(
+MdlUnlockStatusManager _$MdlUnlockStatusManagerFromJson(
+        Map<String, dynamic> json) =>
+    MdlUnlockStatusManager(
       gold: (json['gold'] as num).toInt(),
       diamond: (json['diamond'] as num).toInt(),
-      locked: json['locked'] as bool? ?? true,
+      locked: json['locked'] as bool,
     );
 
-Map<String, dynamic> _$MdlStatusToJson(MdlUnlockStatusManager instance) => <String, dynamic>{
+Map<String, dynamic> _$MdlUnlockStatusManagerToJson(
+        MdlUnlockStatusManager instance) =>
+    <String, dynamic>{
+      'locked': instance.locked,
       'diamond': instance.diamond,
       'gold': instance.gold,
-      'isLocked': instance.isLocked,
     };

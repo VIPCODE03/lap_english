@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/database/remote/service/task_reward_service.dart';
 import 'package:lap_english/data/model/user/user.dart';
+import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/themes/size.dart';
 
-import '../../../../bloc/data_bloc/data_bloc.dart';
 import '../../../../data/model/task_and_reward/daily_task.dart';
 import '../../other/button.dart';
 
@@ -39,57 +40,54 @@ class _WdgRow4ProfileState extends State<WdgRow3Task> {
                   ListTile(
                     title: Text(
                       dailyTask.task.description,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: textSize.medium
+                      ),
                     ),
                     subtitle: Row(
                       children: [
                         Image.asset(
-                          dailyTask.reward.icon,
+                          Assets.images.icon.gold.path,
                           height: 20,
                           width: 20,
                         ),
                         const SizedBox(width: 10),
                         Text(
-                          '${dailyTask.reward.quantity}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.amber),
+                          '${dailyTask.reward.gold}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber,
+                              fontSize: textSize.medium,
+                          ),
                         ),
                       ],
                     ),
                     trailing: SizedBox(
-                      height: 35,
-                      width: 100,
-                      child: dailyTask.reward.isRewardClaimed
-                          ? WdgButton(
-                              onTap: () {
-                                dailyTask.task.progress = 0;
-                                dailyTask.reward.isRewardClaimed = false;
-                                dailyTask.task.completed = false;
-                                context.read<DataBloc<User>>().add(DataEventUpdate(datas: [widget.user]));
-                              },
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.grey.withAlpha(50),
-                            child: const Text('Đã nhận'))
-
-                          : WdgButton(
-                              onTap: () {
-                                if (dailyTask.task.progress >= dailyTask.task.total &&
-                                    !dailyTask.reward.isRewardClaimed) {
-                                  dailyTask.reward.claimReward(widget.user);
-                                } else if (dailyTask.task.progress <
-                                    dailyTask.task.total) {
-                                  dailyTask.task.progress++;
+                      width: textSize.normal * 8,
+                      child: WdgButton(
+                              onTap: () async {
+                                if (dailyTask.task.progress >= dailyTask.task.total && !dailyTask.reward.isRewardClaimed) {
+                                  if(await RewardService().getReward(dailyTask.id)) {
+                                    setState(() {
+                                      dailyTask.reward.isRewardClaimed = true;
+                                    });
+                                  }
                                 }
-                                context.read<DataBloc<User>>().add(DataEventUpdate(datas: [widget.user]));
                               },
                               borderRadius: BorderRadius.circular(12),
-                              color: dailyTask.task.progress < dailyTask.task.total
+                              color: dailyTask.task.progress < dailyTask.task.total || dailyTask.reward.isRewardClaimed
                                   ? Colors.grey.withAlpha(50)
                                   : VipColors.primary(context),
                               child: Text(
                                 dailyTask.task.progress < dailyTask.task.total
                                     ? '${dailyTask.task.progress}/${dailyTask.task.total}'
+                                    : dailyTask.reward.isRewardClaimed
+                                    ? 'Đã nhận'
                                     : 'Nhận thưởng',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: textSize.normal,
+                                ),
                               ),
                       ),
                     ),

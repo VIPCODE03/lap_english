@@ -7,16 +7,12 @@ class MdlTask {
   final String description;
   double progress;
   final double total;
-  bool completed;
-  final TypeTask type;
   final String keyFunUpdate;
 
   MdlTask({
     required this.description,
     required this.progress,
     required this.total,
-    required this.completed,
-    required this.type,
     required this.keyFunUpdate,
   });
 
@@ -24,10 +20,3 @@ class MdlTask {
 
   Map<String, dynamic> toJson() => _$MdlTaskToJson(this);
 }
-
-enum TypeTask {
-  taskQuizz,
-  taskTitle,
-  taskLogin,
-}
-

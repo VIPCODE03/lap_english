@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 
@@ -14,13 +14,13 @@ abstract class MdlQuizImage<T> extends Quizz<T> {
 }
 
 
-class MdlQuizImageVocabulary extends MdlQuizImage<MdlWord> {
+class MdlQuizImageVocabulary extends MdlQuizImage<Word> {
   @override
-  List<Quizz> generate(List<MdlWord> datas) {
+  List<Quizz> generate(List<Word> datas) {
     List<MdlQuizImageVocabulary> quizes = [];
 
     //--- Lấy danh sách các từ có ảnh ---
-    List<MdlWord> wordshasImage = datas.where((word) => word.imageBlobName != null).toList();
+    List<Word> wordshasImage = datas.where((word) => word.imageBlobName != null).toList();
     if(wordshasImage.length < 4) {
       return quizes;
     }
@@ -29,8 +29,8 @@ class MdlQuizImageVocabulary extends MdlQuizImage<MdlWord> {
       var newQuizImg = MdlQuizImageVocabulary();
 
       Set<String> answers = {};
-      List<MdlWord> wordAnswers = [word];
-      List<MdlWord> copy = List.from(datas)..remove(word);
+      List<Word> wordAnswers = [word];
+      List<Word> copy = List.from(datas)..remove(word);
       copy.shuffle();
 
       //--- Ảnh ở câu hỏi  ---

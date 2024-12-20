@@ -66,12 +66,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //=== Sự kiện khởi tạo  ===
   Future<void> _init(Emitter<AuthState> emit) async {
     emit(LoadingLoginState());
-    var users = await _userDao.getData();
-    if (users.isEmpty) {
-      emit(PendingLoginState());
-    } else {
-      add(LoginEvent(null, users.first));
-    }
+    // var users = await _userDao.getData();
+    // if (users.isEmpty) {
+    //   emit(PendingLoginState());
+    // } else {
+    //   add(LoginEvent(null, users.first));
+    // }
+    emit(PendingLoginState());
   }
 
   //=== Sự kiện login ===
@@ -84,7 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       bool login = false;
 
       if(userCache != null) {
-        login = await UserService(loggedIn: true).login(userCache);
+        login = (await UserService().fetch()) == null;
         if(!login) {
           emit(LoadedLoginState());
           return;
@@ -98,17 +99,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
 
         User user = User(
-            avatar: userAuthGoogle.photoUrl,
+            avatar: userAuthGoogle.photoUrl ?? 'ava',
             name: userAuthGoogle.displayName!,
             email: userAuthGoogle.email,
-            skills: Skill(1, 1, 1, 1),
+            skills: Skills(1, 1, 1, 1),
             titles: [],
-            dailyTasks: MdlDailyTask.create(),
+            dailyTasks: [],
             cumulativePoint: CumulativePoint(0, Random().nextInt(100), 0),
             accumulate: MdlAccumulate(0, 0, 0, 1)
         );
 
-        login = await UserService(loggedIn: false).login(user);
+        login = await UserService().login(user);
       }
 
       if (login) {

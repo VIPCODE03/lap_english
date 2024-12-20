@@ -1,8 +1,7 @@
 import 'dart:math';
 
-import 'package:lap_english/data/model/learn/vocabulary.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
-import '../learn/sentence.dart';
 import '../user/skill.dart';
 
 abstract class QuizzSelect<T> extends Quizz<T> {
@@ -10,9 +9,9 @@ abstract class QuizzSelect<T> extends Quizz<T> {
   SkillType get skillType => SkillType.reading;
 }
 
-class QuizzSelectSentence extends QuizzSelect<MdlSentence> {
+class QuizzSelectSentence extends QuizzSelect<Sentence> {
   @override
-  List<Quizz> generate(List<MdlSentence> datas) {
+  List<Quizz> generate(List<Sentence> datas) {
     List<QuizzSelectSentence> quizzes = [];
 
     for(var sentence in datas) {
@@ -34,12 +33,12 @@ class QuizzSelectSentence extends QuizzSelect<MdlSentence> {
   }
 }
 
-class QuizzSelectVocabulary extends QuizzSelect<MdlWord> {
+class QuizzSelectVocabulary extends QuizzSelect<Word> {
   @override
-  List<Quizz> generate(List<MdlWord> datas) {
+  List<Quizz> generate(List<Word> datas) {
     List<QuizzSelectVocabulary> quizzes = [];
 
-    List<MdlWord> unusedWords = List.from(datas);  //-> Danh sách từ chưa sử dụng
+    List<Word> unusedWords = List.from(datas);  //-> Danh sách từ chưa sử dụng
     int numQuizzes = (datas.length / 3).ceil(); //-> Số quizz được tạo
 
     for (int i = 0; i < numQuizzes; i++) {
@@ -47,7 +46,7 @@ class QuizzSelectVocabulary extends QuizzSelect<MdlWord> {
 
       //--- Lấy ngẫu nhiên 2-3 từ ---
       int numWords = Random().nextInt(2) + 2;
-      List<MdlWord> selectedWords = (unusedWords..shuffle()).take(numWords).toList();
+      List<Word> selectedWords = (unusedWords..shuffle()).take(numWords).toList();
       unusedWords.removeWhere((word) => selectedWords.contains(word));
 
       bool isWord = Random().nextBool();
@@ -62,11 +61,11 @@ class QuizzSelectVocabulary extends QuizzSelect<MdlWord> {
       quizzSelect.answerCorrect = answersCorrect.keys.toString();
 
       //--- Tạo danh sách đáp án  ---
-      List<MdlWord> additionalWords = (datas..shuffle())
+      List<Word> additionalWords = (datas..shuffle())
           .where((word) => !selectedWords.contains(word))
           .take(2)
           .toList();
-      List<MdlWord> allAnswers = [...selectedWords, ...additionalWords]..shuffle();
+      List<Word> allAnswers = [...selectedWords, ...additionalWords]..shuffle();
 
       for (var word in allAnswers) {
         quizzSelect.answers.add(isWord ? word.meaning : word.word);

@@ -194,9 +194,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
         "Hoàn thành câu: <He / study / studies> English every day.",
-        ["He", "study", "studies", "English", "every", "day"],
+        ["He", "study", "studies", "English", "every", "day", "English", "every", "day", "English", "every"],
         "He studies English every day.",
-        {"He": true, "study": false, "studies": true, "English": true, "every": true, "day": true},
+        {"He": true, "studies": true, "English": true, "every": true, "day": true},
         TypeQuiz.select,
       ),
     ),

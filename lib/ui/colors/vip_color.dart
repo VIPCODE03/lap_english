@@ -7,7 +7,7 @@ abstract class VipColor {
 
 class VipBlueColor extends VipColor {
   @override
-  Color get primaryLight => const Color(0xA811509C);
+  Color get primaryLight => const Color(0xFF0F64AA);
 
   @override
   Color get primaryDark => const Color(0xA81569CA);

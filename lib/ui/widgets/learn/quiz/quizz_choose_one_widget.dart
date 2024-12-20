@@ -68,7 +68,7 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
                   child: Text(
                         option,
                         textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: textSize.specical),
+                        style: TextStyle(fontSize: textSize.special),
                       ),
                 ),
             );

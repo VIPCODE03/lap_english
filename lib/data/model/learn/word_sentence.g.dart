@@ -1,50 +1,42 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'vocabulary.dart';
+part of 'word_sentence.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MdlMainVocabularyTopic _$MdlMainVocabularyTopicFromJson(
-        Map<String, dynamic> json) =>
-    MdlMainVocabularyTopic(
+MainTopic _$MainTopicFromJson(Map<String, dynamic> json) => MainTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
-          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
+      MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$MdlMainVocabularyTopicToJson(
-        MdlMainVocabularyTopic instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$MainTopicToJson(MainTopic instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'status': instance.status,
     };
 
-MdlSubVocabularyTopic _$MdlSubVocabularyTopicFromJson(
-        Map<String, dynamic> json) =>
-    MdlSubVocabularyTopic(
+SubTopic _$SubTopicFromJson(Map<String, dynamic> json) => SubTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
       json['imageUrl'] as String,
       (json['mainTopicId'] as num).toInt(),
-          MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
+      MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
       isLearned: json['isLearned'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$MdlSubVocabularyTopicToJson(
-        MdlSubVocabularyTopic instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$SubTopicToJson(SubTopic instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
       'isLearned': instance.isLearned,
       'status': instance.status,
-      'mainTopicId': instance.mainTopicId,
+      'idMainTopic': instance.mainTopicId,
     };
 
-MdlWord _$MdlWordFromJson(Map<String, dynamic> json) => MdlWord(
+Word _$WordFromJson(Map<String, dynamic> json) => Word(
       (json['id'] as num).toInt(),
       json['word'] as String,
       json['meaning'] as String,
@@ -59,7 +51,7 @@ MdlWord _$MdlWordFromJson(Map<String, dynamic> json) => MdlWord(
       audioUsBlobName: json['audioUsBlobName'] as String?,
     );
 
-Map<String, dynamic> _$MdlWordToJson(MdlWord instance) => <String, dynamic>{
+Map<String, dynamic> _$WordToJson(Word instance) => <String, dynamic>{
       'id': instance.id,
       'word': instance.word,
       'meaning': instance.meaning,
@@ -72,4 +64,18 @@ Map<String, dynamic> _$MdlWordToJson(MdlWord instance) => <String, dynamic>{
       'imageBlobName': instance.imageBlobName,
       'audioUkBlobName': instance.audioUkBlobName,
       'audioUsBlobName': instance.audioUsBlobName,
+    };
+
+Sentence _$SentenceFromJson(Map<String, dynamic> json) => Sentence(
+      (json['id'] as num).toInt(),
+      json['sentence'] as String,
+      json['translation'] as String,
+      (json['subTopicId'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$SentenceToJson(Sentence instance) => <String, dynamic>{
+      'id': instance.id,
+      'sentence': instance.sentence,
+      'translation': instance.translation,
+      'subTopicId': instance.subTopicId,
     };

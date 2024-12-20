@@ -3,17 +3,17 @@ import 'package:json_annotation/json_annotation.dart';
 part 'skill.g.dart';
 
 @JsonSerializable()
-class Skill {
+class Skills {
   double reading;
   double writing;
   double speaking;
   double listening;
 
-  Skill(this.reading, this.writing, this.listening, this.speaking);
+  Skills(this.reading, this.writing, this.listening, this.speaking);
 
-  factory Skill.fromJson(Map<String, dynamic> json) => _$SkillFromJson(json);
+  factory Skills.fromJson(Map<String, dynamic> json) => _$SkillsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SkillToJson(this);
+  Map<String, dynamic> toJson() => _$SkillsToJson(this);
 
   static String skillName(SkillType skillType) {
     switch (skillType) {

@@ -14,6 +14,7 @@ import '../../themes/size.dart';
 class IPAScreen extends StatelessWidget {
   final AudioPlayerUtil audio = AudioPlayerUtil();
   final TextToSpeakUtil speak = TextToSpeakUtil();
+  bool isSpeaking = false;
 
   IPAScreen({super.key});
 
@@ -48,7 +49,9 @@ class IPAScreen extends StatelessWidget {
                     children: [
                   ...IPAProvider.ipaConsonants().map((element) => _itemIPA(context, element)),
                 ])
-            )
+            ),
+
+            const SizedBox(height: 15)
           ],
         ),
       )
@@ -56,13 +59,10 @@ class IPAScreen extends StatelessWidget {
   }
 
   Widget _itemIPA(BuildContext context, IPA ipa) {
-    bool isSpeaking = false;
     return SizedBox(
-      height: 70,
-      width: maxWidth / 6,
+      width: (isPortrait) ? maxWidth / 5 : maxWidth / 7,
       child: WdgButton(
-        buttonFit: ButtonFit.scaleDown,
-        color: VipColors.getRandomColor(context, 70),
+        color: VipColors.getRandomColor(context, 50),
           onTap: () async {
             if (isSpeaking) return;
 
@@ -87,18 +87,20 @@ class IPAScreen extends StatelessWidget {
           children: [
             Text(
               ipa.text,
-              style: const TextStyle(
-                fontSize: 24,
+              style: TextStyle(
+                fontSize: textSize.title,
                 fontFamily: 'DroidSans',
               ),
             ),
 
-            Text(
-              ipa.example,
-              style: const TextStyle(
-                fontSize: 18,
+            FittedBox(
+              child: Text(
+                ipa.example,
+                style: TextStyle(
+                  fontSize: textSize.normal,
+                ),
               ),
-            ),
+            )
           ],
         )
       ),
