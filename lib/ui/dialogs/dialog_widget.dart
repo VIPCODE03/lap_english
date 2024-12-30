@@ -17,8 +17,8 @@ class WdgDialog extends StatefulWidget {
 
   const WdgDialog({
     super.key,
-    required this.title,
-    required this.content,
+    this.title,
+    this.content,
     this.actions,
     this.barrierDismissible = true,
     this.color,
@@ -122,21 +122,24 @@ class _WdgDialogState extends State<WdgDialog> {
                               : null
                         ),
                         padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.start,
-                          children: [
-                            widget.title ?? const SizedBox.shrink(),
-                            widget.content ?? const SizedBox.shrink(),
-                            if (widget.actions != null)
-                              Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  alignment: WrapAlignment.center,
-                                  children: widget.actions!
-                              ),
-                          ],
-                        ),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: widget.crossAxisAlignment ?? CrossAxisAlignment.start,
+                            children: [
+                              widget.title ?? const SizedBox.shrink(),
+                              widget.content ?? const SizedBox.shrink(),
+                              if (widget.actions != null)
+                                Wrap(
+                                    spacing: 8,
+                                    runSpacing: 8,
+                                    alignment: WrapAlignment.center,
+                                    children: widget.actions!
+                                ),
+                            ],
+                          ),
+                        )
                       )),
                 )
             )

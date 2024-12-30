@@ -39,7 +39,6 @@ class QuizzSoundChooseOneVocabulary extends QuizzSoundChooseOne<Word> {
 
       for(var w in answers) {
         quizzSound.answers.add(w.word);
-        quizzSound.answersCorrect[w.word] = w == word;
         quizzSound.sounds[w.word] = Random().nextBool() ? w.audioUkBlobName : w.audioUsBlobName;
       }
       quizzSound.answerCorrect = word.word;
@@ -61,7 +60,6 @@ class QuizSoundChooseOneCustom extends QuizzSoundChooseOne<CustomQuiz> {
       newQuiz.question = data.question;
       newQuiz.answers = data.answers;
       newQuiz.answerCorrect = data.answerCorrect;
-      newQuiz.answersCorrect = data.answersCorrect;
 
       quizes.add(newQuiz);
     }

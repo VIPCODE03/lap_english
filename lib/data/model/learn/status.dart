@@ -16,16 +16,6 @@ class MdlUnlockStatusManager {
     required this.locked,
   });
 
-  bool unlock(User user) {
-    if(user.cumulativePoint.diamond >= diamond && user.cumulativePoint.gold >= gold && isLocked) {
-      locked = false;
-      user.cumulativePoint.diamond -= diamond;
-      user.cumulativePoint.gold -= gold;
-      return true;
-    }
-    return false;
-  }
-
   bool checkUnlock(User user) {
     if(user.cumulativePoint.diamond >= diamond && user.cumulativePoint.gold >= gold && isLocked) {
       return true;

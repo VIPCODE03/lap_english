@@ -249,6 +249,10 @@ class $AssetsImagesMenuGen {
   AssetGenImage get learnWrite =>
       const AssetGenImage('assets/images/menu/learn_write.png');
 
+  /// File path: assets/images/menu/library.png
+  AssetGenImage get library =>
+      const AssetGenImage('assets/images/menu/library.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
         learnGrammar,
@@ -257,7 +261,8 @@ class $AssetsImagesMenuGen {
         learnSentence,
         learnSpeak,
         learnVocabulary,
-        learnWrite
+        learnWrite,
+        library
       ];
 }
 

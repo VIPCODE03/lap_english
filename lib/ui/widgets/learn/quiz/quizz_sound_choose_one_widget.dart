@@ -6,7 +6,6 @@ import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/utils/loaddata_link.dart';
 import 'package:lap_english/utils/player_audio.dart';
 import '../../../../../utils/text_to_speak.dart';
-import '../../../../main.dart';
 import '../../../themes/size.dart';
 
 class WdgQuizzSoundChooseOne extends WdgQuizz<QuizzSoundChooseOne> {
@@ -63,6 +62,8 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
   Widget build(BuildContext context) {
     return Center(child: Column(
       mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ///Hộp âm thanh --------------------------------------------------------
         SizedBox(
@@ -101,8 +102,7 @@ class _WdgQuizzSoundChooseOneState extends WdgQuizzState<QuizzSoundChooseOne, Wd
                     setState(() {
                       selectedKey = key;
                       widget.status.isAnswered.value = true;
-                      widget.status.isCorrect =
-                          widget.quizz.answersCorrect[key];
+                      widget.status.isCorrect = widget.quizz.answerCorrect == key;
                       widget.quizz.showSoundBox ? null : _speak(key);
                     });
                   },

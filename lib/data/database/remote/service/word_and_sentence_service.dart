@@ -46,7 +46,6 @@ class SentenceService extends ApiService {
     try {
       switch(_type) {
         case _TypeRequest.fetchByIdSubTopic:
-          print(response.data['data']['items']);
           var items = response.data['data']['items'] as List;
           return items.map((item) => Sentence.fromJson(item)).toList();
       }

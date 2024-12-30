@@ -21,7 +21,7 @@ Map<String, dynamic> _$MainTopicToJson(MainTopic instance) => <String, dynamic>{
 SubTopic _$SubTopicFromJson(Map<String, dynamic> json) => SubTopic(
       (json['id'] as num).toInt(),
       json['name'] as String,
-      json['imageUrl'] as String,
+      json['imageUrl'] as String?,
       (json['mainTopicId'] as num).toInt(),
       MdlUnlockStatusManager.fromJson(json['status'] as Map<String, dynamic>),
       isLearned: json['isLearned'] as bool? ?? false,
@@ -33,7 +33,7 @@ Map<String, dynamic> _$SubTopicToJson(SubTopic instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'isLearned': instance.isLearned,
       'status': instance.status,
-      'idMainTopic': instance.mainTopicId,
+      'mainTopicId': instance.mainTopicId,
     };
 
 Word _$WordFromJson(Map<String, dynamic> json) => Word(

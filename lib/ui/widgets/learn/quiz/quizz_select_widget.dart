@@ -64,13 +64,13 @@ class _WdgQuizzSelectState extends WdgQuizzState<QuizzSelect, WdgQuizzSelect> {
                 offset: offset,
                 onSelectionChanged: (value) => {
                   if (value.isNotEmpty) {
-                      widget.status.isCorrect = value.toString() == widget.quizz.answersCorrect.keys.toList().toString(),
-                      widget.status.isAnswered.value = true,
-                      widget.status.correctAnswer = widget.quizz.answerCorrect,
+                    widget.status.isCorrect = value.toString() == widget.quizz.answerCorrect,
+                    widget.status.isAnswered.value = true,
+                    widget.status.correctAnswer = widget.quizz.answerCorrect,
                   }
                   else {
-                      widget.status.isAnswered.value = false,
-                    }
+                    widget.status.isAnswered.value = false,
+                  }
                 },
               )
             : widget.status.isEnd.value == true

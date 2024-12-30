@@ -19,12 +19,20 @@ class QuizzSelectSentence extends QuizzSelect<Sentence> {
       quizzSelect.question = "Hoàn thành câu: <${sentence.translation}>";
 
       //--- Tạo đáp án  ---
-      quizzSelect.answerCorrect = sentence.sentence;
-      quizzSelect.answersCorrect = {
-        for (var item in sentence.sentence.split(' '))
-          item: true
-      };
-      quizzSelect.answers.addAll(quizzSelect.answersCorrect.keys.toList());
+      quizzSelect.answers.addAll(sentence.sentence.split(' '));
+
+      //--- Tạo đáp án đúng ---
+      quizzSelect.answerCorrect = '[';
+      for (var answer in quizzSelect.answers) {
+        if (quizzSelect.answerCorrect.length == 1) {
+          quizzSelect.answerCorrect += answer;
+        } else {
+          quizzSelect.answerCorrect += ', $answer';
+        }
+      }
+      quizzSelect.answerCorrect += ']';
+
+
       quizzSelect.answers.shuffle();
       quizzes.add(quizzSelect);
     }
@@ -55,10 +63,16 @@ class QuizzSelectVocabulary extends QuizzSelect<Word> {
       quizzSelect.question = "Chọn các từ: $wordList";
 
       //--- Tạo đáp án đúng ---
+      quizzSelect.answerCorrect = '[';
       for (var word in selectedWords) {
-        quizzSelect.answersCorrect[isWord ? word.meaning : word.word] = true;
+        String correctAnswer = isWord ? word.meaning : word.word;
+        if (quizzSelect.answerCorrect.length == 1) {
+          quizzSelect.answerCorrect += correctAnswer;
+        } else {
+          quizzSelect.answerCorrect += ', $correctAnswer';
+        }
       }
-      quizzSelect.answerCorrect = answersCorrect.keys.toString();
+      quizzSelect.answerCorrect += ']';
 
       //--- Tạo danh sách đáp án  ---
       List<Word> additionalWords = (datas..shuffle())
@@ -86,8 +100,15 @@ class QuizSelectCustom extends QuizzSelect<CustomQuiz> {
     for(var data in datas) {
       var quizzSelect = QuizSelectCustom();
       quizzSelect.question = data.question;
-      quizzSelect.answerCorrect = data.answerCorrect;
-      quizzSelect.answersCorrect = data.answersCorrect;
+      quizzSelect.answerCorrect = '[';
+      for(var answer in data.answerCorrect.split(' ')) {
+        if (quizzSelect.answerCorrect.length == 1) {
+          quizzSelect.answerCorrect += answer;
+        } else {
+          quizzSelect.answerCorrect += ', $answer';
+        }
+      }
+      quizzSelect.answerCorrect += ']';
       quizzSelect.answers = data.answers;
       quizzSelect.answers.shuffle();
       quizzes.add(quizzSelect);
@@ -95,8 +116,4 @@ class QuizSelectCustom extends QuizzSelect<CustomQuiz> {
 
     return quizzes;
   }
-}
-
-class SelectCustom {
-
 }

@@ -21,14 +21,14 @@ Grammar _$GrammarFromJson(Map<String, dynamic> json) => Grammar(
       (json['id'] as num).toInt(),
       json['name'] as String,
       json['description'] as String,
-      (json['idTypeGrammar'] as num).toInt(),
+      (json['typeGrammarId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$GrammarToJson(Grammar instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'idTypeGrammar': instance.idTypeGrammar,
+      'typeGrammarId': instance.typeGrammarId,
     };
 
 GrammaticalStructure _$GrammaticalStructureFromJson(
@@ -37,7 +37,7 @@ GrammaticalStructure _$GrammaticalStructureFromJson(
       (json['id'] as num).toInt(),
       json['description'] as String,
       json['structure'] as String,
-      (json['idGrammar'] as num).toInt(),
+      (json['grammarId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$GrammaticalStructureToJson(
@@ -46,17 +46,17 @@ Map<String, dynamic> _$GrammaticalStructureToJson(
       'id': instance.id,
       'description': instance.description,
       'structure': instance.structure,
-      'idGrammar': instance.idGrammar,
+      'grammarId': instance.grammarId,
     };
 
 ExerciseGrammar _$ExerciseGrammarFromJson(Map<String, dynamic> json) =>
     ExerciseGrammar(
-      (json['idGrammaticalStructure'] as num).toInt(),
+      (json['grammaticalStructureId'] as num).toInt(),
       CustomQuiz.fromJson(json['quiz'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ExerciseGrammarToJson(ExerciseGrammar instance) =>
     <String, dynamic>{
-      'idGrammaticalStructure': instance.idGrammaticalStructure,
+      'grammaticalStructureId': instance.grammaticalStructureId,
       'quiz': instance.quiz,
     };

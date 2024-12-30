@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:lap_english/constant/quizz_constant.dart';
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
+import 'package:lap_english/data/database/remote/service/grammar_service.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
 import 'package:lap_english/data/model/quizz/quiz_grammar.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
@@ -19,7 +21,6 @@ abstract class Quizz<T> {
   String question = "";
   List<String> answers = [];
   String answerCorrect = "";
-  Map<String, bool> answersCorrect = {};
 
   SkillType get skillType;
 
@@ -30,10 +31,11 @@ abstract class Quizz<T> {
 @JsonSerializable()
 class CustomQuiz {
   final TypeQuiz type;
+
   final String question;
   final List<String> answers;
   final String answerCorrect;
-  final Map<String, bool> answersCorrect;
+
   final List<String>? imgAnswers;
   final String? imageQuestion;
 
@@ -41,7 +43,6 @@ class CustomQuiz {
       this.question,
       this.answers,
       this.answerCorrect,
-      this.answersCorrect,
       this.type,
       {
         this.imgAnswers,
@@ -105,11 +106,10 @@ class Quizzes {
 
   static Future<List<Quizz>> generateQuizGrammar({required List<GrammaticalStructure> structures}) async {
     List<Quizz> quizzes = [];
-    ExerciseGrammarDao dao = ExerciseGrammarDao();
 
     for (var structure in structures) {
-      List<ExerciseGrammar> exercises = await dao.getByIdGrammarStructure(structure.id, 5);
-
+      // List<ExerciseGrammar> exercises = await GrammarService().fetchExerciseGrammarByStructureId(structure.id) ?? [];
+      List<ExerciseGrammar> exercises = await ExerciseGrammarDao().getByIdGrammarStructure(structure.id, 10);
       List<CustomQuiz> customQuizzes = [];
       for (var exercise in exercises) {
         customQuizzes.add(exercise.quiz);

@@ -137,14 +137,14 @@ class _FlipCardState extends State<_WdgFlipCard> {
                 decoration: BoxDecoration(
                   color: widget.color ?? Theme.of(context).cardColor,
                   border: Border.all(color: Colors.grey, width: 2),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: !_isFlipped
                     ? widget.front
                     : Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(3.14),
-                  child: widget.backSide,
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationY(3.14),
+                      child: widget.backSide,
                 )
             ),
           )

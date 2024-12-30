@@ -82,11 +82,8 @@ Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
 Future<bool> _checkInternetConnection() async {
   try {
     final response = await http.get(Uri.parse('https://www.google.com'));
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    if (response.statusCode == 200) return true;
+    return false;
   } catch (e) {
     return false;
   }

@@ -89,9 +89,9 @@ class _QuizzScreenState extends State<QuizzScreen> {
       });
 
       setState(() {
-        _quizzes = quizzes;
+        _quizzes = (quizzes..shuffle()).take(20).toList();
         _quizzBloc = QuizzBloc(
-            quizzes..shuffle(),
+            _quizzes!,
             widget._typeQuizz,
             widget._totalWord,
             widget._totalSentence,
@@ -150,7 +150,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
                       children: [
                         ///Text câu hỏi -------------------------------------------
                         Container(
-                          margin: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
                           alignment: Alignment.centerLeft,
                           child: WdgSpecialText(text: currentQuizz.quizz.question, size: textSize.medium),
                         ),
@@ -230,15 +230,11 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                     onTap: () {
                                       if (value) {
                                         //--- Lấy kết quả ---
-                                        currentQuizz.status.isChecked.value =
-                                            true;
-                                        var isCorrect =
-                                            currentQuizz.status.isCorrect!;
+                                        currentQuizz.status.isChecked.value = true;
+                                        var isCorrect = currentQuizz.status.isCorrect!;
                                         String title = isCorrect
-                                            ? state
-                                                .accolades[state.accoladesIndex]
-                                            : state.encouragements[
-                                                state.encouragementsIndex];
+                                            ? state.accolades[state.accoladesIndex]
+                                            : state.encouragements[state.encouragementsIndex];
 
                                         //--- Âm thanh đúng/sai ---
                                         if (!_noAudio) {
@@ -281,7 +277,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
       enableDrag: false,
       context: parentContext,
       useSafeArea: true,
-      sheetAnimationStyle: AnimationStyle(duration: const Duration(milliseconds: 200)),
+      sheetAnimationStyle: AnimationStyle(duration: const Duration(milliseconds: 333)),
       constraints: BoxConstraints(
         minWidth: maxWidth,
       ),
@@ -323,11 +319,7 @@ class _QuizzScreenState extends State<QuizzScreen> {
 
                       /// Đáp án đúng ---------------------------------------------
                       if (answerCorrect != null && answerCorrect.isNotEmpty)
-                        Text(
-                          answerCorrect,
-                          style: TextStyle(fontSize: textSize.normal, color: Colors.grey),
-                          textAlign: TextAlign.center,
-                        ),
+                        WdgSpecialText(text: answerCorrect, size: textSize.medium),
 
                       const SizedBox(height: 15),
 

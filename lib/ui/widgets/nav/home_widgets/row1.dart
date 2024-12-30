@@ -12,19 +12,21 @@ class WdgRow1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ///CONTAINER làm nền hình ảnh  ---------------------------
-        Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(Provider.of<Themes>(context, listen: true).vipTheme.imagePath),
-              fit: BoxFit.fill,
+    return SizedBox(
+      height: 325,
+      child: Stack(
+        children: [
+          ///CONTAINER làm nền hình ảnh  ---------------------------
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(Provider.of<Themes>(context, listen: true).vipTheme.imagePath),
+                fit: BoxFit.fill,
+              ),
             ),
           ),
-        ),
 
-        ///TEXT họ tên ------------------------------------------------------
+          ///TEXT họ tên ------------------------------------------------------
           Positioned(
             top: 10,
             left: 10,
@@ -53,67 +55,68 @@ class WdgRow1 extends StatelessWidget {
             right: 10,
             left: 10,
             child: Card(
-              color: Colors.white10,
-              child: Padding(
+                color: Colors.white10,
+                child: Padding(
                   padding: const EdgeInsets.all(7),
-                child: Table(
-                  children: [
-                    TableRow(
-                      children: [
-                        Center(
-                          child: FittedBox(child: Text('Hôm nay',
-                              style: TextStyle(fontSize: textSize.title, color: Colors.white, fontWeight: FontWeight.bold)),
-                        )),
-                        Center(
-                          child: Text('Từ vựng',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
-                        ),
-                        Center(
-                          child: Text('Câu',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
-                        ),
-                      ],
-                    ),
+                  child: Table(
+                    children: [
+                      TableRow(
+                        children: [
+                          Center(
+                              child: FittedBox(child: Text('Hôm nay',
+                                  style: TextStyle(fontSize: textSize.title, color: Colors.white, fontWeight: FontWeight.bold)),
+                              )),
+                          Center(
+                            child: Text('Từ vựng',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                          ),
+                          Center(
+                            child: Text('Câu',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                          ),
+                        ],
+                      ),
 
-                    TableRow(
-                      children: [
-                        Center(
-                          child: Text('Mới',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
-                        ),
-                        Center(
-                          child: Text('2',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
-                        ),
-                        Center(
-                          child: Text('5',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
+                      TableRow(
+                        children: [
+                          Center(
+                            child: Text('Mới',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                          ),
+                          Center(
+                            child: Text('2',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                          Center(
+                            child: Text('5',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
 
-                    TableRow(
-                      children: [
-                        Center(
-                          child: Text('Ôn tập',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
-                        ),
-                        Center(
-                          child: Text('2',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
-                        ),
-                        Center(
-                          child: Text('5',
-                              style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
+                      TableRow(
+                        children: [
+                          Center(
+                            child: Text('Ôn tập',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white)),
+                          ),
+                          Center(
+                            child: Text('2',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                          Center(
+                            child: Text('5',
+                                style: TextStyle(fontSize: textSize.medium, color: Colors.white, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
             ),
           )
         ],
+      ),
     );
   }
 

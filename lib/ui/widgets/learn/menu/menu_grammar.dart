@@ -64,8 +64,10 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
       itemBuilder: (BuildContext contextList, int index) {
        return Container(
                     key: keys[index],
-                    margin: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.all(16),
                     child: WdgDashedBorder(
+                        dashWidth: 2.6,
+                        dashSpace: 6,
                         color: VipColors.primary(context),
                         child: ExpansionTile(
                           controller: _controllers[index],
@@ -136,8 +138,10 @@ class _WdgMenuGrammarState extends State<WdgMenuGrammar> {
                                                   reverseTransitionDuration: Duration.zero,
                                                 ));
                                               },
-                                              borderRadius: BorderRadius.circular(12),
+                                              borderRadius: BorderRadius.circular(6),
                                               color: VipColors.onPrimary(context),
+                                              alpha: 6,
+                                              bulging: 3,
                                               child: ListTile(
                                                 title: Text(
                                                     key: key,
@@ -254,10 +258,7 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            QuizzScreen.grammar(
-                                                structures: state.data,
-                                                grammar: widget.grammar),
+                                        builder: (context) => QuizzScreen.grammar(structures: state.data, grammar: widget.grammar),
                                       ),
                                     );
                                   },
@@ -267,9 +268,9 @@ class _DetailGrammarState extends State<_DetailGrammar> {
                                   ),
                                 );
                               }
-                              return const SizedBox.shrink();
+                              return const SizedBox(child: Text('data'),);
                             }
-                            return const SizedBox.shrink();
+                            return const SizedBox(child: Text('adad'),);
                           },
                         ),
                       ),

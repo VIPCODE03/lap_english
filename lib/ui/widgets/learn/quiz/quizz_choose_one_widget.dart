@@ -38,21 +38,17 @@ class _WdgQuizzChooseOneState extends WdgQuizzState<QuizzChooseOne, WdgQuizzChoo
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double itemHeight = isPortrait ? constraints.maxHeight / 5 : constraints.maxHeight / 2.5;
-        double itemWidth = isPortrait ? constraints.maxWidth / 1.1 : constraints.maxWidth / 2.5;
-
         return Wrap(
           spacing: 10,
           runSpacing: 10,
           direction: isPortrait ? Axis.horizontal : Axis.vertical,
           children: widget.quizz.answers.map((option) {
-            bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
-            if (isCorrect) widget.status.correctAnswer = option;
+            bool isCorrect = widget.quizz.answerCorrect == option;
             bool isSelected = option == selectedKey;
 
             return SizedBox(
-                height: itemHeight,
-                width: itemWidth,
+                height: isPortrait ? constraints.maxHeight / 5 : constraints.maxHeight / 2.5,
+                width: isPortrait ? constraints.maxWidth / 1.1 : constraints.maxWidth / 2.5,
 
                 child: WdgButton(
                   onTap: () {

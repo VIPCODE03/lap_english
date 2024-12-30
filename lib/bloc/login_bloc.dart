@@ -2,9 +2,7 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lap_english/data/database/local/dao/user_dao.dart';
 import 'package:lap_english/data/database/remote/service/user_service.dart';
-import 'package:lap_english/data/model/task_and_reward/daily_task.dart';
 import 'package:lap_english/data/model/user/accumulate.dart';
 import 'package:lap_english/data/model/user/skill.dart';
 import 'package:lap_english/data/model/user/user.dart';
@@ -34,12 +32,6 @@ class LoadedLoginState extends AuthState {
   LoadedLoginState();
 }
 
-class LoginState extends AuthState {
-  final User user;
-
-  LoginState(this.user);
-}
-
 class ErrorLoginState extends AuthState {
   final String message;
 
@@ -48,8 +40,6 @@ class ErrorLoginState extends AuthState {
 
 /*  Bloc  */
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final UserDao _userDao = UserDao();
-
   AuthBloc() : super(AuthState()) {
 
     on<InitAuthEvent>((event, emit) async {
@@ -65,13 +55,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   //=== Sự kiện khởi tạo  ===
   Future<void> _init(Emitter<AuthState> emit) async {
-    emit(LoadingLoginState());
-    // var users = await _userDao.getData();
-    // if (users.isEmpty) {
-    //   emit(PendingLoginState());
-    // } else {
-    //   add(LoginEvent(null, users.first));
-    // }
     emit(PendingLoginState());
   }
 

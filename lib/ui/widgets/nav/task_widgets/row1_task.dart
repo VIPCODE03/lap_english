@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/themes/size.dart';
-
-import '../../../../gen/assets.gen.dart';
 
 class WdgRow1Task extends StatelessWidget {
   const WdgRow1Task({super.key});
@@ -10,7 +9,7 @@ class WdgRow1Task extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      color: Theme.of(context).primaryColor.withOpacity(0.1),
+      color: VipColors.onPrimary(context).withOpacity(0.1),
       height: 250,
       child: Stack(
         children: [
@@ -36,18 +35,6 @@ class WdgRow1Task extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-          ),
-
-          /// Ảnh -------------------------------------------------------------
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: Image.asset(
-              Assets.images.dinosaur.dinosaurTeacher.path,
-              height: 150,
-              width: 150,
-              fit: BoxFit.cover,
             ),
           ),
         ],

@@ -140,32 +140,49 @@ class _WdgQuizzResultState extends State<WdgQuizzResult> {
       }
     });
     return AnimatedScale(
-        duration: const Duration(milliseconds: 666),
-        curve: Curves.bounceIn,
-        scale: statusItemBonus[index] ? 0 : 1,
-        child: Card(
-            child: Container(
-                width: isPortrait ? maxWidth / 4 : maxWidth / 8,
-                padding: const EdgeInsets.all(6),
-                child: Column(
-                  children: [
-                    Text(
-                    title.toUpperCase(),
-                    style: TextStyle(
-                        fontSize: isPortrait ? maxWidth / 20 : maxWidth / 40,
-                        color: VipColors.text(context),
-                        fontWeight: FontWeight.bold),
-                    ),
-                    Text(point,
-                      style: TextStyle(
-                          fontSize: isPortrait ? maxWidth / 20 : maxWidth / 40,
-                          color: Colors.amber,
-                          fontWeight: FontWeight.bold)
-                    )
-                ],
+      duration: const Duration(milliseconds: 333),
+      curve: Curves.bounceInOut,
+      scale: statusItemBonus[index] ? 0 : 1,
+      child: Card(
+        child: Container(
+          width: isPortrait ? maxWidth / 4 : maxWidth / 8,
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(width: 1, color: VipColors.onPrimary(context))
+          ),
+          child: Column(
+            children: [
+              Text(
+                title.toUpperCase(),
+                style: TextStyle(
+                  fontSize: textSize.medium,
+                  color: VipColors.text(context),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )
-        )
+              AnimatedSlide(
+                offset: statusItemBonus[index] ? const Offset(0, 0.6) : const Offset(0, 0),
+                duration: const Duration(milliseconds: 666),
+                curve: Curves.bounceInOut,
+                child: AnimatedOpacity(
+                  opacity: statusItemBonus[index] ? 0 : 1,
+                  duration: const Duration(milliseconds: 999),
+                  child: Text(
+                    point,
+                    style: TextStyle(
+                      fontSize: textSize.medium,
+                      color: Colors.amber,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ),
+            ],
+          ),
+        ),
+      ),
     );
+
   }
 }

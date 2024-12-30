@@ -19,7 +19,6 @@ import '../../../../utils/text_to_speak.dart';
 import '../../../screens/learn_screens/quizz_screen.dart';
 import '../../../themes/size.dart';
 import '../../other/button.dart';
-import '../../other/expandable_view.dart';
 
 class WdgMenuVW<T> extends StatefulWidget {
   final List<MainTopic> mainTopicList;
@@ -194,77 +193,6 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
     );
   }
 
-  ///ITEM từ vựng hoặc câu   -----------------------------------------------------------
-  Widget _itemWOrS(BuildContext context, T data, bool expanded) {
-    String textW = "";
-    String textMeaning = "";
-    String textExpaned = "";
-    String soundUrl = "";
-
-    switch(data) {
-      case Word _: {
-        textW = data.word;
-        textMeaning = data.meaning;
-        textExpaned = "Loại: ${data.type}m \nUS: ${data.pronounceUS} \nUK: ${data.pronounceUK} \nVí dụ: ${data.example}";
-        soundUrl = (Random().nextBool() ? data.audioUsBlobName : data.audioUkBlobName) ?? "";
-        break;
-      }
-
-      case Sentence _: {
-        textW = data.sentence;
-        textMeaning = data.translation;
-        break;
-      }
-    }
-
-    return Column(
-      children: [
-        ListTile(
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WdgButton(
-                color: Colors.transparent,
-                onTap: () {
-                  if(soundUrl.isNotEmpty) {
-                    AudioPlayerUtil().playFromUrl(LoadDataUtil.loadSound(soundUrl));
-                  }
-                  else {
-                    textToSpeakUtil.speak(
-                      textW,
-                      TextToSpeakUtil.languageUK,
-                      TextToSpeakUtil.rateNormal,
-                    );
-                  }
-                },
-                child: const Icon(Icons.volume_up, size: 30, color: Colors.grey),
-              ),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      textW,
-                      style: TextStyle(fontSize: textSize.medium, color: VipColors.text(context)),
-                    ),
-                    Text(textMeaning, style: TextStyle(color: Colors.grey, fontSize: textSize.normal)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          subtitle: expanded //-> Trạng thái mở rộng
-              ? Text(textExpaned, style: TextStyle(color: Colors.grey, fontSize: textSize.normal))
-              : null,
-        ),
-        Container(
-          color: Colors.grey,
-          height: 1,
-        )
-      ],
-    );
-  }
-
   ///DIALOG hiển thị danh sách từ vựng hoặc câu ------------------------------------------
   void _showDialogWordList(BuildContext parentContext, SubTopic subTopic) {
     List<T> datas = [];
@@ -307,10 +235,7 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
                                 itemCount: datas.length,
                                 itemBuilder: (context, index) {
                                   var data = datas[index];
-                                  return WdgExpandedView(
-                                    expand: _itemWOrS(context, data, true),
-                                    child: _itemWOrS(context, data, false),
-                                  );
+                                  return _ItemWidget(data: data);
                                 },
                               );
                             }
@@ -322,13 +247,12 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
 
                       /// Button học bài  --------------------------------------------------
                       FittedBox(
-                        alignment: Alignment.centerRight,
+                        fit: BoxFit.fill,
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             if (T == Word)
                               WdgButton(
-                                buttonFit: ButtonFit.scaleDown,
                                 color: Colors.transparent,
                                 onTap: () {
                                   if(datas.isNotEmpty) {
@@ -346,7 +270,6 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
                               ),
 
                             WdgButton(
-                              buttonFit: ButtonFit.scaleDown,
                               onTap: () async {
                                 if (datas.isNotEmpty) {
                                   Navigator.pop(context); //-> Đóng dialog
@@ -409,5 +332,106 @@ class _WdgMenuVWState<T> extends State<WdgMenuVW<T>> {
       return aPriority.compareTo(bPriority);
     });
   }
-
 }
+
+///ITEM từ vựng hoặc câu   -----------------------------------------------------------
+class _ItemWidget<T> extends StatefulWidget {
+  final T data;
+
+  const _ItemWidget({required this.data});
+
+  @override
+  _ItemWidgetState createState() => _ItemWidgetState();
+}
+
+class _ItemWidgetState extends State<_ItemWidget> {
+  late ExpansionTileController controller;
+
+  String textW = "";
+  String textMeaning = "";
+  String textExpaned = "";
+  String soundUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    controller = ExpansionTileController();
+
+    switch (widget.data) {
+      case Word _: {
+        textW = widget.data.word;
+        textMeaning = widget.data.meaning;
+        textExpaned = "Loại: ${widget.data.type}m \nUS: ${widget.data.pronounceUS} \nUK: ${widget.data.pronounceUK} \nVí dụ: ${widget.data.example}";
+        soundUrl = (Random().nextBool() ? widget.data.audioUsBlobName : widget.data.audioUkBlobName) ?? "";
+        break;
+      }
+      case Sentence _: {
+        textW = widget.data.sentence;
+        textMeaning = widget.data.translation;
+        break;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ExpansionTile(
+          controller: controller,
+          showTrailingIcon: false,
+          shape: Border.all(width: 0),
+          expansionAnimationStyle: AnimationStyle(
+            curve: Curves.easeOutSine,
+          ),
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              WdgButton(
+                color: Colors.transparent,
+                onTap: () {
+                  if (soundUrl.isNotEmpty) {
+                    AudioPlayerUtil().playFromUrl(LoadDataUtil.loadSound(soundUrl));
+                  } else {
+                    TextToSpeakUtil().speak(textW, TextToSpeakUtil.languageUK, TextToSpeakUtil.rateNormal);
+                  }
+                },
+                child: const Icon(Icons.volume_up, size: 30, color: Colors.grey),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    textW,
+                    style: TextStyle(fontSize: textSize.medium, color: VipColors.text(context)),
+                  ),
+                  Text(
+                    textMeaning,
+                    style: TextStyle(color: Colors.grey, fontSize: textSize.normal),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          children: [
+            GestureDetector(
+              onTap: () => controller.collapse(),
+              child: Container(
+                color: Colors.transparent,
+                width: maxWidth,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                alignment: Alignment.topLeft,
+                child: Text(textExpaned, style: TextStyle(color: Colors.grey, fontSize: textSize.normal)),
+              ),
+            ),
+          ],
+        ),
+        Container(
+          color: Colors.grey,
+          height: 1,
+        ),
+      ],
+    );
+  }
+}
+

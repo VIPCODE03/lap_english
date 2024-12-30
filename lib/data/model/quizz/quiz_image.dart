@@ -8,9 +8,7 @@ abstract class MdlQuizImage<T> extends Quizz<T> {
   Map<String, String> imgAnswer = {};
 
   @override
-  SkillType get skillType {
-    return SkillType.reading;
-  }
+  SkillType get skillType => SkillType.reading;
 }
 
 
@@ -37,7 +35,6 @@ class MdlQuizImageVocabulary extends MdlQuizImage<Word> {
       if(Random().nextBool()) {
         newQuizImg.question = "Chọn từ tương ứng";
         newQuizImg.imgQuestion = word.imageBlobName!;
-
         wordAnswers.addAll(copy.take(2).toList());
       }
 
@@ -53,15 +50,13 @@ class MdlQuizImageVocabulary extends MdlQuizImage<Word> {
 
       for(var answer in wordAnswers) {
         answers.add(answer.word);
-        newQuizImg.answersCorrect[answer.word] = (answer == word);
       }
 
       newQuizImg.answers = answers.toList();
       newQuizImg.answers.shuffle();
+      newQuizImg.answerCorrect = word.word;
 
-      //--- Thêm quizz vào danh sách  ---
       quizes.add(newQuizImg);
-      quizes.shuffle();
     }
 
     return quizes;
