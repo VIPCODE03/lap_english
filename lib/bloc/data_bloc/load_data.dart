@@ -1,5 +1,6 @@
 import 'package:lap_english/data/database/local/dao/grammar_dao.dart';
 import 'package:lap_english/data/database/local/dao/w_s_dao.dart';
+import 'package:lap_english/data/database/remote/service/grammar_service.dart';
 import 'package:lap_english/data/database/remote/service/subtopic_service.dart';
 import 'package:lap_english/data/database/remote/service/user_service.dart';
 import 'package:lap_english/data/database/remote/service/maintopic_service.dart';
@@ -77,23 +78,23 @@ mixin LoadDatas {
   }
 
   /*  Load ngữ pháp */
-  static Future<List<Grammar>> _grammarLoad(int idTypeGrammar) async {
-    GrammarDao dao = GrammarDao();
-    return dao.getByIdType(idTypeGrammar);
+  static Future<List<TypeGrammar>> _typeGrammarLoad() async {
+    // return await GrammarService().fetchTypeGrammar() ?? [];
+    return await TypeGrammarDao().getData(firstToLast: true);
   }
 
-  static Future<List<TypeGrammar>> _typeGrammarLoad() async {
-    TypeGrammarDao dao = TypeGrammarDao();
-    return dao.getData(firstToLast: true);
+  static Future<List<Grammar>> _grammarLoad(int idTypeGrammar) async {
+    // return await GrammarService().fetchGrammarByTypeGrammarId(idTypeGrammar) ?? [];
+    return await GrammarDao().getByIdType(idTypeGrammar);
   }
 
   static Future<List<GrammaticalStructure>> _grammarStructureLoad(int idGrammar) async {
-    GrammaticalStructureDao dao = GrammaticalStructureDao();
-    return dao.getByIdGrammar(idGrammar);
+    // return await  GrammarService().fetchStructureByGrammarId(idGrammar) ?? [];
+    return await GrammaticalStructureDao().getByIdGrammar(idGrammar);
   }
 
   static Future<List<ExerciseGrammar>> _exerciseGrammarLoad(int idGrammaticalStructure) async {
-    ExerciseGrammarDao dao = ExerciseGrammarDao();
-    return dao.getByIdGrammarStructure(idGrammaticalStructure, 5);
+    // return await GrammarService().fetchExerciseGrammarByStructureId(idGrammaticalStructure) ?? [];
+    return await ExerciseGrammarDao().getByIdGrammarStructure(idGrammaticalStructure, 10);
   }
 }

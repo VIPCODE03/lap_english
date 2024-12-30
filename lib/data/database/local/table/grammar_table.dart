@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:lap_english/a_librarys/vip_sqflite/database_vip.dart';
@@ -15,7 +14,7 @@ class GrammarTable extends TableSchema<Grammar> {
   Columns columns(Grammar obj) => columnBuild(addColumn: [
     column(name: id, value: obj.id),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idTypeGrammar, value: obj.idTypeGrammar),
+    column(name: idTypeGrammar, value: obj.typeGrammarId),
   ]);
 
   @override
@@ -71,7 +70,7 @@ class GrammaticalStructureTable extends TableSchema<GrammaticalStructure> {
   Columns columns(GrammaticalStructure obj) => columnBuild(addColumn: [
     column(name: id, value: obj.id),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idGrammar, value: obj.idGrammar),
+    column(name: idGrammar, value: obj.grammarId),
   ]);
 
   @override
@@ -99,7 +98,7 @@ class ExerciseGrammarTable extends TableSchema<ExerciseGrammar> {
   Columns columns(ExerciseGrammar obj) => columnBuild(addColumn: [
     column(name: id, value: 0),
     column(name: data, value: jsonEncode(obj.toJson())),
-    column(name: idGrammaticalStructure, value: obj.idGrammaticalStructure),
+    column(name: idGrammaticalStructure, value: obj.grammaticalStructureId),
   ]);
 
   @override
@@ -107,7 +106,7 @@ class ExerciseGrammarTable extends TableSchema<ExerciseGrammar> {
     if (column[data] != null) {
       return ExerciseGrammar.fromJson(jsonDecode(column[data]));
     }
-    return ExerciseGrammar(0, CustomQuiz('', [], '', {}, TypeQuiz.sound));
+    return ExerciseGrammar(0, CustomQuiz('', [], '', TypeQuiz.sound));
   }
 
   @override

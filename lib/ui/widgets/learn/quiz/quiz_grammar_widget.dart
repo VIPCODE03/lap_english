@@ -44,8 +44,6 @@ class _WdgQuizGrammarState extends WdgQuizzState<MdlQuizGrammar, WdgQuizGrammar>
     setState(() {});
   }
 
-
-
   void initQuiz() {
     wdgQuiz = WdgQuizzes.generate(widget.quizz.quiz);
     wdgQuiz.status.isAnswered.addListener(() {

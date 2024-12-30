@@ -15,15 +15,10 @@ class HomeScreen extends StatelessWidget {
     return ListView(
         children: [
           ///ROW1  --------------------------------------------------------------
-          const SizedBox(
-            height: 300,
-            child: WdgRow1(),
-          ),
+          const WdgRow1(),
 
           ///ROW2  --------------------------------------------------------------
-          SizedBox(
-            child: WdgRow2()
-          ),
+          WdgRow2(),
 
           ///ROW3  --------------------------------------------------------------
           WdgRow3(topicChats: [
@@ -51,7 +46,7 @@ class HomeScreen extends StatelessWidget {
           ///ROW4  --------------------------------------------------------------
           const SizedBox(
               height: 250,
-              child: WdgRow4(data: ["Phổ biến", "Thường ngày", "Khen ngợi ai đó"],)
+              child: WdgRow4(data: ["Đối thoại", "Hài hước", "Cổ tích"],)
           ),
         ],
       );

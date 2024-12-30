@@ -1,5 +1,7 @@
 import 'package:lap_english/data/model/learn/word_sentence.dart';
+import 'package:lap_english/data/model/quizz/quiz_arrange.dart';
 import 'package:lap_english/data/model/quizz/quiz_image.dart';
+import 'package:lap_english/data/model/quizz/quiz_letter_count.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/quizz/quizz_choose_one.dart';
 import 'package:lap_english/data/model/quizz/quizz_select_answers.dart';
@@ -17,6 +19,8 @@ class QuizzConstant {
     QuizzSpeakVocabulary(),
     QuizzWriteVocabulary(),
     MdlQuizImageVocabulary(),
+    QuizLetterCountVocabulary(),
+    QuizzArrangeVocabulary()
   ];
 
   //===   Tạo quizz câu đơn giản  ===

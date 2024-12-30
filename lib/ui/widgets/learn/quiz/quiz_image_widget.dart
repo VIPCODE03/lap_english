@@ -68,7 +68,7 @@ class _WdgQuizzImageState extends WdgQuizzState<MdlQuizImage, WdgQuizzImage> {
               const SizedBox(height: 50),
 
             ...widget.quizz.answers.map((option) {
-                bool isCorrect = widget.quizz.answersCorrect[option] ?? false;
+                bool isCorrect = widget.quizz.answerCorrect == option;
                 if (isCorrect) widget.status.correctAnswer = option;
                 bool isSelected = option == selectedKey;
 

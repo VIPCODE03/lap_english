@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lap_english/services/data_service.dart';
+import 'package:lap_english/services/network_observer.dart';
 import 'package:lap_english/ui/screens/main_screen.dart';
 import 'package:lap_english/ui/widgets/other/loading.dart';
 
@@ -22,6 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   //===  Khởi tạo bộ nhớ và chuyển tới màn hình chính  ===
   Future<void> _navigateToMainScreen() async {
+    await checkInternet();
     var cacheData = CacheManager();
 
     if(cacheData.getStatus(StatusFlag.dataLoaded) == null || cacheData.getStatus(StatusFlag.dataLoaded) == false) {

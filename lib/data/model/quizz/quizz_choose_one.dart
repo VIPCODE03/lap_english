@@ -26,6 +26,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
       //--- Dạng 1  ---
       if(word.word.length > 3 && Random().nextBool()) {
         quizzChooseOneWord.question = "Chọn từ có nghĩa với <${word.meaning}>";
+        quizzChooseOneWord.answerCorrect = word.word;
 
         //--- Tạo đáp án ---
         String wordS = word.word;
@@ -40,7 +41,6 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
 
         for(var w in similarWords) {
           answers.add(w);
-          quizzChooseOneWord.answersCorrect[w] = (w == wordS);
         }
 
         quizzChooseOneWord.answers = answers.toList();
@@ -50,6 +50,7 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
       else {
         int total = Random().nextInt(2) + 2; //->  Tạo số đáp án
         quizzChooseOneWord.question = "Chọn từ có nghĩa với <${word.word}>";
+        quizzChooseOneWord.answerCorrect = word.meaning;
 
         //--- Tạo đáp án ---
         Set<String> answers = {};
@@ -57,11 +58,9 @@ class QuizzChooseOneVocabulary extends QuizzChooseOne<Word> {
         List<Word> copy = List.from(datas)..remove(word);
         copy.shuffle();
         wordsT.addAll(copy.take(total).toList());
-
         wordsT.shuffle();
         for (var w in wordsT) {
           answers.add(w.meaning);
-          quizzChooseOneWord.answersCorrect[w.meaning] = (w == word);
         }
 
         quizzChooseOneWord.answers = answers.toList();
@@ -84,16 +83,15 @@ class QuizzChooseOneSentence extends QuizzChooseOne<Sentence> {
     for(var sentence in datas) {
       var quizzChoose = QuizzChooseOneSentence();
       quizzChoose.question = "Chọn bản dịch nghĩa của câu <${sentence.sentence}>";
+      quizzChoose.answerCorrect = sentence.translation;
 
       List<Sentence> answers = [sentence];
       List<Sentence> copy = List.from(datas)..remove(sentence);
       copy.shuffle();
       answers.addAll(copy.take(Random().nextBool() ? 2 : 1).toList());
-      answers.shuffle();
 
       for(var s in answers) {
         quizzChoose.answers.add(s.translation);
-        quizzChoose.answersCorrect[s.translation] = s == sentence;
       }
       quizzes.add(quizzChoose);
       quizzes.shuffle(); //-> Xáo trộn
@@ -114,7 +112,6 @@ class QuizChooseOneCustom extends QuizzChooseOne<CustomQuiz> {
       newQuiz.question = data.question;
       newQuiz.answers = data.answers..shuffle();
       newQuiz.answerCorrect = data.answerCorrect;
-      newQuiz.answersCorrect = data.answersCorrect;
 
       quizes.add(newQuiz);
     }

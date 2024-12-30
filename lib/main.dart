@@ -65,8 +65,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           darkTheme: themeProvider.vipTheme.dark,
           themeMode: themeProvider.vipTheme.themeMode,
           home: CacheManager().getToken().userId != -1
-              ? const SplashScreen()
-              : LoginScreen()
+              ? const LoginScreen()
+              : const LoginScreen()
         );
       },
     );

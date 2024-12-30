@@ -4,6 +4,7 @@ import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/screens/learn_screens/ipa_screen.dart';
+import 'package:lap_english/ui/screens/learn_screens/library_screen.dart';
 import 'package:lap_english/ui/screens/menu_screen.dart';
 import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
@@ -30,7 +31,9 @@ class WdgRow2 extends StatelessWidget {
 
     const MenuScreen<TypeGrammar>(title: "Ngữ pháp"),
 
-    IPAScreen()
+    IPAScreen(),
+
+    const LibraryScreen()
   ].elementAt(index);
 
   final List<MenuItem> _menuItems = [
@@ -49,6 +52,10 @@ class WdgRow2 extends StatelessWidget {
     MenuItem(imagePath: Assets.images.menu.learnSpeak.path,
         label: "Phát âm",
         openScreen: 3
+    ),
+    MenuItem(imagePath: Assets.images.menu.library.path,
+        label: "Thư viện",
+        openScreen: 4
     ),
   ];
 

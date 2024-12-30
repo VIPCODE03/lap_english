@@ -40,20 +40,18 @@ class WdgRow1Profile extends StatelessWidget {
             children: [
               /// Avatar ------------------------------------------------------
               Container(
-                padding: const EdgeInsets.all(2.5),
+                padding: const EdgeInsets.all(0.5),
                 decoration: BoxDecoration(
-                  color: VipColors.primary(context),
+                  border: Border.all(width: 2.5, color: VipColors.onPrimary(context)),
                   shape: BoxShape.circle,
                 ),
                 child: CircleAvatar(
-                  backgroundColor: VipColors.primary(context),
                   radius: 50,
                   child: ClipOval(
                     child: Image.network(
-                      user.avatar ?? '',
-                      fit: BoxFit.cover,
-                      width: 100,
-                      height: 100,
+                      user.avatar,
+                      width: 120,
+                      height: 120,
                     ),
                   ),
                 ),

@@ -23,12 +23,11 @@ class Grammar {
   final int id;
   final String name;
   final String description;
-  final int idTypeGrammar;
+  final int typeGrammarId;
 
-  Grammar(this.id, this.name, this.description, this.idTypeGrammar);
+  Grammar(this.id, this.name, this.description, this.typeGrammarId);
 
-  factory Grammar.fromJson(Map<String, dynamic> json) =>
-      _$GrammarFromJson(json);
+  factory Grammar.fromJson(Map<String, dynamic> json) => _$GrammarFromJson(json);
 
   Map<String, dynamic> toJson() => _$GrammarToJson(this);
 }
@@ -39,12 +38,11 @@ class GrammaticalStructure {
   final int id;
   final String description;
   final String structure;
-  final int idGrammar;
+  final int grammarId;
 
-  GrammaticalStructure(this.id, this.description, this.structure, this.idGrammar);
+  GrammaticalStructure(this.id, this.description, this.structure, this.grammarId);
 
-  factory GrammaticalStructure.fromJson(Map<String, dynamic> json) =>
-      _$GrammaticalStructureFromJson(json);
+  factory GrammaticalStructure.fromJson(Map<String, dynamic> json) => _$GrammaticalStructureFromJson(json);
 
   Map<String, dynamic> toJson() => _$GrammaticalStructureToJson(this);
 }
@@ -52,13 +50,12 @@ class GrammaticalStructure {
 /* Bài tập */
 @JsonSerializable()
 class ExerciseGrammar {
-  final int idGrammaticalStructure;
+  final int grammaticalStructureId;
   final CustomQuiz quiz;
 
-  ExerciseGrammar(this.idGrammaticalStructure, this.quiz);
+  ExerciseGrammar(this.grammaticalStructureId, this.quiz);
 
-  factory ExerciseGrammar.fromJson(Map<String, dynamic> json) =>
-      _$ExerciseGrammarFromJson(json);
+  factory ExerciseGrammar.fromJson(Map<String, dynamic> json) => _$ExerciseGrammarFromJson(json);
 
   Map<String, dynamic> toJson() => _$ExerciseGrammarToJson(this);
 }

@@ -10,8 +10,8 @@ class DataService {
 
   Future<void> loadDataServer() async {
     // _loadDataUser();
-    _loadDataVocabulary();
-    _loadDataSentence();
+    // _loadDataVocabulary();
+    // _loadDataSentence();
     _loadDataGrammar();
   }
 

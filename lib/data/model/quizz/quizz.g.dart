@@ -10,7 +10,6 @@ CustomQuiz _$CustomQuizFromJson(Map<String, dynamic> json) => CustomQuiz(
       json['question'] as String,
       (json['answers'] as List<dynamic>).map((e) => e as String).toList(),
       json['answerCorrect'] as String,
-      Map<String, bool>.from(json['answersCorrect'] as Map),
       $enumDecode(_$TypeQuizEnumMap, json['type']),
       imgAnswers: (json['imgAnswers'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -24,7 +23,6 @@ Map<String, dynamic> _$CustomQuizToJson(CustomQuiz instance) =>
       'question': instance.question,
       'answers': instance.answers,
       'answerCorrect': instance.answerCorrect,
-      'answersCorrect': instance.answersCorrect,
       'imgAnswers': instance.imgAnswers,
       'imageQuestion': instance.imageQuestion,
     };

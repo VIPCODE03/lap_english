@@ -39,7 +39,8 @@ class WdgGroup extends StatelessWidget {
         ),
 
         /// Text tiêu đề  ----------------------------------------------------
-        Padding(
+        Container(
+          width: maxWidth,
           padding: const EdgeInsets.only(left: 10, top: 5),
           child: Text(title ?? '',
           style: titleStyle ?? GoogleFonts.pangolin(

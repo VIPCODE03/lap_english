@@ -13,7 +13,6 @@ class UserService extends ApiService {
   UserService();
 
   Future<bool> login(User user) async {
-    print(user.avatar);
     _type = _TypeUserRequest.login;
     var postRequest = await request(
       api: '/auth/login-google',
@@ -76,11 +75,8 @@ class UserService extends ApiService {
       }
 
     } catch(e) {
-      if (kDebugMode) {
-        print('Error success200 UserService: $e');
-        print(response.data['data']);
-      }
-      return null;
+      debugPrint(response.data['data']);
+      debugPrint('Error success200 UserService: $e');
     }
   }
 }

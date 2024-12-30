@@ -53,7 +53,7 @@ class WdgRow3 extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Text(
                     topicChat.name,
                     maxLines: 1,

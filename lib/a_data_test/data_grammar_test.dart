@@ -109,10 +109,10 @@ List<Grammar> generateGrammars() {
 List<GrammaticalStructure> generateGrammaticalStructures() {
   return [
     // Các cấu trúc của "Thì hiện tại đơn"
-    GrammaticalStructure(1, 'Khẳng định \n Dùng để diễn tả thói quen, sự thật hiển nhiên, hoặc hành động lặp lại.', '<S> + <V> (hiện tại đơn)', 1),
-    GrammaticalStructure(2, 'Phủ định \n Dùng để phủ định hành động trong hiện tại, thói quen hoặc sự thật.', '<S> + <do/does> + <not> + <V> (nguyên thể)', 1),
-    GrammaticalStructure(3, 'Câu hỏi Yes/No \n Dùng để hỏi về hành động có thật hoặc thói quen trong hiện tại.', 'Do/Does + S + V (nguyên thể)?', 1),
-    GrammaticalStructure(4, 'Câu hỏi Wh- \n Dùng để hỏi thông tin chi tiết về hành động trong hiện tại.', 'Wh- + do/does + S + V (nguyên thể)?', 1),
+    GrammaticalStructure(1, 'Dùng để diễn tả thói quen, sự thật hiển nhiên, hoặc hành động lặp lại.', '<S> + <V> (hiện tại đơn)', 1),
+    GrammaticalStructure(2, 'Dùng để phủ định hành động trong hiện tại, thói quen hoặc sự thật.', '<S> + <do/does> + <not> + <V> (nguyên thể)', 1),
+    GrammaticalStructure(3, 'Dùng để hỏi về hành động có thật hoặc thói quen trong hiện tại.', 'Do/Does + S + V (nguyên thể)?', 1),
+    GrammaticalStructure(4, 'Dùng để hỏi thông tin chi tiết về hành động trong hiện tại.', 'Wh- + do/does + S + V (nguyên thể)?', 1),
 
     // Các cấu trúc của "Thì hiện tại tiếp diễn"
     GrammaticalStructure(5, 'Khẳng định \n Dùng để diễn tả hành động đang xảy ra ở hiện tại hoặc xu hướng đang diễn ra.', 'S + am/are/is + V-ing', 2),
@@ -158,21 +158,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
-        "Chọn từ đúng: <I / eat / eats> breakfast every day.",
+        "Chọn từ đúng: I < ... > breakfast every day.",
         ["eat", "eats"],
         "eat",
-        {"eat": true, "eats": false},
-        TypeQuiz.chooseOne,
-      ),
-    ),
-
-    ExerciseGrammar(
-      1, // ID của cấu trúc "Khẳng định"
-      CustomQuiz(
-        "Chọn từ đúng: <I / eat / eats> breakfast every day.",
-        ["eat", "eats"],
-        "eat",
-        {"eat": true, "eats": false},
         TypeQuiz.chooseOne,
       ),
     ),
@@ -181,10 +169,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
-        "Chọn từ đúng: <She / play / plays> tennis on weekends.",
+        "Chọn từ đúng: She < ... > tennis on weekends.",
         ["play", "plays"],
         "plays",
-        {"play": false, "plays": true},
         TypeQuiz.chooseOne,
       ),
     ),
@@ -193,10 +180,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
-        "Hoàn thành câu: <He / study / studies> English every day.",
-        ["He", "study", "studies", "English", "every", "day", "English", "every", "day", "English", "every"],
+        "Hoàn thành câu: He < ... > English every day.",
+        ["He", "study", "studies", "English", "every", "day.", "English", "every", "day", "English", "every"],
         "He studies English every day.",
-        {"He": true, "studies": true, "English": true, "every": true, "day": true},
         TypeQuiz.select,
       ),
     ),
@@ -205,10 +191,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
-        "Chọn từ đúng: <We / go / goes> to the gym in the evening.",
+        "Chọn từ đúng: We < ... > to the gym in the evening.",
         ["go", "goes"],
         "go",
-        {"go": true, "goes": false},
         TypeQuiz.chooseOne,
       ),
     ),
@@ -217,10 +202,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
-        "Hoàn thành câu: <They / not / like> spicy food.",
-        ["They", "do", "not", "like", "spicy", "food"],
+        "Hoàn thành câu: <They / not / like / spicy food.>",
+        ["They", "do", "not", "like", "spicy", "food."],
         "They do not like spicy food.",
-        {"They": true, "do": true, "not": true, "like": true, "spicy": true, "food": true},
         TypeQuiz.select,
       ),
     ),
@@ -229,10 +213,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       1, // ID của cấu trúc "Khẳng định"
       CustomQuiz(
-        "Chọn từ đúng: <John / work / works> at a software company.",
+        "Chọn từ đúng: John < ... > at a software company.",
         ["work", "works"],
         "works",
-        {"work": false, "works": true},
         TypeQuiz.chooseOne,
       ),
     ),
@@ -241,10 +224,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       2, // ID của cấu trúc "Phủ định"
       CustomQuiz(
-        "Hoàn thành câu: <I / not / like> coffee.",
-        ["I", "do", "not", "like", "coffee"],
+        "Hoàn thành câu: <I / not / like / coffee.>",
+        ["I", "do", "not", "like", "coffee."],
         "I do not like coffee.",
-        {"I": true, "do": true, "not": true, "like": true, "coffee": true},
         TypeQuiz.select,
       ),
     ),
@@ -253,10 +235,9 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
     ExerciseGrammar(
       3, // ID của cấu trúc "Câu hỏi Yes/No"
       CustomQuiz(
-        "Chọn từ đúng: <Do / Does> she play tennis?",
+        "Chọn từ đúng: < ... > she play tennis?",
         ["Do", "Does"],
         "Does",
-        {"Do": false, "Does": true},
         TypeQuiz.chooseOne,
       ),
     ),
@@ -268,7 +249,6 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
         "Hoàn thành câu: <Where / do / you / live>?",
         ["Where", "do", "you", "live"],
         "Where do you live?",
-        {"Where": true, "do": true, "you": true, "live": true},
         TypeQuiz.select,
       ),
     ),
@@ -280,7 +260,6 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
         "Hoàn thành câu: <She / work / at a bank>.",
         ["She", "works", "at", "a", "bank"],
         "She works at a bank.",
-        {"She": true, "works": true, "at": true, "a": true, "bank": true},
         TypeQuiz.select,
       ),
     ),
@@ -292,7 +271,6 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
         "Chọn từ đúng: <I / not / drink / tea> in the morning.",
         ["do", "not", "drink", "tea"],
         "I do not drink tea in the morning.",
-        {"do": true, "not": true, "drink": true, "tea": true},
         TypeQuiz.select,
       ),
     ),
@@ -304,7 +282,6 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
         "Hoàn thành câu: <Do / you / like / this song>?",
         ["Do", "you", "like", "this", "song"],
         "Do you like this song?",
-        {"Do": true, "you": true, "like": true, "this": true, "song": true},
         TypeQuiz.select,
       ),
     ),
@@ -316,7 +293,6 @@ List<ExerciseGrammar> generateExerciseGrammarForPresentSimple() {
         "Chọn từ đúng: <Where / do / you / go> on weekends?",
         ["Where", "do", "you", "go"],
         "Where do you go",
-        {"Where": true, "do": true, "you": true, "go": true},
         TypeQuiz.chooseOne,
       ),
     ),
