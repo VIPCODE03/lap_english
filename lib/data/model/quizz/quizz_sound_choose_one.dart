@@ -56,10 +56,13 @@ class QuizSoundChooseOneCustom extends QuizzSoundChooseOne<CustomQuiz> {
 
     for(var data in datas) {
       var newQuiz = QuizSoundChooseOneCustom();
-      newQuiz.showSoundBox = Random().nextBool();
+
       newQuiz.question = data.question;
-      newQuiz.answers = data.answers;
+      newQuiz.answers = data.answers..shuffle();
       newQuiz.answerCorrect = data.answerCorrect;
+
+      newQuiz.showSoundBox = data.isShowBoxSound ?? Random().nextBool();
+      newQuiz.sounds = data.sounds ?? {};
 
       quizes.add(newQuiz);
     }

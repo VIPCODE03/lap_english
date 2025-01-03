@@ -139,7 +139,8 @@ class _MenuScreenState<T> extends State<MenuScreen<T>> {
   List<T> _datas() {
     if (datas is List<MainTopic>) {
       return (datas as List<MainTopic>)
-          .where((data) => data.name.toLowerCase().contains(search.toLowerCase()))
+          .where((data) => data.name.toLowerCase().contains(search.toLowerCase())
+            && (!data.status.locked || data.status.diamond == 0 && data.status.gold == 0))
           .toList() as List<T>;
     } else if (datas is List<TypeGrammar>) {
       return datas;

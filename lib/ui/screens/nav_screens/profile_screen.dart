@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
 
                     /// ROW2  --------------------------------------------------------------
                     WdgGroup(
-                      title: 'Vấn đề kĩ năng :)',
+                      title: 'Kĩ năng',
                       opacity: 0.5,
                       height: 3,
                       child: WdgRow2Profile(skill: user.skills),

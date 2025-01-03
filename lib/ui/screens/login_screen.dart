@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:lap_english/gen/assets.gen.dart';
-import 'package:lap_english/ui/dialogs/dialog_widget.dart';
-import 'package:lap_english/ui/screens/splash_screen.dart';
+import 'package:lap_english/ui/screens/user_profile_setup_screen.dart';
 import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/widgets/other/button.dart';
 import 'package:lap_english/ui/widgets/other/loading.dart';
@@ -30,7 +29,7 @@ class LoginScreen extends StatelessWidget {
               return _loginScreen(childContext);
             }
 
-            return const SplashScreen();
+            return const ProfileSetupScreen();
           })),
     );
   }
@@ -47,42 +46,51 @@ class LoginScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
-        child: Column(
+        child: SingleChildScrollView(child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              width: 200,
-              height: 200,
-              child: Image(image: NetworkImage("https://anhngueie.com/wp-content/uploads/2022/07/2-1-1024x899-lg.png"))),
+            SizedBox(
+                child: Image(image: Assets.images.logo.logo.provider())
+            ),
+
+            const SizedBox(height: 33),
+
             Text(
               'Đăng nhập',
-              style: TextStyle(fontSize: textSize.title, fontWeight: FontWeight.bold),
-            ),
-            WdgButton(
-              onTap: () async {
-                googleSignIn.signOut();
-                context.read<AuthBloc>().add(LoginEvent(await googleSignIn.signIn(), null));
-              },
-              borderRadius: BorderRadius.circular(16),
-              alpha: 6,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    width: 45,
-                    child: Image(image: Assets.images.icon.google.provider(),),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    'Tiếp tục với Google',
-                    style: TextStyle(fontSize: textSize.medium),
-                  ),
-                ],
+              style: TextStyle(
+                  fontSize: textSize.title,
+                  fontWeight: FontWeight.bold
               ),
             ),
+
+            WdgButton(
+                onTap: () async {
+                  googleSignIn.signOut();
+                  context.read<AuthBloc>().add(LoginEvent(await googleSignIn.signIn(), null));
+                },
+                borderRadius: BorderRadius.circular(16),
+                alpha: 6,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child:               Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          width: 45,
+                          child: Image(image: Assets.images.icon.google.provider(),),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          'Tiếp tục với Google',
+                          style: TextStyle(fontSize: textSize.medium),
+                        ),
+                      ],
+                    )
+                )
+            ),
           ],
-        ),
+        ),)
       ),
     );
   }

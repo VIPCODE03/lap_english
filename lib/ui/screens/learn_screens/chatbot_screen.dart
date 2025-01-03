@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -143,7 +142,7 @@ class _ChatBotState extends State<ChatBotScreen> {
                 children: [
                   /// Ảnh -------------------------------------------------------
                   Center(child: Opacity(
-                      opacity: 0.66,
+                      opacity: 0.1,
                       child: Image.network(widget.topicChat.imgUrl)
                   )),
 

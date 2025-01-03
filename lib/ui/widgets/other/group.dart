@@ -11,6 +11,7 @@ class WdgGroup extends StatelessWidget {
   final String? title;
   final TextStyle? titleStyle;
   final Widget child;
+  final Widget? action;
 
   const WdgGroup({
     super.key,
@@ -20,12 +21,13 @@ class WdgGroup extends StatelessWidget {
     this.height,
     required this.child,
     this.titleStyle,
+    this.action,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      direction: Axis.horizontal,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
 
         /// Thanh ngăn cách --------------------------------------------------
@@ -33,22 +35,31 @@ class WdgGroup extends StatelessWidget {
           opacity: opacity ?? 0,
           child: Container(
             height: height,
-            width: maxWidth,
+            width: MediaQuery.of(context).size.width,
             color: VipColors.onPrimary(context),
           ),
         ),
 
         /// Text tiêu đề  ----------------------------------------------------
-        Container(
-          width: maxWidth,
-          padding: const EdgeInsets.only(left: 10, top: 5),
-          child: Text(title ?? '',
-          style: titleStyle ?? GoogleFonts.pangolin(
-            fontSize: textSize.title,
-            color: VipColors.text(context)),
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 10, top: 5),
+              child: Text(title ?? '',
+                style: titleStyle ?? GoogleFonts.pangolin(
+                    fontSize: textSize.title,
+                    color: VipColors.text(context)),
+              ),
             ),
-        ),
 
+            Expanded(child: Align(
+              alignment: Alignment.centerRight,
+              child: action,
+            )),
+
+            const SizedBox(width: 6)
+          ],
+        ),
         /// Child -------------------------------------------------------------
         const SizedBox(height: 10),
         Align(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
+import 'package:lap_english/ui/widgets/learn/library/library_vocabulary_widget.dart';
 import 'package:lap_english/ui/widgets/other/app_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 
@@ -44,13 +46,13 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
                 });
               },
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 222),
                 width: isExpanded ? maxWidth * 0.9 : maxWidth * 0.6,
                 height: 50,
-                curve: Curves.easeInOut,
+                curve: Curves.fastOutSlowIn,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: VipColors.onPrimary(context),
+                  color: VipColors.onPrimary(context).withAlpha(66),
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Row(
@@ -62,6 +64,7 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
                         child: TextField(
                           controller: _editingController,
                           autofocus: true,
+                          cursorColor: VipColors.text(context),
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Tìm kiếm...',
@@ -101,8 +104,8 @@ class _LibraryScreenState extends State<LibraryScreen> with SingleTickerProvider
           Expanded(child: TabBarView(
             controller: _tabController,
             children: const [
-              Center(child: Text('Từ vựng content')),
-              Center(child: Text('Câu content')),
+              WdgLibraryMainTopic<Word>(),
+              WdgLibraryMainTopic<Sentence>(),
               Center(child: Text('Ngữ pháp content')),
               Center(child: Text('Trò chuyện content')),
               Center(child: Text('Truyện content')),

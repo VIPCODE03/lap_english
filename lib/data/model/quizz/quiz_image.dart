@@ -62,3 +62,28 @@ class MdlQuizImageVocabulary extends MdlQuizImage<Word> {
     return quizes;
   }
 }
+
+class QuizImageCustom extends MdlQuizImage<CustomQuiz> {
+  @override
+  List<Quizz> generate(List<CustomQuiz> datas) {
+    List<QuizImageCustom> quizes = [];
+
+    for(var data in datas) {
+      var newQuiz = QuizImageCustom();
+      newQuiz.question = data.question;
+      newQuiz.answers = data.answers;
+      newQuiz.answerCorrect = data.answerCorrect;
+
+      if(data.imageQuestion != null) {
+        newQuiz.imgQuestion = data.imageQuestion!;
+        quizes.add(newQuiz);
+      }
+      else if(data.imgAnswers != null && data.imgAnswers!.isNotEmpty) {
+        newQuiz.imgAnswer = data.imgAnswers!;
+        quizes.add(newQuiz);
+      }
+    }
+
+    return quizes;
+  }
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lap_english/data/model/learn/challenge.dart';
 import 'package:lap_english/data/model/learn/grammar.dart';
+import 'package:lap_english/data/model/learn/ipa.dart';
 import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/gen/assets.gen.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
@@ -15,6 +17,7 @@ import 'package:lap_english/ui/widgets/other/special_text.dart';
 import 'package:lap_english/utils/player_audio.dart';
 import '../../../bloc/quizz_bloc.dart';
 import '../../../data/model/quizz/quizz.dart';
+import '../../../data/model/quizz/quizzes.dart';
 import '../../../data/model/user/skill.dart';
 import '../../themes/size.dart';
 import '../../widgets/learn/quiz/z_quizz_result.dart';
@@ -36,7 +39,7 @@ class QuizzScreen extends StatefulWidget {
         _totalWord = words.length,
         _totalSentence = 0,
         _totalGrammar = 0,
-        _quizzes = Quizzes.generateQuizzVocabulary(mode: QuizzMode.basic, words: words);
+        _quizzes = Quizzes.generateQuizzVocabulary(words: words);
 
   QuizzScreen.sentence({super.key, required List<Sentence> sentences, required SubTopic subTopic})
       :
@@ -45,7 +48,7 @@ class QuizzScreen extends StatefulWidget {
         _totalWord = 0,
         _totalSentence = sentences.length,
         _totalGrammar = 0,
-        _quizzes = Quizzes.generateQuizzSentence(mode: QuizzMode.basic, sentences: sentences);
+        _quizzes = Quizzes.generateQuizzSentence(sentences: sentences);
 
   QuizzScreen.grammar({super.key, required List<GrammaticalStructure> structures, required Grammar grammar})
       :
@@ -55,6 +58,24 @@ class QuizzScreen extends StatefulWidget {
         _totalSentence = 0,
         _totalGrammar = structures.length,
         _quizzes = Quizzes.generateQuizGrammar(structures: structures);
+
+  QuizzScreen.ipa({super.key, required List<IPA> ipas})
+      :
+        _object = null,
+        _typeQuizz = TypeQuizz.quizzCustom,
+        _totalWord = 0,
+        _totalSentence = 0,
+        _totalGrammar = 0,
+        _quizzes = Quizzes.generateQuizIPA(ipas: ipas);
+
+  QuizzScreen.challenge({super.key, required Challenge challenge})
+      :
+        _object = null,
+        _typeQuizz = TypeQuizz.quizzCustom,
+        _totalWord = 0,
+        _totalSentence = 0,
+        _totalGrammar = 0,
+        _quizzes = Quizzes.generateQuizChallenge(challenge: challenge);
 
   @override
   State<StatefulWidget> createState() => _QuizzScreenState();
@@ -185,15 +206,13 @@ class _QuizzScreenState extends State<QuizzScreen> {
                                 );
                               },
                               child: SizedBox(
-                                key: showQuizz ? currentQuizz.keyID : UniqueKey(),
+                                key: showQuizz ? currentQuizz.keyID : const ValueKey(-1),
                                 child: showQuizz
                                     ? currentQuizz
-                                    : const Center(
-                                        child: Text('Start',
-                                            style: TextStyle(fontSize: 30)),
-                                      ),
-                          ),
-                        )),
+                                    : const Text('Start', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                              )
+                            )
+                        ),
 
                         /// Button skip quizz nói hoặc nghe ----------------------------------
                         if ((currentQuizz.quizz.skillType == SkillType.speaking || currentQuizz.quizz.skillType == SkillType.listening) && showQuizz)

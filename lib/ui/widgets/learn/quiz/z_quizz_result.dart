@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/ui/colors/vip_colors.dart';
 import 'package:lap_english/ui/widgets/other/progress_bar.dart';
 import 'package:lap_english/ui/widgets/other/scaffold.dart';
 
+import '../../../../data/model/quizz/quiz_result.dart';
 import '../../../themes/size.dart';
 import '../../other/button.dart';
 
