@@ -1,10 +1,10 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lap_english/data/database/remote/service/quiz_service.dart';
 import 'package:lap_english/data/model/learn/word_sentence.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/user/skill.dart';
-import 'package:lap_english/services/data_manager.dart';
+
+import '../data/model/quizz/quiz_result.dart';
 
 /*  EVENTS  */
 abstract class QuizzEvent {}

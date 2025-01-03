@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lap_english/services/network_observer.dart';
-import 'package:lap_english/ui/screens/login_screen.dart';
 import 'package:lap_english/ui/screens/splash_screen.dart';
 import 'package:lap_english/ui/themes/size.dart';
 import 'package:lap_english/ui/themes/themes.dart';
@@ -64,9 +63,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           theme: themeProvider.vipTheme.light,
           darkTheme: themeProvider.vipTheme.dark,
           themeMode: themeProvider.vipTheme.themeMode,
-          home: CacheManager().getToken().userId != -1
-              ? const LoginScreen()
-              : const LoginScreen()
+          home: const SplashScreen()
         );
       },
     );

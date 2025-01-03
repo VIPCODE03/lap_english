@@ -24,6 +24,9 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/item
   $AssetsImagesItemGen get item => const $AssetsImagesItemGen();
 
+  /// Directory path: assets/images/logo
+  $AssetsImagesLogoGen get logo => const $AssetsImagesLogoGen();
+
   /// Directory path: assets/images/menu
   $AssetsImagesMenuGen get menu => const $AssetsImagesMenuGen();
 }
@@ -59,8 +62,11 @@ class $AssetsTrainbotGen {
   /// File path: assets/trainbot/chat.txt
   String get chat => 'assets/trainbot/chat.txt';
 
+  /// File path: assets/trainbot/train_search_vocabulary
+  String get trainSearchVocabulary => 'assets/trainbot/train_search_vocabulary';
+
   /// List of all assets
-  List<String> get values => [chat];
+  List<String> get values => [chat, trainSearchVocabulary];
 }
 
 class $AssetsImagesCoverGen {
@@ -216,6 +222,20 @@ class $AssetsImagesItemGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [dongvat, itemTopic];
+}
+
+class $AssetsImagesLogoGen {
+  const $AssetsImagesLogoGen();
+
+  /// File path: assets/images/logo/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo/logo.png');
+
+  /// File path: assets/images/logo/logo_splash.gif
+  AssetGenImage get logoSplash =>
+      const AssetGenImage('assets/images/logo/logo_splash.gif');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [logo, logoSplash];
 }
 
 class $AssetsImagesMenuGen {

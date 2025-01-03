@@ -55,10 +55,21 @@ class CacheManager {
     );
   }
 
+  //=== Status  ===
   Future<void> saveStatus(StatusFlag flag, bool state) async => _caching.setBool(_getKeyStatus(flag), state);
 
   bool? getStatus(StatusFlag flag) => _caching.getBool(_getKeyStatus(flag));
 
+  //=== Thông tin user  ===
+  Future<void> saveInfoUser(List<String> infos) async {
+    _caching.setString('info', infos.toString());
+  }
+
+  String? getInfoUser() {
+    return _caching.getString('info');
+  }
+
+  //=== Khác  ===
   Future<void> clearCache(String key) async {
     await _caching.remove(key);
   }

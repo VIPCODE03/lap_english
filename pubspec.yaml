@@ -88,6 +88,7 @@ flutter:
     - assets/images/menu/
     - assets/images/item/
     - assets/images/dinosaur/
+    - assets/images/logo/
     - assets/sounds/
     - assets/sounds/ipa/vowels/
     - assets/sounds/ipa/consonants/

@@ -1,24 +1,24 @@
-import 'package:lap_english/data/model/learn/grammar.dart';
+import 'package:lap_english/data/model/learn/ipa.dart';
 import 'package:lap_english/data/model/quizz/quizz.dart';
 import 'package:lap_english/data/model/quizz/quizzes.dart';
 
 import '../user/skill.dart';
 
-class MdlQuizGrammar extends Quizz<CustomQuiz> {
-  final GrammaticalStructure structure;
+class QuizIPA extends Quizz<CustomQuiz> {
+  final IPA ipa;
   late Quizz quiz;
 
-  MdlQuizGrammar(this.structure);
+  QuizIPA(this.ipa);
 
   @override
-  SkillType get skillType => SkillType.reading;
+  SkillType get skillType => SkillType.listening;
 
   @override
   List<Quizz> generate(List<CustomQuiz> datas) {
-    List<MdlQuizGrammar> quizzes = [];
+    List<QuizIPA> quizzes = [];
 
     for(var data in datas) {
-      var newQuiz = MdlQuizGrammar(structure);
+      var newQuiz = QuizIPA(ipa);
       newQuiz.question = data.question;
       newQuiz.quiz = Quizzes.generateQuizCustom(customQuizs: [data]).first;
 

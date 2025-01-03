@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lap_english/data/database/remote/service/data_service.dart';
-import 'package:lap_english/data/model/quizz/quizz.dart';
+
+import '../../../model/quizz/quiz_result.dart';
 
 class QuizService extends ApiService {
   late _RequestType _type;
