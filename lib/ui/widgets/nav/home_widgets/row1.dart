@@ -34,7 +34,7 @@ class WdgRow1 extends StatelessWidget {
               "Đào Như Triệu",
               style: TextStyle(
                   fontSize: textSize.title,
-                  color: Colors.white,
+                  color: Colors.blueGrey,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -45,7 +45,7 @@ class WdgRow1 extends StatelessWidget {
             child: WdgButton(
               onTap: () {_showThemes(context, ThemeConstant.themes);},
               color: Colors.transparent,
-              child: const Icon(Icons.ac_unit, color: Colors.white),
+              child: const Icon(Icons.ac_unit, color: Colors.blueGrey),
             ),
           ),
 

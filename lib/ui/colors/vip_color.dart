@@ -43,5 +43,20 @@ class VipTurquoiseColor extends VipColor {
 
   @override
   Color get primaryLight => const Color(0xB3137D6D);
+}
 
+class VipPinkColor extends VipColor {
+  @override
+  Color get primaryDark => const Color(0xFF930E4C);
+
+  @override
+  Color get primaryLight => const Color(0xFFC01163);
+}
+
+class VipWhitePinkColor extends VipColor {
+  @override
+  Color get primaryDark => const Color(0xFF904869);
+
+  @override
+  Color get primaryLight => const Color(0xFFC35C8C);
 }

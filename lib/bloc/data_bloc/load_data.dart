@@ -62,7 +62,7 @@ mixin LoadDatas {
         dao.insert(word);
       }
     }
-    return words;
+    return await WordService().fetchByIdSubTopic(idSubTopic) ?? [];
   }
 
   static Future<List<Sentence>> _sentenceLoad(int subTopicId) async {

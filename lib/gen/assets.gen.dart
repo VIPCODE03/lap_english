@@ -76,6 +76,22 @@ class $AssetsImagesCoverGen {
   AssetGenImage get cover1 =>
       const AssetGenImage('assets/images/cover/cover1.gif');
 
+  /// File path: assets/images/cover/cover10.gif
+  AssetGenImage get cover10 =>
+      const AssetGenImage('assets/images/cover/cover10.gif');
+
+  /// File path: assets/images/cover/cover11.gif
+  AssetGenImage get cover11 =>
+      const AssetGenImage('assets/images/cover/cover11.gif');
+
+  /// File path: assets/images/cover/cover12.gif
+  AssetGenImage get cover12 =>
+      const AssetGenImage('assets/images/cover/cover12.gif');
+
+  /// File path: assets/images/cover/cover13.gif
+  AssetGenImage get cover13 =>
+      const AssetGenImage('assets/images/cover/cover13.gif');
+
   /// File path: assets/images/cover/cover2.gif
   AssetGenImage get cover2 =>
       const AssetGenImage('assets/images/cover/cover2.gif');
@@ -115,6 +131,10 @@ class $AssetsImagesCoverGen {
   /// List of all assets
   List<AssetGenImage> get values => [
         cover1,
+        cover10,
+        cover11,
+        cover12,
+        cover13,
         cover2,
         cover3,
         cover4,
